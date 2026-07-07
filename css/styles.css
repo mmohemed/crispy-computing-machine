@@ -1,0 +1,313 @@
+/* ===== أساسيات ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #eef1f5;
+  --card-bg: #ffffff;
+  --text: #263238;
+  --text-light: #607d8b;
+  --border: #e0e4e8;
+  --primary: #1565c0;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.14);
+  --radius: 14px;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, 'Arial', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== الشريط العلوي ===== */
+.topbar {
+  background: linear-gradient(135deg, #0d47a1, #1976d2);
+  color: #fff;
+  padding: 0.7rem 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-right,
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.home-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 10px;
+  font-size: 1.3rem;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.home-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.clock {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.user-badge {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.35rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* ===== مسار التنقل ===== */
+.breadcrumb {
+  padding: 0.6rem 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb .crumb-link {
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.breadcrumb .crumb-link:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb .sep {
+  margin: 0 0.4rem;
+}
+
+/* ===== الشاشة الرئيسية ===== */
+.main-screen {
+  flex: 1;
+  padding: 1.6rem;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.1rem;
+  align-items: start;
+}
+
+/* بطاقة الوحدة الرئيسية */
+.module-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+
+.module-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.module-card.open {
+  box-shadow: var(--shadow-lg);
+}
+
+.module-head {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.1rem 1.2rem;
+  cursor: pointer;
+  user-select: none;
+  border-right: 5px solid var(--accent, var(--primary));
+  transition: background 0.2s;
+}
+
+.module-head:hover {
+  background: #f5f7fa;
+}
+
+.module-icon {
+  font-size: 2.1rem;
+  line-height: 1;
+}
+
+.module-title {
+  flex: 1;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.module-count {
+  background: var(--accent, var(--primary));
+  color: #fff;
+  font-size: 0.75rem;
+  border-radius: 12px;
+  padding: 0.15rem 0.55rem;
+  font-weight: 600;
+}
+
+.module-arrow {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  transition: transform 0.3s;
+}
+
+.module-card.open .module-arrow {
+  transform: rotate(180deg);
+}
+
+/* القائمة الفرعية: مخفية افتراضياً وتظهر عند فتح البطاقة */
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  border-top: 1px solid transparent;
+}
+
+.module-card.open .submenu {
+  max-height: 700px;
+  border-top-color: var(--border);
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.62rem 1.2rem;
+  cursor: pointer;
+  font-size: 0.93rem;
+  color: var(--text);
+  transition: background 0.15s, padding-right 0.15s;
+  border-bottom: 1px solid #f2f4f6;
+}
+
+.submenu-item:last-child {
+  border-bottom: none;
+}
+
+.submenu-item:hover {
+  background: #f0f6ff;
+  padding-right: 1.5rem;
+  color: var(--accent, var(--primary));
+}
+
+.submenu-item .sub-icon {
+  font-size: 1.05rem;
+}
+
+/* ===== شاشة المحتوى ===== */
+.content-screen {
+  flex: 1;
+  padding: 1.6rem;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.content-screen.hidden,
+.main-screen.hidden {
+  display: none;
+}
+
+.content-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.back-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.back-btn:hover {
+  background: #f0f6ff;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.content-header h2 {
+  font-size: 1.35rem;
+}
+
+.placeholder-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 3.5rem 2rem;
+  text-align: center;
+}
+
+.placeholder-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.placeholder-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.placeholder-hint {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+/* ===== التذييل ===== */
+.footer {
+  text-align: center;
+  padding: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+  background: var(--card-bg);
+}
+
+/* ===== الشاشات الصغيرة ===== */
+@media (max-width: 600px) {
+  .app-title {
+    font-size: 1rem;
+  }
+
+  .clock {
+    display: none;
+  }
+
+  .modules-grid {
+    grid-template-columns: 1fr;
+  }
+}

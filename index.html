@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>النظام المحاسبي المتكامل</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- الشريط العلوي -->
+  <header class="topbar">
+    <div class="topbar-right">
+      <button id="homeBtn" class="home-btn" title="الرئيسية">🏠</button>
+      <h1 class="app-title">النظام المحاسبي المتكامل</h1>
+    </div>
+    <div class="topbar-left">
+      <span id="clock" class="clock"></span>
+      <span class="user-badge">👤 المدير العام</span>
+    </div>
+  </header>
+
+  <!-- مسار التنقل -->
+  <nav id="breadcrumb" class="breadcrumb">
+    <span class="crumb">🏠 الرئيسية</span>
+  </nav>
+
+  <!-- الشاشة الرئيسية: شبكة الأيقونات الرئيسية -->
+  <main id="mainScreen" class="main-screen">
+    <div id="modulesGrid" class="modules-grid"></div>
+  </main>
+
+  <!-- شاشة المحتوى (عند اختيار عنصر فرعي) -->
+  <section id="contentScreen" class="content-screen hidden">
+    <div class="content-header">
+      <button id="backBtn" class="back-btn">→ رجوع</button>
+      <h2 id="contentTitle"></h2>
+    </div>
+    <div class="content-body">
+      <div class="placeholder-card">
+        <div id="contentIcon" class="placeholder-icon"></div>
+        <p id="contentText" class="placeholder-text"></p>
+        <p class="placeholder-hint">هذه الشاشة جاهزة لربطها بوظائف النظام الفعلية.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 النظام المحاسبي المتكامل — جميع الحقوق محفوظة</span>
+  </footer>
+
+  <script src="js/modules.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
