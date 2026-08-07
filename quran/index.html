@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="تطبيق القرآن الكريم — قراءة وبحث وعلامات مرجعية، يعمل بدون إنترنت." />
+  <title>القرآن الكريم</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f6f54'/%3E%3Ctext x='16' y='23' font-size='19' text-anchor='middle' fill='%23e9c877'%3E%E2%98%BE%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#/" aria-label="الصفحة الرئيسية">
+        <span class="brand-mark" aria-hidden="true">☾</span>
+        <span class="brand-text">القرآن الكريم</span>
+      </a>
+
+      <form class="search-box" id="searchForm" role="search">
+        <input
+          type="search"
+          id="searchInput"
+          class="search-input"
+          placeholder="ابحث في النص أو اكتب اسم السورة أو ٢:٢٥٥"
+          aria-label="البحث في القرآن الكريم"
+          autocomplete="off"
+        />
+        <button type="submit" class="search-btn" aria-label="بحث">🔍</button>
+      </form>
+
+      <nav class="topnav" aria-label="التنقل الرئيسي">
+        <a href="#/" class="nav-link" data-nav="home">السور</a>
+        <a href="#/juz" class="nav-link" data-nav="juz">الأجزاء</a>
+        <a href="#/bookmarks" class="nav-link" data-nav="bookmarks">المفضلة</a>
+        <button type="button" id="settingsBtn" class="nav-icon" aria-label="الإعدادات" aria-expanded="false">⚙️</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- لوحة الإعدادات -->
+  <div id="settingsPanel" class="settings-panel" hidden>
+    <div class="settings-row">
+      <span class="settings-label">المظهر</span>
+      <div class="btn-group" id="themeGroup">
+        <button type="button" data-theme-value="light">فاتح</button>
+        <button type="button" data-theme-value="sepia">ورقي</button>
+        <button type="button" data-theme-value="dark">داكن</button>
+      </div>
+    </div>
+    <div class="settings-row">
+      <span class="settings-label">حجم الخط</span>
+      <div class="btn-group">
+        <button type="button" id="fontMinus" aria-label="تصغير الخط">−</button>
+        <span class="font-value" id="fontValue">١٠٠٪</span>
+        <button type="button" id="fontPlus" aria-label="تكبير الخط">+</button>
+      </div>
+    </div>
+    <div class="settings-row">
+      <span class="settings-label">طريقة العرض</span>
+      <div class="btn-group" id="viewGroup">
+        <button type="button" data-view-value="flow">متصل</button>
+        <button type="button" data-view-value="lines">آية بسطر</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="view" class="view" aria-live="polite">
+    <div class="loading">…جارٍ تحميل المصحف</div>
+  </main>
+
+  <!-- شريط أدوات الآية المحددة -->
+  <div id="ayahBar" class="ayah-bar" hidden>
+    <span class="ayah-bar-ref" id="ayahBarRef"></span>
+    <button type="button" data-action="copy">📋 نسخ</button>
+    <button type="button" data-action="bookmark">🔖 المفضلة</button>
+    <button type="button" data-action="mark">📍 موضع القراءة</button>
+    <button type="button" data-action="close" aria-label="إغلاق">✕</button>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <p id="footerAyah" class="footer-ayah"></p>
+    <p class="footer-meta">
+      النص بالرسم العثماني (رواية حفص عن عاصم) — مصدر البيانات
+      <a href="https://www.npmjs.com/package/quran-json" rel="noopener">quran-json</a>
+      برخصة CC&nbsp;BY&nbsp;4.0
+    </p>
+  </footer>
+
+  <script src="data/quran-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
