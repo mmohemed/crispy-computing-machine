@@ -586,4 +586,16 @@
 
   applySettings();
   render();
+
+  /*
+   * تسجيل عامل الخدمة ليعمل التطبيق بدون إنترنت وليصبح قابلاً للتثبيت على الجوال.
+   * لا يعمل عند فتح الملف مباشرة من القرص (file://) وهذا متوقّع.
+   */
+  if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {
+        /* التخزين للعمل دون اتصال غير متاح — التطبيق يعمل كالمعتاد */
+      });
+    });
+  }
 })();
