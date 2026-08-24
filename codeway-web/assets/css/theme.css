@@ -1,0 +1,158 @@
+/* ==========================================================================
+   CodeWay Web — نظام الألوان والرموز التصميمية (Design Tokens)
+   يدعم الوضع الفاتح والداكن عبر [data-theme] و prefers-color-scheme
+   ========================================================================== */
+
+:root {
+  /* ---- الألوان الأساسية ---- */
+  --brand-50:  #eef2ff;
+  --brand-100: #e0e7ff;
+  --brand-200: #c7d2fe;
+  --brand-300: #a5b4fc;
+  --brand-400: #818cf8;
+  --brand-500: #6366f1;
+  --brand-600: #4f46e5;
+  --brand-700: #4338ca;
+
+  --violet-400: #a78bfa;
+  --violet-500: #8b5cf6;
+  --violet-600: #7c3aed;
+
+  --pink-400: #f472b6;
+  --pink-500: #ec4899;
+
+  /* ---- ألوان دلالية ---- */
+  --ok-500:   #10b981;
+  --ok-bg:    #ecfdf5;
+  --warn-500: #f59e0b;
+  --warn-bg:  #fffbeb;
+  --err-500:  #ef4444;
+  --err-bg:   #fef2f2;
+  --info-500: #0ea5e9;
+  --info-bg:  #f0f9ff;
+
+  /* ---- الأسطح والنصوص (الوضع الفاتح) ---- */
+  --bg:          #f6f7fb;
+  --bg-alt:      #eef1f8;
+  --surface:     #ffffff;
+  --surface-2:   #f8fafc;
+  --surface-3:   #f1f5f9;
+  --border:      #e2e8f0;
+  --border-soft: #eef2f7;
+
+  --text:        #0f172a;
+  --text-muted:  #475569;
+  --text-faint:  #94a3b8;
+  --text-invert: #ffffff;
+
+  --code-bg:     #0f1729;
+  --code-text:   #e2e8f0;
+  --code-border: #1e293b;
+
+  --ring: rgba(99, 102, 241, 0.35);
+
+  /* ---- التدرجات ---- */
+  --grad-brand: linear-gradient(135deg, var(--brand-500), var(--violet-500));
+  --grad-warm:  linear-gradient(135deg, var(--violet-500), var(--pink-500));
+  --grad-line:  linear-gradient(90deg, var(--brand-500), var(--violet-500), var(--pink-500));
+
+  /* ---- الظلال ---- */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, .06);
+  --shadow-sm: 0 2px 6px rgba(15, 23, 42, .07);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, .09);
+  --shadow-lg: 0 18px 48px rgba(15, 23, 42, .13);
+
+  /* ---- القياسات ---- */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-full: 999px;
+
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  --container: 1240px;
+  --header-h: 68px;
+
+  /* ---- الخطوط ---- */
+  --font-ar: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SFMono-Regular', Consolas, monospace;
+
+  --transition: .25s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* ---- الوضع الداكن ---- */
+:root[data-theme="dark"] {
+  --bg:          #0a0f1e;
+  --bg-alt:      #0d1425;
+  --surface:     #111a2e;
+  --surface-2:   #16203a;
+  --surface-3:   #1c2745;
+  --border:      #22304f;
+  --border-soft: #1a2540;
+
+  --text:        #e8edf9;
+  --text-muted:  #a9b6d3;
+  --text-faint:  #6b7a9c;
+
+  --code-bg:     #070c18;
+  --code-border: #1b2740;
+
+  --ok-bg:   rgba(16, 185, 129, .12);
+  --warn-bg: rgba(245, 158, 11, .12);
+  --err-bg:  rgba(239, 68, 68, .12);
+  --info-bg: rgba(14, 165, 233, .12);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, .4);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, .45);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, .5);
+  --shadow-lg: 0 22px 60px rgba(0, 0, 0, .6);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:          #0a0f1e;
+    --bg-alt:      #0d1425;
+    --surface:     #111a2e;
+    --surface-2:   #16203a;
+    --surface-3:   #1c2745;
+    --border:      #22304f;
+    --border-soft: #1a2540;
+
+    --text:        #e8edf9;
+    --text-muted:  #a9b6d3;
+    --text-faint:  #6b7a9c;
+
+    --code-bg:     #070c18;
+    --code-border: #1b2740;
+
+    --ok-bg:   rgba(16, 185, 129, .12);
+    --warn-bg: rgba(245, 158, 11, .12);
+    --err-bg:  rgba(239, 68, 68, .12);
+    --info-bg: rgba(14, 165, 233, .12);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, .4);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, .45);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, .5);
+    --shadow-lg: 0 22px 60px rgba(0, 0, 0, .6);
+  }
+}
+
+/* ---- ألوان مميّزة لكل مسار ---- */
+[data-track="html"]        { --track: #e34f26; --track-soft: rgba(227, 79, 38, .12); }
+[data-track="css"]         { --track: #2965f1; --track-soft: rgba(41, 101, 241, .12); }
+[data-track="javascript"]  { --track: #d9a300; --track-soft: rgba(217, 163, 0, .14); }
+[data-track="typescript"]  { --track: #3178c6; --track-soft: rgba(49, 120, 198, .12); }
+[data-track="react"]       { --track: #0aa5c7; --track-soft: rgba(10, 165, 199, .12); }
+[data-track="vue"]         { --track: #16a97f; --track-soft: rgba(22, 169, 127, .12); }
+[data-track="nodejs"]      { --track: #4b9c3f; --track-soft: rgba(75, 156, 63, .12); }
+[data-track="sql"]         { --track: #6a5acd; --track-soft: rgba(106, 90, 205, .12); }
+[data-track="git"]         { --track: #e8642f; --track-soft: rgba(232, 100, 47, .12); }
+[data-track="tools"]       { --track: #8b5cf6; --track-soft: rgba(139, 92, 246, .12); }
