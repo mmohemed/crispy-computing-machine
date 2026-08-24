@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="html">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجداول — مسار HTML | CodeWay Web</title>
+<meta name="description" content="بناء جداول بيانات صحيحة ومتاحة للجميع: الرؤوس، التجميع، دمج الخلايا، والتعليق التوضيحي.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="الجداول — مسار HTML | CodeWay Web">
+<meta property="og:description" content="بناء جداول بيانات صحيحة ومتاحة للجميع: الرؤوس، التجميع، دمج الخلايا، والتعليق التوضيحي.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">HTML</a></li>
+      <li aria-current="page">الجداول</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 8 من 13</span>
+      <span class="badge level-متوسط">متوسط</span>
+      <span class="badge">الجداول</span><span class="badge">البيانات</span>
+    </div>
+    <h1>الجداول</h1>
+    <p class="summary">بناء جداول بيانات صحيحة ومتاحة للجميع: الرؤوس، التجميع، دمج الخلايا، والتعليق التوضيحي.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 50 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار HTML</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تبني جدولاً بأقسامه الثلاثة: الرأس والجسم والتذييل.</li><li>تفرّق بين <code>&lt;th&gt;</code> و <code>&lt;td&gt;</code> وتستخدم <code>scope</code> بشكل صحيح.</li><li>تدمج الخلايا أفقياً وعمودياً.</li><li>تضيف <code>&lt;caption&gt;</code> وتفهم لماذا هو مهم.</li><li>تجعل الجدول قابلاً للتمرير على الشاشات الصغيرة.</li></ul></div>
+      <h2 id="sec-1">الجدول للبيانات… فقط</h2><p>في التسعينيات كان المطوّرون يبنون تخطيط الصفحة كله بالجداول لعدم وجود بديل. اليوم هذا <strong>خطأ جسيم</strong>: يربك قارئات الشاشة، ويصعّب التجاوب، ويجعل الكود غير قابل للصيانة. التخطيط وظيفة CSS (Flexbox و Grid).</p><p>استخدم الجدول فقط حين تكون بياناتك <strong>ثنائية البعد</strong>: لكل قيمة صف وعمود يحدّدان معناها، مثل جدول أسعار أو نتائج مباريات أو مواصفات مقارنة.</p><h2 id="sec-2">أبسط جدول ممكن</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;th</span><span class="tok-tag">&gt;</span>المنتج<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;th</span><span class="tok-tag">&gt;</span>السعر<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>قلم<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>5 ريالات<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>دفتر<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>12 ريالاً<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> جدول بلا تنسيق</div><iframe title="جدول بلا تنسيق" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{border-collapse:collapse}th,td{border:1px solid #cbd5e1;padding:8px 14px}th{background:#eef2ff}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;المنتج&lt;/th&gt;&lt;th&gt;السعر&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;قلم&lt;/td&gt;&lt;td&gt;5 ريالات&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;دفتر&lt;/td&gt;&lt;td&gt;12 ريالاً&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:200px"></iframe></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>الجدول بلا CSS يظهر بلا حدود. خاصية <code>border-collapse: collapse</code> تدمج الحدود المزدوجة بين الخلايا في حد واحد.</p></div><h2 id="sec-3">الجدول الكامل بأقسامه</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;caption</span><span class="tok-tag">&gt;</span>مبيعات الربع الأول لعام 2026 (بالريال)<span class="tok-tag">&lt;/caption</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;thead</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;col&quot;</span><span class="tok-tag">&gt;</span>المنتج<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;col&quot;</span><span class="tok-tag">&gt;</span>يناير<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;col&quot;</span><span class="tok-tag">&gt;</span>فبراير<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;col&quot;</span><span class="tok-tag">&gt;</span>مارس<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/thead</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;tbody</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;row&quot;</span><span class="tok-tag">&gt;</span>أقلام<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>1,200<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>1,450<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>1,300<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;row&quot;</span><span class="tok-tag">&gt;</span>دفاتر<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>2,100<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>1,900<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>2,400<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/tbody</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;tfoot</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;row&quot;</span><span class="tok-tag">&gt;</span>الإجمالي<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>3,300<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>3,350<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>3,700<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/tfoot</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> الجدول الكامل</div><iframe title="الجدول الكامل" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{border-collapse:collapse;width:100%}caption{caption-side:top;text-align:right;font-weight:700;padding-bottom:8px;color:#4f46e5}th,td{border:1px solid #e2e8f0;padding:8px 12px;text-align:right}thead th{background:#4f46e5;color:#fff}tbody th{background:#f1f5f9}tfoot{font-weight:700;background:#eef2ff}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;caption&gt;مبيعات الربع الأول 2026 (بالريال)&lt;/caption&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;المنتج&lt;/th&gt;&lt;th&gt;يناير&lt;/th&gt;&lt;th&gt;فبراير&lt;/th&gt;&lt;th&gt;مارس&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;th&gt;أقلام&lt;/th&gt;&lt;td&gt;1,200&lt;/td&gt;&lt;td&gt;1,450&lt;/td&gt;&lt;td&gt;1,300&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;th&gt;دفاتر&lt;/th&gt;&lt;td&gt;2,100&lt;/td&gt;&lt;td&gt;1,900&lt;/td&gt;&lt;td&gt;2,400&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;tfoot&gt;&lt;tr&gt;&lt;th&gt;الإجمالي&lt;/th&gt;&lt;td&gt;3,300&lt;/td&gt;&lt;td&gt;3,350&lt;/td&gt;&lt;td&gt;3,700&lt;/td&gt;&lt;/tr&gt;&lt;/tfoot&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:300px"></iframe></div><h3 id="sec-4">لماذا الأقسام الثلاثة؟</h3><div class="table-wrap"><table class="data"><thead><tr><th>القسم</th><th>محتواه</th><th>الفائدة</th></tr></thead><tbody><tr><td><code>&lt;thead&gt;</code></td><td>صف/صفوف الرؤوس</td><td>يمكن تثبيته عند التمرير، ويتكرر في الطباعة على كل صفحة</td></tr><tr><td><code>&lt;tbody&gt;</code></td><td>صفوف البيانات</td><td>يمكن أن يتعدّد لتقسيم البيانات لمجموعات</td></tr><tr><td><code>&lt;tfoot&gt;</code></td><td>المجاميع والخلاصات</td><td>يظهر أسفل الجدول مهما كان موضعه في الكود</td></tr></tbody></table></div><h2 id="sec-5"><code>scope</code>: السمة التي تصنع الفرق للمكفوفين</h2><p>الشخص المبصر يربط الخلية برأس عمودها بنظرة واحدة. قارئ الشاشة يحتاج أن تخبره صراحةً. السمة <code>scope</code> على <code>&lt;th&gt;</code> تحدّد ما الذي يترأسه هذا الرأس:</p><ul><li><code>scope=&quot;col&quot;</code> — الرأس يخصّ العمود كله (يُستخدم في <code>&lt;thead&gt;</code>).</li><li><code>scope=&quot;row&quot;</code> — الرأس يخصّ الصف كله (العمود الأول من كل صف عادةً).</li><li><code>scope=&quot;colgroup&quot;</code> / <code>scope=&quot;rowgroup&quot;</code> — لرأس يمتد فوق مجموعة أعمدة أو صفوف.</li></ul><p>النتيجة: عندما يصل القارئ إلى الخلية «1,450» ينطق: «أقلام، فبراير، 1450» — بدلاً من «1450» المجرّدة.</p><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه</div><p>استخدام <code>&lt;td&gt;</code> في مكان <code>&lt;th&gt;</code> خطأ شائع. الرأس ليس مجرّد خلية عريضة — هو معلومة بنيوية.</p></div><h2 id="sec-6">دمج الخلايا</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;th</span> <span class="tok-attr">colspan</span><span class="tok-punct">=</span><span class="tok-string">&quot;3&quot;</span><span class="tok-tag">&gt;</span>جدول الحصص الأسبوعي<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;th</span><span class="tok-tag">&gt;</span>اليوم<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;th</span><span class="tok-tag">&gt;</span>الحصة الأولى<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;th</span><span class="tok-tag">&gt;</span>الحصة الثانية<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;th</span> <span class="tok-attr">rowspan</span><span class="tok-punct">=</span><span class="tok-string">&quot;2&quot;</span><span class="tok-tag">&gt;</span>الأحد<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>رياضيات<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>علوم<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>لغة عربية<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>حاسب<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> colspan و rowspan</div><iframe title="colspan و rowspan" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{border-collapse:collapse;width:100%}th,td{border:1px solid #cbd5e1;padding:8px;text-align:center}th{background:#eef2ff}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th colspan=&quot;3&quot;&gt;جدول الحصص الأسبوعي&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;th&gt;اليوم&lt;/th&gt;&lt;th&gt;الحصة الأولى&lt;/th&gt;&lt;th&gt;الحصة الثانية&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;th rowspan=&quot;2&quot;&gt;الأحد&lt;/th&gt;&lt;td&gt;رياضيات&lt;/td&gt;&lt;td&gt;علوم&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;لغة عربية&lt;/td&gt;&lt;td&gt;حاسب&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:250px"></iframe></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>قاعدة العد: إذا دمجت خليتين بـ <code>colspan=&quot;2&quot;</code> فاحذف خلية واحدة من ذلك الصف. أخطاء الجداول غالباً سببها خلل في هذا العد.</p></div><h2 id="sec-7"><code>&lt;caption&gt;</code> — عنوان الجدول</h2><p>يجب أن يكون <strong>أول عنصر</strong> داخل <code>&lt;table&gt;</code>. يعلن لقارئ الشاشة ما الذي يحويه الجدول قبل الدخول فيه، ويجعل الجدول مفهوماً عند اقتباسه منفرداً.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;caption</span><span class="tok-tag">&gt;</span>نتائج الاختبار النهائي — الفصل الأول 2026<span class="tok-tag">&lt;/caption</span><span class="tok-tag">&gt;</span>
+  …
+<span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>يمكن تحريك موضعه بصرياً بـ <code>caption-side: bottom</code> في CSS، أو إخفاؤه بصرياً مع إبقائه لقارئ الشاشة — لكن <strong>لا تحذفه</strong>.</p></div><h2 id="sec-8">الجدول على الجوال</h2><p>الجداول العريضة لا تنكمش بلطف. الحل الأبسط والأفضل: لفّ الجدول في حاوية قابلة للتمرير أفقياً.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;table-scroll&quot;</span> <span class="tok-attr">tabindex</span><span class="tok-punct">=</span><span class="tok-string">&quot;0&quot;</span> <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;region&quot;</span> <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;جدول المبيعات&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span> … <span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;style</span><span class="tok-tag">&gt;</span>
+  <span class="tok-sel">.table-scroll</span> <span class="tok-punct">{</span> <span class="tok-prop">overflow-x</span><span class="tok-punct">:</span> auto<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  <span class="tok-sel">.table-scroll</span> <span class="tok-sel">table</span> <span class="tok-punct">{</span> <span class="tok-prop">min-width</span><span class="tok-punct">:</span> <span class="tok-number">600px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-tag">&lt;/style</span><span class="tok-tag">&gt;</span></code></pre></div><p>إضافة <code>tabindex=&quot;0&quot;</code> تجعل المنطقة قابلة للتمرير بلوحة المفاتيح أيضاً — تفصيلة صغيرة تصنع فرقاً كبيراً في إمكانية الوصول.</p><h2 id="sec-9">أخطاء شائعة</h2><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span></div><pre><code><span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>القائمة الجانبية<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>المحتوى الرئيسي<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span></code></pre></div><div class="why">استخدام الجدول للتخطيط. قارئ الشاشة سيعلن «جدول بصفّ وعمودين» لمحتوى ليس جدولاً أصلاً.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span></div><pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;layout&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;aside</span><span class="tok-tag">&gt;</span>القائمة الجانبية<span class="tok-tag">&lt;/aside</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;main</span><span class="tok-tag">&gt;</span>المحتوى الرئيسي<span class="tok-tag">&lt;/main</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-comment">&lt;!-- التخطيط في CSS عبر Grid أو Flexbox --&gt;</span></code></pre></div><div class="why">عناصر دلالية صحيحة، والتخطيط في مكانه الطبيعي: CSS.</div></div></div><ul><li>نسيان <code>&lt;caption&gt;</code> فيبقى الجدول مجهول الموضوع.</li><li>استخدام <code>&lt;td&gt;</code> للرؤوس بدل <code>&lt;th&gt;</code>.</li><li>إهمال <code>scope</code> في الجداول متعدّدة الأبعاد.</li><li>خطأ في عد الخلايا بعد الدمج فيختلّ الجدول.</li><li>استخدام سمات العرض القديمة <code>border</code> و <code>cellpadding</code> بدل CSS.</li></ul><section class="exercise" id="sec-10"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: جدول مقارنة باقات</h3></header><div class="exercise-body"><p>ابنِ جدولاً يقارن ثلاث باقات اشتراك في خدمة ما.</p><p><strong>المطلوب:</strong></p><ul><li><code>&lt;caption&gt;</code> يوضّح موضوع الجدول.</li><li><code>&lt;thead&gt;</code> فيه أسماء الباقات مع <code>scope=&quot;col&quot;</code>.</li><li><code>&lt;tbody&gt;</code> فيه خمس ميزات على الأقل، وعمود الميزات بـ <code>&lt;th scope=&quot;row&quot;&gt;</code>.</li><li><code>&lt;tfoot&gt;</code> يعرض السعر الشهري لكل باقة.</li><li>صف عنوان علوي مدموج بـ <code>colspan</code> يحمل عنوان المجموعة.</li><li>لفّ الجدول في حاوية قابلة للتمرير أفقياً.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 إن كان لديك 4 أعمدة، فالصف المدموج يحتاج <code>colspan=&quot;4&quot;</code> وخلية واحدة فقط.</li><li>💡 <code>&lt;caption&gt;</code> أول عنصر داخل <code>&lt;table&gt;</code> وليس قبله.</li><li>💡 استخدم ✓ و ✗ كنص داخل الخلايا مع نص بديل مفهوم عند الحاجة.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">style</span><span class="tok-punct">=</span><span class="tok-string">&quot;overflow-x:auto&quot;</span> <span class="tok-attr">tabindex</span><span class="tok-punct">=</span><span class="tok-string">&quot;0&quot;</span> <span class="tok-attr">role</span><span class="tok-punct">=</span><span class="tok-string">&quot;region&quot;</span> <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;مقارنة الباقات&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;table</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;caption</span><span class="tok-tag">&gt;</span>مقارنة باقات الاشتراك — 2026<span class="tok-tag">&lt;/caption</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;thead</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;th</span> <span class="tok-attr">colspan</span><span class="tok-punct">=</span><span class="tok-string">&quot;4&quot;</span><span class="tok-tag">&gt;</span>الباقات المتاحة<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;col&quot;</span><span class="tok-tag">&gt;</span>الميزة<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;col&quot;</span><span class="tok-tag">&gt;</span>المجانية<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;col&quot;</span><span class="tok-tag">&gt;</span>الاحترافية<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;col&quot;</span><span class="tok-tag">&gt;</span>الشركات<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/thead</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;tbody</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;row&quot;</span><span class="tok-tag">&gt;</span>عدد المشاريع<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>3<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>50<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>غير محدود<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;row&quot;</span><span class="tok-tag">&gt;</span>المساحة<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>1 جيجا<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>50 جيجا<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>1 تيرا<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;row&quot;</span><span class="tok-tag">&gt;</span>نطاق مخصّص<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>✗<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>✓<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>✓<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;row&quot;</span><span class="tok-tag">&gt;</span>دعم فني<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>بريد<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>بريد ودردشة<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>مدير حساب<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;row&quot;</span><span class="tok-tag">&gt;</span>تقارير متقدّمة<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>✗<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>✗<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>✓<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/tbody</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;tfoot</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tr</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;th</span> <span class="tok-attr">scope</span><span class="tok-punct">=</span><span class="tok-string">&quot;row&quot;</span><span class="tok-tag">&gt;</span>السعر الشهري<span class="tok-tag">&lt;/th</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>0 ريال<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>49 ريالاً<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;td</span><span class="tok-tag">&gt;</span>199 ريالاً<span class="tok-tag">&lt;/td</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/tr</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/tfoot</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/table</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span></code></pre></div></details></div></section><section class="quiz"><h2 id="sec-11"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما وظيفة السمة <code>scope</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>تحديد عرض العمود</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>إخبار التقنيات المساعدة بما يترأسه هذا الرأس: عمود أم صف</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>دمج الخلايا</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>تلوين الرأس</span></label></div><div class="q-explain"><strong>الشرح:</strong> بدونها لا يستطيع قارئ الشاشة ربط الخلية برأسها، فينطق الأرقام مجرّدة عن معناها.</div></div><div class="q-item"><p class="q-text">2. أين يوضع <code>&lt;caption&gt;</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>قبل <code>&lt;table&gt;</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>أول عنصر داخل <code>&lt;table&gt;</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>داخل <code>&lt;thead&gt;</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>بعد <code>&lt;tfoot&gt;</code></span></label></div><div class="q-explain"><strong>الشرح:</strong> يجب أن يكون أول أبناء <code>&lt;table&gt;</code>؛ موضعه البصري يُتحكّم به عبر <code>caption-side</code> في CSS.</div></div><div class="q-item"><p class="q-text">3. إذا دمجت خليتين في صف بـ <code>colspan=&quot;2&quot;</code> فماذا يجب أن تفعل؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>تضيف خلية إضافية</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>تحذف خلية واحدة من ذلك الصف</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>لا شيء</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>تستخدم rowspan أيضاً</span></label></div><div class="q-explain"><strong>الشرح:</strong> الخلية المدموجة تشغل مكان خليتين، فيجب أن ينقص عدد الخلايا المكتوبة في الصف بواحدة.</div></div><div class="q-item"><p class="q-text">4. لماذا يُمنع بناء تخطيط الصفحة بالجداول؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لأنها بطيئة فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>لأنها تربك قارئات الشاشة وتصعّب التجاوب والصيانة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لأن المتصفحات لا تدعمها</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لأنها تستهلك ذاكرة</span></label></div><div class="q-explain"><strong>الشرح:</strong> الجدول يحمل معنى «بيانات ثنائية البعد»؛ استخدامه للتخطيط يعطي معنى خاطئاً ويعقّد كل شيء.</div></div><div class="q-item"><p class="q-text">5. ما الحل الأنسب لجدول عريض على الجوال؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>تصغير الخط جداً</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>لفّه في حاوية <code>overflow-x: auto</code></span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>حذف بعض الأعمدة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>تحويله إلى صورة</span></label></div><div class="q-explain"><strong>الشرح:</strong> التمرير الأفقي يحفظ كل البيانات ويبقيها متاحة، مع إضافة <code>tabindex=&quot;0&quot;</code> لدعم لوحة المفاتيح.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="html/08-tables" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="07-lists.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>القوائم بأنواعها</b></span></a>
+  <a class="next" href="09-forms.html"><span><small>الدرس التالي</small><b>النماذج: الأساسيات</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار HTML</h3>
+        <div class="ring-wrap" data-ring data-track="html" data-total="13">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">الجدول للبيانات… فقط</a></li><li><a href="#sec-2">أبسط جدول ممكن</a></li><li><a href="#sec-3">الجدول الكامل بأقسامه</a></li><li class="sub"><a href="#sec-4">لماذا الأقسام الثلاثة؟</a></li><li><a href="#sec-5">scope: السمة التي تصنع الفرق للمكفوفين</a></li><li><a href="#sec-6">دمج الخلايا</a></li><li><a href="#sec-7">&lt;caption&gt; — عنوان الجدول</a></li><li><a href="#sec-8">الجدول على الجوال</a></li><li><a href="#sec-9">أخطاء شائعة</a></li><li><a href="#sec-10">تمرين: جدول مقارنة باقات</a></li><li><a href="#sec-11">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>&lt;table&gt;</code><small>حاوية الجدول</small></div><div class="ref-item"><code>&lt;tr&gt;</code><small>صف (Table Row)</small></div><div class="ref-item"><code>&lt;th scope=&quot;col&quot;&gt;</code><small>خلية رأس لعمود</small></div><div class="ref-item"><code>&lt;td&gt;</code><small>خلية بيانات</small></div><div class="ref-item"><code>&lt;thead&gt; / &lt;tbody&gt; / &lt;tfoot&gt;</code><small>أقسام الجدول</small></div><div class="ref-item"><code>colspan / rowspan</code><small>دمج خلايا أفقياً / عمودياً</small></div><div class="ref-item"><code>&lt;caption&gt;</code><small>عنوان الجدول</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="09-forms.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>النماذج: الأساسيات<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>11 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/css/index.html">CSS</a></li><li><a href="../../tracks/javascript/index.html">JavaScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#typescript">TypeScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#tailwind">Tailwind CSS</a></li><li><a href="../../tracks.html#nodejs">Node.js</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

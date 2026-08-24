@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="html">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>العناصر الدلالية وهيكل الصفحة — مسار HTML | CodeWay Web</title>
+<meta name="description" content="استبدال بحر الـ div بعناصر تحمل معنى: header و nav و main و article و section و aside و footer.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="العناصر الدلالية وهيكل الصفحة — مسار HTML | CodeWay Web">
+<meta property="og:description" content="استبدال بحر الـ div بعناصر تحمل معنى: header و nav و main و article و section و aside و footer.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">HTML</a></li>
+      <li aria-current="page">العناصر الدلالية وهيكل الصفحة</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 11 من 13</span>
+      <span class="badge level-متوسط">متوسط</span>
+      <span class="badge">الدلالة</span><span class="badge">الهيكلة</span>
+    </div>
+    <h1>العناصر الدلالية وهيكل الصفحة</h1>
+    <p class="summary">استبدال بحر الـ div بعناصر تحمل معنى: header و nav و main و article و section و aside و footer.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 50 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار HTML</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تبني هيكل صفحة كاملاً بعناصر دلالية.</li><li>تفرّق بين <code>&lt;article&gt;</code> و <code>&lt;section&gt;</code> و <code>&lt;div&gt;</code>.</li><li>تعرف قاعدة العنصر <code>&lt;main&gt;</code> الواحد.</li><li>تستخدم <code>&lt;nav&gt;</code> و <code>&lt;aside&gt;</code> و <code>&lt;footer&gt;</code> في مواضعها.</li><li>تدرك علاقة العناصر الدلالية بأدوار ARIA.</li></ul></div>
+      <h2 id="sec-1">مشكلة «حساء الـ div»</h2><p>قبل HTML5 كان كل شيء <code>&lt;div&gt;</code>: <code>&lt;div class=&quot;header&quot;&gt;</code> و <code>&lt;div class=&quot;nav&quot;&gt;</code> و <code>&lt;div class=&quot;footer&quot;&gt;</code>. المشكلة أن <code>class</code> مجرّد نص لا يفهمه أحد سواك — المتصفح وقارئ الشاشة ومحرك البحث يرون صناديق متطابقة بلا معنى.</p><p>العناصر الدلالية حلّت هذا: اسم العنصر نفسه صار يحمل المعنى، فيتحوّل إلى <strong>معلم تنقّل</strong> (Landmark) يستطيع مستخدم قارئ الشاشة القفز إليه مباشرة.</p><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span></div><pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;header&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;nav&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;main&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;post&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;footer&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span></code></pre></div><div class="why">ستة صناديق متطابقة. قارئ الشاشة لا يستطيع تمييز أيها الترويسة وأيها المحتوى.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span></div><pre><code><span class="tok-tag">&lt;header</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;nav</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/nav</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/header</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;main</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;article</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/article</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/main</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;footer</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/footer</span><span class="tok-tag">&gt;</span></code></pre></div><div class="why">كل عنصر يعلن دوره. المستخدم يقفز مباشرة إلى «المحتوى الرئيسي» بضغطة واحدة.</div></div></div><h2 id="sec-2">الهيكل النموذجي</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">هيكل صفحة مدونة</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;body</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;header</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;h1</span><span class="tok-tag">&gt;</span>مدونة المطوّر<span class="tok-tag">&lt;/h1</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;nav</span> <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;التنقّل الرئيسي&quot;</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/&quot;</span><span class="tok-tag">&gt;</span>الرئيسية<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/articles&quot;</span><span class="tok-tag">&gt;</span>المقالات<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/about&quot;</span><span class="tok-tag">&gt;</span>من نحن<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/nav</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/header</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;main</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;article</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;header</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;h2</span><span class="tok-tag">&gt;</span>كيف تتعلّم HTML بفعالية؟<span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>بقلم سارة — <span class="tok-tag">&lt;time</span> <span class="tok-attr">datetime</span><span class="tok-punct">=</span><span class="tok-string">&quot;2026-03-10&quot;</span><span class="tok-tag">&gt;</span>10 مارس 2026<span class="tok-tag">&lt;/time</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/header</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-tag">&lt;section</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;h3</span><span class="tok-tag">&gt;</span>ابدأ بالأساسيات<span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-tag">&lt;section</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;h3</span><span class="tok-tag">&gt;</span>طبّق فوراً<span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-tag">&lt;footer</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>الوسوم: HTML، تعلّم<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/footer</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/article</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;aside</span> <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;مقالات ذات صلة&quot;</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h2</span><span class="tok-tag">&gt;</span>اقرأ أيضاً<span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/css&quot;</span><span class="tok-tag">&gt;</span>مدخل إلى CSS<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/aside</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/main</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;footer</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>© 2026 مدونة المطوّر<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/footer</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/body</span><span class="tok-tag">&gt;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> الهيكل مرئياً</div><iframe title="الهيكل مرئياً" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}body{padding:10px}header,nav,main,article,aside,footer,section{border:2px dashed;border-radius:10px;padding:10px;margin-bottom:8px;position:relative}header{border-color:#6366f1}nav{border-color:#0ea5e9}main{border-color:#10b981}article{border-color:#f59e0b}section{border-color:#8b5cf6}aside{border-color:#ec4899}footer{border-color:#64748b}b{font-size:.78em;color:#475569;display:block;margin-bottom:6px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;header&gt;&lt;b&gt;header&lt;/b&gt;&lt;nav&gt;&lt;b&gt;nav&lt;/b&gt;روابط التنقّل&lt;/nav&gt;&lt;/header&gt;&lt;main&gt;&lt;b&gt;main&lt;/b&gt;&lt;article&gt;&lt;b&gt;article&lt;/b&gt;&lt;section&gt;&lt;b&gt;section&lt;/b&gt;قسم أول&lt;/section&gt;&lt;section&gt;&lt;b&gt;section&lt;/b&gt;قسم ثانٍ&lt;/section&gt;&lt;/article&gt;&lt;aside&gt;&lt;b&gt;aside&lt;/b&gt;مقالات ذات صلة&lt;/aside&gt;&lt;/main&gt;&lt;footer&gt;&lt;b&gt;footer&lt;/b&gt;© 2026&lt;/footer&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:400px"></iframe></div><h2 id="sec-3">شرح كل عنصر</h2><h3 id="sec-4"><code>&lt;header&gt;</code> و <code>&lt;footer&gt;</code></h3><p>ليسا للصفحة فقط! يمكن لكل <code>&lt;article&gt;</code> أو <code>&lt;section&gt;</code> أن يكون له <code>header</code> و <code>footer</code> خاصان به. الترويسة تحوي عادةً عنواناً وبيانات تعريفية، والتذييل يحوي معلومات ختامية كالكاتب والوسوم والحقوق.</p><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p><code>&lt;header&gt;</code> أو <code>&lt;footer&gt;</code> يصبح <strong>معلماً</strong> (Landmark) فقط حين يكون ابناً مباشراً لـ <code>&lt;body&gt;</code>. أما داخل <code>&lt;article&gt;</code> فهو مجرّد تجميع.</p></div><h3 id="sec-5"><code>&lt;nav&gt;</code></h3><p>للمجموعات <strong>الرئيسية</strong> من روابط التنقّل: القائمة الرئيسية، مسار التنقّل (Breadcrumb)، ترقيم الصفحات، فهرس المقال. ليست كل مجموعة روابط <code>&lt;nav&gt;</code> — روابط الفوتر المتفرّقة لا تحتاجها.</p><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>إن كان في صفحتك أكثر من <code>&lt;nav&gt;</code>، أعطِ كلاً منها <code>aria-label</code> مميّزة كي يفرّق بينها قارئ الشاشة: «التنقّل الرئيسي»، «مسار التنقّل»، «ترقيم الصفحات».</p></div><h3 id="sec-6"><code>&lt;main&gt;</code></h3><p>المحتوى الفريد للصفحة — ما يميّزها عن بقية صفحات الموقع. القواعد صارمة:</p><ul><li><strong>عنصر <code>&lt;main&gt;</code> واحد ظاهر لكل صفحة</strong>.</li><li>لا يوضع داخل <code>&lt;article&gt;</code> أو <code>&lt;section&gt;</code> أو <code>&lt;header&gt;</code> أو <code>&lt;footer&gt;</code> أو <code>&lt;nav&gt;</code>.</li><li>لا يحوي ما يتكرّر في كل صفحة كالشعار والقائمة الرئيسية والحقوق.</li></ul><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>أضف رابط تخطٍّ في أعلى الصفحة: <code>&lt;a class=&quot;skip-link&quot; href=&quot;#main&quot;&gt;تخطّي إلى المحتوى&lt;/a&gt;</code> — يوفّر على مستخدم لوحة المفاتيح عشرات الضغطات في كل صفحة.</p></div><h3 id="sec-7"><code>&lt;article&gt;</code> مقابل <code>&lt;section&gt;</code></h3><p>هذا أكثر سؤال يتكرّر. الاختبار العملي:</p><div class="table-wrap"><table class="data"><thead><tr><th>السؤال</th><th>الجواب يعني</th></tr></thead><tbody><tr><td>هل يبقى المحتوى مفهوماً لو اقتُطع ونُشر وحده (في قارئ RSS مثلاً)؟</td><td>نعم ← <code>&lt;article&gt;</code></td></tr><tr><td>هل هو جزء موضوعي من كلٍّ أكبر وله عنوان؟</td><td>نعم ← <code>&lt;section&gt;</code></td></tr><tr><td>هل أحتاجه فقط للتنسيق بـ CSS؟</td><td>نعم ← <code>&lt;div&gt;</code></td></tr></tbody></table></div><p>أمثلة على <code>&lt;article&gt;</code>: تدوينة، خبر، تعليق مستخدم، بطاقة منتج، تغريدة. وأمثلة على <code>&lt;section&gt;</code>: «آخر الأخبار»، «آراء العملاء»، فصل داخل مقال.</p><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه</div><p>قاعدة مهمة: <strong>كل <code>&lt;section&gt;</code> يجب أن يحمل عنواناً</strong> (<code>h2</code>–<code>h6</code>). إن لم يكن للقسم عنوان طبيعي فهو غالباً <code>&lt;div&gt;</code> لا <code>&lt;section&gt;</code>.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">مقالات داخل قسم</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;h2</span><span class="tok-tag">&gt;</span>أحدث المقالات<span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;article</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;h3</span><span class="tok-tag">&gt;</span>مدخل إلى Flexbox<span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/article</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;article</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;h3</span><span class="tok-tag">&gt;</span>فهم Grid في 10 دقائق<span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/article</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span></code></pre></div><h3 id="sec-8"><code>&lt;aside&gt;</code></h3><p>محتوى <strong>مكمّل</strong> مرتبط بما حوله لكنه ليس جوهرياً: شريط جانبي، إعلان، تعريف بالكاتب، مقالات ذات صلة، تنويه جانبي داخل مقال. إن حُذف لا يفقد المحتوى الرئيسي معناه.</p><h2 id="sec-9">عناصر دلالية أخرى مفيدة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;figure</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;img</span> <span class="tok-attr">src</span><span class="tok-punct">=</span><span class="tok-string">&quot;chart.png&quot;</span> <span class="tok-attr">alt</span><span class="tok-punct">=</span><span class="tok-string">&quot;…&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;figcaption</span><span class="tok-tag">&gt;</span>الشكل 2: النمو السنوي<span class="tok-tag">&lt;/figcaption</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/figure</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;details</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;summary</span><span class="tok-tag">&gt;</span>ما هي مدة الدورة؟<span class="tok-tag">&lt;/summary</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>ست ساعات موزّعة على عشرة دروس.<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/details</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;mark</span><span class="tok-tag">&gt;</span>نص مميّز<span class="tok-tag">&lt;/mark</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;time</span> <span class="tok-attr">datetime</span><span class="tok-punct">=</span><span class="tok-string">&quot;2026-05-01&quot;</span><span class="tok-tag">&gt;</span>أول مايو<span class="tok-tag">&lt;/time</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;address</span><span class="tok-tag">&gt;</span>
+  للتواصل: <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;mailto:hi@example.com&quot;</span><span class="tok-tag">&gt;</span>hi@example.com<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/address</span><span class="tok-tag">&gt;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> details/summary — أكورديون بلا جافاسكربت</div><iframe title="details/summary — أكورديون بلا جافاسكربت" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}details{border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;margin-bottom:8px;background:#f8fafc}summary{cursor:pointer;font-weight:700;color:#4f46e5}details[open] summary{margin-bottom:8px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;details&gt;&lt;summary&gt;ما هي مدة الدورة؟&lt;/summary&gt;&lt;p&gt;ست ساعات موزّعة على عشرة دروس.&lt;/p&gt;&lt;/details&gt;&lt;details&gt;&lt;summary&gt;هل توجد شهادة؟&lt;/summary&gt;&lt;p&gt;نعم، بعد إكمال جميع الدروس والاختبارات.&lt;/p&gt;&lt;/details&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:220px"></iframe></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p><code>&lt;details&gt;</code> يعطيك عنصر طيّ وفتح كاملاً بلا سطر جافاسكربت واحد، ومتاحاً للوحة المفاتيح وقارئات الشاشة تلقائياً.</p></div><h2 id="sec-10">متى يبقى <code>&lt;div&gt;</code> هو الصواب؟</h2><p>حين لا يوجد عنصر دلالي مناسب وتحتاج غلافاً لغرض تنسيقي بحت — مثل حاوية تخطيط، أو صندوق تحتاجه لتطبيق <code>display: grid</code>. لا حرج في <code>&lt;div&gt;</code> حين يكون دوره تنسيقياً فعلاً؛ الخطأ هو استخدامه بدلاً من عنصر دلالي موجود.</p><h2 id="sec-11">العلاقة بـ ARIA</h2><p>كل عنصر دلالي يحمل <strong>دوراً ضمنياً</strong> (Implicit role) لا تحتاج لكتابته:</p><div class="table-wrap"><table class="data"><thead><tr><th>العنصر</th><th>الدور الضمني</th></tr></thead><tbody><tr><td><code>&lt;header&gt;</code> (ابن body)</td><td><code>banner</code></td></tr><tr><td><code>&lt;nav&gt;</code></td><td><code>navigation</code></td></tr><tr><td><code>&lt;main&gt;</code></td><td><code>main</code></td></tr><tr><td><code>&lt;aside&gt;</code></td><td><code>complementary</code></td></tr><tr><td><code>&lt;footer&gt;</code> (ابن body)</td><td><code>contentinfo</code></td></tr><tr><td><code>&lt;article&gt;</code></td><td><code>article</code></td></tr><tr><td><code>&lt;section&gt;</code> (بعنوان)</td><td><code>region</code></td></tr></tbody></table></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>القاعدة الأولى في ARIA: «لا تستخدم ARIA إن كان هناك عنصر HTML يؤدي الغرض». كتابة <code>&lt;div role=&quot;navigation&quot;&gt;</code> أسوأ من كتابة <code>&lt;nav&gt;</code>.</p></div><section class="exercise" id="sec-12"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: إعادة بناء صفحة بعناصر دلالية</h3></header><div class="exercise-body"><p>حوّل الكود التالي المليء بـ div إلى هيكل دلالي سليم دون تغيير المحتوى.</p><p><strong>المطلوب:</strong></p><ul><li>استخدم <code>header</code> و <code>nav</code> و <code>main</code> و <code>article</code> و <code>aside</code> و <code>footer</code>.</li><li>شريط التنقّل قائمة <code>&lt;ul&gt;</code> بداخل <code>&lt;nav&gt;</code> مع <code>aria-label</code>.</li><li>بطاقة المنتج <code>&lt;article&gt;</code> لها <code>header</code> و <code>footer</code> داخليان.</li><li>التاريخ بعنصر <code>&lt;time&gt;</code> مع <code>datetime</code> صحيحة.</li><li>العناوين بمستويات متسلسلة سليمة.</li></ul><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الكود قبل التحويل</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;top&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;logo&quot;</span><span class="tok-tag">&gt;</span>متجر التقنية<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;menu&quot;</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/&quot;</span><span class="tok-tag">&gt;</span>الرئيسية<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/products&quot;</span><span class="tok-tag">&gt;</span>المنتجات<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;content&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;product&quot;</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;title&quot;</span><span class="tok-tag">&gt;</span>سماعة لاسلكية<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;price&quot;</span><span class="tok-tag">&gt;</span>299 ريالاً<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;desc&quot;</span><span class="tok-tag">&gt;</span>وصف المنتج…<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;meta&quot;</span><span class="tok-tag">&gt;</span>أُضيف في 2026-02-01<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;related&quot;</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;t&quot;</span><span class="tok-tag">&gt;</span>منتجات مشابهة<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#&quot;</span><span class="tok-tag">&gt;</span>سماعة سلكية<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;bottom&quot;</span><span class="tok-tag">&gt;</span>جميع الحقوق محفوظة 2026<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span></code></pre></div><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 بطاقة المنتج مفهومة وحدها لو نُشرت منفردة ← <code>article</code>.</li><li>💡 «منتجات مشابهة» محتوى مكمّل ← <code>aside</code>.</li><li>💡 كل <code>section</code> يحتاج عنواناً — إن لم يوجد فربما لا تحتاج <code>section</code> أصلاً.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;header</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;h1</span><span class="tok-tag">&gt;</span>متجر التقنية<span class="tok-tag">&lt;/h1</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;nav</span> <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;التنقّل الرئيسي&quot;</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/&quot;</span><span class="tok-tag">&gt;</span>الرئيسية<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/products&quot;</span><span class="tok-tag">&gt;</span>المنتجات<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/nav</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/header</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;main</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;article</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;header</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h2</span><span class="tok-tag">&gt;</span>سماعة لاسلكية<span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;strong</span><span class="tok-tag">&gt;</span>299 ريالاً<span class="tok-tag">&lt;/strong</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/header</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>وصف المنتج…<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;footer</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>أُضيف في <span class="tok-tag">&lt;time</span> <span class="tok-attr">datetime</span><span class="tok-punct">=</span><span class="tok-string">&quot;2026-02-01&quot;</span><span class="tok-tag">&gt;</span>1 فبراير 2026<span class="tok-tag">&lt;/time</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/footer</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/article</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;aside</span> <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;منتجات مشابهة&quot;</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;h2</span><span class="tok-tag">&gt;</span>منتجات مشابهة<span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#&quot;</span><span class="tok-tag">&gt;</span>سماعة سلكية<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/aside</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/main</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;footer</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>جميع الحقوق محفوظة 2026<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/footer</span><span class="tok-tag">&gt;</span></code></pre></div></details></div></section><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. كم عنصر <code>&lt;main&gt;</code> ظاهر يُسمح به في الصفحة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>واحد</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>اثنان</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>ثلاثة</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>غير محدود</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>&lt;main&gt;</code> يمثّل المحتوى الرئيسي الفريد للصفحة، فلا معنى لتعدّده.</div></div><div class="q-item"><p class="q-text">2. ما الاختبار الأدق للتفريق بين <code>article</code> و <code>section</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>الحجم</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>هل يبقى المحتوى مفهوماً لو نُشر وحده؟</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>عدد الفقرات</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>وجود صورة</span></label></div><div class="q-explain"><strong>الشرح:</strong> إن كان مستقلاً بذاته وقابلاً لإعادة النشر منفرداً فهو <code>article</code>؛ وإلا فهو <code>section</code> أو <code>div</code>.</div></div><div class="q-item"><p class="q-text">3. ما الذي يجب أن يحتويه كل <code>&lt;section&gt;</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>صورة</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>عنواناً</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>رابطاً</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>زراً</span></label></div><div class="q-explain"><strong>الشرح:</strong> القسم بلا عنوان لا يمكن الإشارة إليه في مخطّط الصفحة، وغالباً يكون <code>div</code> تنسيقياً.</div></div><div class="q-item"><p class="q-text">4. أي عبارة صحيحة عن <code>&lt;aside&gt;</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يجب أن يكون على يمين الصفحة</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>محتوى مكمّل يمكن حذفه دون فقد المعنى الرئيسي</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يستخدم للتنقّل فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا يُسمح به داخل article</span></label></div><div class="q-explain"><strong>الشرح:</strong> الدلالة لا الموضع: محتوى مرتبط لكنه ليس جوهرياً. موضعه البصري شأن CSS.</div></div><div class="q-item"><p class="q-text">5. ما القاعدة الأولى في ARIA؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>استخدمها في كل عنصر</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>لا تستخدم ARIA إن وُجد عنصر HTML يؤدي الغرض</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>استخدمها مع div فقط</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>ARIA تغني عن الدلالة</span></label></div><div class="q-explain"><strong>الشرح:</strong> العناصر الدلالية تحمل أدوارها ضمناً، وARIA لسدّ الفجوات لا لتكرار ما هو موجود.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="html/11-semantic" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="10-form-validation.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>أنواع الإدخال المتقدّمة والتحقّق</b></span></a>
+  <a class="next" href="12-media.html"><span><small>الدرس التالي</small><b>الصوت والفيديو</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار HTML</h3>
+        <div class="ring-wrap" data-ring data-track="html" data-total="13">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">مشكلة «حساء الـ div»</a></li><li><a href="#sec-2">الهيكل النموذجي</a></li><li><a href="#sec-3">شرح كل عنصر</a></li><li class="sub"><a href="#sec-4">&lt;header&gt; و &lt;footer&gt;</a></li><li class="sub"><a href="#sec-5">&lt;nav&gt;</a></li><li class="sub"><a href="#sec-6">&lt;main&gt;</a></li><li class="sub"><a href="#sec-7">&lt;article&gt; مقابل &lt;section&gt;</a></li><li class="sub"><a href="#sec-8">&lt;aside&gt;</a></li><li><a href="#sec-9">عناصر دلالية أخرى مفيدة</a></li><li><a href="#sec-10">متى يبقى &lt;div&gt; هو الصواب؟</a></li><li><a href="#sec-11">العلاقة بـ ARIA</a></li><li><a href="#sec-12">تمرين: إعادة بناء صفحة بعناصر دلالية</a></li><li><a href="#sec-13">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>&lt;header&gt;</code><small>ترويسة الصفحة أو القسم</small></div><div class="ref-item"><code>&lt;nav&gt;</code><small>مجموعة روابط تنقّل رئيسية</small></div><div class="ref-item"><code>&lt;main&gt;</code><small>المحتوى الرئيسي — مرة واحدة فقط</small></div><div class="ref-item"><code>&lt;article&gt;</code><small>محتوى مستقل بذاته</small></div><div class="ref-item"><code>&lt;section&gt;</code><small>قسم موضوعي له عنوان</small></div><div class="ref-item"><code>&lt;aside&gt;</code><small>محتوى جانبي مكمّل</small></div><div class="ref-item"><code>&lt;footer&gt;</code><small>تذييل الصفحة أو القسم</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="12-media.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الصوت والفيديو<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>11 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/css/index.html">CSS</a></li><li><a href="../../tracks/javascript/index.html">JavaScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#typescript">TypeScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#tailwind">Tailwind CSS</a></li><li><a href="../../tracks.html#nodejs">Node.js</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>
