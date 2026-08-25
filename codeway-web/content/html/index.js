@@ -13,5 +13,12 @@ module.exports = [
   require('./10-form-validation.js'),
   require('./11-semantic.js'),
   require('./12-media.js'),
-  require('./13-attributes.js')
+  require('./13-attributes.js'),
+  require('./14-head-meta.js'),
+  require('./15-iframes-embeds.js'),
+  require('./16-accessibility.js'),
+  require('./17-seo.js'),
+  require('./18-modern-html.js'),
+  require('./19-best-practices.js'),
+  require('./20-project.js')
 ];

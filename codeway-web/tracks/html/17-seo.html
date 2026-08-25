@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="html">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML وتحسين محركات البحث — مسار HTML | CodeWay Web</title>
+<meta name="description" content="كيف يقرأ محرك البحث صفحتك، وما الذي يعتمد فيه على ترميزك أنت: العناوين، الروابط، البيانات المنظّمة، والسرعة.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="HTML وتحسين محركات البحث — مسار HTML | CodeWay Web">
+<meta property="og:description" content="كيف يقرأ محرك البحث صفحتك، وما الذي يعتمد فيه على ترميزك أنت: العناوين، الروابط، البيانات المنظّمة، والسرعة.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">HTML</a></li>
+      <li aria-current="page">HTML وتحسين محركات البحث</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 17 من 20</span>
+      <span class="badge level-متقدم">متقدم</span>
+      <span class="badge">SEO</span><span class="badge">الترميز</span>
+    </div>
+    <h1>HTML وتحسين محركات البحث</h1>
+    <p class="summary">كيف يقرأ محرك البحث صفحتك، وما الذي يعتمد فيه على ترميزك أنت: العناوين، الروابط، البيانات المنظّمة، والسرعة.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 45 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار HTML</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تفهم مراحل الزحف والفهرسة والترتيب.</li><li>تبني هيكل صفحة صديقاً لمحركات البحث.</li><li>تكتب بيانات منظّمة بصيغة JSON-LD.</li><li>تتجنّب الأخطاء التقنية التي تعطّل الفهرسة.</li><li>تربط بين إمكانية الوصول والسيو.</li></ul></div>
+      <h2 id="sec-1">كيف يعمل محرك البحث؟</h2><ol class="steps"><li><strong>الزحف (Crawling)</strong> — روبوت يتتبّع الروابط ويحمّل صفحاتك. إن لم يصل إلى صفحة فهي غير موجودة بالنسبة له.</li><li><strong>العرض (Rendering)</strong> — ينفّذ جافاسكربت ليرى الصفحة كما يراها المستخدم. هذه المرحلة مكلفة وقد تتأخّر.</li><li><strong>الفهرسة (Indexing)</strong> — يحلّل المحتوى ويخزّنه في فهرس ضخم.</li><li><strong>الترتيب (Ranking)</strong> — عند بحث المستخدم، ترتّب الخوارزمية النتائج بمئات الإشارات.</li></ol><p>دورك كمطوّر يتركّز في المراحل الثلاث الأولى: <strong>اجعل صفحتك سهلة الزحف، سريعة العرض، واضحة الفهرسة</strong>. أما الترتيب فتحكمه جودة المحتوى نفسه أساساً.</p><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> الحقيقة المزعجة</div><p>أفضل ترميز في العالم لن يرفع محتوىً رديئاً. السيو التقني <strong>يزيل العوائق</strong> أمام محتوى جيد، ولا يصنع قيمة من عدم.</p></div><h2 id="sec-2">الأساسيات التي يقرؤها المحرك</h2><div class="table-wrap"><table class="data"><thead><tr><th>العنصر</th><th>أثره</th><th>أفضل ممارسة</th></tr></thead><tbody><tr><td><code>&lt;title&gt;</code></td><td>قوي جداً — العنوان في النتيجة</td><td>فريد لكل صفحة، 50–60 حرفاً، الكلمة المفتاحية أولاً</td></tr><tr><td><code>meta description</code></td><td>لا يرفع الترتيب لكنه يرفع نسبة النقر</td><td>120–160 حرفاً، وصف دقيق وجذّاب</td></tr><tr><td><code>&lt;h1&gt;</code></td><td>قوي — موضوع الصفحة</td><td>واحد لكل صفحة، مطابق لموضوعها</td></tr><tr><td><code>h2</code>–<code>h6</code></td><td>متوسط — هيكل المحتوى</td><td>تسلسل منطقي بلا قفز</td></tr><tr><td><code>alt</code> للصور</td><td>يفهرس الصور ويدعم البحث المرئي</td><td>وصف دقيق لا حشو كلمات</td></tr><tr><td>نص الروابط</td><td>يصف الوجهة للمحرك أيضاً</td><td>وصفي لا «اضغط هنا»</td></tr><tr><td>العناصر الدلالية</td><td>تساعد على فهم بنية الصفحة</td><td><code>main</code>, <code>article</code>, <code>nav</code>, <code>header</code></td></tr></tbody></table></div><h2 id="sec-3">الروابط: العملة الأساسية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">&lt;!-- رابط داخلي عادي: ينقل قيمة ويساعد على اكتشاف الصفحات --&gt;</span>
+<span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/articles/css-grid&quot;</span><span class="tok-tag">&gt;</span>دليل CSS Grid<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-comment">&lt;!-- رابط لا تضمنه ولا تريد تزكيته --&gt;</span>
+<span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;https://example.com&quot;</span> <span class="tok-attr">rel</span><span class="tok-punct">=</span><span class="tok-string">&quot;nofollow&quot;</span><span class="tok-tag">&gt;</span>مصدر خارجي<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-comment">&lt;!-- رابط إعلاني مدفوع --&gt;</span>
+<span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;https://sponsor.com&quot;</span> <span class="tok-attr">rel</span><span class="tok-punct">=</span><span class="tok-string">&quot;sponsored&quot;</span><span class="tok-tag">&gt;</span>راعي المحتوى<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-comment">&lt;!-- رابط من محتوى ينشره المستخدمون (تعليقات) --&gt;</span>
+<span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;https://user-site.com&quot;</span> <span class="tok-attr">rel</span><span class="tok-punct">=</span><span class="tok-string">&quot;ugc nofollow&quot;</span><span class="tok-tag">&gt;</span>موقع المعلّق<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span></code></pre></div><ul><li><strong>الروابط الداخلية</strong> تساعد الزاحف على اكتشاف صفحاتك وتوزّع أهميتها. اربط مقالاتك ببعضها بنصوص وصفية.</li><li><code>nofollow</code> — «لا تزكِّ هذا الرابط». استخدمه للروابط التي لا تضمنها.</li><li><code>sponsored</code> — للروابط المدفوعة. عدم وضعه على رابط مدفوع مخالفة صريحة.</li><li><code>ugc</code> — لروابط داخل محتوى ينشره المستخدمون.</li></ul><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه</div><p>الرابط الذي يعتمد على جافاسكربت وحده (<code>&lt;div onclick=&quot;location=…&quot;&gt;</code>) قد لا يتبعه الزاحف. استخدم <code>&lt;a href&gt;</code> حقيقياً دائماً.</p></div><h2 id="sec-4">ملفان يجب أن يكونا في جذر موقعك</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">robots.txt</span><span class="code-lang">text</span></div><pre><code>User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /search?
+
+Sitemap: https://example.com/sitemap.xml</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">sitemap.xml</span><span class="code-lang">xml</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<span class="tok-tag">&lt;urlset</span> <span class="tok-attr">xmlns</span><span class="tok-punct">=</span><span class="tok-string">&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;url</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;loc</span><span class="tok-tag">&gt;</span>https://example.com/<span class="tok-tag">&lt;/loc</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;lastmod</span><span class="tok-tag">&gt;</span>2026-03-01<span class="tok-tag">&lt;/lastmod</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;priority</span><span class="tok-tag">&gt;</span>1.0<span class="tok-tag">&lt;/priority</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/url</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;url</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;loc</span><span class="tok-tag">&gt;</span>https://example.com/articles/html-guide<span class="tok-tag">&lt;/loc</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;lastmod</span><span class="tok-tag">&gt;</span>2026-02-20<span class="tok-tag">&lt;/lastmod</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;priority</span><span class="tok-tag">&gt;</span>0.8<span class="tok-tag">&lt;/priority</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/url</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/urlset</span><span class="tok-tag">&gt;</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p><code>robots.txt</code> يمنع <strong>الزحف</strong> لا الفهرسة. صفحة ممنوعة في robots.txt قد تظهر في النتائج بلا وصف إن أشارت إليها روابط خارجية. لمنع الفهرسة فعلاً استخدم <code>&lt;meta name=&quot;robots&quot; content=&quot;noindex&quot;&gt;</code> — واحرص ألا تمنع الزاحف من قراءتها وإلا لن يرى وسم noindex أصلاً.</p></div><h2 id="sec-5">البيانات المنظّمة (Structured Data)</h2><p>ترميز إضافي يشرح لمحرك البحث <strong>ما يعنيه</strong> محتواك: هذا مقال، وهذا كاتبه، وهذه وصفة مدّتها 30 دقيقة. النتيجة: نتائج غنية (Rich Results) بنجوم تقييم وصور ومعلومات إضافية ترفع نسبة النقر كثيراً.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">JSON-LD — الصيغة الموصى بها</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;application/ld+json&quot;</span><span class="tok-tag">&gt;</span>
+<span class="tok-punct">{</span>
+  <span class="tok-string">&quot;@context&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;https://schema.org&quot;</span><span class="tok-punct">,</span>
+  <span class="tok-string">&quot;@type&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Article&quot;</span><span class="tok-punct">,</span>
+  <span class="tok-string">&quot;headline&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;دليل تعلّم HTML للمبتدئين&quot;</span><span class="tok-punct">,</span>
+  <span class="tok-string">&quot;description&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;دليل عربي متدرّج لتعلّم HTML من الصفر.&quot;</span><span class="tok-punct">,</span>
+  <span class="tok-string">&quot;image&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;https://example.com/images/cover.png&quot;</span><span class="tok-punct">,</span>
+  <span class="tok-string">&quot;datePublished&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;2026-03-01&quot;</span><span class="tok-punct">,</span>
+  <span class="tok-string">&quot;dateModified&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;2026-03-15&quot;</span><span class="tok-punct">,</span>
+  <span class="tok-string">&quot;author&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>
+    <span class="tok-string">&quot;@type&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Person&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;name&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;سارة عبدالله&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;url&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;https://example.com/authors/sara&quot;</span>
+  <span class="tok-punct">},</span>
+  <span class="tok-string">&quot;publisher&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>
+    <span class="tok-string">&quot;@type&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Organization&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;name&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;كود واي&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;logo&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>
+      <span class="tok-string">&quot;@type&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;ImageObject&quot;</span><span class="tok-punct">,</span>
+      <span class="tok-string">&quot;url&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;https://example.com/logo.png&quot;</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">},</span>
+  <span class="tok-string">&quot;inLanguage&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;ar&quot;</span>
+<span class="tok-punct">}</span>
+<span class="tok-tag">&lt;/script</span><span class="tok-tag">&gt;</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">أسئلة شائعة — تظهر منسدلة في النتائج</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;application/ld+json&quot;</span><span class="tok-tag">&gt;</span>
+<span class="tok-punct">{</span>
+  <span class="tok-string">&quot;@context&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;https://schema.org&quot;</span><span class="tok-punct">,</span>
+  <span class="tok-string">&quot;@type&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;FAQPage&quot;</span><span class="tok-punct">,</span>
+  <span class="tok-string">&quot;mainEntity&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">[{</span>
+    <span class="tok-string">&quot;@type&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Question&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;name&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;كم يستغرق تعلّم HTML؟&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;acceptedAnswer&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>
+      <span class="tok-string">&quot;@type&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Answer&quot;</span><span class="tok-punct">,</span>
+      <span class="tok-string">&quot;text&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;أسبوعان بمعدّل ساعة يومياً تكفيان لإتقان الأساسيات.&quot;</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">}]</span>
+<span class="tok-punct">}</span>
+<span class="tok-tag">&lt;/script</span><span class="tok-tag">&gt;</span></code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>النوع</th><th>يُستخدم لـ</th></tr></thead><tbody><tr><td><code>Article</code> / <code>BlogPosting</code></td><td>المقالات والتدوينات</td></tr><tr><td><code>Product</code> + <code>Offer</code></td><td>صفحات المنتجات مع السعر والتوفّر</td></tr><tr><td><code>Recipe</code></td><td>الوصفات مع المدة والمكوّنات</td></tr><tr><td><code>FAQPage</code></td><td>الأسئلة الشائعة</td></tr><tr><td><code>BreadcrumbList</code></td><td>مسار التنقّل في النتيجة</td></tr><tr><td><code>Organization</code> / <code>LocalBusiness</code></td><td>بيانات الشركة والعنوان</td></tr><tr><td><code>Course</code></td><td>الدورات التعليمية</td></tr></tbody></table></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> قاعدة صارمة</div><p>البيانات المنظّمة يجب أن تطابق ما يراه المستخدم على الصفحة <strong>تماماً</strong>. ترميز تقييم 5 نجوم لا وجود له في الصفحة يُعدّ تضليلاً وقد يعاقَب عليه الموقع بحرمانه من النتائج الغنية.</p></div><h2 id="sec-6">السرعة وتجربة الصفحة</h2><p>جوجل تقيس ثلاثة مؤشّرات تُسمّى <strong>Core Web Vitals</strong>، وهي إشارات ترتيب فعلية:</p><div class="table-wrap"><table class="data"><thead><tr><th>المؤشّر</th><th>يقيس</th><th>الهدف</th></tr></thead><tbody><tr><td><strong>LCP</strong> (Largest Contentful Paint)</td><td>زمن ظهور أكبر عنصر مرئي</td><td>أقل من 2.5 ثانية</td></tr><tr><td><strong>INP</strong> (Interaction to Next Paint)</td><td>سرعة استجابة الصفحة للتفاعل</td><td>أقل من 200 مللي ثانية</td></tr><tr><td><strong>CLS</strong> (Cumulative Layout Shift)</td><td>مقدار قفز المحتوى أثناء التحميل</td><td>أقل من 0.1</td></tr></tbody></table></div><p>ما تستطيع فعله في HTML مباشرة:</p><ul><li>حدّد <code>width</code> و <code>height</code> لكل صورة وإطار — يعالج <strong>CLS</strong> مباشرة.</li><li><code>loading=&quot;lazy&quot;</code> لما هو خارج الشاشة، وتجنّبها للصورة الرئيسية — يحسّن <strong>LCP</strong>.</li><li><code>fetchpriority=&quot;high&quot;</code> للصورة الرئيسية في أعلى الصفحة.</li><li><code>defer</code> على السكربتات كي لا توقف بناء الصفحة — يحسّن <strong>INP</strong>.</li><li><code>preconnect</code> للنطاقات الخارجية الحرجة (الخطوط مثلاً).</li><li>احجز مساحة الإعلانات والودجات مسبقاً بـ CSS.</li></ul><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span><span class="tok-punct">=</span><span class="tok-string">&quot;preconnect&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;https://fonts.gstatic.com&quot;</span> <span class="tok-attr">crossorigin</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;img</span> <span class="tok-attr">src</span><span class="tok-punct">=</span><span class="tok-string">&quot;hero.webp&quot;</span> <span class="tok-attr">alt</span><span class="tok-punct">=</span><span class="tok-string">&quot;…&quot;</span> <span class="tok-attr">width</span><span class="tok-punct">=</span><span class="tok-string">&quot;1200&quot;</span> <span class="tok-attr">height</span><span class="tok-punct">=</span><span class="tok-string">&quot;630&quot;</span>
+     <span class="tok-attr">fetchpriority</span><span class="tok-punct">=</span><span class="tok-string">&quot;high&quot;</span> <span class="tok-attr">decoding</span><span class="tok-punct">=</span><span class="tok-string">&quot;async&quot;</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span><span class="tok-punct">=</span><span class="tok-string">&quot;/js/app.js&quot;</span> <span class="tok-attr">defer</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/script</span><span class="tok-tag">&gt;</span></code></pre></div><h2 id="sec-7">أخطاء تقنية شائعة تعطّل الفهرسة</h2><ul><li><code>&lt;meta name=&quot;robots&quot; content=&quot;noindex&quot;&gt;</code> منسي من بيئة التطوير على الموقع الحي — يحذف موقعك من جوجل بالكامل.</li><li>محتوى يظهر فقط بعد تنفيذ جافاسكربت ثقيل، فيراه الزاحف صفحة فارغة.</li><li>روابط قانونية خاطئة تشير كل الصفحات إلى الرئيسية.</li><li>صفحات مكرّرة بعناوين مختلفة (<code>?ref=</code>, <code>?utm=</code>) بلا <code>canonical</code>.</li><li>روابط داخلية مكسورة تعطي 404.</li><li>إعادة توجيه متسلسلة طويلة (A ← B ← C ← D).</li><li>موقع بلا HTTPS، أو خليط من محتوى آمن وغير آمن.</li><li>نص مخفي محشوّ بالكلمات المفتاحية — عقوبة مباشرة.</li></ul><h2 id="sec-8">إمكانية الوصول = سيو</h2><p>لاحظ التطابق: النص البديل، والعناوين المتسلسلة، ونصوص الروابط الوصفية، والترميز الدلالي، وسرعة الصفحة — كلها بنود في قائمة إمكانية الوصول <strong>وقائمة السيو معاً</strong>. السبب بسيط: الزاحف «مستخدم أعمى» يقرأ صفحتك عبر ترميزها. من يخدم أحدهما يخدم الآخر تلقائياً.</p><section class="exercise" id="sec-9"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: تحسين صفحة مقال للسيو</h3></header><div class="exercise-body"><p>حوّل الصفحة التالية إلى صفحة مُحسّنة تقنياً بالكامل.</p><p><strong>المطلوب:</strong></p><ul><li>رأس كامل: لغة واتجاه وترميز وviewport وعنوان ووصف ورابط قانوني.</li><li>هيكل دلالي: <code>header</code> و <code>main</code> و <code>article</code> و <code>footer</code>.</li><li>عنوان <code>&lt;h1&gt;</code> واحد وعناوين فرعية متسلسلة.</li><li>صورة بنص بديل وصفي وأبعاد و<code>fetchpriority=&quot;high&quot;</code>.</li><li>استبدال «هنا» بنص رابط وصفي.</li><li>بيانات منظّمة <code>Recipe</code> بصيغة JSON-LD تطابق المعروض.</li><li>وسوم Open Graph أساسية.</li></ul><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">قبل التحسين</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;html</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;head</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;title</span><span class="tok-tag">&gt;</span>مقال<span class="tok-tag">&lt;/title</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/head</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;body</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>وصفة الكبسة<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;img</span> <span class="tok-attr">src</span><span class="tok-punct">=</span><span class="tok-string">&quot;kabsa.jpg&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>تحتاج ساعة و15 دقيقة وتكفي 6 أشخاص<span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span><span class="tok-tag">&gt;</span>اقرأ المزيد <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/more&quot;</span><span class="tok-tag">&gt;</span>هنا<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/body</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/html</span><span class="tok-tag">&gt;</span></code></pre></div><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 صيغة المدة في schema.org هي ISO 8601: <code>PT1H15M</code>.</li><li>💡 البيانات المنظّمة يجب أن تطابق المحتوى المرئي.</li><li>💡 الصورة الرئيسية لا توضع عليها <code>loading=&quot;lazy&quot;</code>.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;!DOCTYPE html&gt;</span>
+<span class="tok-tag">&lt;html</span> <span class="tok-attr">lang</span><span class="tok-punct">=</span><span class="tok-string">&quot;ar&quot;</span> <span class="tok-attr">dir</span><span class="tok-punct">=</span><span class="tok-string">&quot;rtl&quot;</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;head</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">charset</span><span class="tok-punct">=</span><span class="tok-string">&quot;UTF-8&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;viewport&quot;</span> <span class="tok-attr">content</span><span class="tok-punct">=</span><span class="tok-string">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;title</span><span class="tok-tag">&gt;</span>وصفة الكبسة السعودية بالدجاج خطوة بخطوة | مطبخنا<span class="tok-tag">&lt;/title</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;description&quot;</span>
+        <span class="tok-attr">content</span><span class="tok-punct">=</span><span class="tok-string">&quot;طريقة عمل الكبسة السعودية بالدجاج في ساعة و15 دقيقة، تكفي 6 أشخاص، بمكوّنات بسيطة وخطوات مصوّرة.&quot;</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span><span class="tok-punct">=</span><span class="tok-string">&quot;canonical&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;https://example.com/recipes/kabsa&quot;</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">property</span><span class="tok-punct">=</span><span class="tok-string">&quot;og:type&quot;</span> <span class="tok-attr">content</span><span class="tok-punct">=</span><span class="tok-string">&quot;article&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">property</span><span class="tok-punct">=</span><span class="tok-string">&quot;og:title&quot;</span> <span class="tok-attr">content</span><span class="tok-punct">=</span><span class="tok-string">&quot;وصفة الكبسة السعودية بالدجاج&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">property</span><span class="tok-punct">=</span><span class="tok-string">&quot;og:description&quot;</span> <span class="tok-attr">content</span><span class="tok-punct">=</span><span class="tok-string">&quot;ساعة و15 دقيقة وتكفي 6 أشخاص.&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">property</span><span class="tok-punct">=</span><span class="tok-string">&quot;og:image&quot;</span> <span class="tok-attr">content</span><span class="tok-punct">=</span><span class="tok-string">&quot;https://example.com/images/kabsa.jpg&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">property</span><span class="tok-punct">=</span><span class="tok-string">&quot;og:url&quot;</span> <span class="tok-attr">content</span><span class="tok-punct">=</span><span class="tok-string">&quot;https://example.com/recipes/kabsa&quot;</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;script</span> <span class="tok-attr">type</span><span class="tok-punct">=</span><span class="tok-string">&quot;application/ld+json&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-punct">{</span>
+    <span class="tok-string">&quot;@context&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;https://schema.org&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;@type&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Recipe&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;name&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;الكبسة السعودية بالدجاج&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;image&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;https://example.com/images/kabsa.jpg&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;totalTime&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;PT1H15M&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;recipeYield&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;6 أشخاص&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;inLanguage&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;ar&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&quot;author&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">{</span> <span class="tok-string">&quot;@type&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;Person&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;name&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;أم عبدالله&quot;</span> <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+  <span class="tok-tag">&lt;/script</span><span class="tok-tag">&gt;</span>
+<span class="tok-punct">&lt;/</span>head<span class="tok-punct">&gt;</span>
+
+<span class="tok-punct">&lt;</span>body<span class="tok-punct">&gt;</span>
+  <span class="tok-punct">&lt;</span>header<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>nav aria<span class="tok-punct">-</span>label<span class="tok-punct">=</span><span class="tok-string">&quot;التنقّل الرئيسي&quot;</span><span class="tok-punct">&gt;</span>
+      <span class="tok-punct">&lt;</span>ul<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>li<span class="tok-punct">&gt;&lt;</span>a href<span class="tok-punct">=</span><span class="tok-string">&quot;/&quot;</span><span class="tok-punct">&gt;</span>الرئيسية<span class="tok-punct">&lt;/</span>a<span class="tok-punct">&gt;&lt;/</span>li<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>li<span class="tok-punct">&gt;&lt;</span>a href<span class="tok-punct">=</span><span class="tok-string">&quot;/recipes&quot;</span><span class="tok-punct">&gt;</span>الوصفات<span class="tok-punct">&lt;/</span>a<span class="tok-punct">&gt;&lt;/</span>li<span class="tok-punct">&gt;</span>
+      <span class="tok-punct">&lt;/</span>ul<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;/</span>nav<span class="tok-punct">&gt;</span>
+  <span class="tok-punct">&lt;/</span>header<span class="tok-punct">&gt;</span>
+
+  <span class="tok-punct">&lt;</span>main<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>article<span class="tok-punct">&gt;</span>
+      <span class="tok-punct">&lt;</span>h1<span class="tok-punct">&gt;</span>الكبسة السعودية بالدجاج<span class="tok-punct">&lt;/</span>h1<span class="tok-punct">&gt;</span>
+
+      <span class="tok-punct">&lt;</span>img src<span class="tok-punct">=</span><span class="tok-string">&quot;kabsa.jpg&quot;</span>
+           alt<span class="tok-punct">=</span><span class="tok-string">&quot;طبق كبسة بالدجاج مزيّن بالمكسّرات والزبيب على أرز بسمتي&quot;</span>
+           width<span class="tok-punct">=</span><span class="tok-string">&quot;1200&quot;</span> height<span class="tok-punct">=</span><span class="tok-string">&quot;800&quot;</span> fetchpriority<span class="tok-punct">=</span><span class="tok-string">&quot;high&quot;</span> decoding<span class="tok-punct">=</span><span class="tok-string">&quot;async&quot;</span><span class="tok-punct">&gt;</span>
+
+      <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;</span>
+        مدة التحضير الكلية ساعة و<span class="tok-number">15</span> دقيقة، والكمية تكفي <span class="tok-number">6</span> أشخاص<span class="tok-punct">.</span>
+      <span class="tok-punct">&lt;/</span>p<span class="tok-punct">&gt;</span>
+
+      <span class="tok-punct">&lt;</span>h2<span class="tok-punct">&gt;</span>المكوّنات<span class="tok-punct">&lt;/</span>h2<span class="tok-punct">&gt;</span>
+      <span class="tok-punct">&lt;</span>ul<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>li<span class="tok-punct">&gt;</span>دجاجة كاملة مقطّعة<span class="tok-punct">&lt;/</span>li<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>li<span class="tok-punct">&gt;</span>ثلاثة أكواب أرز بسمتي<span class="tok-punct">&lt;/</span>li<span class="tok-punct">&gt;</span>
+      <span class="tok-punct">&lt;/</span>ul<span class="tok-punct">&gt;</span>
+
+      <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>a href<span class="tok-punct">=</span><span class="tok-string">&quot;/recipes/kabsa-tips&quot;</span><span class="tok-punct">&gt;</span>اقرأ أسرار الشيف لكبسة مثالية<span class="tok-punct">&lt;/</span>a<span class="tok-punct">&gt;</span>
+      <span class="tok-punct">&lt;/</span>p<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;/</span>article<span class="tok-punct">&gt;</span>
+  <span class="tok-punct">&lt;/</span>main<span class="tok-punct">&gt;</span>
+
+  <span class="tok-punct">&lt;</span>footer<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;</span>© <span class="tok-number">2026</span> مطبخنا<span class="tok-punct">&lt;/</span>p<span class="tok-punct">&gt;</span>
+  <span class="tok-punct">&lt;/</span>footer<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;/</span>body<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;/</span>html<span class="tok-punct">&gt;</span></code></pre></div></details></div></section><section class="quiz"><h2 id="sec-10"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الفرق بين منع الزحف في robots.txt و<code>noindex</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>robots.txt يمنع الزحف وقد تُفهرس الصفحة رغم ذلك، و<code>noindex</code> يمنع الفهرسة</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>كلاهما يحذف الصفحة</span></label></div><div class="q-explain"><strong>الشرح:</strong> إن منعت الزحف فلن يرى الزاحف وسم noindex أصلاً. لمنع الفهرسة اسمح بالزحف وضع noindex.</div></div><div class="q-item"><p class="q-text">2. أي صيغة توصي بها جوجل للبيانات المنظّمة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>Microdata</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>RDFa</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>JSON-LD</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>XML</span></label></div><div class="q-explain"><strong>الشرح:</strong> JSON-LD منفصل عن الترميز فلا يعقّد HTML، وهو الصيغة الموصى بها رسمياً.</div></div><div class="q-item"><p class="q-text">3. أي مؤشّر تعالجه مباشرة بتحديد أبعاد الصور؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>LCP</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>INP</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>CLS</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>TTFB</span></label></div><div class="q-explain"><strong>الشرح:</strong> حجز المساحة مسبقاً يمنع قفز المحتوى، وهو ما يقيسه CLS.</div></div><div class="q-item"><p class="q-text">4. ما <code>rel</code> المناسبة لرابط إعلاني مدفوع؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span><code>nofollow</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span><code>sponsored</code></span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span><code>ugc</code></span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا شيء</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>sponsored</code> تصف الرابط المدفوع صراحةً، وعدم وضعها مخالفة لإرشادات جوجل.</div></div><div class="q-item"><p class="q-text">5. لماذا يخدم تحسين إمكانية الوصول السيو أيضاً؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مصادفة</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>لأن الزاحف يقرأ الصفحة عبر ترميزها كمستخدم لا يرى</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لأن جوجل تعطي نقاطاً للألوان</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا علاقة بينهما</span></label></div><div class="q-explain"><strong>الشرح:</strong> النص البديل والعناوين والدلالة ونصوص الروابط هي المدخلات نفسها لكليهما.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="html/17-seo" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="16-accessibility.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>إمكانية الوصول (a11y)</b></span></a>
+  <a class="next" href="18-modern-html.html"><span><small>الدرس التالي</small><b>عناصر HTML الحديثة</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار HTML</h3>
+        <div class="ring-wrap" data-ring data-track="html" data-total="20">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">كيف يعمل محرك البحث؟</a></li><li><a href="#sec-2">الأساسيات التي يقرؤها المحرك</a></li><li><a href="#sec-3">الروابط: العملة الأساسية</a></li><li><a href="#sec-4">ملفان يجب أن يكونا في جذر موقعك</a></li><li><a href="#sec-5">البيانات المنظّمة (Structured Data)</a></li><li><a href="#sec-6">السرعة وتجربة الصفحة</a></li><li><a href="#sec-7">أخطاء تقنية شائعة تعطّل الفهرسة</a></li><li><a href="#sec-8">إمكانية الوصول = سيو</a></li><li><a href="#sec-9">تمرين: تحسين صفحة مقال للسيو</a></li><li><a href="#sec-10">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>&lt;title&gt; و meta description</code><small>ما يظهر في نتيجة البحث</small></div><div class="ref-item"><code>&lt;h1&gt; واحد + تسلسل سليم</code><small>مخطّط موضوع الصفحة</small></div><div class="ref-item"><code>rel=&quot;canonical&quot;</code><small>النسخة الأصلية للمحتوى</small></div><div class="ref-item"><code>robots.txt / sitemap.xml</code><small>إرشاد الزاحف</small></div><div class="ref-item"><code>application/ld+json</code><small>بيانات منظّمة</small></div><div class="ref-item"><code>rel=&quot;nofollow|sponsored|ugc&quot;</code><small>وصف طبيعة الرابط</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="18-modern-html.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>عناصر HTML الحديثة<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>11 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/css/index.html">CSS</a></li><li><a href="../../tracks/javascript/index.html">JavaScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#typescript">TypeScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#tailwind">Tailwind CSS</a></li><li><a href="../../tracks.html#nodejs">Node.js</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>
