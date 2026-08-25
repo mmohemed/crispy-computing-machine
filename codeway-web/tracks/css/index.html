@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="css">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مسار CSS — CodeWay Web</title>
+<meta name="description" content="تحويل الهيكل الخام إلى واجهة مصمّمة: المحدّدات والوراثة والأولوية، نموذج الصندوق، Flexbox و Grid، التصميم المتجاوب، المتغيّرات، والحركات.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="مسار CSS — CodeWay Web">
+<meta property="og:description" content="تحويل الهيكل الخام إلى واجهة مصمّمة: المحدّدات والوراثة والأولوية، نموذج الصندوق، Flexbox و Grid، التصميم المتجاوب، المتغيّرات، والحركات.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li aria-current="page">CSS</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="hero" style="padding-top:var(--space-6)">
+  <div class="container">
+    <span class="eyebrow"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg> الأساسيات</span>
+    <h1>مسار <span class="gradient-text">CSS</span></h1>
+    <p class="lead">تحويل الهيكل الخام إلى واجهة مصمّمة: المحدّدات والوراثة والأولوية، نموذج الصندوق، Flexbox و Grid، التصميم المتجاوب، المتغيّرات، والحركات.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="01-introduction.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg> ابدأ من الدرس الأول</a>
+      <a class="btn btn-ghost" href="../../tracks.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> كل المسارات</a>
+    </div>
+    <div class="stats"><div class="stat"><div class="stat-num gradient-text">2</div><div class="stat-label">درساً</div></div><div class="stat"><div class="stat-num gradient-text">1 س 30 د</div><div class="stat-label">زمن الدراسة</div></div><div class="stat"><div class="stat-num gradient-text">2</div><div class="stat-label">تمريناً</div></div><div class="stat"><div class="stat-num gradient-text">10</div><div class="stat-label">سؤالاً</div></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="card" style="margin-bottom:var(--space-6)" data-track-progress="css" data-total="2">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.7rem">
+        <strong>تقدّمك في المسار</strong>
+        <span class="muted" data-progress-label>لم تبدأ بعد</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%"></div></div>
+      <p style="margin-top:.8rem;font-size:.9rem" class="muted"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> يُحفظ تقدّمك في متصفحك فقط (localStorage) ولا يُرسل لأي جهة.</p>
+    </div>
+
+    <div class="section-head">
+      <h2>دروس المسار</h2>
+      <p>المستويات المتوفّرة: <span class="badge level-مبتدئ">مبتدئ</span> — المتطلّب السابق: إتمام مسار HTML أو معرفة أساسية بعناصره.</p>
+    </div>
+
+    <div class="search-box" style="margin-bottom:var(--space-5)">
+      <input type="search" placeholder="ابحث في دروس CSS…" data-search-for="#lessonGrid" aria-label="بحث في الدروس">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+
+    <div class="grid grid-3" id="lessonGrid">
+<a class="card lesson-card" href="01-introduction.html" data-lesson-id="css/01-introduction"
+   data-search-text="مقدمة في CSS وطرق ربطها ما هي CSS ولماذا فُصلت عن HTML، وكيف تكتب أول قاعدة، وثلاث طرق لربط الأنماط بصفحتك. أساسيات مفاهيم">
+  <span class="num">1</span>
+  <h3>مقدمة في CSS وطرق ربطها</h3>
+  <p>ما هي CSS ولماذا فُصلت عن HTML، وكيف تكتب أول قاعدة، وثلاث طرق لربط الأنماط بصفحتك.</p>
+  <div class="track-meta">
+    <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 40 د</span>
+    <span class="badge level-مبتدئ">مبتدئ</span>
+    <span class="done-flag"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> مكتمل</span>
+  </div>
+</a>
+<a class="card lesson-card" href="02-selectors.html" data-lesson-id="css/02-selectors"
+   data-search-text="المحدّدات (Selectors) كيف تستهدف بالضبط العنصر الذي تريده: محدّدات العناصر والأصناف والسمات والعلاقات والزائفة. المحدّدات أساسيات">
+  <span class="num">2</span>
+  <h3>المحدّدات (Selectors)</h3>
+  <p>كيف تستهدف بالضبط العنصر الذي تريده: محدّدات العناصر والأصناف والسمات والعلاقات والزائفة.</p>
+  <div class="track-meta">
+    <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 50 د</span>
+    <span class="badge level-مبتدئ">مبتدئ</span>
+    <span class="done-flag"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> مكتمل</span>
+  </div>
+</a></div>
+    <p class="no-results">لا توجد دروس مطابقة لبحثك.</p>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/css/index.html">CSS</a></li><li><a href="../../tracks/react/index.html">React</a></li><li><a href="../../tracks/vue/index.html">Vue.js</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/nodejs/index.html">Node.js</a></li><li><a href="../../tracks/python/index.html">Python</a></li><li><a href="../../tracks/php/index.html">PHP</a></li><li><a href="../../tracks/java/index.html">Java</a></li><li><a href="../../tracks/csharp/index.html">C#</a></li><li><a href="../../tracks/go/index.html">Go</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li><li><a href="../../tracks/git/index.html">Git &amp; GitHub</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li><li><a href="../../tracks.html#tools">أدوات البناء والنشر</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+
+</body>
+</html>
