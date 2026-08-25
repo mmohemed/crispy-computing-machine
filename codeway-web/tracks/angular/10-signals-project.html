@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="angular">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الإشارات (Signals) ومشروع متكامل — مسار Angular | CodeWay Web</title>
+<meta name="description" content="نظام التفاعلية الحديث في Angular، ثم تطبيق كل ما سبق في مشروع متجر كامل.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="الإشارات (Signals) ومشروع متكامل — مسار Angular | CodeWay Web">
+<meta property="og:description" content="نظام التفاعلية الحديث في Angular، ثم تطبيق كل ما سبق في مشروع متجر كامل.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Angular</a></li>
+      <li aria-current="page">الإشارات (Signals) ومشروع متكامل</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 10 من 10</span>
+      <span class="badge level-متقدم">متقدم</span>
+      <span class="badge">Signals</span><span class="badge">مشروع</span>
+    </div>
+    <h1>الإشارات (Signals) ومشروع متكامل</h1>
+    <p class="summary">نظام التفاعلية الحديث في Angular، ثم تطبيق كل ما سبق في مشروع متجر كامل.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 90 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Angular</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تستخدم <code>signal</code> و <code>computed</code> و <code>effect</code>.</li><li>تفهم لماذا الإشارات أدقّ من كشف التغيير التقليدي.</li><li>تبني خدمة حالة قائمة على الإشارات.</li><li>تدمج المسارات والخدمات والنماذج في تطبيق واحد.</li><li>تنظّم مشروعاً بمعمارية واضحة قابلة للنمو.</li></ul></div>
+      <h2 id="sec-1">لماذا الإشارات؟</h2><p>تقليدياً كان Angular يستخدم <strong>Zone.js</strong> الذي يعترض كل حدث ومؤقّت وطلب شبكة، ثم يفحص <strong>كل</strong> المكوّنات بحثاً عن تغيير. يعمل، لكنه مبذّر: تغيير قيمة في مكوّن واحد يفحص الشجرة كلها.</p><p>الإشارة تعرف بالضبط <strong>من يقرؤها</strong>. عند تغيّر قيمتها تُخطر قرّاءها فقط — تحديث جراحي دقيق بدل مسح شامل.</p><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> الفرق في التحديث</div><iframe title="الفرق في التحديث" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}.g{display:grid;grid-template-columns:1fr 1fr;gap:12px}.b{border:1px solid #e2e8f0;border-radius:10px;padding:12px}h4{margin:0 0 8px;font-size:.95em}.node{display:inline-block;width:26px;height:26px;border-radius:6px;background:#e2e8f0;margin:2px}.chk{background:#f59e0b}.upd{background:#10b981}small{display:block;margin-top:8px;color:#64748b;font-size:.82em}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;g&quot;&gt;&lt;div class=&quot;b&quot;&gt;&lt;h4&gt;Zone.js: فحص شامل&lt;/h4&gt;&lt;span class=&quot;node chk&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node chk&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node chk&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node chk&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node chk&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node chk&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node chk&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node chk&quot;&gt;&lt;/span&gt;&lt;small&gt;كل المكوّنات تُفحص عند أي حدث&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;b&quot;&gt;&lt;h4&gt;الإشارات: تحديث دقيق&lt;/h4&gt;&lt;span class=&quot;node&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node upd&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node upd&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node&quot;&gt;&lt;/span&gt;&lt;span class=&quot;node&quot;&gt;&lt;/span&gt;&lt;small&gt;يُحدَّث من يقرأ الإشارة فقط&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:280px"></iframe></div><h2 id="sec-2"><code>signal</code> — الأساس</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">import</span> <span class="tok-punct">{</span> signal <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;@angular/core&#39;</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> count <span class="tok-punct">=</span> <span class="tok-func">signal</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">);</span>
+
+<span class="tok-comment">// القراءة: استدعاء بالأقواس</span>
+console<span class="tok-punct">.</span><span class="tok-func">log</span><span class="tok-punct">(</span><span class="tok-func">count</span><span class="tok-punct">());</span>        <span class="tok-comment">// 0</span>
+
+<span class="tok-comment">// الكتابة: قيمة جديدة</span>
+count<span class="tok-punct">.</span><span class="tok-keyword">set</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">);</span>
+
+<span class="tok-comment">// الكتابة: بناءً على القيمة الحالية</span>
+count<span class="tok-punct">.</span><span class="tok-func">update</span><span class="tok-punct">(</span>c <span class="tok-punct">=&gt;</span> c <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">);</span>    <span class="tok-comment">// 6</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">في مكوّن</span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>@<span class="tok-func">Component</span><span class="tok-punct">({</span>
+  selector<span class="tok-punct">:</span> <span class="tok-string">&#39;app-counter&#39;</span><span class="tok-punct">,</span>
+  standalone<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span>
+  template<span class="tok-punct">:</span> <span class="tok-string">`
+    &lt;button (click)=&quot;dec()&quot;&gt;−&lt;/button&gt;
+    &lt;span&gt;{{ count() }}&lt;/span&gt;
+    &lt;button (click)=&quot;inc()&quot;&gt;+&lt;/button&gt;
+  `</span>
+<span class="tok-punct">})</span>
+<span class="tok-keyword">export</span> <span class="tok-keyword">class</span> CounterComponent <span class="tok-punct">{</span>
+  count <span class="tok-punct">=</span> <span class="tok-func">signal</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">);</span>
+
+  <span class="tok-func">inc</span><span class="tok-punct">():</span> <span class="tok-keyword">void</span> <span class="tok-punct">{</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-prop">count</span><span class="tok-punct">.</span><span class="tok-func">update</span><span class="tok-punct">(</span>c <span class="tok-punct">=&gt;</span> c <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">);</span> <span class="tok-punct">}</span>
+  <span class="tok-func">dec</span><span class="tok-punct">():</span> <span class="tok-keyword">void</span> <span class="tok-punct">{</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-prop">count</span><span class="tok-punct">.</span><span class="tok-func">update</span><span class="tok-punct">(</span>c <span class="tok-punct">=&gt;</span> Math<span class="tok-punct">.</span><span class="tok-func">max</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">,</span> c <span class="tok-punct">-</span> <span class="tok-number">1</span><span class="tok-punct">));</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> لا تنسَ الأقواس</div><p>في القالب تُقرأ الإشارة بـ <code>{{ count() }}</code> لا <code>{{ count }}</code>. نسيان الأقواس يطبع تمثيل الدالة نفسها بدل قيمتها — خطأ شائع جداً في البداية.</p></div><h2 id="sec-3"><code>computed</code> — القيم المشتقّة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">import</span> <span class="tok-punct">{</span> signal<span class="tok-punct">,</span> computed <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;@angular/core&#39;</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">class</span> CartComponent <span class="tok-punct">{</span>
+  items <span class="tok-punct">=</span> signal<span class="tok-punct">&lt;</span>Product<span class="tok-punct">[]&gt;([]);</span>
+
+  <span class="tok-comment">// تُعاد الحسبة تلقائياً عند تغيّر items فقط</span>
+  count <span class="tok-punct">=</span> <span class="tok-func">computed</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">items</span><span class="tok-punct">().</span><span class="tok-prop">length</span><span class="tok-punct">);</span>
+
+  total <span class="tok-punct">=</span> <span class="tok-func">computed</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span>
+    <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">items</span><span class="tok-punct">().</span><span class="tok-func">reduce</span><span class="tok-punct">((</span>sum<span class="tok-punct">,</span> p<span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> sum <span class="tok-punct">+</span> p<span class="tok-punct">.</span><span class="tok-prop">price</span><span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">)</span>
+  <span class="tok-punct">);</span>
+
+  totalWithVat <span class="tok-punct">=</span> <span class="tok-func">computed</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span> Math<span class="tok-punct">.</span><span class="tok-func">round</span><span class="tok-punct">(</span><span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">total</span><span class="tok-punct">()</span> <span class="tok-punct">*</span> <span class="tok-number">1.15</span><span class="tok-punct">));</span>
+
+  isEmpty <span class="tok-punct">=</span> <span class="tok-func">computed</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">count</span><span class="tok-punct">()</span> <span class="tok-punct">===</span> <span class="tok-number">0</span><span class="tok-punct">);</span>
+<span class="tok-punct">}</span></code></pre></div><ul><li><strong>كسولة</strong>: لا تُحسب إلا إذا قرأها أحد.</li><li><strong>مخزّنة</strong>: تُحسب مرة وتُعاد النتيجة نفسها حتى تتغيّر مدخلاتها.</li><li><strong>للقراءة فقط</strong>: لا يمكن استدعاء <code>set</code> عليها.</li><li><strong>تتسلسل</strong>: <code>totalWithVat</code> تعتمد على <code>total</code> التي تعتمد على <code>items</code>.</li></ul><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استبدل كل خاصية <code>get</code> محسوبة في مكوّناتك بـ <code>computed</code>. الفرق كبير: خاصية <code>get</code> تُعاد حسبتها عند كل دورة كشف تغيير، بينما <code>computed</code> تُحسب فقط عند تغيّر مدخلاتها فعلاً.</p></div><h2 id="sec-4"><code>effect</code> — الآثار الجانبية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">import</span> <span class="tok-punct">{</span> effect <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;@angular/core&#39;</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">class</span> ThemeComponent <span class="tok-punct">{</span>
+  theme <span class="tok-punct">=</span> signal<span class="tok-punct">&lt;</span><span class="tok-string">&#39;light&#39;</span> <span class="tok-punct">|</span> <span class="tok-string">&#39;dark&#39;</span><span class="tok-punct">&gt;(</span><span class="tok-string">&#39;light&#39;</span><span class="tok-punct">);</span>
+
+  <span class="tok-func">constructor</span><span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-func">effect</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">{</span>
+      <span class="tok-comment">// يُعاد تنفيذه كلّما تغيّرت theme</span>
+      document<span class="tok-punct">.</span><span class="tok-prop">documentElement</span><span class="tok-punct">.</span><span class="tok-prop">dataset</span><span class="tok-punct">[</span><span class="tok-string">&#39;theme&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">theme</span><span class="tok-punct">();</span>
+      localStorage<span class="tok-punct">.</span><span class="tok-func">setItem</span><span class="tok-punct">(</span><span class="tok-string">&#39;theme&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">theme</span><span class="tok-punct">());</span>
+    <span class="tok-punct">});</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> متى لا تستخدم effect</div><p>لا تستخدمه لاشتقاق قيمة — هذه وظيفة <code>computed</code>. ولا تغيّر داخله إشارة أخرى، فقد تصنع حلقة لا نهائية. استخدمه فقط للأشياء <strong>خارج</strong> Angular: التخزين المحلي، التسجيل، مكتبات طرف ثالث، وتعديل DOM مباشرة.</p></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ts</span></div><pre><code>total <span class="tok-punct">=</span> <span class="tok-func">signal</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">);</span>
+
+<span class="tok-func">constructor</span><span class="tok-punct">()</span> <span class="tok-punct">{</span>
+  <span class="tok-func">effect</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-prop">total</span><span class="tok-punct">.</span><span class="tok-keyword">set</span><span class="tok-punct">(</span><span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">items</span><span class="tok-punct">().</span><span class="tok-prop">length</span> <span class="tok-punct">*</span> <span class="tok-number">10</span><span class="tok-punct">);</span>
+  <span class="tok-punct">});</span>
+<span class="tok-punct">}</span></code></pre></div><div class="why">استخدام أثر لاشتقاق قيمة: أبطأ، وقد يسبّب حلقة، ويصعب تتبّعه.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ts</span></div><pre><code>total <span class="tok-punct">=</span> <span class="tok-func">computed</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">items</span><span class="tok-punct">().</span><span class="tok-prop">length</span> <span class="tok-punct">*</span> <span class="tok-number">10</span><span class="tok-punct">);</span></code></pre></div><div class="why">اشتقاق مباشر: كسول، مخزّن، وواضح الاعتماديات.</div></div></div><h2 id="sec-5">خدمة حالة بالإشارات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">cart.service.ts</span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">import</span> <span class="tok-punct">{</span> Injectable<span class="tok-punct">,</span> signal<span class="tok-punct">,</span> computed <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;@angular/core&#39;</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">interface</span> CartLine <span class="tok-punct">{</span>
+  product<span class="tok-punct">:</span> Product<span class="tok-punct">;</span>
+  qty<span class="tok-punct">:</span> number<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+@<span class="tok-func">Injectable</span><span class="tok-punct">({</span> providedIn<span class="tok-punct">:</span> <span class="tok-string">&#39;root&#39;</span> <span class="tok-punct">})</span>
+<span class="tok-keyword">export</span> <span class="tok-keyword">class</span> CartService <span class="tok-punct">{</span>
+  <span class="tok-keyword">private</span> lines <span class="tok-punct">=</span> signal<span class="tok-punct">&lt;</span>CartLine<span class="tok-punct">[]&gt;([]);</span>
+
+  <span class="tok-keyword">readonly</span> items <span class="tok-punct">=</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-prop">lines</span><span class="tok-punct">.</span><span class="tok-func">asReadonly</span><span class="tok-punct">();</span>
+
+  <span class="tok-keyword">readonly</span> count <span class="tok-punct">=</span> <span class="tok-func">computed</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span>
+    <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">lines</span><span class="tok-punct">().</span><span class="tok-func">reduce</span><span class="tok-punct">((</span>n<span class="tok-punct">,</span> l<span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> n <span class="tok-punct">+</span> l<span class="tok-punct">.</span><span class="tok-prop">qty</span><span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">)</span>
+  <span class="tok-punct">);</span>
+
+  <span class="tok-keyword">readonly</span> subtotal <span class="tok-punct">=</span> <span class="tok-func">computed</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span>
+    <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">lines</span><span class="tok-punct">().</span><span class="tok-func">reduce</span><span class="tok-punct">((</span>s<span class="tok-punct">,</span> l<span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> s <span class="tok-punct">+</span> l<span class="tok-punct">.</span><span class="tok-prop">product</span><span class="tok-punct">.</span><span class="tok-prop">price</span> <span class="tok-punct">*</span> l<span class="tok-punct">.</span><span class="tok-prop">qty</span><span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">)</span>
+  <span class="tok-punct">);</span>
+
+  <span class="tok-keyword">readonly</span> vat <span class="tok-punct">=</span> <span class="tok-func">computed</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span> Math<span class="tok-punct">.</span><span class="tok-func">round</span><span class="tok-punct">(</span><span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">subtotal</span><span class="tok-punct">()</span> <span class="tok-punct">*</span> <span class="tok-number">0.15</span><span class="tok-punct">));</span>
+  <span class="tok-keyword">readonly</span> total <span class="tok-punct">=</span> <span class="tok-func">computed</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">subtotal</span><span class="tok-punct">()</span> <span class="tok-punct">+</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">vat</span><span class="tok-punct">());</span>
+  <span class="tok-keyword">readonly</span> isEmpty <span class="tok-punct">=</span> <span class="tok-func">computed</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">lines</span><span class="tok-punct">().</span><span class="tok-prop">length</span> <span class="tok-punct">===</span> <span class="tok-number">0</span><span class="tok-punct">);</span>
+
+  <span class="tok-func">add</span><span class="tok-punct">(</span>product<span class="tok-punct">:</span> Product<span class="tok-punct">,</span> qty <span class="tok-punct">=</span> <span class="tok-number">1</span><span class="tok-punct">):</span> <span class="tok-keyword">void</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-prop">lines</span><span class="tok-punct">.</span><span class="tok-func">update</span><span class="tok-punct">(</span>list <span class="tok-punct">=&gt;</span> <span class="tok-punct">{</span>
+      <span class="tok-keyword">const</span> found <span class="tok-punct">=</span> list<span class="tok-punct">.</span><span class="tok-func">find</span><span class="tok-punct">(</span>l <span class="tok-punct">=&gt;</span> l<span class="tok-punct">.</span><span class="tok-prop">product</span><span class="tok-punct">.</span><span class="tok-prop">id</span> <span class="tok-punct">===</span> product<span class="tok-punct">.</span><span class="tok-prop">id</span><span class="tok-punct">);</span>
+      <span class="tok-keyword">if</span> <span class="tok-punct">(</span>found<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> list<span class="tok-punct">.</span><span class="tok-func">map</span><span class="tok-punct">(</span>l <span class="tok-punct">=&gt;</span>
+          l<span class="tok-punct">.</span><span class="tok-prop">product</span><span class="tok-punct">.</span><span class="tok-prop">id</span> <span class="tok-punct">===</span> product<span class="tok-punct">.</span><span class="tok-prop">id</span> <span class="tok-punct">?</span> <span class="tok-punct">{</span> <span class="tok-punct">...</span><span class="tok-prop">l</span><span class="tok-punct">,</span> qty<span class="tok-punct">:</span> l<span class="tok-punct">.</span><span class="tok-prop">qty</span> <span class="tok-punct">+</span> qty <span class="tok-punct">}</span> <span class="tok-punct">:</span> l
+        <span class="tok-punct">);</span>
+      <span class="tok-punct">}</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">[...</span><span class="tok-prop">list</span><span class="tok-punct">,</span> <span class="tok-punct">{</span> product<span class="tok-punct">,</span> qty <span class="tok-punct">}];</span>
+    <span class="tok-punct">});</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-func">setQty</span><span class="tok-punct">(</span>id<span class="tok-punct">:</span> number<span class="tok-punct">,</span> qty<span class="tok-punct">:</span> number<span class="tok-punct">):</span> <span class="tok-keyword">void</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span>qty <span class="tok-punct">&lt;=</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-keyword">return</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">remove</span><span class="tok-punct">(</span>id<span class="tok-punct">);</span>
+    <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-prop">lines</span><span class="tok-punct">.</span><span class="tok-func">update</span><span class="tok-punct">(</span>list <span class="tok-punct">=&gt;</span>
+      list<span class="tok-punct">.</span><span class="tok-func">map</span><span class="tok-punct">(</span>l <span class="tok-punct">=&gt;</span> l<span class="tok-punct">.</span><span class="tok-prop">product</span><span class="tok-punct">.</span><span class="tok-prop">id</span> <span class="tok-punct">===</span> id <span class="tok-punct">?</span> <span class="tok-punct">{</span> <span class="tok-punct">...</span><span class="tok-prop">l</span><span class="tok-punct">,</span> qty <span class="tok-punct">}</span> <span class="tok-punct">:</span> l<span class="tok-punct">)</span>
+    <span class="tok-punct">);</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-func">remove</span><span class="tok-punct">(</span>id<span class="tok-punct">:</span> number<span class="tok-punct">):</span> <span class="tok-keyword">void</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-prop">lines</span><span class="tok-punct">.</span><span class="tok-func">update</span><span class="tok-punct">(</span>list <span class="tok-punct">=&gt;</span> list<span class="tok-punct">.</span><span class="tok-func">filter</span><span class="tok-punct">(</span>l <span class="tok-punct">=&gt;</span> l<span class="tok-punct">.</span><span class="tok-prop">product</span><span class="tok-punct">.</span><span class="tok-prop">id</span> <span class="tok-punct">!==</span> id<span class="tok-punct">));</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-func">clear</span><span class="tok-punct">():</span> <span class="tok-keyword">void</span> <span class="tok-punct">{</span> <span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-prop">lines</span><span class="tok-punct">.</span><span class="tok-keyword">set</span><span class="tok-punct">([]);</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> لا تعدّل الحالة موضعياً</div><p>استخدم دائماً نسخاً جديدة (<code>[...list]</code> و <code>{ ...item }</code>). تعديل الكائن نفسه لا يغيّر مرجعه، فقد لا تكتشف الإشارة التغيير ولا تُخطر قرّاءها.</p></div><h2 id="sec-6">كشف التغيير بلا Zone</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">app.config.ts</span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">import</span> <span class="tok-punct">{</span> provideExperimentalZonelessChangeDetection <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;@angular/core&#39;</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">const</span> appConfig <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+  providers<span class="tok-punct">:</span> <span class="tok-punct">[</span>
+    <span class="tok-func">provideExperimentalZonelessChangeDetection</span><span class="tok-punct">()</span>
+  <span class="tok-punct">]</span>
+<span class="tok-punct">};</span></code></pre></div><p>مع الإشارات في كل مكان يمكن الاستغناء عن Zone.js كلياً: حزمة أصغر وأداء أفضل. هذا هو الاتجاه المستقبلي لـ Angular.</p><h2 id="sec-7">المشروع: متجر «سوقنا»</h2><p>الآن نجمع كل ما تعلّمناه في تطبيق واحد. اقرأ المواصفات كاملة أولاً وخطّط قبل الكتابة.</p><h3 id="sec-8">المواصفات</h3><div class="table-wrap"><table class="data"><thead><tr><th>الصفحة</th><th>المسار</th><th>المحتوى</th></tr></thead><tbody><tr><td>الرئيسية</td><td><code>/</code></td><td>أحدث المنتجات وبانر ترحيبي</td></tr><tr><td>المنتجات</td><td><code>/products</code></td><td>شبكة منتجات مع بحث وترشيح بالتصنيف</td></tr><tr><td>تفاصيل المنتج</td><td><code>/products/:id</code></td><td>تفاصيل كاملة وزر إضافة للسلة</td></tr><tr><td>السلة</td><td><code>/cart</code></td><td>قائمة المشتريات وتعديل الكميات والإجمالي</td></tr><tr><td>إتمام الطلب</td><td><code>/checkout</code></td><td>نموذج تفاعلي محمي بحارس</td></tr><tr><td>404</td><td><code>**</code></td><td>صفحة غير موجودة</td></tr></tbody></table></div><h3 id="sec-9">البنية</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>src/app/
+├── core/
+│   ├── services/
+│   │   ├── product.service.ts    جلب المنتجات (HttpClient)
+│   │   ├── cart.service.ts       حالة السلة (Signals)
+│   │   └── notification.service.ts
+│   └── guards/
+│       └── cart-not-empty.guard.ts
+├── shared/
+│   ├── product-card/
+│   ├── star-rating/
+│   └── pipes/currency-sar.pipe.ts
+├── features/
+│   ├── home/
+│   ├── products/
+│   │   ├── product-list/
+│   │   └── product-detail/
+│   ├── cart/
+│   └── checkout/
+├── app.component.ts
+├── app.config.ts
+└── app.routes.ts</code></pre></div><h3 id="sec-10">المتطلّبات التقنية</h3><ol><li><strong>الخدمات</strong>: <code>ProductService</code> تجلب من واجهة برمجية، و<code>CartService</code> بالإشارات كاملة.</li><li><strong>المكوّنات</strong>: <code>ProductCard</code> يستقبل <code>input()</code> ويطلق <code>output()</code> عند الإضافة.</li><li><strong>التوجيه</strong>: كل الصفحات أعلاه، مع تحميل كسول لصفحة <code>checkout</code>.</li><li><strong>الحارس</strong>: <code>cart-not-empty.guard</code> يمنع الدخول إلى <code>/checkout</code> والسلة فارغة.</li><li><strong>النموذج</strong>: نموذج تفاعلي في <code>checkout</code> بتحقّق كامل ورسائل عربية.</li><li><strong>الأنبوب</strong>: أنبوب مخصّص لتنسيق السعر بالريال.</li><li><strong>الحالات</strong>: عرض التحميل والخطأ والقائمة الفارغة في كل صفحة تجلب بيانات.</li><li><strong>التخزين</strong>: احفظ السلة في <code>localStorage</code> عبر <code>effect</code>.</li></ol><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">نقطة انطلاق: حفظ السلة تلقائياً</span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>@<span class="tok-func">Injectable</span><span class="tok-punct">({</span> providedIn<span class="tok-punct">:</span> <span class="tok-string">&#39;root&#39;</span> <span class="tok-punct">})</span>
+<span class="tok-keyword">export</span> <span class="tok-keyword">class</span> CartService <span class="tok-punct">{</span>
+  <span class="tok-keyword">private</span> lines <span class="tok-punct">=</span> signal<span class="tok-punct">&lt;</span>CartLine<span class="tok-punct">[]&gt;(</span><span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">restore</span><span class="tok-punct">());</span>
+
+  <span class="tok-func">constructor</span><span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-comment">// كلّما تغيّرت السلة، احفظها</span>
+    <span class="tok-func">effect</span><span class="tok-punct">(()</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">{</span>
+      localStorage<span class="tok-punct">.</span><span class="tok-func">setItem</span><span class="tok-punct">(</span><span class="tok-string">&#39;cart&#39;</span><span class="tok-punct">,</span> JSON<span class="tok-punct">.</span><span class="tok-func">stringify</span><span class="tok-punct">(</span><span class="tok-keyword">this</span><span class="tok-punct">.</span><span class="tok-func">lines</span><span class="tok-punct">()));</span>
+    <span class="tok-punct">});</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">private</span> <span class="tok-func">restore</span><span class="tok-punct">():</span> CartLine<span class="tok-punct">[]</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">try</span> <span class="tok-punct">{</span>
+      <span class="tok-keyword">return</span> JSON<span class="tok-punct">.</span><span class="tok-func">parse</span><span class="tok-punct">(</span>localStorage<span class="tok-punct">.</span><span class="tok-func">getItem</span><span class="tok-punct">(</span><span class="tok-string">&#39;cart&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">??</span> <span class="tok-string">&#39;[]&#39;</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span> <span class="tok-keyword">catch</span> <span class="tok-punct">{</span>
+      <span class="tok-keyword">return</span> <span class="tok-punct">[];</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">حارس السلة</span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">export</span> <span class="tok-keyword">const</span> cartNotEmptyGuard<span class="tok-punct">:</span> CanActivateFn <span class="tok-punct">=</span> <span class="tok-punct">()</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> cart <span class="tok-punct">=</span> <span class="tok-func">inject</span><span class="tok-punct">(</span>CartService<span class="tok-punct">);</span>
+  <span class="tok-keyword">const</span> router <span class="tok-punct">=</span> <span class="tok-func">inject</span><span class="tok-punct">(</span>Router<span class="tok-punct">);</span>
+
+  <span class="tok-keyword">if</span> <span class="tok-punct">(!</span>cart<span class="tok-punct">.</span><span class="tok-func">isEmpty</span><span class="tok-punct">())</span> <span class="tok-keyword">return</span> <span class="tok-bool">true</span><span class="tok-punct">;</span>
+
+  <span class="tok-func">inject</span><span class="tok-punct">(</span>NotificationService<span class="tok-punct">).</span><span class="tok-func">info</span><span class="tok-punct">(</span><span class="tok-string">&#39;سلتك فارغة، أضف منتجات أولاً.&#39;</span><span class="tok-punct">);</span>
+  <span class="tok-keyword">return</span> router<span class="tok-punct">.</span><span class="tok-func">createUrlTree</span><span class="tok-punct">([</span><span class="tok-string">&#39;/products&#39;</span><span class="tok-punct">]);</span>
+<span class="tok-punct">};</span></code></pre></div><section class="exercise" id="sec-11"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>المشروع الكامل</h3></header><div class="exercise-body"><p>نفّذ متجر «سوقنا» بالمواصفات أعلاه. خذ وقتك — هذا مشروع لعدة جلسات لا لساعة واحدة.</p><p><strong>المطلوب:</strong></p><ul><li>كل الصفحات الست تعمل والتنقّل بينها سلس.</li><li>السلة تعمل بالإشارات وتُحفظ بين الجلسات.</li><li>صفحة الدفع محمية بالحارس ومحمّلة كسولاً.</li><li>نموذج الدفع تفاعلي بتحقّق كامل.</li><li>لا أخطاء في وحدة التحكّم.</li><li>الواجهة متجاوبة على الجوال.</li><li>الكود منظّم بحسب البنية المقترحة.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 ابدأ بالخدمات قبل المكوّنات — هي العمود الفقري.</li><li>💡 اختبر كل ميزة قبل الانتقال للتالية.</li><li>💡 استخدم بيانات وهمية محلية أولاً، ثم اربطها بواجهة برمجية.</li><li>💡 إن تعثّرت في موضوع، عد إلى درسه لا إلى بداية المسار.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">مقتطف: مكوّن السلة كاملاً</span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">import</span> <span class="tok-punct">{</span> Component<span class="tok-punct">,</span> inject <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;@angular/core&#39;</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> RouterLink <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;@angular/router&#39;</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> CartService <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;../../core/services/cart.service&#39;</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> SarPipe <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;../../shared/pipes/sar.pipe&#39;</span><span class="tok-punct">;</span>
+
+@<span class="tok-func">Component</span><span class="tok-punct">({</span>
+  selector<span class="tok-punct">:</span> <span class="tok-string">&#39;app-cart&#39;</span><span class="tok-punct">,</span>
+  standalone<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span>
+  imports<span class="tok-punct">:</span> <span class="tok-punct">[</span>RouterLink<span class="tok-punct">,</span> SarPipe<span class="tok-punct">],</span>
+  template<span class="tok-punct">:</span> <span class="tok-string">`
+    &lt;h1&gt;سلة المشتريات&lt;/h1&gt;
+
+    @if (cart.isEmpty()) {
+      &lt;div class=&quot;empty&quot;&gt;
+        &lt;p&gt;سلتك فارغة.&lt;/p&gt;
+        &lt;a routerLink=&quot;/products&quot; class=&quot;btn&quot;&gt;تصفّح المنتجات&lt;/a&gt;
+      &lt;/div&gt;
+    } @else {
+      &lt;ul class=&quot;lines&quot;&gt;
+        @for (line of cart.items(); track line.product.id) {
+          &lt;li&gt;
+            &lt;img [src]=&quot;line.product.image&quot; [alt]=&quot;line.product.name&quot;
+                 width=&quot;72&quot; height=&quot;72&quot;&gt;
+
+            &lt;div class=&quot;info&quot;&gt;
+              &lt;h3&gt;{{ line.product.name }}&lt;/h3&gt;
+              &lt;p&gt;{{ line.product.price | sar }}&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;qty&quot;&gt;
+              &lt;button (click)=&quot;cart.setQty(line.product.id, line.qty - 1)&quot;
+                      aria-label=&quot;إنقاص&quot;&gt;−&lt;/button&gt;
+              &lt;span&gt;{{ line.qty }}&lt;/span&gt;
+              &lt;button (click)=&quot;cart.setQty(line.product.id, line.qty + 1)&quot;
+                      aria-label=&quot;زيادة&quot;&gt;+&lt;/button&gt;
+            &lt;/div&gt;
+
+            &lt;strong&gt;{{ line.product.price * line.qty | sar }}&lt;/strong&gt;
+
+            &lt;button class=&quot;remove&quot;
+                    (click)=&quot;cart.remove(line.product.id)&quot;
+                    aria-label=&quot;حذف المنتج&quot;&gt;✕&lt;/button&gt;
+          &lt;/li&gt;
+        }
+      &lt;/ul&gt;
+
+      &lt;aside class=&quot;summary&quot;&gt;
+        &lt;div&gt;&lt;span&gt;المجموع الفرعي&lt;/span&gt;&lt;span&gt;{{ cart.subtotal() | sar }}&lt;/span&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;span&gt;ضريبة القيمة المضافة&lt;/span&gt;&lt;span&gt;{{ cart.vat() | sar }}&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;total&quot;&gt;&lt;span&gt;الإجمالي&lt;/span&gt;&lt;span&gt;{{ cart.total() | sar }}&lt;/span&gt;&lt;/div&gt;
+
+        &lt;a routerLink=&quot;/checkout&quot; class=&quot;btn btn-primary&quot;&gt;إتمام الطلب&lt;/a&gt;
+        &lt;button (click)=&quot;cart.clear()&quot; class=&quot;btn&quot;&gt;تفريغ السلة&lt;/button&gt;
+      &lt;/aside&gt;
+    }
+  `</span>
+<span class="tok-punct">})</span>
+<span class="tok-keyword">export</span> <span class="tok-keyword">class</span> CartComponent <span class="tok-punct">{</span>
+  <span class="tok-keyword">protected</span> cart <span class="tok-punct">=</span> <span class="tok-func">inject</span><span class="tok-punct">(</span>CartService<span class="tok-punct">);</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-caption" style="background:var(--surface-2);color:var(--text-muted)">لاحظ أن المكوّن لا يحوي أي منطق حسابي — كله في الخدمة كإشارات محسوبة. هذا هو الفصل الصحيح للمسؤوليات.</div></details></div></section><h2 id="sec-12">ماذا بعد؟</h2><p>أنهيت أساسيات Angular: المكوّنات والقوالب والربط والأنابيب والخدمات و HTTP والنماذج والتوجيه والإشارات. هذه تكفي لبناء تطبيقات حقيقية.</p><ul><li><strong>RxJS بعمق</strong> — التدفّقات والمشغّلات لحالات غير متزامنة معقّدة.</li><li><strong>اختبار الوحدات</strong> بـ Jest أو Karma، والاختبار الشامل بـ Playwright.</li><li><strong>NgRx</strong> لإدارة حالة معقّدة على مستوى التطبيق.</li><li><strong>Angular Universal</strong> للعرض من الخادم وتحسين السيو.</li><li><strong>PWA</strong> لجعل تطبيقك يعمل بلا إنترنت.</li><li><strong>Angular Material</strong> أو <strong>PrimeNG</strong> لمكتبة مكوّنات جاهزة.</li></ul><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. كيف تُقرأ قيمة الإشارة في القالب؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span><code>{{ count }}</code></span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span><code>{{ count() }}</code></span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span><code>{{ count.value }}</code></span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span><code>{{ count | async }}</code></span></label></div><div class="q-explain"><strong>الشرح:</strong> الإشارة دالة؛ قراءتها تتم باستدعائها بالأقواس.</div></div><div class="q-item"><p class="q-text">2. متى تستخدم <code>computed</code> بدل <code>effect</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>حين تشتق قيمة من إشارات أخرى</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>حين تعدّل DOM</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>حين تحفظ في localStorage</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>computed</code> للاشتقاق و<code>effect</code> للآثار الجانبية خارج Angular.</div></div><div class="q-item"><p class="q-text">3. لماذا لا نعدّل مصفوفة الإشارة موضعياً بـ <code>push</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>ممنوع تقنياً</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>لأن المرجع لا يتغيّر فقد لا تكتشف الإشارة التغيير</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أبطأ</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يسبّب خطأ</span></label></div><div class="q-explain"><strong>الشرح:</strong> الإشارة تقارن المراجع؛ استخدم <code>update</code> مع نسخة جديدة.</div></div><div class="q-item"><p class="q-text">4. ما ميزة الإشارات على Zone.js؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>أسهل كتابة فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>تحديث دقيق لمن يقرأ الإشارة بدل فحص كل الشجرة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>حجم أكبر</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا ميزة</span></label></div><div class="q-explain"><strong>الشرح:</strong> الإشارة تعرف قرّاءها، فيصبح كشف التغيير جراحياً بدل مسح شامل.</div></div><div class="q-item"><p class="q-text">5. أين يجب أن يعيش منطق حساب إجمالي السلة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>في القالب</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>في الخدمة كإشارة محسوبة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>في كل مكوّن يحتاجه</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>في المسار</span></label></div><div class="q-explain"><strong>الشرح:</strong> الخدمة مالكة الحالة؛ الحساب فيها يمنع التكرار ويبقى مصدر الحقيقة واحداً.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="angular/10-signals-project" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="09-routing.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>التوجيه بين الصفحات</b></span></a>
+  <a class="next" href="../../tracks.html"><span><small>أنهيت المسار 🎉</small><b>تصفّح بقية المسارات</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Angular</h3>
+        <div class="ring-wrap" data-ring data-track="angular" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">لماذا الإشارات؟</a></li><li><a href="#sec-2">signal — الأساس</a></li><li><a href="#sec-3">computed — القيم المشتقّة</a></li><li><a href="#sec-4">effect — الآثار الجانبية</a></li><li><a href="#sec-5">خدمة حالة بالإشارات</a></li><li><a href="#sec-6">كشف التغيير بلا Zone</a></li><li><a href="#sec-7">المشروع: متجر «سوقنا»</a></li><li class="sub"><a href="#sec-8">المواصفات</a></li><li class="sub"><a href="#sec-9">البنية</a></li><li class="sub"><a href="#sec-10">المتطلّبات التقنية</a></li><li><a href="#sec-11">المشروع الكامل</a></li><li><a href="#sec-12">ماذا بعد؟</a></li><li><a href="#sec-13">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>signal(initial)</code><small>قيمة تفاعلية قابلة للتغيير</small></div><div class="ref-item"><code>value()</code><small>قراءة الإشارة</small></div><div class="ref-item"><code>set(v) / update(fn)</code><small>تغيير القيمة</small></div><div class="ref-item"><code>computed(fn)</code><small>قيمة مشتقّة تُحسب تلقائياً</small></div><div class="ref-item"><code>effect(fn)</code><small>أثر جانبي عند التغيّر</small></div><div class="ref-item"><code>asReadonly()</code><small>كشف الإشارة للقراءة فقط</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>
