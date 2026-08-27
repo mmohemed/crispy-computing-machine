@@ -71,234 +71,234 @@
   <div class="lesson-layout">
     <article class="lesson-main">
       <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تدرج صفوفاً مفردة ومتعدّدة.</li><li>تحدّث البيانات بأمان.</li><li>تحذف الصفوف مع فهم المخاطر.</li><li>تستخدم الإدراج من استعلام.</li><li>تتعامل مع التعارضات (Upsert).</li></ul></div>
-      <h2 id="sec-1">الإدراج</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- صف واحد بأعمدة محدّدة — الطريقة الموصى بها
-INSERT INTO customers (name, email, city)
-VALUES (&#39;سارة عبدالله&#39;, &#39;sara@example.com&#39;, &#39;الرياض&#39;);
+      <h2 id="sec-1">الإدراج</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- صف واحد بأعمدة محدّدة — الطريقة الموصى بها</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">customers</span> <span class="tok-punct">(</span>name<span class="tok-punct">,</span> email<span class="tok-punct">,</span> city<span class="tok-punct">)</span>
+<span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-string">&#39;سارة عبدالله&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;sara@example.com&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;الرياض&#39;</span><span class="tok-punct">);</span>
 
--- عدة صفوف دفعة واحدة — أسرع بكثير
-INSERT INTO customers (name, email, city) VALUES
-  (&#39;خالد الأحمد&#39;,   &#39;khalid@example.com&#39;, &#39;جدة&#39;),
-  (&#39;نورة القحطاني&#39;, &#39;noura@example.com&#39;,  &#39;الدمام&#39;),
-  (&#39;فهد العتيبي&#39;,   &#39;fahad@example.com&#39;,  &#39;الرياض&#39;);
+<span class="tok-comment">-- عدة صفوف دفعة واحدة — أسرع بكثير</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">customers</span> <span class="tok-punct">(</span>name<span class="tok-punct">,</span> email<span class="tok-punct">,</span> city<span class="tok-punct">)</span> <span class="tok-keyword">VALUES</span>
+  <span class="tok-punct">(</span><span class="tok-string">&#39;خالد الأحمد&#39;</span><span class="tok-punct">,</span>   <span class="tok-string">&#39;khalid@example.com&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;جدة&#39;</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-string">&#39;نورة القحطاني&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;noura@example.com&#39;</span><span class="tok-punct">,</span>  <span class="tok-string">&#39;الدمام&#39;</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-string">&#39;فهد العتيبي&#39;</span><span class="tok-punct">,</span>   <span class="tok-string">&#39;fahad@example.com&#39;</span><span class="tok-punct">,</span>  <span class="tok-string">&#39;الرياض&#39;</span><span class="tok-punct">);</span>
 
--- بلا تحديد الأعمدة — تجنّبها
-INSERT INTO customers VALUES (1, &#39;سارة&#39;, &#39;sara@example.com&#39;, &#39;الرياض&#39;);</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> حدّد الأعمدة دائماً</div><p>الإدراج بلا تحديد أعمدة يعتمد على <strong>ترتيبها</strong> في الجدول. إن أضاف زميلك عموداً جديداً أو غيّر الترتيب، سينكسر كل كود الإدراج لديك — وقد يدخل البيانات في أعمدة خاطئة بصمت.</p></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>إدراج 1000 صف في أمر واحد أسرع عشرات المرات من 1000 أمر منفصل، لأن كل أمر يحمل تكلفة اتصال ومعاملة مستقلة.</p></div><h3 id="sec-2">الإدراج من استعلام</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- نسخ صفوف من جدول لآخر
-INSERT INTO customers_archive (id, name, email, city)
-SELECT id, name, email, city
-FROM customers
-WHERE created_at &lt; &#39;2024-01-01&#39;;
+<span class="tok-comment">-- بلا تحديد الأعمدة — تجنّبها</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> customers <span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-string">&#39;سارة&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;sara@example.com&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;الرياض&#39;</span><span class="tok-punct">);</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> حدّد الأعمدة دائماً</div><p>الإدراج بلا تحديد أعمدة يعتمد على <strong>ترتيبها</strong> في الجدول. إن أضاف زميلك عموداً جديداً أو غيّر الترتيب، سينكسر كل كود الإدراج لديك — وقد يدخل البيانات في أعمدة خاطئة بصمت.</p></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>إدراج 1000 صف في أمر واحد أسرع عشرات المرات من 1000 أمر منفصل، لأن كل أمر يحمل تكلفة اتصال ومعاملة مستقلة.</p></div><h3 id="sec-2">الإدراج من استعلام</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- نسخ صفوف من جدول لآخر</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">customers_archive</span> <span class="tok-punct">(</span>id<span class="tok-punct">,</span> name<span class="tok-punct">,</span> email<span class="tok-punct">,</span> city<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> name<span class="tok-punct">,</span> email<span class="tok-punct">,</span> city
+<span class="tok-keyword">FROM</span> customers
+<span class="tok-keyword">WHERE</span> created_at <span class="tok-punct">&lt;</span> <span class="tok-string">&#39;2024-01-01&#39;</span><span class="tok-punct">;</span>
 
--- إنشاء جدول من نتيجة استعلام
-CREATE TABLE top_customers AS
-SELECT * FROM customers WHERE total_spent &gt; 10000;</code></pre></div><h3 id="sec-3">إرجاع الصفوف المدرجة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- PostgreSQL و SQLite الحديثة
-INSERT INTO orders (customer_id, total)
-VALUES (1, 450.00)
-RETURNING id, ordered_at;
+<span class="tok-comment">-- إنشاء جدول من نتيجة استعلام</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> top_customers <span class="tok-keyword">AS</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers <span class="tok-keyword">WHERE</span> total_spent <span class="tok-punct">&gt;</span> <span class="tok-number">10000</span><span class="tok-punct">;</span></code></pre></div><h3 id="sec-3">إرجاع الصفوف المدرجة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- PostgreSQL و SQLite الحديثة</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">orders</span> <span class="tok-punct">(</span>customer_id<span class="tok-punct">,</span> total<span class="tok-punct">)</span>
+<span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">450.00</span><span class="tok-punct">)</span>
+<span class="tok-keyword">RETURNING</span> id<span class="tok-punct">,</span> ordered_at<span class="tok-punct">;</span>
 
--- MySQL
-INSERT INTO orders (customer_id, total) VALUES (1, 450.00);
-SELECT LAST_INSERT_ID();</code></pre></div><p><code>RETURNING</code> مفيدة جداً: تحصل على المعرّف المولَّد والقيم الافتراضية في استعلام واحد بدل استعلامين.</p><h2 id="sec-4">التحديث</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- تحديث عمود واحد
-UPDATE products
-SET price = 349.00
-WHERE id = 5;
+<span class="tok-comment">-- MySQL</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">orders</span> <span class="tok-punct">(</span>customer_id<span class="tok-punct">,</span> total<span class="tok-punct">)</span> <span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">450.00</span><span class="tok-punct">);</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">LAST_INSERT_ID</span><span class="tok-punct">();</span></code></pre></div><p><code>RETURNING</code> مفيدة جداً: تحصل على المعرّف المولَّد والقيم الافتراضية في استعلام واحد بدل استعلامين.</p><h2 id="sec-4">التحديث</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- تحديث عمود واحد</span>
+<span class="tok-keyword">UPDATE</span> products
+<span class="tok-keyword">SET</span> price <span class="tok-punct">=</span> <span class="tok-number">349.00</span>
+<span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span><span class="tok-punct">;</span>
 
--- عدة أعمدة
-UPDATE products
-SET price = 349.00,
-    stock = stock - 1,
-    updated_at = CURRENT_TIMESTAMP
-WHERE id = 5;
+<span class="tok-comment">-- عدة أعمدة</span>
+<span class="tok-keyword">UPDATE</span> products
+<span class="tok-keyword">SET</span> price <span class="tok-punct">=</span> <span class="tok-number">349.00</span><span class="tok-punct">,</span>
+    stock <span class="tok-punct">=</span> stock <span class="tok-punct">-</span> <span class="tok-number">1</span><span class="tok-punct">,</span>
+    updated_at <span class="tok-punct">=</span> CURRENT_TIMESTAMP
+<span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span><span class="tok-punct">;</span>
 
--- تحديث بحساب من القيمة الحالية
-UPDATE products
-SET price = price * 0.9        -- خصم 10٪
-WHERE category_id = 3;
+<span class="tok-comment">-- تحديث بحساب من القيمة الحالية</span>
+<span class="tok-keyword">UPDATE</span> products
+<span class="tok-keyword">SET</span> price <span class="tok-punct">=</span> price <span class="tok-punct">*</span> <span class="tok-number">0.9</span>        <span class="tok-comment">-- خصم 10٪</span>
+<span class="tok-keyword">WHERE</span> category_id <span class="tok-punct">=</span> <span class="tok-number">3</span><span class="tok-punct">;</span>
 
--- تحديث بشرط مركّب
-UPDATE orders
-SET status = &#39;cancelled&#39;
-WHERE status = &#39;pending&#39;
-  AND ordered_at &lt; CURRENT_DATE - INTERVAL &#39;7 days&#39;;</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> أخطر خطأ في SQL</div><p><code>UPDATE</code> بلا <code>WHERE</code> يحدّث <strong>كل صفوف الجدول</strong>. جملة واحدة منسية قد تدمّر قاعدة بيانات إنتاج كاملة. هذا ليس تحذيراً نظرياً — حدث لشركات كبرى.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">عادة تحميك</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- 1) اكتب SELECT أولاً وتحقّق من الصفوف
-SELECT * FROM products WHERE category_id = 3;
+<span class="tok-comment">-- تحديث بشرط مركّب</span>
+<span class="tok-keyword">UPDATE</span> orders
+<span class="tok-keyword">SET</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;cancelled&#39;</span>
+<span class="tok-keyword">WHERE</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;pending&#39;</span>
+  <span class="tok-keyword">AND</span> ordered_at <span class="tok-punct">&lt;</span> CURRENT_DATE <span class="tok-punct">-</span> <span class="tok-keyword">INTERVAL</span> <span class="tok-string">&#39;7 days&#39;</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> أخطر خطأ في SQL</div><p><code>UPDATE</code> بلا <code>WHERE</code> يحدّث <strong>كل صفوف الجدول</strong>. جملة واحدة منسية قد تدمّر قاعدة بيانات إنتاج كاملة. هذا ليس تحذيراً نظرياً — حدث لشركات كبرى.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">عادة تحميك</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- 1) اكتب SELECT أولاً وتحقّق من الصفوف</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> category_id <span class="tok-punct">=</span> <span class="tok-number">3</span><span class="tok-punct">;</span>
 
--- 2) عدّ الصفوف — هل العدد متوقّع؟
-SELECT COUNT(*) FROM products WHERE category_id = 3;
+<span class="tok-comment">-- 2) عدّ الصفوف — هل العدد متوقّع؟</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">COUNT</span><span class="tok-punct">(*)</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> category_id <span class="tok-punct">=</span> <span class="tok-number">3</span><span class="tok-punct">;</span>
 
--- 3) بعدها فقط حوّلها إلى UPDATE بنفس الشرط
-UPDATE products SET price = price * 0.9 WHERE category_id = 3;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>في بيئة الإنتاج، شغّل التحديثات داخل معاملة: <code>BEGIN;</code> ثم <code>UPDATE</code> ثم تحقّق من النتيجة، ثم <code>COMMIT;</code> أو <code>ROLLBACK;</code> إن كانت خاطئة. سنفصّل المعاملات في الدرس العاشر.</p></div><h3 id="sec-5">التحديث من جدول آخر</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- PostgreSQL
-UPDATE products p
-SET price = n.new_price
-FROM new_prices n
-WHERE p.id = n.product_id;
+<span class="tok-comment">-- 3) بعدها فقط حوّلها إلى UPDATE بنفس الشرط</span>
+<span class="tok-keyword">UPDATE</span> products <span class="tok-keyword">SET</span> price <span class="tok-punct">=</span> price <span class="tok-punct">*</span> <span class="tok-number">0.9</span> <span class="tok-keyword">WHERE</span> category_id <span class="tok-punct">=</span> <span class="tok-number">3</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>في بيئة الإنتاج، شغّل التحديثات داخل معاملة: <code>BEGIN;</code> ثم <code>UPDATE</code> ثم تحقّق من النتيجة، ثم <code>COMMIT;</code> أو <code>ROLLBACK;</code> إن كانت خاطئة. سنفصّل المعاملات في الدرس العاشر.</p></div><h3 id="sec-5">التحديث من جدول آخر</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- PostgreSQL</span>
+<span class="tok-keyword">UPDATE</span> products p
+<span class="tok-keyword">SET</span> price <span class="tok-punct">=</span> n<span class="tok-punct">.</span>new_price
+<span class="tok-keyword">FROM</span> new_prices n
+<span class="tok-keyword">WHERE</span> p<span class="tok-punct">.</span>id <span class="tok-punct">=</span> n<span class="tok-punct">.</span>product_id<span class="tok-punct">;</span>
 
--- MySQL
-UPDATE products p
-JOIN new_prices n ON p.id = n.product_id
-SET p.price = n.new_price;</code></pre></div><h2 id="sec-6">الحذف</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- حذف صف واحد
-DELETE FROM customers WHERE id = 42;
+<span class="tok-comment">-- MySQL</span>
+<span class="tok-keyword">UPDATE</span> products p
+<span class="tok-keyword">JOIN</span> new_prices n <span class="tok-keyword">ON</span> p<span class="tok-punct">.</span>id <span class="tok-punct">=</span> n<span class="tok-punct">.</span>product_id
+<span class="tok-keyword">SET</span> p<span class="tok-punct">.</span>price <span class="tok-punct">=</span> n<span class="tok-punct">.</span>new_price<span class="tok-punct">;</span></code></pre></div><h2 id="sec-6">الحذف</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- حذف صف واحد</span>
+<span class="tok-keyword">DELETE</span> <span class="tok-keyword">FROM</span> customers <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">42</span><span class="tok-punct">;</span>
 
--- حذف بشرط
-DELETE FROM sessions
-WHERE expires_at &lt; CURRENT_TIMESTAMP;
+<span class="tok-comment">-- حذف بشرط</span>
+<span class="tok-keyword">DELETE</span> <span class="tok-keyword">FROM</span> sessions
+<span class="tok-keyword">WHERE</span> expires_at <span class="tok-punct">&lt;</span> CURRENT_TIMESTAMP<span class="tok-punct">;</span>
 
--- حذف كل الصفوف (بطيء — يسجّل كل صف)
-DELETE FROM logs;
+<span class="tok-comment">-- حذف كل الصفوف (بطيء — يسجّل كل صف)</span>
+<span class="tok-keyword">DELETE</span> <span class="tok-keyword">FROM</span> logs<span class="tok-punct">;</span>
 
--- تفريغ الجدول (سريع جداً — لا يمكن التراجع)
-TRUNCATE TABLE logs;</code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th><code>DELETE</code></th><th><code>TRUNCATE</code></th></tr></thead><tbody><tr><td>الشرط <code>WHERE</code></td><td>مدعوم</td><td>غير مدعوم — يحذف الكل</td></tr><tr><td>السرعة</td><td>بطيء مع الصفوف الكثيرة</td><td>فوري تقريباً</td></tr><tr><td>التراجع في معاملة</td><td>ممكن</td><td>غير ممكن غالباً</td></tr><tr><td>عدّاد <code>AUTO_INCREMENT</code></td><td>يبقى كما هو</td><td>يُصفَّر</td></tr><tr><td>المشغّلات (Triggers)</td><td>تُنفَّذ</td><td>لا تُنفَّذ</td></tr></tbody></table></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> الحذف الناعم بديل أفضل غالباً</div><p>بدل حذف البيانات فعلياً، أضف عمود <code>deleted_at</code>. تحتفظ بالسجلّ التاريخي، وتستطيع التراجع، ولا تكسر المفاتيح الأجنبية.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحذف الناعم</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- بدل DELETE
-UPDATE customers
-SET deleted_at = CURRENT_TIMESTAMP
-WHERE id = 42;
+<span class="tok-comment">-- تفريغ الجدول (سريع جداً — لا يمكن التراجع)</span>
+<span class="tok-keyword">TRUNCATE</span> <span class="tok-keyword">TABLE</span> logs<span class="tok-punct">;</span></code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th><code>DELETE</code></th><th><code>TRUNCATE</code></th></tr></thead><tbody><tr><td>الشرط <code>WHERE</code></td><td>مدعوم</td><td>غير مدعوم — يحذف الكل</td></tr><tr><td>السرعة</td><td>بطيء مع الصفوف الكثيرة</td><td>فوري تقريباً</td></tr><tr><td>التراجع في معاملة</td><td>ممكن</td><td>غير ممكن غالباً</td></tr><tr><td>عدّاد <code>AUTO_INCREMENT</code></td><td>يبقى كما هو</td><td>يُصفَّر</td></tr><tr><td>المشغّلات (Triggers)</td><td>تُنفَّذ</td><td>لا تُنفَّذ</td></tr></tbody></table></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> الحذف الناعم بديل أفضل غالباً</div><p>بدل حذف البيانات فعلياً، أضف عمود <code>deleted_at</code>. تحتفظ بالسجلّ التاريخي، وتستطيع التراجع، ولا تكسر المفاتيح الأجنبية.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحذف الناعم</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- بدل DELETE</span>
+<span class="tok-keyword">UPDATE</span> customers
+<span class="tok-keyword">SET</span> deleted_at <span class="tok-punct">=</span> CURRENT_TIMESTAMP
+<span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">42</span><span class="tok-punct">;</span>
 
--- وفي كل الاستعلامات
-SELECT * FROM customers WHERE deleted_at IS NULL;
+<span class="tok-comment">-- وفي كل الاستعلامات</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers <span class="tok-keyword">WHERE</span> deleted_at <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span><span class="tok-punct">;</span>
 
--- أو أنشئ عرضاً يخفي المحذوفات
-CREATE VIEW active_customers AS
-SELECT * FROM customers WHERE deleted_at IS NULL;</code></pre></div><h2 id="sec-7">الإدراج أو التحديث (Upsert)</h2><p>حالة شائعة: أدرج الصف إن لم يكن موجوداً، وحدّثه إن كان. الحلّ يختلف بين الأنظمة.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">PostgreSQL و SQLite</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>INSERT INTO product_stats (product_id, views)
-VALUES (5, 1)
-ON CONFLICT (product_id)
-DO UPDATE SET views = product_stats.views + 1;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">MySQL</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>INSERT INTO product_stats (product_id, views)
-VALUES (5, 1)
-ON DUPLICATE KEY UPDATE views = views + 1;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">تجاهل التعارض</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- لا تفعل شيئاً إن كان موجوداً
-INSERT INTO tags (name) VALUES (&#39;css&#39;)
-ON CONFLICT (name) DO NOTHING;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>شرط عمل Upsert وجود قيد <code>UNIQUE</code> أو <code>PRIMARY KEY</code> على العمود المذكور — هو ما يكتشف به المحرّك التعارض.</p></div><h2 id="sec-8">سيناريو كامل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">دورة حياة طلب</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- 1) إنشاء الطلب
-INSERT INTO orders (customer_id, status, total)
-VALUES (1, &#39;pending&#39;, 0)
-RETURNING id;   -- لنفترض أنه 101
+<span class="tok-comment">-- أو أنشئ عرضاً يخفي المحذوفات</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">VIEW</span> active_customers <span class="tok-keyword">AS</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers <span class="tok-keyword">WHERE</span> deleted_at <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span><span class="tok-punct">;</span></code></pre></div><h2 id="sec-7">الإدراج أو التحديث (Upsert)</h2><p>حالة شائعة: أدرج الصف إن لم يكن موجوداً، وحدّثه إن كان. الحلّ يختلف بين الأنظمة.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">PostgreSQL و SQLite</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">product_stats</span> <span class="tok-punct">(</span>product_id<span class="tok-punct">,</span> views<span class="tok-punct">)</span>
+<span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">)</span>
+<span class="tok-keyword">ON</span> <span class="tok-keyword">CONFLICT</span> <span class="tok-punct">(</span>product_id<span class="tok-punct">)</span>
+<span class="tok-keyword">DO</span> <span class="tok-keyword">UPDATE</span> <span class="tok-keyword">SET</span> views <span class="tok-punct">=</span> product_stats<span class="tok-punct">.</span>views <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">;</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">MySQL</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">product_stats</span> <span class="tok-punct">(</span>product_id<span class="tok-punct">,</span> views<span class="tok-punct">)</span>
+<span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">)</span>
+<span class="tok-keyword">ON</span> DUPLICATE <span class="tok-keyword">KEY</span> <span class="tok-keyword">UPDATE</span> views <span class="tok-punct">=</span> views <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">;</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">تجاهل التعارض</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- لا تفعل شيئاً إن كان موجوداً</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">tags</span> <span class="tok-punct">(</span>name<span class="tok-punct">)</span> <span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-string">&#39;css&#39;</span><span class="tok-punct">)</span>
+<span class="tok-keyword">ON</span> <span class="tok-keyword">CONFLICT</span> <span class="tok-punct">(</span>name<span class="tok-punct">)</span> <span class="tok-keyword">DO</span> <span class="tok-keyword">NOTHING</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>شرط عمل Upsert وجود قيد <code>UNIQUE</code> أو <code>PRIMARY KEY</code> على العمود المذكور — هو ما يكتشف به المحرّك التعارض.</p></div><h2 id="sec-8">سيناريو كامل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">دورة حياة طلب</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- 1) إنشاء الطلب</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">orders</span> <span class="tok-punct">(</span>customer_id<span class="tok-punct">,</span> status<span class="tok-punct">,</span> total<span class="tok-punct">)</span>
+<span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-string">&#39;pending&#39;</span><span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">)</span>
+<span class="tok-keyword">RETURNING</span> id<span class="tok-punct">;</span>   <span class="tok-comment">-- لنفترض أنه 101</span>
 
--- 2) إضافة العناصر
-INSERT INTO order_items (order_id, product_id, quantity, unit_price)
-VALUES
-  (101, 5, 2, 299.00),
-  (101, 8, 1, 450.00);
+<span class="tok-comment">-- 2) إضافة العناصر</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">order_items</span> <span class="tok-punct">(</span>order_id<span class="tok-punct">,</span> product_id<span class="tok-punct">,</span> quantity<span class="tok-punct">,</span> unit_price<span class="tok-punct">)</span>
+<span class="tok-keyword">VALUES</span>
+  <span class="tok-punct">(</span><span class="tok-number">101</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-number">299.00</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-number">101</span><span class="tok-punct">,</span> <span class="tok-number">8</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">450.00</span><span class="tok-punct">);</span>
 
--- 3) تحديث إجمالي الطلب
-UPDATE orders
-SET total = (
-  SELECT SUM(quantity * unit_price)
-  FROM order_items
-  WHERE order_id = 101
-)
-WHERE id = 101;
+<span class="tok-comment">-- 3) تحديث إجمالي الطلب</span>
+<span class="tok-keyword">UPDATE</span> orders
+<span class="tok-keyword">SET</span> total <span class="tok-punct">=</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-func">SUM</span><span class="tok-punct">(</span>quantity <span class="tok-punct">*</span> unit_price<span class="tok-punct">)</span>
+  <span class="tok-keyword">FROM</span> order_items
+  <span class="tok-keyword">WHERE</span> order_id <span class="tok-punct">=</span> <span class="tok-number">101</span>
+<span class="tok-punct">)</span>
+<span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">101</span><span class="tok-punct">;</span>
 
--- 4) خصم المخزون
-UPDATE products
-SET stock = stock - (
-  SELECT quantity FROM order_items
-  WHERE order_id = 101 AND product_id = products.id
-)
-WHERE id IN (SELECT product_id FROM order_items WHERE order_id = 101);
+<span class="tok-comment">-- 4) خصم المخزون</span>
+<span class="tok-keyword">UPDATE</span> products
+<span class="tok-keyword">SET</span> stock <span class="tok-punct">=</span> stock <span class="tok-punct">-</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> quantity <span class="tok-keyword">FROM</span> order_items
+  <span class="tok-keyword">WHERE</span> order_id <span class="tok-punct">=</span> <span class="tok-number">101</span> <span class="tok-keyword">AND</span> product_id <span class="tok-punct">=</span> products<span class="tok-punct">.</span>id
+<span class="tok-punct">)</span>
+<span class="tok-keyword">WHERE</span> id <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-keyword">SELECT</span> product_id <span class="tok-keyword">FROM</span> order_items <span class="tok-keyword">WHERE</span> order_id <span class="tok-punct">=</span> <span class="tok-number">101</span><span class="tok-punct">);</span>
 
--- 5) تأكيد الدفع
-UPDATE orders
-SET status = &#39;paid&#39;, paid_at = CURRENT_TIMESTAMP
-WHERE id = 101 AND status = &#39;pending&#39;;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>لاحظ <code>AND status = &quot;pending&quot;</code> في الخطوة الأخيرة: تمنع تحديث طلب أُلغي أو دُفع مسبقاً. هذا نمط مهم يُسمّى <strong>القفل المتفائل</strong> ويحمي من حالات التسابق.</p></div><h2 id="sec-9">أخطاء شائعة</h2><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code>-- ✗ نسيان WHERE
-UPDATE users SET is_admin = TRUE;
+<span class="tok-comment">-- 5) تأكيد الدفع</span>
+<span class="tok-keyword">UPDATE</span> orders
+<span class="tok-keyword">SET</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;paid&#39;</span><span class="tok-punct">,</span> paid_at <span class="tok-punct">=</span> CURRENT_TIMESTAMP
+<span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">101</span> <span class="tok-keyword">AND</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;pending&#39;</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>لاحظ <code>AND status = &quot;pending&quot;</code> في الخطوة الأخيرة: تمنع تحديث طلب أُلغي أو دُفع مسبقاً. هذا نمط مهم يُسمّى <strong>القفل المتفائل</strong> ويحمي من حالات التسابق.</p></div><h2 id="sec-9">أخطاء شائعة</h2><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code><span class="tok-comment">-- ✗ نسيان WHERE</span>
+<span class="tok-keyword">UPDATE</span> users <span class="tok-keyword">SET</span> is_admin <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span><span class="tok-punct">;</span>
 
--- ✗ مقارنة NULL
-DELETE FROM users WHERE deleted_at = NULL;
+<span class="tok-comment">-- ✗ مقارنة NULL</span>
+<span class="tok-keyword">DELETE</span> <span class="tok-keyword">FROM</span> users <span class="tok-keyword">WHERE</span> deleted_at <span class="tok-punct">=</span> <span class="tok-bool">NULL</span><span class="tok-punct">;</span>
 
--- ✗ إدراج بلا أعمدة
-INSERT INTO users VALUES (1, &quot;سارة&quot;);</code></pre></div><div class="why">الأولى تجعل كل المستخدمين مدراء، والثانية لا تحذف شيئاً، والثالثة تنكسر عند أي تغيير في الجدول.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code>-- ✓
-UPDATE users SET is_admin = TRUE WHERE id = 1;
+<span class="tok-comment">-- ✗ إدراج بلا أعمدة</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> users <span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> &quot;سارة&quot;<span class="tok-punct">);</span></code></pre></div><div class="why">الأولى تجعل كل المستخدمين مدراء، والثانية لا تحذف شيئاً، والثالثة تنكسر عند أي تغيير في الجدول.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code><span class="tok-comment">-- ✓</span>
+<span class="tok-keyword">UPDATE</span> users <span class="tok-keyword">SET</span> is_admin <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
 
--- ✓
-DELETE FROM users WHERE deleted_at IS NOT NULL;
+<span class="tok-comment">-- ✓</span>
+<span class="tok-keyword">DELETE</span> <span class="tok-keyword">FROM</span> users <span class="tok-keyword">WHERE</span> deleted_at <span class="tok-keyword">IS</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">;</span>
 
--- ✓
-INSERT INTO users (id, name) VALUES (1, &quot;سارة&quot;);</code></pre></div><div class="why">شرط محدّد، ومقارنة NULL صحيحة، وأعمدة صريحة.</div></div></div><ul><li>نسيان <code>WHERE</code> في <code>UPDATE</code> أو <code>DELETE</code>.</li><li>استخدام <code>=</code> مع <code>NULL</code> بدل <code>IS</code>.</li><li>الإدراج بلا تحديد أعمدة.</li><li>تحديث سجلّ تاريخي بدل إنشاء سجلّ جديد.</li><li>الحذف الفعلي حيث يكفي الحذف الناعم.</li><li>إدراج آلاف الصفوف في أوامر منفصلة بدل دفعة واحدة.</li></ul><section class="exercise" id="sec-10"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: إدارة بيانات متجر</h3></header><div class="exercise-body"><p>نفّذ سلسلة عمليات على قاعدة المتجر التي بنيتها في الدرس السابق.</p><p><strong>المطلوب:</strong></p><ul><li>أدرج خمسة منتجات في أمر <code>INSERT</code> واحد.</li><li>أدرج ثلاثة عملاء مع <code>RETURNING</code> لمعرّفاتهم (أو ما يعادلها).</li><li>أنشئ طلباً لعميل، وأضف له ثلاثة عناصر، ثم حدّث إجماليه من عناصره.</li><li>اخصم الكميات المطلوبة من مخزون المنتجات.</li><li>ارفع سعر كل منتجات تصنيف معيّن بنسبة 15٪.</li><li>ألغِ كل الطلبات المعلّقة الأقدم من ثلاثين يوماً.</li><li>استخدم Upsert لتسجيل مشاهدة منتج: أدرج بعدّاد 1 أو زد العدّاد الحالي.</li><li>طبّق الحذف الناعم على عميل بدل حذفه فعلياً.</li><li>قبل كل <code>UPDATE</code> أو <code>DELETE</code>، اكتب <code>SELECT</code> مقابلاً في تعليق للتحقّق.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 الاستعلام الفرعي داخل <code>SET</code> يحسب الإجمالي من <code>order_items</code>.</li><li>💡 Upsert يحتاج قيد <code>UNIQUE</code> على العمود المستهدف.</li><li>💡 استخدم <code>CURRENT_DATE - INTERVAL</code> لحساب التواريخ.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ===== 1) إدراج منتجات =====
-INSERT INTO products (category_id, name, sku, price, stock) VALUES
-  (1, &#39;سماعة لاسلكية&#39;,  &#39;SKU-001&#39;, 299.00, 50),
-  (1, &#39;سماعة سلكية&#39;,    &#39;SKU-002&#39;, 120.00, 80),
-  (2, &#39;لوحة مفاتيح&#39;,    &#39;SKU-003&#39;, 450.00, 30),
-  (2, &#39;ماوس لاسلكي&#39;,    &#39;SKU-004&#39;, 130.00, 65),
-  (3, &#39;شاشة 27 بوصة&#39;,   &#39;SKU-005&#39;, 1450.00, 12);
+<span class="tok-comment">-- ✓</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">users</span> <span class="tok-punct">(</span>id<span class="tok-punct">,</span> name<span class="tok-punct">)</span> <span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> &quot;سارة&quot;<span class="tok-punct">);</span></code></pre></div><div class="why">شرط محدّد، ومقارنة NULL صحيحة، وأعمدة صريحة.</div></div></div><ul><li>نسيان <code>WHERE</code> في <code>UPDATE</code> أو <code>DELETE</code>.</li><li>استخدام <code>=</code> مع <code>NULL</code> بدل <code>IS</code>.</li><li>الإدراج بلا تحديد أعمدة.</li><li>تحديث سجلّ تاريخي بدل إنشاء سجلّ جديد.</li><li>الحذف الفعلي حيث يكفي الحذف الناعم.</li><li>إدراج آلاف الصفوف في أوامر منفصلة بدل دفعة واحدة.</li></ul><section class="exercise" id="sec-10"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: إدارة بيانات متجر</h3></header><div class="exercise-body"><p>نفّذ سلسلة عمليات على قاعدة المتجر التي بنيتها في الدرس السابق.</p><p><strong>المطلوب:</strong></p><ul><li>أدرج خمسة منتجات في أمر <code>INSERT</code> واحد.</li><li>أدرج ثلاثة عملاء مع <code>RETURNING</code> لمعرّفاتهم (أو ما يعادلها).</li><li>أنشئ طلباً لعميل، وأضف له ثلاثة عناصر، ثم حدّث إجماليه من عناصره.</li><li>اخصم الكميات المطلوبة من مخزون المنتجات.</li><li>ارفع سعر كل منتجات تصنيف معيّن بنسبة 15٪.</li><li>ألغِ كل الطلبات المعلّقة الأقدم من ثلاثين يوماً.</li><li>استخدم Upsert لتسجيل مشاهدة منتج: أدرج بعدّاد 1 أو زد العدّاد الحالي.</li><li>طبّق الحذف الناعم على عميل بدل حذفه فعلياً.</li><li>قبل كل <code>UPDATE</code> أو <code>DELETE</code>، اكتب <code>SELECT</code> مقابلاً في تعليق للتحقّق.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 الاستعلام الفرعي داخل <code>SET</code> يحسب الإجمالي من <code>order_items</code>.</li><li>💡 Upsert يحتاج قيد <code>UNIQUE</code> على العمود المستهدف.</li><li>💡 استخدم <code>CURRENT_DATE - INTERVAL</code> لحساب التواريخ.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- ===== 1) إدراج منتجات =====</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">products</span> <span class="tok-punct">(</span>category_id<span class="tok-punct">,</span> name<span class="tok-punct">,</span> sku<span class="tok-punct">,</span> price<span class="tok-punct">,</span> stock<span class="tok-punct">)</span> <span class="tok-keyword">VALUES</span>
+  <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-string">&#39;سماعة لاسلكية&#39;</span><span class="tok-punct">,</span>  <span class="tok-string">&#39;SKU-001&#39;</span><span class="tok-punct">,</span> <span class="tok-number">299.00</span><span class="tok-punct">,</span> <span class="tok-number">50</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-string">&#39;سماعة سلكية&#39;</span><span class="tok-punct">,</span>    <span class="tok-string">&#39;SKU-002&#39;</span><span class="tok-punct">,</span> <span class="tok-number">120.00</span><span class="tok-punct">,</span> <span class="tok-number">80</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-string">&#39;لوحة مفاتيح&#39;</span><span class="tok-punct">,</span>    <span class="tok-string">&#39;SKU-003&#39;</span><span class="tok-punct">,</span> <span class="tok-number">450.00</span><span class="tok-punct">,</span> <span class="tok-number">30</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-string">&#39;ماوس لاسلكي&#39;</span><span class="tok-punct">,</span>    <span class="tok-string">&#39;SKU-004&#39;</span><span class="tok-punct">,</span> <span class="tok-number">130.00</span><span class="tok-punct">,</span> <span class="tok-number">65</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-number">3</span><span class="tok-punct">,</span> <span class="tok-string">&#39;شاشة 27 بوصة&#39;</span><span class="tok-punct">,</span>   <span class="tok-string">&#39;SKU-005&#39;</span><span class="tok-punct">,</span> <span class="tok-number">1450.00</span><span class="tok-punct">,</span> <span class="tok-number">12</span><span class="tok-punct">);</span>
 
--- ===== 2) إدراج عملاء =====
-INSERT INTO customers (name, email, phone, city) VALUES
-  (&#39;سارة عبدالله&#39;, &#39;sara@example.com&#39;,   &#39;0501112222&#39;, &#39;الرياض&#39;),
-  (&#39;خالد الأحمد&#39;,  &#39;khalid@example.com&#39;, &#39;0553334444&#39;, &#39;جدة&#39;),
-  (&#39;نورة القحطاني&#39;,&#39;noura@example.com&#39;,  NULL,         &#39;الدمام&#39;)
-RETURNING id, name;
+<span class="tok-comment">-- ===== 2) إدراج عملاء =====</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">customers</span> <span class="tok-punct">(</span>name<span class="tok-punct">,</span> email<span class="tok-punct">,</span> phone<span class="tok-punct">,</span> city<span class="tok-punct">)</span> <span class="tok-keyword">VALUES</span>
+  <span class="tok-punct">(</span><span class="tok-string">&#39;سارة عبدالله&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;sara@example.com&#39;</span><span class="tok-punct">,</span>   <span class="tok-string">&#39;0501112222&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;الرياض&#39;</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-string">&#39;خالد الأحمد&#39;</span><span class="tok-punct">,</span>  <span class="tok-string">&#39;khalid@example.com&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;0553334444&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;جدة&#39;</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-string">&#39;نورة القحطاني&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;noura@example.com&#39;</span><span class="tok-punct">,</span>  <span class="tok-bool">NULL</span><span class="tok-punct">,</span>         <span class="tok-string">&#39;الدمام&#39;</span><span class="tok-punct">)</span>
+<span class="tok-keyword">RETURNING</span> id<span class="tok-punct">,</span> name<span class="tok-punct">;</span>
 
--- ===== 3) إنشاء طلب =====
-INSERT INTO orders (customer_id, status, total)
-VALUES (1, &#39;pending&#39;, 0)
-RETURNING id;    -- افترض 101
+<span class="tok-comment">-- ===== 3) إنشاء طلب =====</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">orders</span> <span class="tok-punct">(</span>customer_id<span class="tok-punct">,</span> status<span class="tok-punct">,</span> total<span class="tok-punct">)</span>
+<span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-string">&#39;pending&#39;</span><span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">)</span>
+<span class="tok-keyword">RETURNING</span> id<span class="tok-punct">;</span>    <span class="tok-comment">-- افترض 101</span>
 
-INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES
-  (101, 1, 2, 299.00),
-  (101, 3, 1, 450.00),
-  (101, 4, 3, 130.00);
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">order_items</span> <span class="tok-punct">(</span>order_id<span class="tok-punct">,</span> product_id<span class="tok-punct">,</span> quantity<span class="tok-punct">,</span> unit_price<span class="tok-punct">)</span> <span class="tok-keyword">VALUES</span>
+  <span class="tok-punct">(</span><span class="tok-number">101</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-number">299.00</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-number">101</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">450.00</span><span class="tok-punct">),</span>
+  <span class="tok-punct">(</span><span class="tok-number">101</span><span class="tok-punct">,</span> <span class="tok-number">4</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">,</span> <span class="tok-number">130.00</span><span class="tok-punct">);</span>
 
--- التحقّق قبل التحديث
--- SELECT SUM(quantity * unit_price) FROM order_items WHERE order_id = 101;
+<span class="tok-comment">-- التحقّق قبل التحديث</span>
+<span class="tok-comment">-- SELECT SUM(quantity * unit_price) FROM order_items WHERE order_id = 101;</span>
 
-UPDATE orders
-SET total = (
-  SELECT SUM(quantity * unit_price)
-  FROM order_items
-  WHERE order_id = 101
-)
-WHERE id = 101;
+<span class="tok-keyword">UPDATE</span> orders
+<span class="tok-keyword">SET</span> total <span class="tok-punct">=</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-func">SUM</span><span class="tok-punct">(</span>quantity <span class="tok-punct">*</span> unit_price<span class="tok-punct">)</span>
+  <span class="tok-keyword">FROM</span> order_items
+  <span class="tok-keyword">WHERE</span> order_id <span class="tok-punct">=</span> <span class="tok-number">101</span>
+<span class="tok-punct">)</span>
+<span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">101</span><span class="tok-punct">;</span>
 
--- ===== 4) خصم المخزون =====
--- SELECT id, name, stock FROM products
--- WHERE id IN (SELECT product_id FROM order_items WHERE order_id = 101);
+<span class="tok-comment">-- ===== 4) خصم المخزون =====</span>
+<span class="tok-comment">-- SELECT id, name, stock FROM products</span>
+<span class="tok-comment">-- WHERE id IN (SELECT product_id FROM order_items WHERE order_id = 101);</span>
 
-UPDATE products
-SET stock = stock - (
-  SELECT oi.quantity
-  FROM order_items oi
-  WHERE oi.order_id = 101 AND oi.product_id = products.id
-)
-WHERE id IN (
-  SELECT product_id FROM order_items WHERE order_id = 101
-);
+<span class="tok-keyword">UPDATE</span> products
+<span class="tok-keyword">SET</span> stock <span class="tok-punct">=</span> stock <span class="tok-punct">-</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> oi<span class="tok-punct">.</span>quantity
+  <span class="tok-keyword">FROM</span> order_items oi
+  <span class="tok-keyword">WHERE</span> oi<span class="tok-punct">.</span>order_id <span class="tok-punct">=</span> <span class="tok-number">101</span> <span class="tok-keyword">AND</span> oi<span class="tok-punct">.</span>product_id <span class="tok-punct">=</span> products<span class="tok-punct">.</span>id
+<span class="tok-punct">)</span>
+<span class="tok-keyword">WHERE</span> id <span class="tok-keyword">IN</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> product_id <span class="tok-keyword">FROM</span> order_items <span class="tok-keyword">WHERE</span> order_id <span class="tok-punct">=</span> <span class="tok-number">101</span>
+<span class="tok-punct">);</span>
 
--- ===== 5) رفع أسعار تصنيف =====
--- SELECT COUNT(*) FROM products WHERE category_id = 2;
+<span class="tok-comment">-- ===== 5) رفع أسعار تصنيف =====</span>
+<span class="tok-comment">-- SELECT COUNT(*) FROM products WHERE category_id = 2;</span>
 
-UPDATE products
-SET price = ROUND(price * 1.15, 2),
-    updated_at = CURRENT_TIMESTAMP
-WHERE category_id = 2;
+<span class="tok-keyword">UPDATE</span> products
+<span class="tok-keyword">SET</span> price <span class="tok-punct">=</span> <span class="tok-func">ROUND</span><span class="tok-punct">(</span>price <span class="tok-punct">*</span> <span class="tok-number">1.15</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">),</span>
+    updated_at <span class="tok-punct">=</span> CURRENT_TIMESTAMP
+<span class="tok-keyword">WHERE</span> category_id <span class="tok-punct">=</span> <span class="tok-number">2</span><span class="tok-punct">;</span>
 
--- ===== 6) إلغاء الطلبات القديمة =====
--- SELECT COUNT(*) FROM orders
--- WHERE status = &#39;pending&#39; AND ordered_at &lt; CURRENT_DATE - INTERVAL &#39;30 days&#39;;
+<span class="tok-comment">-- ===== 6) إلغاء الطلبات القديمة =====</span>
+<span class="tok-comment">-- SELECT COUNT(*) FROM orders</span>
+<span class="tok-comment">-- WHERE status = &#39;pending&#39; AND ordered_at &lt; CURRENT_DATE - INTERVAL &#39;30 days&#39;;</span>
 
-UPDATE orders
-SET status = &#39;cancelled&#39;
-WHERE status = &#39;pending&#39;
-  AND ordered_at &lt; CURRENT_DATE - INTERVAL &#39;30 days&#39;;
+<span class="tok-keyword">UPDATE</span> orders
+<span class="tok-keyword">SET</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;cancelled&#39;</span>
+<span class="tok-keyword">WHERE</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;pending&#39;</span>
+  <span class="tok-keyword">AND</span> ordered_at <span class="tok-punct">&lt;</span> CURRENT_DATE <span class="tok-punct">-</span> <span class="tok-keyword">INTERVAL</span> <span class="tok-string">&#39;30 days&#39;</span><span class="tok-punct">;</span>
 
--- ===== 7) تسجيل مشاهدة (Upsert) =====
-CREATE TABLE IF NOT EXISTS product_stats (
-  product_id INT PRIMARY KEY,
-  views      INT NOT NULL DEFAULT 0,
-  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
-);
+<span class="tok-comment">-- ===== 7) تسجيل مشاهدة (Upsert) =====</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> <span class="tok-keyword">IF</span> <span class="tok-keyword">NOT</span> <span class="tok-keyword">EXISTS</span> <span class="tok-func">product_stats</span> <span class="tok-punct">(</span>
+  product_id INT <span class="tok-keyword">PRIMARY</span> <span class="tok-keyword">KEY</span><span class="tok-punct">,</span>
+  views      INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> <span class="tok-number">0</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>product_id<span class="tok-punct">)</span> <span class="tok-keyword">REFERENCES</span> <span class="tok-func">products</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span> <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">CASCADE</span>
+<span class="tok-punct">);</span>
 
-INSERT INTO product_stats (product_id, views)
-VALUES (1, 1)
-ON CONFLICT (product_id)
-DO UPDATE SET views = product_stats.views + 1;
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">product_stats</span> <span class="tok-punct">(</span>product_id<span class="tok-punct">,</span> views<span class="tok-punct">)</span>
+<span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">)</span>
+<span class="tok-keyword">ON</span> <span class="tok-keyword">CONFLICT</span> <span class="tok-punct">(</span>product_id<span class="tok-punct">)</span>
+<span class="tok-keyword">DO</span> <span class="tok-keyword">UPDATE</span> <span class="tok-keyword">SET</span> views <span class="tok-punct">=</span> product_stats<span class="tok-punct">.</span>views <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
 
--- ===== 8) حذف ناعم =====
-ALTER TABLE customers ADD COLUMN deleted_at TIMESTAMP NULL;
+<span class="tok-comment">-- ===== 8) حذف ناعم =====</span>
+<span class="tok-keyword">ALTER</span> <span class="tok-keyword">TABLE</span> customers <span class="tok-keyword">ADD</span> <span class="tok-keyword">COLUMN</span> deleted_at TIMESTAMP <span class="tok-bool">NULL</span><span class="tok-punct">;</span>
 
--- SELECT id, name FROM customers WHERE id = 3;
+<span class="tok-comment">-- SELECT id, name FROM customers WHERE id = 3;</span>
 
-UPDATE customers
-SET deleted_at = CURRENT_TIMESTAMP
-WHERE id = 3;
+<span class="tok-keyword">UPDATE</span> customers
+<span class="tok-keyword">SET</span> deleted_at <span class="tok-punct">=</span> CURRENT_TIMESTAMP
+<span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">3</span><span class="tok-punct">;</span>
 
--- الاستعلامات اللاحقة تستثني المحذوفين
-SELECT id, name, city
-FROM customers
-WHERE deleted_at IS NULL;</code></pre></div></details></div></section><section class="quiz"><h2 id="sec-11"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ماذا يحدث عند <code>UPDATE users SET active = 0;</code> بلا <code>WHERE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا شيء</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>يُحدَّث كل صفوف الجدول</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>خطأ</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يُحدَّث أول صف</span></label></div><div class="q-explain"><strong>الشرح:</strong> أخطر خطأ في SQL؛ اكتب <code>SELECT</code> بنفس الشرط أولاً دائماً.</div></div><div class="q-item"><p class="q-text">2. لماذا نحدّد الأعمدة في <code>INSERT</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أوضح فقط</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>لأن الإدراج بلا أعمدة يعتمد على ترتيبها فينكسر عند أي تغيير في الجدول</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>إلزامي</span></label></div><div class="q-explain"><strong>الشرح:</strong> قد يدخل البيانات في أعمدة خاطئة بصمت عند تغيّر البنية.</div></div><div class="q-item"><p class="q-text">3. ما ميزة الحذف الناعم؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>يحفظ السجلّ التاريخي ويسمح بالتراجع ولا يكسر المفاتيح الأجنبية</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يوفّر مساحة</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أبسط</span></label></div><div class="q-explain"><strong>الشرح:</strong> البيانات المحذوفة نهائياً لا تعود؛ عمود <code>deleted_at</code> يحلّ ذلك.</div></div><div class="q-item"><p class="q-text">4. ما شرط عمل Upsert؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>فهرس</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>وجود قيد <code>UNIQUE</code> أو <code>PRIMARY KEY</code> يكتشف به المحرّك التعارض</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>معاملة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا شرط</span></label></div><div class="q-explain"><strong>الشرح:</strong> بدون قيد فريد لا يعرف المحرّك أن الصف مكرّر.</div></div><div class="q-item"><p class="q-text">5. ما الفرق الأهم بين <code>DELETE</code> و <code>TRUNCATE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span><code>TRUNCATE</code> يحذف الكل بسرعة بلا شرط ولا يمكن التراجع عنه غالباً</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span><code>DELETE</code> أسرع</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>TRUNCATE</code> لا يقبل <code>WHERE</code> ولا يشغّل المشغّلات ويصفّر العدّاد.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+<span class="tok-comment">-- الاستعلامات اللاحقة تستثني المحذوفين</span>
+<span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> name<span class="tok-punct">,</span> city
+<span class="tok-keyword">FROM</span> customers
+<span class="tok-keyword">WHERE</span> deleted_at <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span><span class="tok-punct">;</span></code></pre></div></details></div></section><section class="quiz"><h2 id="sec-11"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ماذا يحدث عند <code>UPDATE users SET active = 0;</code> بلا <code>WHERE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا شيء</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>يُحدَّث كل صفوف الجدول</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>خطأ</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يُحدَّث أول صف</span></label></div><div class="q-explain"><strong>الشرح:</strong> أخطر خطأ في SQL؛ اكتب <code>SELECT</code> بنفس الشرط أولاً دائماً.</div></div><div class="q-item"><p class="q-text">2. لماذا نحدّد الأعمدة في <code>INSERT</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أوضح فقط</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>لأن الإدراج بلا أعمدة يعتمد على ترتيبها فينكسر عند أي تغيير في الجدول</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>إلزامي</span></label></div><div class="q-explain"><strong>الشرح:</strong> قد يدخل البيانات في أعمدة خاطئة بصمت عند تغيّر البنية.</div></div><div class="q-item"><p class="q-text">3. ما ميزة الحذف الناعم؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>يحفظ السجلّ التاريخي ويسمح بالتراجع ولا يكسر المفاتيح الأجنبية</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يوفّر مساحة</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أبسط</span></label></div><div class="q-explain"><strong>الشرح:</strong> البيانات المحذوفة نهائياً لا تعود؛ عمود <code>deleted_at</code> يحلّ ذلك.</div></div><div class="q-item"><p class="q-text">4. ما شرط عمل Upsert؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>فهرس</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>وجود قيد <code>UNIQUE</code> أو <code>PRIMARY KEY</code> يكتشف به المحرّك التعارض</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>معاملة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا شرط</span></label></div><div class="q-explain"><strong>الشرح:</strong> بدون قيد فريد لا يعرف المحرّك أن الصف مكرّر.</div></div><div class="q-item"><p class="q-text">5. ما الفرق الأهم بين <code>DELETE</code> و <code>TRUNCATE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span><code>TRUNCATE</code> يحذف الكل بسرعة بلا شرط ولا يمكن التراجع عنه غالباً</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span><code>DELETE</code> أسرع</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>TRUNCATE</code> لا يقبل <code>WHERE</code> ولا يشغّل المشغّلات ويصفّر العدّاد.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
       <div class="complete-box">
         <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
         <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/03-dml" aria-pressed="false">

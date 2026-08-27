@@ -71,330 +71,330 @@
   <div class="lesson-layout">
     <article class="lesson-main">
       <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تكتب استعلامات فرعية في المواضع المختلفة.</li><li>تستخدم <code>EXISTS</code> و <code>IN</code> بوعي بالفروق.</li><li>تنشئ عروضاً لتبسيط الاستعلامات المتكرّرة.</li><li>تستخدم <code>WITH</code> لتقسيم الاستعلامات المعقّدة.</li><li>تكتب استعلامات تكرارية للبنى الهرمية.</li></ul></div>
-      <h2 id="sec-1">ما الاستعلام الفرعي؟</h2><p>استعلام <code>SELECT</code> داخل استعلام آخر. يُنفَّذ أولاً وتُستخدم نتيجته في الاستعلام الخارجي.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- المنتجات الأغلى من المتوسّط
-SELECT name, price
-FROM products
-WHERE price &gt; (SELECT AVG(price) FROM products)
-ORDER BY price DESC;</code></pre></div><p>الاستعلام الداخلي يُرجع رقماً واحداً (المتوسّط)، فيُستخدم في المقارنة. هذا ما يُسمّى <strong>استعلاماً فرعياً قياسياً</strong>.</p><h2 id="sec-2">المواضع الأربعة</h2><h3 id="sec-3">1. في <code>WHERE</code></h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- قيمة واحدة
-SELECT * FROM products
-WHERE price &gt; (SELECT AVG(price) FROM products);
+      <h2 id="sec-1">ما الاستعلام الفرعي؟</h2><p>استعلام <code>SELECT</code> داخل استعلام آخر. يُنفَّذ أولاً وتُستخدم نتيجته في الاستعلام الخارجي.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- المنتجات الأغلى من المتوسّط</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> price <span class="tok-punct">&gt;</span> <span class="tok-punct">(</span><span class="tok-keyword">SELECT</span> <span class="tok-func">AVG</span><span class="tok-punct">(</span>price<span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> products<span class="tok-punct">)</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price <span class="tok-keyword">DESC</span><span class="tok-punct">;</span></code></pre></div><p>الاستعلام الداخلي يُرجع رقماً واحداً (المتوسّط)، فيُستخدم في المقارنة. هذا ما يُسمّى <strong>استعلاماً فرعياً قياسياً</strong>.</p><h2 id="sec-2">المواضع الأربعة</h2><h3 id="sec-3">1. في <code>WHERE</code></h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- قيمة واحدة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> price <span class="tok-punct">&gt;</span> <span class="tok-punct">(</span><span class="tok-keyword">SELECT</span> <span class="tok-func">AVG</span><span class="tok-punct">(</span>price<span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> products<span class="tok-punct">);</span>
 
--- قائمة قيم
-SELECT * FROM customers
-WHERE id IN (
-  SELECT DISTINCT customer_id
-  FROM orders
-  WHERE total &gt; 5000
-);
+<span class="tok-comment">-- قائمة قيم</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers
+<span class="tok-keyword">WHERE</span> id <span class="tok-keyword">IN</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-keyword">DISTINCT</span> customer_id
+  <span class="tok-keyword">FROM</span> orders
+  <span class="tok-keyword">WHERE</span> total <span class="tok-punct">&gt;</span> <span class="tok-number">5000</span>
+<span class="tok-punct">);</span>
 
--- النفي
-SELECT * FROM products
-WHERE id NOT IN (SELECT product_id FROM order_items);</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> فخّ NOT IN مع NULL</div><p>إن أرجع الاستعلام الفرعي قيمة <code>NULL</code> واحدة، فإن <code>NOT IN</code> <strong>لا تُرجع أي صف</strong> إطلاقاً. أضف <code>WHERE col IS NOT NULL</code> داخل الاستعلام الفرعي، أو استخدم <code>NOT EXISTS</code> بدلاً منه.</p></div><h3 id="sec-4">2. في <code>FROM</code> — جدول مشتقّ</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
-  city,
-  AVG(order_count) AS avg_orders_per_customer
-FROM (
-  SELECT c.city, c.id, COUNT(o.id) AS order_count
-  FROM customers c
-  LEFT JOIN orders o ON o.customer_id = c.id
-  GROUP BY c.city, c.id
-) AS per_customer
-GROUP BY city;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>الجدول المشتقّ <strong>يجب</strong> أن يحمل اسماً بديلاً (<code>AS per_customer</code>) وإلا رفض المحرّك الاستعلام.</p></div><h3 id="sec-5">3. في <code>SELECT</code> — عمود محسوب</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
-  c.name,
-  c.city,
-  (SELECT COUNT(*) FROM orders o WHERE o.customer_id = c.id)     AS order_count,
-  (SELECT MAX(ordered_at) FROM orders o WHERE o.customer_id = c.id) AS last_order
-FROM customers c;</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> الاستعلام المترابط بطيء</div><p>هذا النوع يُنفَّذ <strong>مرة لكل صف</strong> في الاستعلام الخارجي. مع عشرة آلاف عميل يعني عشرين ألف استعلام فرعي. البديل الأسرع دائماً: <code>LEFT JOIN</code> مع <code>GROUP BY</code>.</p></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code>SELECT
-  c.name,
-  (SELECT COUNT(*) FROM orders o WHERE o.customer_id = c.id) AS cnt
-FROM customers c;</code></pre></div><div class="why">استعلام فرعي لكل صف — بطيء جداً مع البيانات الكبيرة.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code>SELECT c.name, COUNT(o.id) AS cnt
-FROM customers c
-LEFT JOIN orders o ON o.customer_id = c.id
-GROUP BY c.id, c.name;</code></pre></div><div class="why">مسح واحد للجدولين مع تجميع — أسرع بمراحل.</div></div></div><h3 id="sec-6">4. في <code>HAVING</code></h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT category_id, AVG(price) AS avg_price
-FROM products
-GROUP BY category_id
-HAVING AVG(price) &gt; (SELECT AVG(price) FROM products);</code></pre></div><h2 id="sec-7"><code>EXISTS</code> مقابل <code>IN</code></h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- بـ IN
-SELECT * FROM customers c
-WHERE c.id IN (SELECT customer_id FROM orders);
+<span class="tok-comment">-- النفي</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> id <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-keyword">SELECT</span> product_id <span class="tok-keyword">FROM</span> order_items<span class="tok-punct">);</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> فخّ NOT IN مع NULL</div><p>إن أرجع الاستعلام الفرعي قيمة <code>NULL</code> واحدة، فإن <code>NOT IN</code> <strong>لا تُرجع أي صف</strong> إطلاقاً. أضف <code>WHERE col IS NOT NULL</code> داخل الاستعلام الفرعي، أو استخدم <code>NOT EXISTS</code> بدلاً منه.</p></div><h3 id="sec-4">2. في <code>FROM</code> — جدول مشتقّ</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span>
+  city<span class="tok-punct">,</span>
+  <span class="tok-func">AVG</span><span class="tok-punct">(</span>order_count<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> avg_orders_per_customer
+<span class="tok-keyword">FROM</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> c<span class="tok-punct">.</span>city<span class="tok-punct">,</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> <span class="tok-func">COUNT</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>id<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> order_count
+  <span class="tok-keyword">FROM</span> customers c
+  <span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> orders o <span class="tok-keyword">ON</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+  <span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> c<span class="tok-punct">.</span>city<span class="tok-punct">,</span> c<span class="tok-punct">.</span>id
+<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> per_customer
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> city<span class="tok-punct">;</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>الجدول المشتقّ <strong>يجب</strong> أن يحمل اسماً بديلاً (<code>AS per_customer</code>) وإلا رفض المحرّك الاستعلام.</p></div><h3 id="sec-5">3. في <code>SELECT</code> — عمود محسوب</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span>
+  c<span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span>city<span class="tok-punct">,</span>
+  <span class="tok-punct">(</span><span class="tok-keyword">SELECT</span> <span class="tok-func">COUNT</span><span class="tok-punct">(*)</span> <span class="tok-keyword">FROM</span> orders o <span class="tok-keyword">WHERE</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id<span class="tok-punct">)</span>     <span class="tok-keyword">AS</span> order_count<span class="tok-punct">,</span>
+  <span class="tok-punct">(</span><span class="tok-keyword">SELECT</span> <span class="tok-func">MAX</span><span class="tok-punct">(</span>ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> orders o <span class="tok-keyword">WHERE</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> last_order
+<span class="tok-keyword">FROM</span> customers c<span class="tok-punct">;</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> الاستعلام المترابط بطيء</div><p>هذا النوع يُنفَّذ <strong>مرة لكل صف</strong> في الاستعلام الخارجي. مع عشرة آلاف عميل يعني عشرين ألف استعلام فرعي. البديل الأسرع دائماً: <code>LEFT JOIN</code> مع <code>GROUP BY</code>.</p></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code><span class="tok-keyword">SELECT</span>
+  c<span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+  <span class="tok-punct">(</span><span class="tok-keyword">SELECT</span> <span class="tok-func">COUNT</span><span class="tok-punct">(*)</span> <span class="tok-keyword">FROM</span> orders o <span class="tok-keyword">WHERE</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> cnt
+<span class="tok-keyword">FROM</span> customers c<span class="tok-punct">;</span></code></pre></div><div class="why">استعلام فرعي لكل صف — بطيء جداً مع البيانات الكبيرة.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code><span class="tok-keyword">SELECT</span> c<span class="tok-punct">.</span>name<span class="tok-punct">,</span> <span class="tok-func">COUNT</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>id<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> cnt
+<span class="tok-keyword">FROM</span> customers c
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> orders o <span class="tok-keyword">ON</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name<span class="tok-punct">;</span></code></pre></div><div class="why">مسح واحد للجدولين مع تجميع — أسرع بمراحل.</div></div></div><h3 id="sec-6">4. في <code>HAVING</code></h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span> category_id<span class="tok-punct">,</span> <span class="tok-func">AVG</span><span class="tok-punct">(</span>price<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> avg_price
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> category_id
+<span class="tok-keyword">HAVING</span> <span class="tok-func">AVG</span><span class="tok-punct">(</span>price<span class="tok-punct">)</span> <span class="tok-punct">&gt;</span> <span class="tok-punct">(</span><span class="tok-keyword">SELECT</span> <span class="tok-func">AVG</span><span class="tok-punct">(</span>price<span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> products<span class="tok-punct">);</span></code></pre></div><h2 id="sec-7"><code>EXISTS</code> مقابل <code>IN</code></h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- بـ IN</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers c
+<span class="tok-keyword">WHERE</span> c<span class="tok-punct">.</span>id <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-keyword">SELECT</span> customer_id <span class="tok-keyword">FROM</span> orders<span class="tok-punct">);</span>
 
--- بـ EXISTS — غالباً أسرع
-SELECT * FROM customers c
-WHERE EXISTS (
-  SELECT 1 FROM orders o WHERE o.customer_id = c.id
-);
+<span class="tok-comment">-- بـ EXISTS — غالباً أسرع</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers c
+<span class="tok-keyword">WHERE</span> <span class="tok-keyword">EXISTS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-number">1</span> <span class="tok-keyword">FROM</span> orders o <span class="tok-keyword">WHERE</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-punct">);</span>
 
--- النفي
-SELECT * FROM customers c
-WHERE NOT EXISTS (
-  SELECT 1 FROM orders o WHERE o.customer_id = c.id
-);</code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th><code>IN</code></th><th><code>EXISTS</code></th></tr></thead><tbody><tr><td>يُرجع</td><td>قائمة قيم</td><td>صح أو خطأ</td></tr><tr><td>يتوقّف عند</td><td>بناء القائمة كاملة</td><td><strong>أول مطابقة</strong></td></tr><tr><td>مع <code>NULL</code></td><td><strong>فخّ خطر</strong> في <code>NOT IN</code></td><td>آمن تماماً</td></tr><tr><td>الأداء</td><td>جيد مع القوائم الصغيرة</td><td>أفضل مع الجداول الكبيرة</td></tr><tr><td>الأنسب لـ</td><td>قائمة ثابتة معروفة</td><td>فحص الوجود المترابط</td></tr></tbody></table></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>داخل <code>EXISTS</code> اكتب <code>SELECT 1</code> لا <code>SELECT *</code> — المحرّك لا يهتم بالأعمدة أصلاً، بل بوجود صف واحد على الأقل.</p></div><h2 id="sec-8">العروض (Views)</h2><p>العرض استعلام <strong>محفوظ باسم</strong> تستخدمه كأنه جدول. لا يخزّن بيانات بل يُنفَّذ عند كل استدعاء.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>CREATE VIEW active_products AS
-SELECT id, name, price, stock, category_id
-FROM products
-WHERE is_active = TRUE AND deleted_at IS NULL;
+<span class="tok-comment">-- النفي</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers c
+<span class="tok-keyword">WHERE</span> <span class="tok-keyword">NOT</span> <span class="tok-keyword">EXISTS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-number">1</span> <span class="tok-keyword">FROM</span> orders o <span class="tok-keyword">WHERE</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-punct">);</span></code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th><code>IN</code></th><th><code>EXISTS</code></th></tr></thead><tbody><tr><td>يُرجع</td><td>قائمة قيم</td><td>صح أو خطأ</td></tr><tr><td>يتوقّف عند</td><td>بناء القائمة كاملة</td><td><strong>أول مطابقة</strong></td></tr><tr><td>مع <code>NULL</code></td><td><strong>فخّ خطر</strong> في <code>NOT IN</code></td><td>آمن تماماً</td></tr><tr><td>الأداء</td><td>جيد مع القوائم الصغيرة</td><td>أفضل مع الجداول الكبيرة</td></tr><tr><td>الأنسب لـ</td><td>قائمة ثابتة معروفة</td><td>فحص الوجود المترابط</td></tr></tbody></table></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>داخل <code>EXISTS</code> اكتب <code>SELECT 1</code> لا <code>SELECT *</code> — المحرّك لا يهتم بالأعمدة أصلاً، بل بوجود صف واحد على الأقل.</p></div><h2 id="sec-8">العروض (Views)</h2><p>العرض استعلام <strong>محفوظ باسم</strong> تستخدمه كأنه جدول. لا يخزّن بيانات بل يُنفَّذ عند كل استدعاء.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">CREATE</span> <span class="tok-keyword">VIEW</span> active_products <span class="tok-keyword">AS</span>
+<span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> name<span class="tok-punct">,</span> price<span class="tok-punct">,</span> stock<span class="tok-punct">,</span> category_id
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> is_active <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span> <span class="tok-keyword">AND</span> deleted_at <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span><span class="tok-punct">;</span>
 
--- الاستخدام كجدول عادي
-SELECT * FROM active_products WHERE price &lt; 500;
+<span class="tok-comment">-- الاستخدام كجدول عادي</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> active_products <span class="tok-keyword">WHERE</span> price <span class="tok-punct">&lt;</span> <span class="tok-number">500</span><span class="tok-punct">;</span>
 
--- عرض أعقد
-CREATE VIEW order_summary AS
-SELECT
-  o.id,
-  o.ordered_at,
-  o.status,
-  c.name  AS customer_name,
-  c.city,
-  COUNT(oi.id)                       AS item_count,
-  SUM(oi.quantity)                   AS total_quantity,
-  SUM(oi.quantity * oi.unit_price)   AS calculated_total
-FROM orders o
-JOIN customers   c  ON c.id = o.customer_id
-LEFT JOIN order_items oi ON oi.order_id = o.id
-GROUP BY o.id, o.ordered_at, o.status, c.name, c.city;
+<span class="tok-comment">-- عرض أعقد</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">VIEW</span> order_summary <span class="tok-keyword">AS</span>
+<span class="tok-keyword">SELECT</span>
+  o<span class="tok-punct">.</span>id<span class="tok-punct">,</span>
+  o<span class="tok-punct">.</span>ordered_at<span class="tok-punct">,</span>
+  o<span class="tok-punct">.</span>status<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span>name  <span class="tok-keyword">AS</span> customer_name<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span>city<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span>oi<span class="tok-punct">.</span>id<span class="tok-punct">)</span>                       <span class="tok-keyword">AS</span> item_count<span class="tok-punct">,</span>
+  <span class="tok-func">SUM</span><span class="tok-punct">(</span>oi<span class="tok-punct">.</span>quantity<span class="tok-punct">)</span>                   <span class="tok-keyword">AS</span> total_quantity<span class="tok-punct">,</span>
+  <span class="tok-func">SUM</span><span class="tok-punct">(</span>oi<span class="tok-punct">.</span>quantity <span class="tok-punct">*</span> oi<span class="tok-punct">.</span>unit_price<span class="tok-punct">)</span>   <span class="tok-keyword">AS</span> calculated_total
+<span class="tok-keyword">FROM</span> orders o
+<span class="tok-keyword">JOIN</span> customers   c  <span class="tok-keyword">ON</span> c<span class="tok-punct">.</span>id <span class="tok-punct">=</span> o<span class="tok-punct">.</span>customer_id
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> order_items oi <span class="tok-keyword">ON</span> oi<span class="tok-punct">.</span>order_id <span class="tok-punct">=</span> o<span class="tok-punct">.</span>id
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> o<span class="tok-punct">.</span>id<span class="tok-punct">,</span> o<span class="tok-punct">.</span>ordered_at<span class="tok-punct">,</span> o<span class="tok-punct">.</span>status<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name<span class="tok-punct">,</span> c<span class="tok-punct">.</span>city<span class="tok-punct">;</span>
 
--- تعديل وحذف
-CREATE OR REPLACE VIEW active_products AS SELECT … ;
-DROP VIEW active_products;</code></pre></div><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h4>تبسيط</h4><p>استعلام معقّد يُكتب مرة ويُستخدم بسطر.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>أمان</h4><p>امنح صلاحية على العرض بدل الجدول لإخفاء أعمدة حسّاسة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div><h4>اتّساق</h4><p>منطق العمل في مكان واحد بدل تكراره في كل تطبيق.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h4>تجريد</h4><p>تغيّر بنية الجداول دون كسر الاستعلامات المعتمدة على العرض.</p></div></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> العرض ليس ذاكرة تخزين</div><p>يُنفَّذ استعلامه في كل مرة، فلا يحسّن الأداء بذاته. إن احتجت تسريعاً حقيقياً استخدم <strong>العرض المُجسَّد</strong> (Materialized View) الذي يخزّن النتيجة فعلاً ويُحدَّث عند الطلب — متاح في PostgreSQL وOracle.</p></div><h2 id="sec-9">تعبيرات الجداول المشتركة (CTE)</h2><p>توجيه <code>WITH</code> يعرّف نتيجة مؤقتة باسم، تُستخدم في نفس الاستعلام. الفائدة الكبرى: <strong>تحويل استعلام متشابك إلى خطوات مقروءة</strong>.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>WITH customer_totals AS (
-  SELECT
-    customer_id,
-    COUNT(*)   AS order_count,
-    SUM(total) AS total_spent
-  FROM orders
-  WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
-  GROUP BY customer_id
-)
-SELECT
-  c.name,
-  c.city,
-  ct.order_count,
-  ct.total_spent
-FROM customers c
-JOIN customer_totals ct ON ct.customer_id = c.id
-WHERE ct.total_spent &gt; 5000
-ORDER BY ct.total_spent DESC;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">عدة CTE متسلسلة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>WITH
-monthly_sales AS (
-  SELECT
-    EXTRACT(YEAR  FROM ordered_at) AS year,
-    EXTRACT(MONTH FROM ordered_at) AS month,
-    SUM(total) AS revenue
-  FROM orders
-  WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
-  GROUP BY 1, 2
-),
-avg_monthly AS (
-  SELECT AVG(revenue) AS avg_revenue FROM monthly_sales
-)
-SELECT
-  ms.year,
-  ms.month,
-  ROUND(ms.revenue, 2) AS revenue,
-  ROUND(am.avg_revenue, 2) AS avg_revenue,
-  ROUND(100.0 * (ms.revenue - am.avg_revenue) / am.avg_revenue, 1) AS pct_vs_avg
-FROM monthly_sales ms
-CROSS JOIN avg_monthly am
-ORDER BY ms.year, ms.month;</code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th>استعلام فرعي</th><th>CTE</th></tr></thead><tbody><tr><td>القراءة</td><td>متداخل يصعب تتبّعه</td><td><strong>خطوات متسلسلة واضحة</strong></td></tr><tr><td>إعادة الاستخدام</td><td>يُكتب في كل موضع</td><td>يُعرَّف مرة ويُستخدم مراراً</td></tr><tr><td>التكرار الذاتي</td><td>غير ممكن</td><td>ممكن بـ <code>RECURSIVE</code></td></tr><tr><td>التشخيص</td><td>صعب</td><td>شغّل كل خطوة وحدها</td></tr><tr><td>الأداء</td><td>متقارب غالباً</td><td>متقارب غالباً</td></tr></tbody></table></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>قاعدة عملية: إن تجاوز استعلامك ثلاثين سطراً أو احتوى استعلامين فرعيين متداخلين، حوّله إلى CTE. زميلك — وأنت بعد شهر — ستشكران نفسيكما.</p></div><h2 id="sec-10">الاستعلامات التكرارية</h2><p><code>WITH RECURSIVE</code> يحلّ مشكلة البنى الهرمية غير محدّدة العمق: شجرة تصنيفات، هيكل تنظيمي، سلسلة تعليقات.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>WITH RECURSIVE category_tree AS (
-  -- الحالة الأساسية: الجذور
-  SELECT id, name, parent_id, 1 AS level, name AS path
-  FROM categories
-  WHERE parent_id IS NULL
+<span class="tok-comment">-- تعديل وحذف</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">OR</span> REPLACE <span class="tok-keyword">VIEW</span> active_products <span class="tok-keyword">AS</span> <span class="tok-keyword">SELECT</span> … <span class="tok-punct">;</span>
+<span class="tok-keyword">DROP</span> <span class="tok-keyword">VIEW</span> active_products<span class="tok-punct">;</span></code></pre></div><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h4>تبسيط</h4><p>استعلام معقّد يُكتب مرة ويُستخدم بسطر.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>أمان</h4><p>امنح صلاحية على العرض بدل الجدول لإخفاء أعمدة حسّاسة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div><h4>اتّساق</h4><p>منطق العمل في مكان واحد بدل تكراره في كل تطبيق.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h4>تجريد</h4><p>تغيّر بنية الجداول دون كسر الاستعلامات المعتمدة على العرض.</p></div></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> العرض ليس ذاكرة تخزين</div><p>يُنفَّذ استعلامه في كل مرة، فلا يحسّن الأداء بذاته. إن احتجت تسريعاً حقيقياً استخدم <strong>العرض المُجسَّد</strong> (Materialized View) الذي يخزّن النتيجة فعلاً ويُحدَّث عند الطلب — متاح في PostgreSQL وOracle.</p></div><h2 id="sec-9">تعبيرات الجداول المشتركة (CTE)</h2><p>توجيه <code>WITH</code> يعرّف نتيجة مؤقتة باسم، تُستخدم في نفس الاستعلام. الفائدة الكبرى: <strong>تحويل استعلام متشابك إلى خطوات مقروءة</strong>.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">WITH</span> customer_totals <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span>
+    customer_id<span class="tok-punct">,</span>
+    <span class="tok-func">COUNT</span><span class="tok-punct">(*)</span>   <span class="tok-keyword">AS</span> order_count<span class="tok-punct">,</span>
+    <span class="tok-func">SUM</span><span class="tok-punct">(</span>total<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> total_spent
+  <span class="tok-keyword">FROM</span> orders
+  <span class="tok-keyword">WHERE</span> status <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;cancelled&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;refunded&#39;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> customer_id
+<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span>
+  c<span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span>city<span class="tok-punct">,</span>
+  ct<span class="tok-punct">.</span>order_count<span class="tok-punct">,</span>
+  ct<span class="tok-punct">.</span>total_spent
+<span class="tok-keyword">FROM</span> customers c
+<span class="tok-keyword">JOIN</span> customer_totals ct <span class="tok-keyword">ON</span> ct<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-keyword">WHERE</span> ct<span class="tok-punct">.</span>total_spent <span class="tok-punct">&gt;</span> <span class="tok-number">5000</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> ct<span class="tok-punct">.</span>total_spent <span class="tok-keyword">DESC</span><span class="tok-punct">;</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">عدة CTE متسلسلة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">WITH</span>
+monthly_sales <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span>
+    <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>YEAR  <span class="tok-keyword">FROM</span> ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> year<span class="tok-punct">,</span>
+    <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>MONTH <span class="tok-keyword">FROM</span> ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> month<span class="tok-punct">,</span>
+    <span class="tok-func">SUM</span><span class="tok-punct">(</span>total<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> revenue
+  <span class="tok-keyword">FROM</span> orders
+  <span class="tok-keyword">WHERE</span> status <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;cancelled&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;refunded&#39;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span>
+<span class="tok-punct">),</span>
+avg_monthly <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-func">AVG</span><span class="tok-punct">(</span>revenue<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> avg_revenue <span class="tok-keyword">FROM</span> monthly_sales
+<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span>
+  ms<span class="tok-punct">.</span>year<span class="tok-punct">,</span>
+  ms<span class="tok-punct">.</span>month<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>ms<span class="tok-punct">.</span>revenue<span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> revenue<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>am<span class="tok-punct">.</span>avg_revenue<span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> avg_revenue<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-number">100.0</span> <span class="tok-punct">*</span> <span class="tok-punct">(</span>ms<span class="tok-punct">.</span>revenue <span class="tok-punct">-</span> am<span class="tok-punct">.</span>avg_revenue<span class="tok-punct">)</span> <span class="tok-punct">/</span> am<span class="tok-punct">.</span>avg_revenue<span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> pct_vs_avg
+<span class="tok-keyword">FROM</span> monthly_sales ms
+<span class="tok-keyword">CROSS</span> <span class="tok-keyword">JOIN</span> avg_monthly am
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> ms<span class="tok-punct">.</span>year<span class="tok-punct">,</span> ms<span class="tok-punct">.</span>month<span class="tok-punct">;</span></code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th>استعلام فرعي</th><th>CTE</th></tr></thead><tbody><tr><td>القراءة</td><td>متداخل يصعب تتبّعه</td><td><strong>خطوات متسلسلة واضحة</strong></td></tr><tr><td>إعادة الاستخدام</td><td>يُكتب في كل موضع</td><td>يُعرَّف مرة ويُستخدم مراراً</td></tr><tr><td>التكرار الذاتي</td><td>غير ممكن</td><td>ممكن بـ <code>RECURSIVE</code></td></tr><tr><td>التشخيص</td><td>صعب</td><td>شغّل كل خطوة وحدها</td></tr><tr><td>الأداء</td><td>متقارب غالباً</td><td>متقارب غالباً</td></tr></tbody></table></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>قاعدة عملية: إن تجاوز استعلامك ثلاثين سطراً أو احتوى استعلامين فرعيين متداخلين، حوّله إلى CTE. زميلك — وأنت بعد شهر — ستشكران نفسيكما.</p></div><h2 id="sec-10">الاستعلامات التكرارية</h2><p><code>WITH RECURSIVE</code> يحلّ مشكلة البنى الهرمية غير محدّدة العمق: شجرة تصنيفات، هيكل تنظيمي، سلسلة تعليقات.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">WITH</span> <span class="tok-keyword">RECURSIVE</span> category_tree <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-comment">-- الحالة الأساسية: الجذور</span>
+  <span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> name<span class="tok-punct">,</span> parent_id<span class="tok-punct">,</span> <span class="tok-number">1</span> <span class="tok-keyword">AS</span> <span class="tok-keyword">level</span><span class="tok-punct">,</span> name <span class="tok-keyword">AS</span> path
+  <span class="tok-keyword">FROM</span> categories
+  <span class="tok-keyword">WHERE</span> parent_id <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span>
 
-  UNION ALL
+  <span class="tok-keyword">UNION</span> <span class="tok-keyword">ALL</span>
 
-  -- الخطوة التكرارية: الأبناء
-  SELECT
-    c.id,
-    c.name,
-    c.parent_id,
-    ct.level + 1,
-    ct.path || &#39; &gt; &#39; || c.name
-  FROM categories c
-  JOIN category_tree ct ON ct.id = c.parent_id
-)
-SELECT level, path
-FROM category_tree
-ORDER BY path;</code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ناتج الاستعلام التكراري</div><iframe title="ناتج الاستعلام التكراري" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.86em}th{background:#6a5acd;color:#fff;padding:7px 10px;text-align:right}td{padding:6px 10px;border-bottom:1px solid #e2e8f0}code{font-family:monospace;direction:ltr;display:inline-block}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;level&lt;/th&gt;&lt;th&gt;path&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;إلكترونيات&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;إلكترونيات &amp;gt; صوتيات&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;إلكترونيات &amp;gt; صوتيات &amp;gt; سماعات&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;إلكترونيات &amp;gt; حواسيب&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;ملابس&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:250px"></iframe></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> احذر الحلقة اللانهائية</div><p>إن كانت بياناتك تحوي دورة (تصنيف أبوه ابنه) فسيدور الاستعلام إلى ما لا نهاية. أضف حدّاً للعمق: <code>WHERE level &lt; 10</code> داخل الجزء التكراري.</p></div><h2 id="sec-11">مثال شامل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">تحليل شرائح العملاء</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>WITH
-customer_stats AS (
-  SELECT
-    c.id,
-    c.name,
-    c.city,
-    COUNT(o.id)                        AS order_count,
-    COALESCE(SUM(o.total), 0)          AS total_spent,
-    MAX(o.ordered_at)                  AS last_order
-  FROM customers c
-  LEFT JOIN orders o
-         ON o.customer_id = c.id
-        AND o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
-  WHERE c.deleted_at IS NULL
-  GROUP BY c.id, c.name, c.city
-),
-segmented AS (
-  SELECT
-    *,
-    CASE
-      WHEN order_count = 0                          THEN &#39;لم يشترِ&#39;
-      WHEN total_spent &gt;= 10000                     THEN &#39;عميل ذهبي&#39;
-      WHEN total_spent &gt;= 3000                      THEN &#39;عميل فضّي&#39;
-      WHEN last_order &lt; CURRENT_DATE - INTERVAL &#39;180 days&#39; THEN &#39;خامل&#39;
-      ELSE &#39;عميل عادي&#39;
-    END AS segment
-  FROM customer_stats
-)
-SELECT
-  segment,
-  COUNT(*)                       AS customers,
-  ROUND(AVG(total_spent), 2)     AS avg_spent,
-  ROUND(SUM(total_spent), 2)     AS segment_revenue
-FROM segmented
-GROUP BY segment
-ORDER BY segment_revenue DESC;</code></pre></div><section class="exercise" id="sec-12"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: تحليلات متقدّمة</h3></header><div class="exercise-body"><p>اكتب عشرة استعلامات متقدّمة باستخدام الاستعلامات الفرعية والعروض و CTE.</p><p><strong>المطلوب:</strong></p><ul><li>المنتجات الأغلى من متوسّط سعر تصنيفها (استعلام فرعي مترابط).</li><li>العملاء الذين طلبوا منتجاً من التصنيف 1 (بـ <code>EXISTS</code>).</li><li>العملاء الذين لم يطلبوا قط (بـ <code>NOT EXISTS</code>).</li><li>أعلى ثلاثة منتجات مبيعاً في كل تصنيف.</li><li>عرض <code>active_products</code> يخفي المنتجات المعطّلة والمحذوفة.</li><li>عرض <code>order_summary</code> يجمع بيانات الطلب مع العميل وعدد العناصر.</li><li>CTE يحسب إجمالي إنفاق كل عميل ثم يصنّفه إلى شرائح.</li><li>CTE متعدّد: المبيعات الشهرية ثم مقارنتها بالمتوسّط العام.</li><li>استعلام تكراري يبني شجرة التصنيفات بمساراتها الكاملة.</li><li>مقارنة أداء: نفس التقرير مرة باستعلام فرعي مترابط ومرة بـ <code>JOIN</code>.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 «الأغلى من متوسّط تصنيفه» يحتاج استعلاماً فرعياً يشير للعمود الخارجي.</li><li>💡 الجدول المشتقّ في <code>FROM</code> يحتاج اسماً بديلاً إلزامياً.</li><li>💡 أضف حدّ عمق في الاستعلام التكراري للأمان.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- 1) أغلى من متوسّط تصنيفه
-SELECT p.name, p.price, p.category_id
-FROM products p
-WHERE p.price &gt; (
-  SELECT AVG(p2.price)
-  FROM products p2
-  WHERE p2.category_id = p.category_id
-)
-ORDER BY p.category_id, p.price DESC;
+  <span class="tok-comment">-- الخطوة التكرارية: الأبناء</span>
+  <span class="tok-keyword">SELECT</span>
+    c<span class="tok-punct">.</span>id<span class="tok-punct">,</span>
+    c<span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+    c<span class="tok-punct">.</span>parent_id<span class="tok-punct">,</span>
+    ct<span class="tok-punct">.</span><span class="tok-keyword">level</span> <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">,</span>
+    ct<span class="tok-punct">.</span>path <span class="tok-punct">||</span> <span class="tok-string">&#39; &gt; &#39;</span> <span class="tok-punct">||</span> c<span class="tok-punct">.</span>name
+  <span class="tok-keyword">FROM</span> categories c
+  <span class="tok-keyword">JOIN</span> category_tree ct <span class="tok-keyword">ON</span> ct<span class="tok-punct">.</span>id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>parent_id
+<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-keyword">level</span><span class="tok-punct">,</span> path
+<span class="tok-keyword">FROM</span> category_tree
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> path<span class="tok-punct">;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ناتج الاستعلام التكراري</div><iframe title="ناتج الاستعلام التكراري" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.86em}th{background:#6a5acd;color:#fff;padding:7px 10px;text-align:right}td{padding:6px 10px;border-bottom:1px solid #e2e8f0}code{font-family:monospace;direction:ltr;display:inline-block}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;level&lt;/th&gt;&lt;th&gt;path&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;إلكترونيات&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;إلكترونيات &amp;gt; صوتيات&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;إلكترونيات &amp;gt; صوتيات &amp;gt; سماعات&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;إلكترونيات &amp;gt; حواسيب&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;ملابس&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:250px"></iframe></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> احذر الحلقة اللانهائية</div><p>إن كانت بياناتك تحوي دورة (تصنيف أبوه ابنه) فسيدور الاستعلام إلى ما لا نهاية. أضف حدّاً للعمق: <code>WHERE level &lt; 10</code> داخل الجزء التكراري.</p></div><h2 id="sec-11">مثال شامل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">تحليل شرائح العملاء</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">WITH</span>
+customer_stats <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span>
+    c<span class="tok-punct">.</span>id<span class="tok-punct">,</span>
+    c<span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+    c<span class="tok-punct">.</span>city<span class="tok-punct">,</span>
+    <span class="tok-func">COUNT</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>id<span class="tok-punct">)</span>                        <span class="tok-keyword">AS</span> order_count<span class="tok-punct">,</span>
+    <span class="tok-func">COALESCE</span><span class="tok-punct">(</span><span class="tok-func">SUM</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>total<span class="tok-punct">),</span> <span class="tok-number">0</span><span class="tok-punct">)</span>          <span class="tok-keyword">AS</span> total_spent<span class="tok-punct">,</span>
+    <span class="tok-func">MAX</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>ordered_at<span class="tok-punct">)</span>                  <span class="tok-keyword">AS</span> last_order
+  <span class="tok-keyword">FROM</span> customers c
+  <span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> orders o
+         <span class="tok-keyword">ON</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+        <span class="tok-keyword">AND</span> o<span class="tok-punct">.</span>status <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;cancelled&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;refunded&#39;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">WHERE</span> c<span class="tok-punct">.</span>deleted_at <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span>
+  <span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name<span class="tok-punct">,</span> c<span class="tok-punct">.</span>city
+<span class="tok-punct">),</span>
+segmented <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span>
+    <span class="tok-punct">*,</span>
+    <span class="tok-keyword">CASE</span>
+      <span class="tok-keyword">WHEN</span> order_count <span class="tok-punct">=</span> <span class="tok-number">0</span>                          <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;لم يشترِ&#39;</span>
+      <span class="tok-keyword">WHEN</span> total_spent <span class="tok-punct">&gt;=</span> <span class="tok-number">10000</span>                     <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;عميل ذهبي&#39;</span>
+      <span class="tok-keyword">WHEN</span> total_spent <span class="tok-punct">&gt;=</span> <span class="tok-number">3000</span>                      <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;عميل فضّي&#39;</span>
+      <span class="tok-keyword">WHEN</span> last_order <span class="tok-punct">&lt;</span> CURRENT_DATE <span class="tok-punct">-</span> <span class="tok-keyword">INTERVAL</span> <span class="tok-string">&#39;180 days&#39;</span> <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;خامل&#39;</span>
+      <span class="tok-keyword">ELSE</span> <span class="tok-string">&#39;عميل عادي&#39;</span>
+    <span class="tok-keyword">END</span> <span class="tok-keyword">AS</span> segment
+  <span class="tok-keyword">FROM</span> customer_stats
+<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span>
+  segment<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(*)</span>                       <span class="tok-keyword">AS</span> customers<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-func">AVG</span><span class="tok-punct">(</span>total_spent<span class="tok-punct">),</span> <span class="tok-number">2</span><span class="tok-punct">)</span>     <span class="tok-keyword">AS</span> avg_spent<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-func">SUM</span><span class="tok-punct">(</span>total_spent<span class="tok-punct">),</span> <span class="tok-number">2</span><span class="tok-punct">)</span>     <span class="tok-keyword">AS</span> segment_revenue
+<span class="tok-keyword">FROM</span> segmented
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> segment
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> segment_revenue <span class="tok-keyword">DESC</span><span class="tok-punct">;</span></code></pre></div><section class="exercise" id="sec-12"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: تحليلات متقدّمة</h3></header><div class="exercise-body"><p>اكتب عشرة استعلامات متقدّمة باستخدام الاستعلامات الفرعية والعروض و CTE.</p><p><strong>المطلوب:</strong></p><ul><li>المنتجات الأغلى من متوسّط سعر تصنيفها (استعلام فرعي مترابط).</li><li>العملاء الذين طلبوا منتجاً من التصنيف 1 (بـ <code>EXISTS</code>).</li><li>العملاء الذين لم يطلبوا قط (بـ <code>NOT EXISTS</code>).</li><li>أعلى ثلاثة منتجات مبيعاً في كل تصنيف.</li><li>عرض <code>active_products</code> يخفي المنتجات المعطّلة والمحذوفة.</li><li>عرض <code>order_summary</code> يجمع بيانات الطلب مع العميل وعدد العناصر.</li><li>CTE يحسب إجمالي إنفاق كل عميل ثم يصنّفه إلى شرائح.</li><li>CTE متعدّد: المبيعات الشهرية ثم مقارنتها بالمتوسّط العام.</li><li>استعلام تكراري يبني شجرة التصنيفات بمساراتها الكاملة.</li><li>مقارنة أداء: نفس التقرير مرة باستعلام فرعي مترابط ومرة بـ <code>JOIN</code>.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 «الأغلى من متوسّط تصنيفه» يحتاج استعلاماً فرعياً يشير للعمود الخارجي.</li><li>💡 الجدول المشتقّ في <code>FROM</code> يحتاج اسماً بديلاً إلزامياً.</li><li>💡 أضف حدّ عمق في الاستعلام التكراري للأمان.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- 1) أغلى من متوسّط تصنيفه</span>
+<span class="tok-keyword">SELECT</span> p<span class="tok-punct">.</span>name<span class="tok-punct">,</span> p<span class="tok-punct">.</span>price<span class="tok-punct">,</span> p<span class="tok-punct">.</span>category_id
+<span class="tok-keyword">FROM</span> products p
+<span class="tok-keyword">WHERE</span> p<span class="tok-punct">.</span>price <span class="tok-punct">&gt;</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-func">AVG</span><span class="tok-punct">(</span>p2<span class="tok-punct">.</span>price<span class="tok-punct">)</span>
+  <span class="tok-keyword">FROM</span> products p2
+  <span class="tok-keyword">WHERE</span> p2<span class="tok-punct">.</span>category_id <span class="tok-punct">=</span> p<span class="tok-punct">.</span>category_id
+<span class="tok-punct">)</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> p<span class="tok-punct">.</span>category_id<span class="tok-punct">,</span> p<span class="tok-punct">.</span>price <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
 
--- 2) من طلب من التصنيف 1
-SELECT c.id, c.name
-FROM customers c
-WHERE EXISTS (
-  SELECT 1
-  FROM orders o
-  JOIN order_items oi ON oi.order_id = o.id
-  JOIN products p     ON p.id = oi.product_id
-  WHERE o.customer_id = c.id
-    AND p.category_id = 1
-);
+<span class="tok-comment">-- 2) من طلب من التصنيف 1</span>
+<span class="tok-keyword">SELECT</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name
+<span class="tok-keyword">FROM</span> customers c
+<span class="tok-keyword">WHERE</span> <span class="tok-keyword">EXISTS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-number">1</span>
+  <span class="tok-keyword">FROM</span> orders o
+  <span class="tok-keyword">JOIN</span> order_items oi <span class="tok-keyword">ON</span> oi<span class="tok-punct">.</span>order_id <span class="tok-punct">=</span> o<span class="tok-punct">.</span>id
+  <span class="tok-keyword">JOIN</span> products p     <span class="tok-keyword">ON</span> p<span class="tok-punct">.</span>id <span class="tok-punct">=</span> oi<span class="tok-punct">.</span>product_id
+  <span class="tok-keyword">WHERE</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+    <span class="tok-keyword">AND</span> p<span class="tok-punct">.</span>category_id <span class="tok-punct">=</span> <span class="tok-number">1</span>
+<span class="tok-punct">);</span>
 
--- 3) من لم يطلب قط
-SELECT c.id, c.name, c.email
-FROM customers c
-WHERE NOT EXISTS (
-  SELECT 1 FROM orders o WHERE o.customer_id = c.id
-);
+<span class="tok-comment">-- 3) من لم يطلب قط</span>
+<span class="tok-keyword">SELECT</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name<span class="tok-punct">,</span> c<span class="tok-punct">.</span>email
+<span class="tok-keyword">FROM</span> customers c
+<span class="tok-keyword">WHERE</span> <span class="tok-keyword">NOT</span> <span class="tok-keyword">EXISTS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-number">1</span> <span class="tok-keyword">FROM</span> orders o <span class="tok-keyword">WHERE</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-punct">);</span>
 
--- 4) أعلى ثلاثة في كل تصنيف
-WITH ranked AS (
-  SELECT
-    p.category_id,
-    p.name,
-    SUM(oi.quantity) AS units,
-    ROW_NUMBER() OVER (
-      PARTITION BY p.category_id
-      ORDER BY SUM(oi.quantity) DESC
-    ) AS rn
-  FROM order_items oi
-  JOIN products p ON p.id = oi.product_id
-  JOIN orders   o ON o.id = oi.order_id
-  WHERE o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
-  GROUP BY p.category_id, p.id, p.name
-)
-SELECT category_id, name, units
-FROM ranked
-WHERE rn &lt;= 3
-ORDER BY category_id, units DESC;
+<span class="tok-comment">-- 4) أعلى ثلاثة في كل تصنيف</span>
+<span class="tok-keyword">WITH</span> ranked <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span>
+    p<span class="tok-punct">.</span>category_id<span class="tok-punct">,</span>
+    p<span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+    <span class="tok-func">SUM</span><span class="tok-punct">(</span>oi<span class="tok-punct">.</span>quantity<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> units<span class="tok-punct">,</span>
+    <span class="tok-func">ROW_NUMBER</span><span class="tok-punct">()</span> <span class="tok-keyword">OVER</span> <span class="tok-punct">(</span>
+      <span class="tok-keyword">PARTITION</span> <span class="tok-keyword">BY</span> p<span class="tok-punct">.</span>category_id
+      <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> <span class="tok-func">SUM</span><span class="tok-punct">(</span>oi<span class="tok-punct">.</span>quantity<span class="tok-punct">)</span> <span class="tok-keyword">DESC</span>
+    <span class="tok-punct">)</span> <span class="tok-keyword">AS</span> rn
+  <span class="tok-keyword">FROM</span> order_items oi
+  <span class="tok-keyword">JOIN</span> products p <span class="tok-keyword">ON</span> p<span class="tok-punct">.</span>id <span class="tok-punct">=</span> oi<span class="tok-punct">.</span>product_id
+  <span class="tok-keyword">JOIN</span> orders   o <span class="tok-keyword">ON</span> o<span class="tok-punct">.</span>id <span class="tok-punct">=</span> oi<span class="tok-punct">.</span>order_id
+  <span class="tok-keyword">WHERE</span> o<span class="tok-punct">.</span>status <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;cancelled&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;refunded&#39;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> p<span class="tok-punct">.</span>category_id<span class="tok-punct">,</span> p<span class="tok-punct">.</span>id<span class="tok-punct">,</span> p<span class="tok-punct">.</span>name
+<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span> category_id<span class="tok-punct">,</span> name<span class="tok-punct">,</span> units
+<span class="tok-keyword">FROM</span> ranked
+<span class="tok-keyword">WHERE</span> rn <span class="tok-punct">&lt;=</span> <span class="tok-number">3</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> category_id<span class="tok-punct">,</span> units <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
 
--- 5) عرض المنتجات النشطة
-CREATE OR REPLACE VIEW active_products AS
-SELECT id, name, sku, price, stock, category_id
-FROM products
-WHERE is_active = TRUE;
+<span class="tok-comment">-- 5) عرض المنتجات النشطة</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">OR</span> REPLACE <span class="tok-keyword">VIEW</span> active_products <span class="tok-keyword">AS</span>
+<span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> name<span class="tok-punct">,</span> sku<span class="tok-punct">,</span> price<span class="tok-punct">,</span> stock<span class="tok-punct">,</span> category_id
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> is_active <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span><span class="tok-punct">;</span>
 
--- 6) عرض ملخّص الطلبات
-CREATE OR REPLACE VIEW order_summary AS
-SELECT
-  o.id,
-  o.ordered_at,
-  o.status,
-  c.name AS customer_name,
-  c.city,
-  COUNT(oi.id)                     AS item_count,
-  COALESCE(SUM(oi.quantity), 0)    AS total_quantity,
-  o.total
-FROM orders o
-JOIN customers c        ON c.id = o.customer_id
-LEFT JOIN order_items oi ON oi.order_id = o.id
-GROUP BY o.id, o.ordered_at, o.status, c.name, c.city, o.total;
+<span class="tok-comment">-- 6) عرض ملخّص الطلبات</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">OR</span> REPLACE <span class="tok-keyword">VIEW</span> order_summary <span class="tok-keyword">AS</span>
+<span class="tok-keyword">SELECT</span>
+  o<span class="tok-punct">.</span>id<span class="tok-punct">,</span>
+  o<span class="tok-punct">.</span>ordered_at<span class="tok-punct">,</span>
+  o<span class="tok-punct">.</span>status<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span>name <span class="tok-keyword">AS</span> customer_name<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span>city<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span>oi<span class="tok-punct">.</span>id<span class="tok-punct">)</span>                     <span class="tok-keyword">AS</span> item_count<span class="tok-punct">,</span>
+  <span class="tok-func">COALESCE</span><span class="tok-punct">(</span><span class="tok-func">SUM</span><span class="tok-punct">(</span>oi<span class="tok-punct">.</span>quantity<span class="tok-punct">),</span> <span class="tok-number">0</span><span class="tok-punct">)</span>    <span class="tok-keyword">AS</span> total_quantity<span class="tok-punct">,</span>
+  o<span class="tok-punct">.</span>total
+<span class="tok-keyword">FROM</span> orders o
+<span class="tok-keyword">JOIN</span> customers c        <span class="tok-keyword">ON</span> c<span class="tok-punct">.</span>id <span class="tok-punct">=</span> o<span class="tok-punct">.</span>customer_id
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> order_items oi <span class="tok-keyword">ON</span> oi<span class="tok-punct">.</span>order_id <span class="tok-punct">=</span> o<span class="tok-punct">.</span>id
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> o<span class="tok-punct">.</span>id<span class="tok-punct">,</span> o<span class="tok-punct">.</span>ordered_at<span class="tok-punct">,</span> o<span class="tok-punct">.</span>status<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name<span class="tok-punct">,</span> c<span class="tok-punct">.</span>city<span class="tok-punct">,</span> o<span class="tok-punct">.</span>total<span class="tok-punct">;</span>
 
--- 7) شرائح العملاء
-WITH customer_stats AS (
-  SELECT
-    c.id, c.name, c.city,
-    COUNT(o.id)               AS order_count,
-    COALESCE(SUM(o.total), 0) AS total_spent
-  FROM customers c
-  LEFT JOIN orders o
-         ON o.customer_id = c.id
-        AND o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
-  GROUP BY c.id, c.name, c.city
-)
-SELECT
-  name, city, order_count, total_spent,
-  CASE
-    WHEN order_count = 0      THEN &#39;لم يشترِ&#39;
-    WHEN total_spent &gt;= 10000 THEN &#39;ذهبي&#39;
-    WHEN total_spent &gt;= 3000  THEN &#39;فضّي&#39;
-    ELSE &#39;عادي&#39;
-  END AS segment
-FROM customer_stats
-ORDER BY total_spent DESC;
+<span class="tok-comment">-- 7) شرائح العملاء</span>
+<span class="tok-keyword">WITH</span> customer_stats <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span>
+    c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name<span class="tok-punct">,</span> c<span class="tok-punct">.</span>city<span class="tok-punct">,</span>
+    <span class="tok-func">COUNT</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>id<span class="tok-punct">)</span>               <span class="tok-keyword">AS</span> order_count<span class="tok-punct">,</span>
+    <span class="tok-func">COALESCE</span><span class="tok-punct">(</span><span class="tok-func">SUM</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>total<span class="tok-punct">),</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> total_spent
+  <span class="tok-keyword">FROM</span> customers c
+  <span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> orders o
+         <span class="tok-keyword">ON</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+        <span class="tok-keyword">AND</span> o<span class="tok-punct">.</span>status <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;cancelled&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;refunded&#39;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name<span class="tok-punct">,</span> c<span class="tok-punct">.</span>city
+<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span>
+  name<span class="tok-punct">,</span> city<span class="tok-punct">,</span> order_count<span class="tok-punct">,</span> total_spent<span class="tok-punct">,</span>
+  <span class="tok-keyword">CASE</span>
+    <span class="tok-keyword">WHEN</span> order_count <span class="tok-punct">=</span> <span class="tok-number">0</span>      <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;لم يشترِ&#39;</span>
+    <span class="tok-keyword">WHEN</span> total_spent <span class="tok-punct">&gt;=</span> <span class="tok-number">10000</span> <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;ذهبي&#39;</span>
+    <span class="tok-keyword">WHEN</span> total_spent <span class="tok-punct">&gt;=</span> <span class="tok-number">3000</span>  <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;فضّي&#39;</span>
+    <span class="tok-keyword">ELSE</span> <span class="tok-string">&#39;عادي&#39;</span>
+  <span class="tok-keyword">END</span> <span class="tok-keyword">AS</span> segment
+<span class="tok-keyword">FROM</span> customer_stats
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> total_spent <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
 
--- 8) المبيعات الشهرية مقابل المتوسّط
-WITH
-monthly AS (
-  SELECT
-    EXTRACT(YEAR  FROM ordered_at) AS y,
-    EXTRACT(MONTH FROM ordered_at) AS m,
-    SUM(total) AS revenue
-  FROM orders
-  WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
-  GROUP BY 1, 2
-),
-overall AS (
-  SELECT AVG(revenue) AS avg_rev FROM monthly
-)
-SELECT
-  mo.y, mo.m,
-  ROUND(mo.revenue, 2) AS revenue,
-  ROUND(ov.avg_rev, 2) AS average,
-  ROUND(100.0 * (mo.revenue - ov.avg_rev) / NULLIF(ov.avg_rev, 0), 1) AS pct_diff
-FROM monthly mo
-CROSS JOIN overall ov
-ORDER BY mo.y, mo.m;
+<span class="tok-comment">-- 8) المبيعات الشهرية مقابل المتوسّط</span>
+<span class="tok-keyword">WITH</span>
+monthly <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span>
+    <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>YEAR  <span class="tok-keyword">FROM</span> ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> y<span class="tok-punct">,</span>
+    <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>MONTH <span class="tok-keyword">FROM</span> ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> m<span class="tok-punct">,</span>
+    <span class="tok-func">SUM</span><span class="tok-punct">(</span>total<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> revenue
+  <span class="tok-keyword">FROM</span> orders
+  <span class="tok-keyword">WHERE</span> status <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;cancelled&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;refunded&#39;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span>
+<span class="tok-punct">),</span>
+overall <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-func">AVG</span><span class="tok-punct">(</span>revenue<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> avg_rev <span class="tok-keyword">FROM</span> monthly
+<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span>
+  mo<span class="tok-punct">.</span>y<span class="tok-punct">,</span> mo<span class="tok-punct">.</span>m<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>mo<span class="tok-punct">.</span>revenue<span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> revenue<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>ov<span class="tok-punct">.</span>avg_rev<span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> average<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-number">100.0</span> <span class="tok-punct">*</span> <span class="tok-punct">(</span>mo<span class="tok-punct">.</span>revenue <span class="tok-punct">-</span> ov<span class="tok-punct">.</span>avg_rev<span class="tok-punct">)</span> <span class="tok-punct">/</span> <span class="tok-func">NULLIF</span><span class="tok-punct">(</span>ov<span class="tok-punct">.</span>avg_rev<span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">),</span> <span class="tok-number">1</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> pct_diff
+<span class="tok-keyword">FROM</span> monthly mo
+<span class="tok-keyword">CROSS</span> <span class="tok-keyword">JOIN</span> overall ov
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> mo<span class="tok-punct">.</span>y<span class="tok-punct">,</span> mo<span class="tok-punct">.</span>m<span class="tok-punct">;</span>
 
--- 9) شجرة التصنيفات
-WITH RECURSIVE tree AS (
-  SELECT id, name, parent_id, 1 AS level, CAST(name AS TEXT) AS path
-  FROM categories
-  WHERE parent_id IS NULL
+<span class="tok-comment">-- 9) شجرة التصنيفات</span>
+<span class="tok-keyword">WITH</span> <span class="tok-keyword">RECURSIVE</span> tree <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> name<span class="tok-punct">,</span> parent_id<span class="tok-punct">,</span> <span class="tok-number">1</span> <span class="tok-keyword">AS</span> <span class="tok-keyword">level</span><span class="tok-punct">,</span> <span class="tok-func">CAST</span><span class="tok-punct">(</span>name <span class="tok-keyword">AS</span> TEXT<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> path
+  <span class="tok-keyword">FROM</span> categories
+  <span class="tok-keyword">WHERE</span> parent_id <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span>
 
-  UNION ALL
+  <span class="tok-keyword">UNION</span> <span class="tok-keyword">ALL</span>
 
-  SELECT c.id, c.name, c.parent_id, t.level + 1, t.path || &#39; &gt; &#39; || c.name
-  FROM categories c
-  JOIN tree t ON t.id = c.parent_id
-  WHERE t.level &lt; 10          -- حدّ أمان
-)
-SELECT level, path
-FROM tree
-ORDER BY path;
+  <span class="tok-keyword">SELECT</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name<span class="tok-punct">,</span> c<span class="tok-punct">.</span>parent_id<span class="tok-punct">,</span> t<span class="tok-punct">.</span><span class="tok-keyword">level</span> <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">,</span> t<span class="tok-punct">.</span>path <span class="tok-punct">||</span> <span class="tok-string">&#39; &gt; &#39;</span> <span class="tok-punct">||</span> c<span class="tok-punct">.</span>name
+  <span class="tok-keyword">FROM</span> categories c
+  <span class="tok-keyword">JOIN</span> tree t <span class="tok-keyword">ON</span> t<span class="tok-punct">.</span>id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>parent_id
+  <span class="tok-keyword">WHERE</span> t<span class="tok-punct">.</span><span class="tok-keyword">level</span> <span class="tok-punct">&lt;</span> <span class="tok-number">10</span>          <span class="tok-comment">-- حدّ أمان</span>
+<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-keyword">level</span><span class="tok-punct">,</span> path
+<span class="tok-keyword">FROM</span> tree
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> path<span class="tok-punct">;</span>
 
--- 10) مقارنة الأداء
--- (أ) استعلام فرعي مترابط — أبطأ
-SELECT
-  c.name,
-  (SELECT COUNT(*) FROM orders o WHERE o.customer_id = c.id) AS order_count
-FROM customers c;
+<span class="tok-comment">-- 10) مقارنة الأداء</span>
+<span class="tok-comment">-- (أ) استعلام فرعي مترابط — أبطأ</span>
+<span class="tok-keyword">SELECT</span>
+  c<span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+  <span class="tok-punct">(</span><span class="tok-keyword">SELECT</span> <span class="tok-func">COUNT</span><span class="tok-punct">(*)</span> <span class="tok-keyword">FROM</span> orders o <span class="tok-keyword">WHERE</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> order_count
+<span class="tok-keyword">FROM</span> customers c<span class="tok-punct">;</span>
 
--- (ب) بالربط والتجميع — أسرع
-SELECT c.name, COUNT(o.id) AS order_count
-FROM customers c
-LEFT JOIN orders o ON o.customer_id = c.id
-GROUP BY c.id, c.name;
+<span class="tok-comment">-- (ب) بالربط والتجميع — أسرع</span>
+<span class="tok-keyword">SELECT</span> c<span class="tok-punct">.</span>name<span class="tok-punct">,</span> <span class="tok-func">COUNT</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>id<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> order_count
+<span class="tok-keyword">FROM</span> customers c
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> orders o <span class="tok-keyword">ON</span> o<span class="tok-punct">.</span>customer_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name<span class="tok-punct">;</span>
 
--- استخدم EXPLAIN لمقارنة الخطتين
--- EXPLAIN ANALYZE SELECT …;</code></pre></div></details></div></section><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما فخّ <code>NOT IN</code> مع الاستعلامات الفرعية؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>إن أرجع الفرعي <code>NULL</code> واحدة لا تُرجع الجملة أي صف</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا يعمل</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يحتاج فهرساً</span></label></div><div class="q-explain"><strong>الشرح:</strong> استخدم <code>NOT EXISTS</code> أو استبعد <code>NULL</code> داخل الاستعلام الفرعي.</div></div><div class="q-item"><p class="q-text">2. لماذا <code>EXISTS</code> غالباً أسرع من <code>IN</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أقصر</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>يتوقّف عند أول مطابقة بدل بناء القائمة كاملة</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>يستخدم فهرساً</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>لا فرق</span></label></div><div class="q-explain"><strong>الشرح:</strong> ويتجنّب أيضاً مشكلة <code>NULL</code> تماماً.</div></div><div class="q-item"><p class="q-text">3. هل يخزّن العرض (View) البيانات؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>نعم</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>لا — يُنفَّذ استعلامه عند كل استدعاء</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أحياناً</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يعتمد</span></label></div><div class="q-explain"><strong>الشرح:</strong> للتخزين الفعلي استخدم العرض المُجسَّد (Materialized View).</div></div><div class="q-item"><p class="q-text">4. ما الفائدة الأهم لـ CTE؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>السرعة</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>تحويل استعلام متشابك إلى خطوات مقروءة قابلة للتشخيص</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>الأمان</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>الحجم</span></label></div><div class="q-explain"><strong>الشرح:</strong> الأداء متقارب غالباً؛ المكسب الحقيقي في الوضوح وقابلية الصيانة.</div></div><div class="q-item"><p class="q-text">5. متى تحتاج <code>WITH RECURSIVE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع الجداول الكبيرة</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>مع البنى الهرمية غير محدّدة العمق كشجرة التصنيفات</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع التجميع</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع الفهارس</span></label></div><div class="q-explain"><strong>الشرح:</strong> يبني النتيجة طبقة بعد طبقة حتى تنتهي الأبناء.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+<span class="tok-comment">-- استخدم EXPLAIN لمقارنة الخطتين</span>
+<span class="tok-comment">-- EXPLAIN ANALYZE SELECT …;</span></code></pre></div></details></div></section><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما فخّ <code>NOT IN</code> مع الاستعلامات الفرعية؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>إن أرجع الفرعي <code>NULL</code> واحدة لا تُرجع الجملة أي صف</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا يعمل</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يحتاج فهرساً</span></label></div><div class="q-explain"><strong>الشرح:</strong> استخدم <code>NOT EXISTS</code> أو استبعد <code>NULL</code> داخل الاستعلام الفرعي.</div></div><div class="q-item"><p class="q-text">2. لماذا <code>EXISTS</code> غالباً أسرع من <code>IN</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أقصر</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>يتوقّف عند أول مطابقة بدل بناء القائمة كاملة</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>يستخدم فهرساً</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>لا فرق</span></label></div><div class="q-explain"><strong>الشرح:</strong> ويتجنّب أيضاً مشكلة <code>NULL</code> تماماً.</div></div><div class="q-item"><p class="q-text">3. هل يخزّن العرض (View) البيانات؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>نعم</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>لا — يُنفَّذ استعلامه عند كل استدعاء</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أحياناً</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يعتمد</span></label></div><div class="q-explain"><strong>الشرح:</strong> للتخزين الفعلي استخدم العرض المُجسَّد (Materialized View).</div></div><div class="q-item"><p class="q-text">4. ما الفائدة الأهم لـ CTE؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>السرعة</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>تحويل استعلام متشابك إلى خطوات مقروءة قابلة للتشخيص</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>الأمان</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>الحجم</span></label></div><div class="q-explain"><strong>الشرح:</strong> الأداء متقارب غالباً؛ المكسب الحقيقي في الوضوح وقابلية الصيانة.</div></div><div class="q-item"><p class="q-text">5. متى تحتاج <code>WITH RECURSIVE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع الجداول الكبيرة</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>مع البنى الهرمية غير محدّدة العمق كشجرة التصنيفات</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع التجميع</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع الفهارس</span></label></div><div class="q-explain"><strong>الشرح:</strong> يبني النتيجة طبقة بعد طبقة حتى تنتهي الأبناء.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
       <div class="complete-box">
         <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
         <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/08-subqueries" aria-pressed="false">

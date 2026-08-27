@@ -71,255 +71,255 @@
   <div class="lesson-layout">
     <article class="lesson-main">
       <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تعالج النصوص: القصّ والدمج والاستبدال.</li><li>تجري عمليات رياضية وتقرّب الأرقام.</li><li>تستخرج أجزاء التواريخ وتحسب الفروق.</li><li>تكتب منطقاً شرطياً بـ <code>CASE</code>.</li><li>تحوّل بين أنواع البيانات.</li></ul></div>
-      <h2 id="sec-1">دوال النصوص</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- الدمج
-SELECT CONCAT(first_name, &#39; &#39;, last_name) AS full_name FROM users;
-SELECT first_name || &#39; &#39; || last_name AS full_name FROM users;  -- معيار SQL
+      <h2 id="sec-1">دوال النصوص</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- الدمج</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">CONCAT</span><span class="tok-punct">(</span>first_name<span class="tok-punct">,</span> <span class="tok-string">&#39; &#39;</span><span class="tok-punct">,</span> last_name<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> full_name <span class="tok-keyword">FROM</span> users<span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> first_name <span class="tok-punct">||</span> <span class="tok-string">&#39; &#39;</span> <span class="tok-punct">||</span> last_name <span class="tok-keyword">AS</span> full_name <span class="tok-keyword">FROM</span> users<span class="tok-punct">;</span>  <span class="tok-comment">-- معيار SQL</span>
 
--- حالة الأحرف
-SELECT UPPER(code), LOWER(email) FROM users;
+<span class="tok-comment">-- حالة الأحرف</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">UPPER</span><span class="tok-punct">(</span>code<span class="tok-punct">),</span> <span class="tok-func">LOWER</span><span class="tok-punct">(</span>email<span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> users<span class="tok-punct">;</span>
 
--- الطول
-SELECT name, LENGTH(name) AS name_length FROM products;
+<span class="tok-comment">-- الطول</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> <span class="tok-func">LENGTH</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> name_length <span class="tok-keyword">FROM</span> products<span class="tok-punct">;</span>
 
--- إزالة المسافات
-SELECT TRIM(&#39;  نص  &#39;);        -- &#39;نص&#39;
-SELECT LTRIM(s), RTRIM(s);     -- من البداية أو النهاية
+<span class="tok-comment">-- إزالة المسافات</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">TRIM</span><span class="tok-punct">(</span><span class="tok-string">&#39;  نص  &#39;</span><span class="tok-punct">);</span>        <span class="tok-comment">-- &#39;نص&#39;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">LTRIM</span><span class="tok-punct">(</span>s<span class="tok-punct">),</span> <span class="tok-func">RTRIM</span><span class="tok-punct">(</span>s<span class="tok-punct">);</span>     <span class="tok-comment">-- من البداية أو النهاية</span>
 
--- الاقتطاع
-SELECT SUBSTRING(description, 1, 100) FROM products;
-SELECT LEFT(name, 10), RIGHT(sku, 3) FROM products;
+<span class="tok-comment">-- الاقتطاع</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">SUBSTRING</span><span class="tok-punct">(</span>description<span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">100</span><span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> products<span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-keyword">LEFT</span><span class="tok-punct">(</span>name<span class="tok-punct">,</span> <span class="tok-number">10</span><span class="tok-punct">),</span> <span class="tok-keyword">RIGHT</span><span class="tok-punct">(</span>sku<span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> products<span class="tok-punct">;</span>
 
--- الاستبدال
-SELECT REPLACE(phone, &#39;-&#39;, &#39;&#39;) FROM customers;
+<span class="tok-comment">-- الاستبدال</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">REPLACE</span><span class="tok-punct">(</span>phone<span class="tok-punct">,</span> <span class="tok-string">&#39;-&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> customers<span class="tok-punct">;</span>
 
--- البحث عن موضع
-SELECT POSITION(&#39;@&#39; IN email) FROM users;
+<span class="tok-comment">-- البحث عن موضع</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">POSITION</span><span class="tok-punct">(</span><span class="tok-string">&#39;@&#39;</span> <span class="tok-keyword">IN</span> email<span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> users<span class="tok-punct">;</span>
 
--- الحشو
-SELECT LPAD(CAST(id AS TEXT), 6, &#39;0&#39;) AS order_code FROM orders;
--- 42 → &#39;000042&#39;</code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> أمثلة تطبيقية</div><iframe title="أمثلة تطبيقية" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.86em}th{background:#6a5acd;color:#fff;padding:8px 10px;text-align:right}td{padding:7px 10px;border-bottom:1px solid #e2e8f0}code{font-family:monospace;direction:ltr;display:inline-block;font-size:.9em}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;التعبير&lt;/th&gt;&lt;th&gt;النتيجة&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;UPPER('sku-001')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;SKU-001&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;LENGTH('سماعة')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;SUBSTRING('CodeWay',1,4)&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Code&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;REPLACE('050-123','-','')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;050123&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;LPAD('42',6,'0')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;000042&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;TRIM('  نص  ')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;نص&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">مثال عملي: توليد رمز طلب</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
-  id,
-  &#39;ORD-&#39; || TO_CHAR(ordered_at, &#39;YYYYMM&#39;) || &#39;-&#39; || LPAD(id::TEXT, 5, &#39;0&#39;)
-    AS order_code
-FROM orders;
--- ORD-202603-00042</code></pre></div><h2 id="sec-2">الدوال الرياضية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT ROUND(299.567, 2);    -- 299.57
-SELECT ROUND(299.567);       -- 300
-SELECT CEIL(299.1);          -- 300 — التقريب لأعلى
-SELECT FLOOR(299.9);         -- 299 — التقريب لأسفل
-SELECT ABS(-50);             -- 50
-SELECT POWER(2, 10);         -- 1024
-SELECT SQRT(144);            -- 12
-SELECT MOD(17, 5);           -- 2 — باقي القسمة
-SELECT GREATEST(5, 12, 3);   -- 12
-SELECT LEAST(5, 12, 3);      -- 3</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">حساب الخصم والضريبة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
-  name,
-  price                                    AS original,
-  ROUND(price * (1 - discount / 100.0), 2) AS after_discount,
-  ROUND(price * (1 - discount / 100.0) * 1.15, 2) AS with_vat
-FROM products
-WHERE discount &gt; 0;</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> فخّ القسمة الصحيحة</div><p>في معظم الأنظمة <code>10 / 3</code> بين عددين صحيحين تعطي <code>3</code> لا <code>3.33</code>. أضف <code>.0</code> لأحد الطرفين: <code>10 / 3.0</code> أو حوّل النوع: <code>CAST(10 AS DECIMAL) / 3</code>.</p></div><h2 id="sec-3">دوال التواريخ</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- الوقت الحالي
-SELECT CURRENT_DATE;        -- 2026-03-15
-SELECT CURRENT_TIME;        -- 14:30:00
-SELECT CURRENT_TIMESTAMP;   -- 2026-03-15 14:30:00
-SELECT NOW();               -- MySQL و PostgreSQL
+<span class="tok-comment">-- الحشو</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">LPAD</span><span class="tok-punct">(</span><span class="tok-func">CAST</span><span class="tok-punct">(</span>id <span class="tok-keyword">AS</span> TEXT<span class="tok-punct">),</span> <span class="tok-number">6</span><span class="tok-punct">,</span> <span class="tok-string">&#39;0&#39;</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> order_code <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>
+<span class="tok-comment">-- 42 → &#39;000042&#39;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> أمثلة تطبيقية</div><iframe title="أمثلة تطبيقية" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.86em}th{background:#6a5acd;color:#fff;padding:8px 10px;text-align:right}td{padding:7px 10px;border-bottom:1px solid #e2e8f0}code{font-family:monospace;direction:ltr;display:inline-block;font-size:.9em}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;التعبير&lt;/th&gt;&lt;th&gt;النتيجة&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;UPPER('sku-001')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;SKU-001&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;LENGTH('سماعة')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;SUBSTRING('CodeWay',1,4)&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Code&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;REPLACE('050-123','-','')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;050123&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;LPAD('42',6,'0')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;000042&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;TRIM('  نص  ')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;نص&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">مثال عملي: توليد رمز طلب</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span>
+  id<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;ORD-&#39;</span> <span class="tok-punct">||</span> <span class="tok-func">TO_CHAR</span><span class="tok-punct">(</span>ordered_at<span class="tok-punct">,</span> <span class="tok-string">&#39;YYYYMM&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">||</span> <span class="tok-string">&#39;-&#39;</span> <span class="tok-punct">||</span> <span class="tok-func">LPAD</span><span class="tok-punct">(</span>id<span class="tok-punct">::</span>TEXT<span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">,</span> <span class="tok-string">&#39;0&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">AS</span> order_code
+<span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>
+<span class="tok-comment">-- ORD-202603-00042</span></code></pre></div><h2 id="sec-2">الدوال الرياضية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span> <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-number">299.567</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">);</span>    <span class="tok-comment">-- 299.57</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-number">299.567</span><span class="tok-punct">);</span>       <span class="tok-comment">-- 300</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">CEIL</span><span class="tok-punct">(</span><span class="tok-number">299.1</span><span class="tok-punct">);</span>          <span class="tok-comment">-- 300 — التقريب لأعلى</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">FLOOR</span><span class="tok-punct">(</span><span class="tok-number">299.9</span><span class="tok-punct">);</span>         <span class="tok-comment">-- 299 — التقريب لأسفل</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">ABS</span><span class="tok-punct">(-</span><span class="tok-number">50</span><span class="tok-punct">);</span>             <span class="tok-comment">-- 50</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">POWER</span><span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-number">10</span><span class="tok-punct">);</span>         <span class="tok-comment">-- 1024</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">SQRT</span><span class="tok-punct">(</span><span class="tok-number">144</span><span class="tok-punct">);</span>            <span class="tok-comment">-- 12</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">MOD</span><span class="tok-punct">(</span><span class="tok-number">17</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">);</span>           <span class="tok-comment">-- 2 — باقي القسمة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">GREATEST</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">,</span> <span class="tok-number">12</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">);</span>   <span class="tok-comment">-- 12</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">LEAST</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">,</span> <span class="tok-number">12</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">);</span>      <span class="tok-comment">-- 3</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">حساب الخصم والضريبة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span>
+  name<span class="tok-punct">,</span>
+  price                                    <span class="tok-keyword">AS</span> original<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>price <span class="tok-punct">*</span> <span class="tok-punct">(</span><span class="tok-number">1</span> <span class="tok-punct">-</span> discount <span class="tok-punct">/</span> <span class="tok-number">100.0</span><span class="tok-punct">),</span> <span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> after_discount<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>price <span class="tok-punct">*</span> <span class="tok-punct">(</span><span class="tok-number">1</span> <span class="tok-punct">-</span> discount <span class="tok-punct">/</span> <span class="tok-number">100.0</span><span class="tok-punct">)</span> <span class="tok-punct">*</span> <span class="tok-number">1.15</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> with_vat
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> discount <span class="tok-punct">&gt;</span> <span class="tok-number">0</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> فخّ القسمة الصحيحة</div><p>في معظم الأنظمة <code>10 / 3</code> بين عددين صحيحين تعطي <code>3</code> لا <code>3.33</code>. أضف <code>.0</code> لأحد الطرفين: <code>10 / 3.0</code> أو حوّل النوع: <code>CAST(10 AS DECIMAL) / 3</code>.</p></div><h2 id="sec-3">دوال التواريخ</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- الوقت الحالي</span>
+<span class="tok-keyword">SELECT</span> CURRENT_DATE<span class="tok-punct">;</span>        <span class="tok-comment">-- 2026-03-15</span>
+<span class="tok-keyword">SELECT</span> CURRENT_TIME<span class="tok-punct">;</span>        <span class="tok-comment">-- 14:30:00</span>
+<span class="tok-keyword">SELECT</span> CURRENT_TIMESTAMP<span class="tok-punct">;</span>   <span class="tok-comment">-- 2026-03-15 14:30:00</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">NOW</span><span class="tok-punct">();</span>               <span class="tok-comment">-- MySQL و PostgreSQL</span>
 
--- استخراج الأجزاء
-SELECT EXTRACT(YEAR  FROM ordered_at) AS year,
-       EXTRACT(MONTH FROM ordered_at) AS month,
-       EXTRACT(DAY   FROM ordered_at) AS day,
-       EXTRACT(DOW   FROM ordered_at) AS day_of_week
-FROM orders;
+<span class="tok-comment">-- استخراج الأجزاء</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>YEAR  <span class="tok-keyword">FROM</span> ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> year<span class="tok-punct">,</span>
+       <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>MONTH <span class="tok-keyword">FROM</span> ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> month<span class="tok-punct">,</span>
+       <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>DAY   <span class="tok-keyword">FROM</span> ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> day<span class="tok-punct">,</span>
+       <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>DOW   <span class="tok-keyword">FROM</span> ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> day_of_week
+<span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>
 
--- MySQL
-SELECT YEAR(ordered_at), MONTH(ordered_at), DAYNAME(ordered_at) FROM orders;
+<span class="tok-comment">-- MySQL</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">YEAR</span><span class="tok-punct">(</span>ordered_at<span class="tok-punct">),</span> <span class="tok-func">MONTH</span><span class="tok-punct">(</span>ordered_at<span class="tok-punct">),</span> <span class="tok-func">DAYNAME</span><span class="tok-punct">(</span>ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>
 
--- الحساب
-SELECT ordered_at + INTERVAL &#39;7 days&#39;  AS due_date FROM orders;      -- PostgreSQL
-SELECT DATE_ADD(ordered_at, INTERVAL 7 DAY) AS due_date FROM orders; -- MySQL
+<span class="tok-comment">-- الحساب</span>
+<span class="tok-keyword">SELECT</span> ordered_at <span class="tok-punct">+</span> <span class="tok-keyword">INTERVAL</span> <span class="tok-string">&#39;7 days&#39;</span>  <span class="tok-keyword">AS</span> due_date <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>      <span class="tok-comment">-- PostgreSQL</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">DATE_ADD</span><span class="tok-punct">(</span>ordered_at<span class="tok-punct">,</span> <span class="tok-keyword">INTERVAL</span> <span class="tok-number">7</span> DAY<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> due_date <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span> <span class="tok-comment">-- MySQL</span>
 
--- الفرق بين تاريخين
-SELECT CURRENT_DATE - ordered_at::DATE AS days_ago FROM orders;      -- PostgreSQL
-SELECT DATEDIFF(CURRENT_DATE, ordered_at) AS days_ago FROM orders;   -- MySQL
+<span class="tok-comment">-- الفرق بين تاريخين</span>
+<span class="tok-keyword">SELECT</span> CURRENT_DATE <span class="tok-punct">-</span> ordered_at<span class="tok-punct">::</span>DATE <span class="tok-keyword">AS</span> days_ago <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>      <span class="tok-comment">-- PostgreSQL</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">DATEDIFF</span><span class="tok-punct">(</span>CURRENT_DATE<span class="tok-punct">,</span> ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> days_ago <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>   <span class="tok-comment">-- MySQL</span>
 
--- التنسيق
-SELECT TO_CHAR(ordered_at, &#39;YYYY-MM-DD&#39;)     FROM orders;  -- PostgreSQL
-SELECT DATE_FORMAT(ordered_at, &#39;%Y-%m-%d&#39;)   FROM orders;  -- MySQL
+<span class="tok-comment">-- التنسيق</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">TO_CHAR</span><span class="tok-punct">(</span>ordered_at<span class="tok-punct">,</span> <span class="tok-string">&#39;YYYY-MM-DD&#39;</span><span class="tok-punct">)</span>     <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>  <span class="tok-comment">-- PostgreSQL</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">DATE_FORMAT</span><span class="tok-punct">(</span>ordered_at<span class="tok-punct">,</span> <span class="tok-string">&#39;%Y-%m-%d&#39;</span><span class="tok-punct">)</span>   <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>  <span class="tok-comment">-- MySQL</span>
 
--- التقريب لبداية الفترة
-SELECT DATE_TRUNC(&#39;month&#39;, ordered_at) FROM orders;   -- PostgreSQL</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">حساب العمر ومدّة الاشتراك</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
-  name,
-  birth_date,
-  EXTRACT(YEAR FROM AGE(birth_date)) AS age,
-  CURRENT_DATE - joined_at::DATE     AS days_as_member
-FROM members;</code></pre></div><h2 id="sec-4">التعبيرات الشرطية</h2><h3 id="sec-5"><code>CASE</code> — الشكل المبحوث</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
-  name,
-  stock,
-  CASE
-    WHEN stock = 0        THEN &#39;نفدت الكمية&#39;
-    WHEN stock &lt; 5        THEN &#39;كمية محدودة&#39;
-    WHEN stock &lt; 20       THEN &#39;متوفّر&#39;
-    ELSE                       &#39;متوفّر بكثرة&#39;
-  END AS stock_status
-FROM products;</code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ناتج CASE</div><iframe title="ناتج CASE" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.88em}th{background:#6a5acd;color:#fff;padding:8px 12px;text-align:right}td{padding:7px 12px;border-bottom:1px solid #e2e8f0}.b{font-weight:700}.r{color:#dc2626}.o{color:#d97706}.g{color:#059669}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;name&lt;/th&gt;&lt;th&gt;stock&lt;/th&gt;&lt;th&gt;stock_status&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;سماعة لاسلكية&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td class=&quot;b r&quot;&gt;نفدت الكمية&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;لوحة مفاتيح&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;td class=&quot;b o&quot;&gt;كمية محدودة&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ماوس لاسلكي&lt;/td&gt;&lt;td&gt;14&lt;/td&gt;&lt;td class=&quot;b g&quot;&gt;متوفّر&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;كابل USB&lt;/td&gt;&lt;td&gt;85&lt;/td&gt;&lt;td class=&quot;b g&quot;&gt;متوفّر بكثرة&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:250px"></iframe></div><h3 id="sec-6"><code>CASE</code> — الشكل البسيط</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
-  id,
-  CASE status
-    WHEN &#39;pending&#39;   THEN &#39;قيد المراجعة&#39;
-    WHEN &#39;paid&#39;      THEN &#39;مدفوع&#39;
-    WHEN &#39;shipped&#39;   THEN &#39;تم الشحن&#39;
-    WHEN &#39;delivered&#39; THEN &#39;تم التسليم&#39;
-    ELSE &#39;غير معروف&#39;
-  END AS status_ar
-FROM orders;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">استخدامات متقدّمة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- في الترتيب: حالة مخصّصة
-SELECT * FROM orders
-ORDER BY
-  CASE status
-    WHEN &#39;pending&#39; THEN 1
-    WHEN &#39;paid&#39;    THEN 2
-    WHEN &#39;shipped&#39; THEN 3
-    ELSE 4
-  END;
+<span class="tok-comment">-- التقريب لبداية الفترة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">DATE_TRUNC</span><span class="tok-punct">(</span><span class="tok-string">&#39;month&#39;</span><span class="tok-punct">,</span> ordered_at<span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>   <span class="tok-comment">-- PostgreSQL</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">حساب العمر ومدّة الاشتراك</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span>
+  name<span class="tok-punct">,</span>
+  birth_date<span class="tok-punct">,</span>
+  <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>YEAR <span class="tok-keyword">FROM</span> <span class="tok-func">AGE</span><span class="tok-punct">(</span>birth_date<span class="tok-punct">))</span> <span class="tok-keyword">AS</span> age<span class="tok-punct">,</span>
+  CURRENT_DATE <span class="tok-punct">-</span> joined_at<span class="tok-punct">::</span>DATE     <span class="tok-keyword">AS</span> days_as_member
+<span class="tok-keyword">FROM</span> members<span class="tok-punct">;</span></code></pre></div><h2 id="sec-4">التعبيرات الشرطية</h2><h3 id="sec-5"><code>CASE</code> — الشكل المبحوث</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span>
+  name<span class="tok-punct">,</span>
+  stock<span class="tok-punct">,</span>
+  <span class="tok-keyword">CASE</span>
+    <span class="tok-keyword">WHEN</span> stock <span class="tok-punct">=</span> <span class="tok-number">0</span>        <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;نفدت الكمية&#39;</span>
+    <span class="tok-keyword">WHEN</span> stock <span class="tok-punct">&lt;</span> <span class="tok-number">5</span>        <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;كمية محدودة&#39;</span>
+    <span class="tok-keyword">WHEN</span> stock <span class="tok-punct">&lt;</span> <span class="tok-number">20</span>       <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;متوفّر&#39;</span>
+    <span class="tok-keyword">ELSE</span>                       <span class="tok-string">&#39;متوفّر بكثرة&#39;</span>
+  <span class="tok-keyword">END</span> <span class="tok-keyword">AS</span> stock_status
+<span class="tok-keyword">FROM</span> products<span class="tok-punct">;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ناتج CASE</div><iframe title="ناتج CASE" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.88em}th{background:#6a5acd;color:#fff;padding:8px 12px;text-align:right}td{padding:7px 12px;border-bottom:1px solid #e2e8f0}.b{font-weight:700}.r{color:#dc2626}.o{color:#d97706}.g{color:#059669}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;name&lt;/th&gt;&lt;th&gt;stock&lt;/th&gt;&lt;th&gt;stock_status&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;سماعة لاسلكية&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td class=&quot;b r&quot;&gt;نفدت الكمية&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;لوحة مفاتيح&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;td class=&quot;b o&quot;&gt;كمية محدودة&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ماوس لاسلكي&lt;/td&gt;&lt;td&gt;14&lt;/td&gt;&lt;td class=&quot;b g&quot;&gt;متوفّر&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;كابل USB&lt;/td&gt;&lt;td&gt;85&lt;/td&gt;&lt;td class=&quot;b g&quot;&gt;متوفّر بكثرة&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:250px"></iframe></div><h3 id="sec-6"><code>CASE</code> — الشكل البسيط</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span>
+  id<span class="tok-punct">,</span>
+  <span class="tok-keyword">CASE</span> status
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;pending&#39;</span>   <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;قيد المراجعة&#39;</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;paid&#39;</span>      <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;مدفوع&#39;</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;shipped&#39;</span>   <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;تم الشحن&#39;</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;delivered&#39;</span> <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;تم التسليم&#39;</span>
+    <span class="tok-keyword">ELSE</span> <span class="tok-string">&#39;غير معروف&#39;</span>
+  <span class="tok-keyword">END</span> <span class="tok-keyword">AS</span> status_ar
+<span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">استخدامات متقدّمة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- في الترتيب: حالة مخصّصة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> orders
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span>
+  <span class="tok-keyword">CASE</span> status
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;pending&#39;</span> <span class="tok-keyword">THEN</span> <span class="tok-number">1</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;paid&#39;</span>    <span class="tok-keyword">THEN</span> <span class="tok-number">2</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;shipped&#39;</span> <span class="tok-keyword">THEN</span> <span class="tok-number">3</span>
+    <span class="tok-keyword">ELSE</span> <span class="tok-number">4</span>
+  <span class="tok-keyword">END</span><span class="tok-punct">;</span>
 
--- في التجميع: عدّ شرطي
-SELECT
-  COUNT(*) AS total,
-  SUM(CASE WHEN status = &#39;paid&#39;      THEN 1 ELSE 0 END) AS paid_count,
-  SUM(CASE WHEN status = &#39;cancelled&#39; THEN 1 ELSE 0 END) AS cancelled_count
-FROM orders;
+<span class="tok-comment">-- في التجميع: عدّ شرطي</span>
+<span class="tok-keyword">SELECT</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(*)</span> <span class="tok-keyword">AS</span> total<span class="tok-punct">,</span>
+  <span class="tok-func">SUM</span><span class="tok-punct">(</span><span class="tok-keyword">CASE</span> <span class="tok-keyword">WHEN</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;paid&#39;</span>      <span class="tok-keyword">THEN</span> <span class="tok-number">1</span> <span class="tok-keyword">ELSE</span> <span class="tok-number">0</span> <span class="tok-keyword">END</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> paid_count<span class="tok-punct">,</span>
+  <span class="tok-func">SUM</span><span class="tok-punct">(</span><span class="tok-keyword">CASE</span> <span class="tok-keyword">WHEN</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;cancelled&#39;</span> <span class="tok-keyword">THEN</span> <span class="tok-number">1</span> <span class="tok-keyword">ELSE</span> <span class="tok-number">0</span> <span class="tok-keyword">END</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> cancelled_count
+<span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>
 
--- في التحديث
-UPDATE products
-SET price = CASE
-  WHEN category_id = 1 THEN price * 1.10
-  WHEN category_id = 2 THEN price * 1.15
-  ELSE price
-END;</code></pre></div><h2 id="sec-7">التعامل مع NULL</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- أول قيمة غير فارغة
-SELECT COALESCE(phone, mobile, email, &#39;لا توجد وسيلة تواصل&#39;) FROM customers;
+<span class="tok-comment">-- في التحديث</span>
+<span class="tok-keyword">UPDATE</span> products
+<span class="tok-keyword">SET</span> price <span class="tok-punct">=</span> <span class="tok-keyword">CASE</span>
+  <span class="tok-keyword">WHEN</span> category_id <span class="tok-punct">=</span> <span class="tok-number">1</span> <span class="tok-keyword">THEN</span> price <span class="tok-punct">*</span> <span class="tok-number">1.10</span>
+  <span class="tok-keyword">WHEN</span> category_id <span class="tok-punct">=</span> <span class="tok-number">2</span> <span class="tok-keyword">THEN</span> price <span class="tok-punct">*</span> <span class="tok-number">1.15</span>
+  <span class="tok-keyword">ELSE</span> price
+<span class="tok-keyword">END</span><span class="tok-punct">;</span></code></pre></div><h2 id="sec-7">التعامل مع NULL</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- أول قيمة غير فارغة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">COALESCE</span><span class="tok-punct">(</span>phone<span class="tok-punct">,</span> mobile<span class="tok-punct">,</span> email<span class="tok-punct">,</span> <span class="tok-string">&#39;لا توجد وسيلة تواصل&#39;</span><span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> customers<span class="tok-punct">;</span>
 
--- بديل بسيط
-SELECT IFNULL(discount, 0) FROM orders;      -- MySQL
-SELECT NVL(discount, 0) FROM orders;         -- Oracle
+<span class="tok-comment">-- بديل بسيط</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">IFNULL</span><span class="tok-punct">(</span>discount<span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>      <span class="tok-comment">-- MySQL</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">NVL</span><span class="tok-punct">(</span>discount<span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>         <span class="tok-comment">-- Oracle</span>
 
--- NULL إن تساوت القيمتان — مفيد لتفادي القسمة على صفر
-SELECT total / NULLIF(quantity, 0) AS unit_price FROM order_items;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p><code>NULLIF(x, 0)</code> حيلة أنيقة: تحوّل الصفر إلى <code>NULL</code> فتتجنّب خطأ القسمة على صفر، والنتيجة تصبح <code>NULL</code> بدل انهيار الاستعلام.</p></div><h2 id="sec-8">تحويل الأنواع</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT CAST(&#39;123&#39; AS INTEGER);
-SELECT CAST(price AS TEXT);
-SELECT CAST(&#39;2026-03-15&#39; AS DATE);
+<span class="tok-comment">-- NULL إن تساوت القيمتان — مفيد لتفادي القسمة على صفر</span>
+<span class="tok-keyword">SELECT</span> total <span class="tok-punct">/</span> <span class="tok-func">NULLIF</span><span class="tok-punct">(</span>quantity<span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> unit_price <span class="tok-keyword">FROM</span> order_items<span class="tok-punct">;</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p><code>NULLIF(x, 0)</code> حيلة أنيقة: تحوّل الصفر إلى <code>NULL</code> فتتجنّب خطأ القسمة على صفر، والنتيجة تصبح <code>NULL</code> بدل انهيار الاستعلام.</p></div><h2 id="sec-8">تحويل الأنواع</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span> <span class="tok-func">CAST</span><span class="tok-punct">(</span><span class="tok-string">&#39;123&#39;</span> <span class="tok-keyword">AS</span> INTEGER<span class="tok-punct">);</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">CAST</span><span class="tok-punct">(</span>price <span class="tok-keyword">AS</span> TEXT<span class="tok-punct">);</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-func">CAST</span><span class="tok-punct">(</span><span class="tok-string">&#39;2026-03-15&#39;</span> <span class="tok-keyword">AS</span> DATE<span class="tok-punct">);</span>
 
--- اختصار PostgreSQL
-SELECT price::TEXT, &#39;123&#39;::INT, ordered_at::DATE;
+<span class="tok-comment">-- اختصار PostgreSQL</span>
+<span class="tok-keyword">SELECT</span> price<span class="tok-punct">::</span>TEXT<span class="tok-punct">,</span> <span class="tok-string">&#39;123&#39;</span><span class="tok-punct">::</span>INT<span class="tok-punct">,</span> ordered_at<span class="tok-punct">::</span>DATE<span class="tok-punct">;</span>
 
--- التحويل الضمني قد يفاجئك
-SELECT &#39;10&#39; + 5;    -- 15 في MySQL، خطأ في PostgreSQL</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه</div><p>لا تعتمد على التحويل الضمني — يختلف بين الأنظمة وقد يعطي نتائج صامتة خاطئة. حوّل صراحةً بـ <code>CAST</code> دائماً.</p></div><h2 id="sec-9">استعلام تقرير متكامل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
-  &#39;ORD-&#39; || LPAD(o.id::TEXT, 6, &#39;0&#39;)          AS order_code,
-  UPPER(TRIM(c.name))                          AS customer,
-  COALESCE(c.phone, c.email, &#39;—&#39;)              AS contact,
+<span class="tok-comment">-- التحويل الضمني قد يفاجئك</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-string">&#39;10&#39;</span> <span class="tok-punct">+</span> <span class="tok-number">5</span><span class="tok-punct">;</span>    <span class="tok-comment">-- 15 في MySQL، خطأ في PostgreSQL</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه</div><p>لا تعتمد على التحويل الضمني — يختلف بين الأنظمة وقد يعطي نتائج صامتة خاطئة. حوّل صراحةً بـ <code>CAST</code> دائماً.</p></div><h2 id="sec-9">استعلام تقرير متكامل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span>
+  <span class="tok-string">&#39;ORD-&#39;</span> <span class="tok-punct">||</span> <span class="tok-func">LPAD</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>id<span class="tok-punct">::</span>TEXT<span class="tok-punct">,</span> <span class="tok-number">6</span><span class="tok-punct">,</span> <span class="tok-string">&#39;0&#39;</span><span class="tok-punct">)</span>          <span class="tok-keyword">AS</span> order_code<span class="tok-punct">,</span>
+  <span class="tok-func">UPPER</span><span class="tok-punct">(</span><span class="tok-func">TRIM</span><span class="tok-punct">(</span>c<span class="tok-punct">.</span>name<span class="tok-punct">))</span>                          <span class="tok-keyword">AS</span> customer<span class="tok-punct">,</span>
+  <span class="tok-func">COALESCE</span><span class="tok-punct">(</span>c<span class="tok-punct">.</span>phone<span class="tok-punct">,</span> c<span class="tok-punct">.</span>email<span class="tok-punct">,</span> <span class="tok-string">&#39;—&#39;</span><span class="tok-punct">)</span>              <span class="tok-keyword">AS</span> contact<span class="tok-punct">,</span>
 
-  TO_CHAR(o.ordered_at, &#39;YYYY-MM-DD&#39;)          AS order_date,
-  CURRENT_DATE - o.ordered_at::DATE            AS days_ago,
+  <span class="tok-func">TO_CHAR</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>ordered_at<span class="tok-punct">,</span> <span class="tok-string">&#39;YYYY-MM-DD&#39;</span><span class="tok-punct">)</span>          <span class="tok-keyword">AS</span> order_date<span class="tok-punct">,</span>
+  CURRENT_DATE <span class="tok-punct">-</span> o<span class="tok-punct">.</span>ordered_at<span class="tok-punct">::</span>DATE            <span class="tok-keyword">AS</span> days_ago<span class="tok-punct">,</span>
 
-  ROUND(o.total, 2)                            AS total,
-  ROUND(o.total * 0.15, 2)                     AS vat,
-  ROUND(o.total * 1.15, 2)                     AS grand_total,
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>total<span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span>                            <span class="tok-keyword">AS</span> total<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>total <span class="tok-punct">*</span> <span class="tok-number">0.15</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span>                     <span class="tok-keyword">AS</span> vat<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>total <span class="tok-punct">*</span> <span class="tok-number">1.15</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span>                     <span class="tok-keyword">AS</span> grand_total<span class="tok-punct">,</span>
 
-  CASE o.status
-    WHEN &#39;pending&#39;   THEN &#39;قيد المراجعة&#39;
-    WHEN &#39;paid&#39;      THEN &#39;مدفوع&#39;
-    WHEN &#39;shipped&#39;   THEN &#39;تم الشحن&#39;
-    WHEN &#39;delivered&#39; THEN &#39;تم التسليم&#39;
-    ELSE &#39;ملغى&#39;
-  END                                          AS status_ar,
+  <span class="tok-keyword">CASE</span> o<span class="tok-punct">.</span>status
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;pending&#39;</span>   <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;قيد المراجعة&#39;</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;paid&#39;</span>      <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;مدفوع&#39;</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;shipped&#39;</span>   <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;تم الشحن&#39;</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;delivered&#39;</span> <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;تم التسليم&#39;</span>
+    <span class="tok-keyword">ELSE</span> <span class="tok-string">&#39;ملغى&#39;</span>
+  <span class="tok-keyword">END</span>                                          <span class="tok-keyword">AS</span> status_ar<span class="tok-punct">,</span>
 
-  CASE
-    WHEN o.total &gt;= 5000 THEN &#39;ذهبي&#39;
-    WHEN o.total &gt;= 1000 THEN &#39;فضّي&#39;
-    ELSE &#39;عادي&#39;
-  END                                          AS tier
+  <span class="tok-keyword">CASE</span>
+    <span class="tok-keyword">WHEN</span> o<span class="tok-punct">.</span>total <span class="tok-punct">&gt;=</span> <span class="tok-number">5000</span> <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;ذهبي&#39;</span>
+    <span class="tok-keyword">WHEN</span> o<span class="tok-punct">.</span>total <span class="tok-punct">&gt;=</span> <span class="tok-number">1000</span> <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;فضّي&#39;</span>
+    <span class="tok-keyword">ELSE</span> <span class="tok-string">&#39;عادي&#39;</span>
+  <span class="tok-keyword">END</span>                                          <span class="tok-keyword">AS</span> tier
 
-FROM orders o
-JOIN customers c ON c.id = o.customer_id
-WHERE o.ordered_at &gt;= CURRENT_DATE - INTERVAL &#39;90 days&#39;
-ORDER BY o.ordered_at DESC;</code></pre></div><section class="exercise" id="sec-10"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: تقرير مبيعات منسّق</h3></header><div class="exercise-body"><p>اكتب استعلامات تستخدم الدوال لإنتاج تقارير جاهزة للعرض.</p><p><strong>المطلوب:</strong></p><ul><li>اسم المنتج بحروف كبيرة مع طوله وعدد أحرفه.</li><li>رمز منتج مركّب: <code>PRD-</code> + التصنيف + <code>-</code> + المعرّف محشوّاً إلى 5 خانات.</li><li>السعر الأصلي والسعر بعد خصم 10٪ والسعر شاملاً ضريبة 15٪ — كلها مقرّبة لخانتين.</li><li>تصنيف المخزون بـ <code>CASE</code> إلى أربع حالات عربية.</li><li>وسيلة تواصل العميل: الجوال أو البريد أو نص بديل، بـ <code>COALESCE</code>.</li><li>عمر الطلب بالأيام، وتاريخه بصيغة <code>YYYY-MM-DD</code>.</li><li>تصنيف العميل إلى ذهبي/فضّي/عادي بحسب إجمالي طلبه.</li><li>عدّ الطلبات المدفوعة والملغاة في صف واحد بـ <code>SUM(CASE …)</code>.</li><li>متوسّط سعر الوحدة مع تفادي القسمة على صفر بـ <code>NULLIF</code>.</li><li>ترتيب مخصّص للحالات بـ <code>CASE</code> داخل <code>ORDER BY</code>.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>LPAD(CAST(id AS TEXT), 5, &quot;0&quot;)</code> للحشو.</li><li>💡 <code>SUM(CASE WHEN cond THEN 1 ELSE 0 END)</code> للعدّ الشرطي.</li><li>💡 انتبه للقسمة الصحيحة: أضف <code>.0</code> أو حوّل النوع.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ===== 1) معلومات المنتج المنسّقة =====
-SELECT
-  UPPER(name)                                       AS product_upper,
-  LENGTH(name)                                      AS name_length,
-  &#39;PRD-&#39; || category_id || &#39;-&#39; ||
-    LPAD(CAST(id AS TEXT), 5, &#39;0&#39;)                  AS product_code,
+<span class="tok-keyword">FROM</span> orders o
+<span class="tok-keyword">JOIN</span> customers c <span class="tok-keyword">ON</span> c<span class="tok-punct">.</span>id <span class="tok-punct">=</span> o<span class="tok-punct">.</span>customer_id
+<span class="tok-keyword">WHERE</span> o<span class="tok-punct">.</span>ordered_at <span class="tok-punct">&gt;=</span> CURRENT_DATE <span class="tok-punct">-</span> <span class="tok-keyword">INTERVAL</span> <span class="tok-string">&#39;90 days&#39;</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> o<span class="tok-punct">.</span>ordered_at <span class="tok-keyword">DESC</span><span class="tok-punct">;</span></code></pre></div><section class="exercise" id="sec-10"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: تقرير مبيعات منسّق</h3></header><div class="exercise-body"><p>اكتب استعلامات تستخدم الدوال لإنتاج تقارير جاهزة للعرض.</p><p><strong>المطلوب:</strong></p><ul><li>اسم المنتج بحروف كبيرة مع طوله وعدد أحرفه.</li><li>رمز منتج مركّب: <code>PRD-</code> + التصنيف + <code>-</code> + المعرّف محشوّاً إلى 5 خانات.</li><li>السعر الأصلي والسعر بعد خصم 10٪ والسعر شاملاً ضريبة 15٪ — كلها مقرّبة لخانتين.</li><li>تصنيف المخزون بـ <code>CASE</code> إلى أربع حالات عربية.</li><li>وسيلة تواصل العميل: الجوال أو البريد أو نص بديل، بـ <code>COALESCE</code>.</li><li>عمر الطلب بالأيام، وتاريخه بصيغة <code>YYYY-MM-DD</code>.</li><li>تصنيف العميل إلى ذهبي/فضّي/عادي بحسب إجمالي طلبه.</li><li>عدّ الطلبات المدفوعة والملغاة في صف واحد بـ <code>SUM(CASE …)</code>.</li><li>متوسّط سعر الوحدة مع تفادي القسمة على صفر بـ <code>NULLIF</code>.</li><li>ترتيب مخصّص للحالات بـ <code>CASE</code> داخل <code>ORDER BY</code>.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>LPAD(CAST(id AS TEXT), 5, &quot;0&quot;)</code> للحشو.</li><li>💡 <code>SUM(CASE WHEN cond THEN 1 ELSE 0 END)</code> للعدّ الشرطي.</li><li>💡 انتبه للقسمة الصحيحة: أضف <code>.0</code> أو حوّل النوع.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- ===== 1) معلومات المنتج المنسّقة =====</span>
+<span class="tok-keyword">SELECT</span>
+  <span class="tok-func">UPPER</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span>                                       <span class="tok-keyword">AS</span> product_upper<span class="tok-punct">,</span>
+  <span class="tok-func">LENGTH</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span>                                      <span class="tok-keyword">AS</span> name_length<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;PRD-&#39;</span> <span class="tok-punct">||</span> category_id <span class="tok-punct">||</span> <span class="tok-string">&#39;-&#39;</span> <span class="tok-punct">||</span>
+    <span class="tok-func">LPAD</span><span class="tok-punct">(</span><span class="tok-func">CAST</span><span class="tok-punct">(</span>id <span class="tok-keyword">AS</span> TEXT<span class="tok-punct">),</span> <span class="tok-number">5</span><span class="tok-punct">,</span> <span class="tok-string">&#39;0&#39;</span><span class="tok-punct">)</span>                  <span class="tok-keyword">AS</span> product_code<span class="tok-punct">,</span>
 
-  ROUND(price, 2)                                   AS original_price,
-  ROUND(price * 0.90, 2)                            AS discounted_price,
-  ROUND(price * 0.90 * 1.15, 2)                     AS final_with_vat,
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>price<span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span>                                   <span class="tok-keyword">AS</span> original_price<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>price <span class="tok-punct">*</span> <span class="tok-number">0.90</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span>                            <span class="tok-keyword">AS</span> discounted_price<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>price <span class="tok-punct">*</span> <span class="tok-number">0.90</span> <span class="tok-punct">*</span> <span class="tok-number">1.15</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span>                     <span class="tok-keyword">AS</span> final_with_vat<span class="tok-punct">,</span>
 
-  stock,
-  CASE
-    WHEN stock = 0  THEN &#39;نفدت الكمية&#39;
-    WHEN stock &lt; 5  THEN &#39;كمية محدودة&#39;
-    WHEN stock &lt; 20 THEN &#39;متوفّر&#39;
-    ELSE                 &#39;متوفّر بكثرة&#39;
-  END                                               AS stock_status
+  stock<span class="tok-punct">,</span>
+  <span class="tok-keyword">CASE</span>
+    <span class="tok-keyword">WHEN</span> stock <span class="tok-punct">=</span> <span class="tok-number">0</span>  <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;نفدت الكمية&#39;</span>
+    <span class="tok-keyword">WHEN</span> stock <span class="tok-punct">&lt;</span> <span class="tok-number">5</span>  <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;كمية محدودة&#39;</span>
+    <span class="tok-keyword">WHEN</span> stock <span class="tok-punct">&lt;</span> <span class="tok-number">20</span> <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;متوفّر&#39;</span>
+    <span class="tok-keyword">ELSE</span>                 <span class="tok-string">&#39;متوفّر بكثرة&#39;</span>
+  <span class="tok-keyword">END</span>                                               <span class="tok-keyword">AS</span> stock_status
 
-FROM products
-WHERE is_active = TRUE
-ORDER BY price DESC;
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> is_active <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
 
--- ===== 2) تقرير الطلبات =====
-SELECT
-  &#39;ORD-&#39; || LPAD(CAST(o.id AS TEXT), 6, &#39;0&#39;)        AS order_code,
-  TRIM(c.name)                                      AS customer,
-  COALESCE(c.phone, c.email, &#39;لا توجد وسيلة تواصل&#39;) AS contact,
+<span class="tok-comment">-- ===== 2) تقرير الطلبات =====</span>
+<span class="tok-keyword">SELECT</span>
+  <span class="tok-string">&#39;ORD-&#39;</span> <span class="tok-punct">||</span> <span class="tok-func">LPAD</span><span class="tok-punct">(</span><span class="tok-func">CAST</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>id <span class="tok-keyword">AS</span> TEXT<span class="tok-punct">),</span> <span class="tok-number">6</span><span class="tok-punct">,</span> <span class="tok-string">&#39;0&#39;</span><span class="tok-punct">)</span>        <span class="tok-keyword">AS</span> order_code<span class="tok-punct">,</span>
+  <span class="tok-func">TRIM</span><span class="tok-punct">(</span>c<span class="tok-punct">.</span>name<span class="tok-punct">)</span>                                      <span class="tok-keyword">AS</span> customer<span class="tok-punct">,</span>
+  <span class="tok-func">COALESCE</span><span class="tok-punct">(</span>c<span class="tok-punct">.</span>phone<span class="tok-punct">,</span> c<span class="tok-punct">.</span>email<span class="tok-punct">,</span> <span class="tok-string">&#39;لا توجد وسيلة تواصل&#39;</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> contact<span class="tok-punct">,</span>
 
-  TO_CHAR(o.ordered_at, &#39;YYYY-MM-DD&#39;)               AS order_date,
-  CURRENT_DATE - CAST(o.ordered_at AS DATE)         AS days_ago,
+  <span class="tok-func">TO_CHAR</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>ordered_at<span class="tok-punct">,</span> <span class="tok-string">&#39;YYYY-MM-DD&#39;</span><span class="tok-punct">)</span>               <span class="tok-keyword">AS</span> order_date<span class="tok-punct">,</span>
+  CURRENT_DATE <span class="tok-punct">-</span> <span class="tok-func">CAST</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>ordered_at <span class="tok-keyword">AS</span> DATE<span class="tok-punct">)</span>         <span class="tok-keyword">AS</span> days_ago<span class="tok-punct">,</span>
 
-  ROUND(o.total, 2)                                 AS total,
-  ROUND(o.total * 1.15, 2)                          AS grand_total,
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>total<span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span>                                 <span class="tok-keyword">AS</span> total<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>o<span class="tok-punct">.</span>total <span class="tok-punct">*</span> <span class="tok-number">1.15</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span>                          <span class="tok-keyword">AS</span> grand_total<span class="tok-punct">,</span>
 
-  CASE o.status
-    WHEN &#39;pending&#39;   THEN &#39;قيد المراجعة&#39;
-    WHEN &#39;paid&#39;      THEN &#39;مدفوع&#39;
-    WHEN &#39;shipped&#39;   THEN &#39;تم الشحن&#39;
-    WHEN &#39;delivered&#39; THEN &#39;تم التسليم&#39;
-    ELSE                  &#39;ملغى&#39;
-  END                                               AS status_ar,
+  <span class="tok-keyword">CASE</span> o<span class="tok-punct">.</span>status
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;pending&#39;</span>   <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;قيد المراجعة&#39;</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;paid&#39;</span>      <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;مدفوع&#39;</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;shipped&#39;</span>   <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;تم الشحن&#39;</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;delivered&#39;</span> <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;تم التسليم&#39;</span>
+    <span class="tok-keyword">ELSE</span>                  <span class="tok-string">&#39;ملغى&#39;</span>
+  <span class="tok-keyword">END</span>                                               <span class="tok-keyword">AS</span> status_ar<span class="tok-punct">,</span>
 
-  CASE
-    WHEN o.total &gt;= 5000 THEN &#39;ذهبي&#39;
-    WHEN o.total &gt;= 1000 THEN &#39;فضّي&#39;
-    ELSE                      &#39;عادي&#39;
-  END                                               AS tier
+  <span class="tok-keyword">CASE</span>
+    <span class="tok-keyword">WHEN</span> o<span class="tok-punct">.</span>total <span class="tok-punct">&gt;=</span> <span class="tok-number">5000</span> <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;ذهبي&#39;</span>
+    <span class="tok-keyword">WHEN</span> o<span class="tok-punct">.</span>total <span class="tok-punct">&gt;=</span> <span class="tok-number">1000</span> <span class="tok-keyword">THEN</span> <span class="tok-string">&#39;فضّي&#39;</span>
+    <span class="tok-keyword">ELSE</span>                      <span class="tok-string">&#39;عادي&#39;</span>
+  <span class="tok-keyword">END</span>                                               <span class="tok-keyword">AS</span> tier
 
-FROM orders o
-JOIN customers c ON c.id = o.customer_id
-ORDER BY
-  CASE o.status
-    WHEN &#39;pending&#39;   THEN 1
-    WHEN &#39;paid&#39;      THEN 2
-    WHEN &#39;shipped&#39;   THEN 3
-    WHEN &#39;delivered&#39; THEN 4
-    ELSE 5
-  END,
-  o.ordered_at DESC;
+<span class="tok-keyword">FROM</span> orders o
+<span class="tok-keyword">JOIN</span> customers c <span class="tok-keyword">ON</span> c<span class="tok-punct">.</span>id <span class="tok-punct">=</span> o<span class="tok-punct">.</span>customer_id
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span>
+  <span class="tok-keyword">CASE</span> o<span class="tok-punct">.</span>status
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;pending&#39;</span>   <span class="tok-keyword">THEN</span> <span class="tok-number">1</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;paid&#39;</span>      <span class="tok-keyword">THEN</span> <span class="tok-number">2</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;shipped&#39;</span>   <span class="tok-keyword">THEN</span> <span class="tok-number">3</span>
+    <span class="tok-keyword">WHEN</span> <span class="tok-string">&#39;delivered&#39;</span> <span class="tok-keyword">THEN</span> <span class="tok-number">4</span>
+    <span class="tok-keyword">ELSE</span> <span class="tok-number">5</span>
+  <span class="tok-keyword">END</span><span class="tok-punct">,</span>
+  o<span class="tok-punct">.</span>ordered_at <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
 
--- ===== 3) ملخّص الحالات =====
-SELECT
-  COUNT(*)                                                    AS total_orders,
-  SUM(CASE WHEN status = &#39;paid&#39;      THEN 1 ELSE 0 END)       AS paid_count,
-  SUM(CASE WHEN status = &#39;cancelled&#39; THEN 1 ELSE 0 END)       AS cancelled_count,
-  SUM(CASE WHEN status = &#39;pending&#39;   THEN 1 ELSE 0 END)       AS pending_count,
-  ROUND(
-    100.0 * SUM(CASE WHEN status = &#39;paid&#39; THEN 1 ELSE 0 END)
-    / NULLIF(COUNT(*), 0), 1
-  )                                                           AS paid_percentage
-FROM orders;
+<span class="tok-comment">-- ===== 3) ملخّص الحالات =====</span>
+<span class="tok-keyword">SELECT</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(*)</span>                                                    <span class="tok-keyword">AS</span> total_orders<span class="tok-punct">,</span>
+  <span class="tok-func">SUM</span><span class="tok-punct">(</span><span class="tok-keyword">CASE</span> <span class="tok-keyword">WHEN</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;paid&#39;</span>      <span class="tok-keyword">THEN</span> <span class="tok-number">1</span> <span class="tok-keyword">ELSE</span> <span class="tok-number">0</span> <span class="tok-keyword">END</span><span class="tok-punct">)</span>       <span class="tok-keyword">AS</span> paid_count<span class="tok-punct">,</span>
+  <span class="tok-func">SUM</span><span class="tok-punct">(</span><span class="tok-keyword">CASE</span> <span class="tok-keyword">WHEN</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;cancelled&#39;</span> <span class="tok-keyword">THEN</span> <span class="tok-number">1</span> <span class="tok-keyword">ELSE</span> <span class="tok-number">0</span> <span class="tok-keyword">END</span><span class="tok-punct">)</span>       <span class="tok-keyword">AS</span> cancelled_count<span class="tok-punct">,</span>
+  <span class="tok-func">SUM</span><span class="tok-punct">(</span><span class="tok-keyword">CASE</span> <span class="tok-keyword">WHEN</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;pending&#39;</span>   <span class="tok-keyword">THEN</span> <span class="tok-number">1</span> <span class="tok-keyword">ELSE</span> <span class="tok-number">0</span> <span class="tok-keyword">END</span><span class="tok-punct">)</span>       <span class="tok-keyword">AS</span> pending_count<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>
+    <span class="tok-number">100.0</span> <span class="tok-punct">*</span> <span class="tok-func">SUM</span><span class="tok-punct">(</span><span class="tok-keyword">CASE</span> <span class="tok-keyword">WHEN</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;paid&#39;</span> <span class="tok-keyword">THEN</span> <span class="tok-number">1</span> <span class="tok-keyword">ELSE</span> <span class="tok-number">0</span> <span class="tok-keyword">END</span><span class="tok-punct">)</span>
+    <span class="tok-punct">/</span> <span class="tok-func">NULLIF</span><span class="tok-punct">(</span><span class="tok-func">COUNT</span><span class="tok-punct">(*),</span> <span class="tok-number">0</span><span class="tok-punct">),</span> <span class="tok-number">1</span>
+  <span class="tok-punct">)</span>                                                           <span class="tok-keyword">AS</span> paid_percentage
+<span class="tok-keyword">FROM</span> orders<span class="tok-punct">;</span>
 
--- ===== 4) متوسّط سعر الوحدة بأمان =====
-SELECT
-  order_id,
-  SUM(quantity * unit_price)                                  AS line_total,
-  SUM(quantity)                                               AS total_qty,
-  ROUND(
-    SUM(quantity * unit_price) / NULLIF(SUM(quantity), 0), 2
-  )                                                           AS avg_unit_price
-FROM order_items
-GROUP BY order_id;</code></pre></div></details></div></section><section class="quiz"><h2 id="sec-11"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ماذا تعطي <code>10 / 3</code> بين عددين صحيحين في معظم الأنظمة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>3.33</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>3</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>خطأ</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>4</span></label></div><div class="q-explain"><strong>الشرح:</strong> القسمة الصحيحة تقتطع الكسر؛ أضف <code>.0</code> أو حوّل النوع.</div></div><div class="q-item"><p class="q-text">2. ما وظيفة <code>COALESCE(a, b, c)</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>جمع القيم</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>إرجاع أول قيمة غير فارغة</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>مقارنة</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>دمج نصوص</span></label></div><div class="q-explain"><strong>الشرح:</strong> مفيدة لتوفير قيمة بديلة حين يكون العمود فارغاً.</div></div><div class="q-item"><p class="q-text">3. كيف تتجنّب القسمة على صفر؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>بشرط <code>WHERE</code></span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>بـ <code>NULLIF(divisor, 0)</code></span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>بـ <code>CASE</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>لا يمكن</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>NULLIF</code> تحوّل الصفر إلى <code>NULL</code> فتصبح النتيجة <code>NULL</code> بدل الخطأ.</div></div><div class="q-item"><p class="q-text">4. أين يمكن استخدام <code>CASE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>في <code>SELECT</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>في <code>SELECT</code> و <code>WHERE</code> و <code>ORDER BY</code> و <code>UPDATE</code></span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>في <code>WHERE</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>في الدوال فقط</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>CASE</code> تعبير يُرجع قيمة، فيصلح في أي موضع يقبل تعبيراً.</div></div><div class="q-item"><p class="q-text">5. لماذا نتجنّب التحويل الضمني للأنواع؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>يختلف بين الأنظمة وقد يعطي نتائج صامتة خاطئة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>غير مدعوم</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>يحتاج فهرساً</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>&quot;10&quot; + 5</code> تعطي 15 في MySQL وخطأً في PostgreSQL.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+<span class="tok-comment">-- ===== 4) متوسّط سعر الوحدة بأمان =====</span>
+<span class="tok-keyword">SELECT</span>
+  order_id<span class="tok-punct">,</span>
+  <span class="tok-func">SUM</span><span class="tok-punct">(</span>quantity <span class="tok-punct">*</span> unit_price<span class="tok-punct">)</span>                                  <span class="tok-keyword">AS</span> line_total<span class="tok-punct">,</span>
+  <span class="tok-func">SUM</span><span class="tok-punct">(</span>quantity<span class="tok-punct">)</span>                                               <span class="tok-keyword">AS</span> total_qty<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>
+    <span class="tok-func">SUM</span><span class="tok-punct">(</span>quantity <span class="tok-punct">*</span> unit_price<span class="tok-punct">)</span> <span class="tok-punct">/</span> <span class="tok-func">NULLIF</span><span class="tok-punct">(</span><span class="tok-func">SUM</span><span class="tok-punct">(</span>quantity<span class="tok-punct">),</span> <span class="tok-number">0</span><span class="tok-punct">),</span> <span class="tok-number">2</span>
+  <span class="tok-punct">)</span>                                                           <span class="tok-keyword">AS</span> avg_unit_price
+<span class="tok-keyword">FROM</span> order_items
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> order_id<span class="tok-punct">;</span></code></pre></div></details></div></section><section class="quiz"><h2 id="sec-11"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ماذا تعطي <code>10 / 3</code> بين عددين صحيحين في معظم الأنظمة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>3.33</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>3</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>خطأ</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>4</span></label></div><div class="q-explain"><strong>الشرح:</strong> القسمة الصحيحة تقتطع الكسر؛ أضف <code>.0</code> أو حوّل النوع.</div></div><div class="q-item"><p class="q-text">2. ما وظيفة <code>COALESCE(a, b, c)</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>جمع القيم</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>إرجاع أول قيمة غير فارغة</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>مقارنة</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>دمج نصوص</span></label></div><div class="q-explain"><strong>الشرح:</strong> مفيدة لتوفير قيمة بديلة حين يكون العمود فارغاً.</div></div><div class="q-item"><p class="q-text">3. كيف تتجنّب القسمة على صفر؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>بشرط <code>WHERE</code></span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>بـ <code>NULLIF(divisor, 0)</code></span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>بـ <code>CASE</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>لا يمكن</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>NULLIF</code> تحوّل الصفر إلى <code>NULL</code> فتصبح النتيجة <code>NULL</code> بدل الخطأ.</div></div><div class="q-item"><p class="q-text">4. أين يمكن استخدام <code>CASE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>في <code>SELECT</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>في <code>SELECT</code> و <code>WHERE</code> و <code>ORDER BY</code> و <code>UPDATE</code></span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>في <code>WHERE</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>في الدوال فقط</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>CASE</code> تعبير يُرجع قيمة، فيصلح في أي موضع يقبل تعبيراً.</div></div><div class="q-item"><p class="q-text">5. لماذا نتجنّب التحويل الضمني للأنواع؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>يختلف بين الأنظمة وقد يعطي نتائج صامتة خاطئة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>غير مدعوم</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>يحتاج فهرساً</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>&quot;10&quot; + 5</code> تعطي 15 في MySQL وخطأً في PostgreSQL.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
       <div class="complete-box">
         <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
         <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/05-functions" aria-pressed="false">

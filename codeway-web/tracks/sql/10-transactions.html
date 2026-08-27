@@ -71,387 +71,387 @@
   <div class="lesson-layout">
     <article class="lesson-main">
       <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تستخدم المعاملات لضمان اتساق البيانات.</li><li>تفهم خصائص ACID الأربع.</li><li>تعرف مستويات العزل ومشكلات التزامن.</li><li>تتعامل مع الأقفال والجمود.</li><li>تبني قاعدة بيانات كاملة لمشروع حقيقي.</li></ul></div>
-      <h2 id="sec-1">المشكلة: العمليات نصف المكتملة</h2><p>تحويل مبلغ بين حسابين يتطلّب عمليتين: خصم من الأول وإضافة للثاني. ماذا لو انقطعت الكهرباء بينهما؟ اختفى المال.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ✗ خطر: عمليتان منفصلتان
-UPDATE accounts SET balance = balance - 1000 WHERE id = 1;
--- 💥 انقطاع هنا يعني ضياع 1000 ريال
-UPDATE accounts SET balance = balance + 1000 WHERE id = 2;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل: معاملة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>BEGIN;
-
-UPDATE accounts SET balance = balance - 1000 WHERE id = 1;
-UPDATE accounts SET balance = balance + 1000 WHERE id = 2;
-
-COMMIT;   -- إمّا تنجح العمليتان معاً أو لا شيء</code></pre></div><p>المعاملة تجعل مجموعة العمليات <strong>وحدة ذرّية</strong>: إمّا تُنفَّذ كلها أو لا تُنفَّذ أي منها. لا حالة وسطى.</p><h2 id="sec-2">خصائص ACID</h2><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h4>الذرّية (Atomicity)</h4><p>كل العمليات أو لا شيء. فشل واحدة يُلغي الجميع.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>الاتساق (Consistency)</h4><p>القاعدة تنتقل من حالة صحيحة إلى حالة صحيحة، وكل القيود محفوظة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h4>العزل (Isolation)</h4><p>المعاملات المتزامنة لا يرى بعضها التغييرات غير المثبَّتة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><h4>الديمومة (Durability)</h4><p>بعد <code>COMMIT</code> تبقى البيانات حتى لو انقطعت الكهرباء فوراً.</p></div></div><h2 id="sec-3">التحكّم في المعاملة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>BEGIN;                    -- أو START TRANSACTION
-
-  UPDATE products SET stock = stock - 2 WHERE id = 5;
-  INSERT INTO order_items (order_id, product_id, quantity)
-  VALUES (101, 5, 2);
-
-COMMIT;                   -- تثبيت
-
--- أو التراجع
-BEGIN;
-  DELETE FROM orders WHERE id = 101;
-ROLLBACK;                 -- كأن شيئاً لم يكن</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">نقاط الحفظ</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>BEGIN;
-
-  INSERT INTO orders (customer_id, total) VALUES (1, 0);
-  SAVEPOINT order_created;
-
-  INSERT INTO order_items (order_id, product_id, quantity)
-  VALUES (101, 999, 1);       -- منتج غير موجود
-
-  ROLLBACK TO SAVEPOINT order_created;   -- تراجع جزئي
-
-  INSERT INTO order_items (order_id, product_id, quantity)
-  VALUES (101, 5, 1);         -- المنتج الصحيح
-
-COMMIT;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>نقاط الحفظ مفيدة في العمليات الطويلة: تتراجع عن جزء دون إلغاء كل ما أنجزته قبله.</p></div><h2 id="sec-4">مشكلات التزامن</h2><div class="table-wrap"><table class="data"><thead><tr><th>المشكلة</th><th>ما يحدث</th></tr></thead><tbody><tr><td><strong>القراءة الوسخة</strong> (Dirty Read)</td><td>معاملة تقرأ بيانات لم تُثبَّت بعد، وقد يُتراجَع عنها</td></tr><tr><td><strong>القراءة غير المتكرّرة</strong></td><td>قراءة نفس الصف مرتين تعطي نتيجتين مختلفتين</td></tr><tr><td><strong>القراءة الشبحية</strong> (Phantom)</td><td>تكرار نفس الاستعلام يُرجع صفوفاً جديدة أضافها آخرون</td></tr><tr><td><strong>التحديث المفقود</strong></td><td>معاملتان تحدّثان نفس الصف فيضيع أحد التحديثين</td></tr></tbody></table></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> التحديث المفقود</div><iframe title="التحديث المفقود" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.82em}th{background:#6a5acd;color:#fff;padding:7px 9px;text-align:right}td{padding:6px 9px;border-bottom:1px solid #e2e8f0;vertical-align:top}.a{background:#eef2ff}.b{background:#fef3c7}.r{color:#dc2626;font-weight:700}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;الوقت&lt;/th&gt;&lt;th&gt;المعاملة أ&lt;/th&gt;&lt;th&gt;المعاملة ب&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td class=&quot;a&quot;&gt;قرأت stock = 10&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td class=&quot;b&quot;&gt;قرأت stock = 10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td class=&quot;a&quot;&gt;كتبت stock = 10 − 2 = 8&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;4&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td class=&quot;b&quot;&gt;كتبت stock = 10 − 3 = 7&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;5&lt;/td&gt;&lt;td colspan=&quot;2&quot; class=&quot;r&quot;&gt;النتيجة 7 — والصحيح 5! ضاع خصم المعاملة أ&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:320px"></iframe></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحلّان</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ✓ الحل 1: تحديث ذرّي — الأبسط والأفضل
-UPDATE products SET stock = stock - 2 WHERE id = 5 AND stock &gt;= 2;
-
--- ✓ الحل 2: قفل الصف
-BEGIN;
-  SELECT stock FROM products WHERE id = 5 FOR UPDATE;
-  -- الصف مقفل الآن، أي معاملة أخرى تنتظر
-  UPDATE products SET stock = 8 WHERE id = 5;
-COMMIT;</code></pre></div><h2 id="sec-5">مستويات العزل</h2><div class="table-wrap"><table class="data"><thead><tr><th>المستوى</th><th>قراءة وسخة</th><th>غير متكرّرة</th><th>شبحية</th><th>الأداء</th></tr></thead><tbody><tr><td><code>READ UNCOMMITTED</code></td><td>ممكنة</td><td>ممكنة</td><td>ممكنة</td><td>الأسرع</td></tr><tr><td><code>READ COMMITTED</code></td><td>لا</td><td>ممكنة</td><td>ممكنة</td><td>سريع — افتراضي PostgreSQL</td></tr><tr><td><code>REPEATABLE READ</code></td><td>لا</td><td>لا</td><td>ممكنة</td><td>متوسّط — افتراضي MySQL</td></tr><tr><td><code>SERIALIZABLE</code></td><td>لا</td><td>لا</td><td>لا</td><td>الأبطأ — عزل كامل</td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-
-BEGIN;
-  -- عملياتك
-COMMIT;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>المستوى الافتراضي يكفي في 95٪ من الحالات. ارفعه فقط للعمليات المالية الحرجة، وتذكّر أن العزل الأعلى يعني تنافساً أكبر على الأقفال وأداءً أقل.</p></div><h2 id="sec-6">الأقفال والجمود</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- قفل حصري للكتابة
-SELECT * FROM products WHERE id = 5 FOR UPDATE;
-
--- قفل مشترك للقراءة
-SELECT * FROM products WHERE id = 5 FOR SHARE;
-
--- بلا انتظار — يفشل فوراً إن كان مقفلاً
-SELECT * FROM products WHERE id = 5 FOR UPDATE NOWAIT;
-
--- تخطّي المقفل
-SELECT * FROM jobs WHERE status = &#39;pending&#39;
-FOR UPDATE SKIP LOCKED LIMIT 1;</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> الجمود (Deadlock)</div><p>معاملة أ قفلت الصف 1 وتنتظر الصف 2، ومعاملة ب قفلت الصف 2 وتنتظر الصف 1. كلاهما ينتظر الآخر إلى الأبد. المحرّك يكتشف ذلك ويُفشل إحداهما.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الوقاية: ترتيب موحّد للقفل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ✓ اقفل دائماً بترتيب المعرّف تصاعدياً
-BEGIN;
-  SELECT * FROM accounts
-  WHERE id IN (1, 2)
-  ORDER BY id
-  FOR UPDATE;
-
-  UPDATE accounts SET balance = balance - 1000 WHERE id = 1;
-  UPDATE accounts SET balance = balance + 1000 WHERE id = 2;
-COMMIT;</code></pre></div><ul><li><strong>اقفل بترتيب موحّد</strong> في كل الكود — أهم قاعدة وقائية.</li><li><strong>اجعل المعاملات قصيرة</strong>: لا تنتظر إدخال المستخدم داخل معاملة مفتوحة.</li><li><strong>لا تستدعِ خدمات خارجية</strong> داخل معاملة.</li><li><strong>أعد المحاولة</strong> عند اكتشاف الجمود — إنه أمر متوقّع لا خطأ برمجي.</li></ul><h2 id="sec-7">معاملة عملية كاملة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">إتمام طلب شراء</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>BEGIN;
-
--- 1) قفل المنتجات المطلوبة بترتيب ثابت
-SELECT id, stock, price
-FROM products
-WHERE id IN (5, 8)
-ORDER BY id
-FOR UPDATE;
-
--- 2) التحقّق من توفّر الكمية
--- يتم في كود التطبيق بعد قراءة النتيجة أعلاه
-
--- 3) إنشاء الطلب
-INSERT INTO orders (customer_id, status, total)
-VALUES (1, &#39;pending&#39;, 0)
-RETURNING id;   -- 101
-
--- 4) إضافة العناصر بأسعار وقت الشراء
-INSERT INTO order_items (order_id, product_id, quantity, unit_price)
-SELECT 101, id, 2, price FROM products WHERE id = 5
-UNION ALL
-SELECT 101, id, 1, price FROM products WHERE id = 8;
-
--- 5) خصم المخزون مع التحقّق الذرّي
-UPDATE products SET stock = stock - 2 WHERE id = 5 AND stock &gt;= 2;
-UPDATE products SET stock = stock - 1 WHERE id = 8 AND stock &gt;= 1;
--- إن أرجع أيّهما صفر صفوف، فالكمية غير كافية → ROLLBACK
-
--- 6) حساب الإجمالي
-UPDATE orders
-SET total = (
-  SELECT SUM(quantity * unit_price)
-  FROM order_items WHERE order_id = 101
-)
-WHERE id = 101;
-
--- 7) تأكيد الدفع
-UPDATE orders
-SET status = &#39;paid&#39;, paid_at = CURRENT_TIMESTAMP
-WHERE id = 101 AND status = &#39;pending&#39;;
-
-COMMIT;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>لاحظ نمط <code>AND stock &gt;= 2</code> في التحديث: يجعل التحقّق والخصم عملية ذرّية واحدة، فلا يمكن لمعاملة أخرى أن تتسلّل بينهما.</p></div><h2 id="sec-8">المشروع: قاعدة بيانات منصة تعليمية</h2><p>الآن تبني قاعدة بيانات كاملة تطبّق كل ما تعلّمته في المسار.</p><h3 id="sec-9">المتطلّبات</h3><div class="table-wrap"><table class="data"><thead><tr><th>الكيان</th><th>الوصف</th></tr></thead><tbody><tr><td><code>instructors</code></td><td>المدرّبون: الاسم، البريد، السيرة</td></tr><tr><td><code>categories</code></td><td>تصنيفات هرمية (تصنيف رئيسي وفرعي)</td></tr><tr><td><code>courses</code></td><td>الدورات: العنوان، السعر، المستوى، المدرّب، التصنيف</td></tr><tr><td><code>lessons</code></td><td>دروس كل دورة بترتيب ومدة</td></tr><tr><td><code>students</code></td><td>الطلاب</td></tr><tr><td><code>enrollments</code></td><td>التسجيلات مع نسبة التقدّم</td></tr><tr><td><code>lesson_progress</code></td><td>تقدّم الطالب في كل درس</td></tr><tr><td><code>reviews</code></td><td>التقييمات والمراجعات</td></tr><tr><td><code>payments</code></td><td>المدفوعات</td></tr></tbody></table></div><h3 id="sec-10">المطلوب</h3><ol><li><strong>المخطّط</strong>: كل الجداول بأنواع بيانات مناسبة وقيود كاملة.</li><li><strong>العلاقات</strong>: مفاتيح أجنبية بسلوك حذف مدروس لكل علاقة.</li><li><strong>البيانات</strong>: 5 مدرّبين، 10 دورات، 40 درساً، 20 طالباً، 50 تسجيلاً، 30 مراجعة.</li><li><strong>الفهارس</strong>: على كل المفاتيح الأجنبية وأعمدة البحث المتكرّرة.</li><li><strong>العروض</strong>: <code>course_stats</code> و <code>student_dashboard</code>.</li><li><strong>التقارير</strong>: عشرة استعلامات تحليلية.</li><li><strong>المعاملة</strong>: عملية تسجيل طالب في دورة مع الدفع كوحدة ذرّية.</li></ol><section class="exercise" id="sec-11"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>المشروع الكامل</h3></header><div class="exercise-body"><p>ابنِ قاعدة بيانات المنصة التعليمية كاملة.</p><p><strong>المطلوب:</strong></p><ul><li>المخطّط كاملاً مع كل القيود.</li><li>بيانات تجريبية واقعية بالأعداد المذكورة.</li><li>كل الفهارس اللازمة مع تعليق يبرّر كلاً منها.</li><li>العرضان المطلوبان.</li><li>التقارير العشرة: أفضل الدورات، أنشط الطلاب، الإيراد الشهري، متوسّط التقييم لكل مدرّب، الدورات بلا تسجيلات، الطلاب المتعثّرون، شجرة التصنيفات، معدّل الإكمال، أفضل المدرّبين إيراداً، الدورات الأعلى تقييماً بأكثر من خمس مراجعات.</li><li>معاملة التسجيل مع الدفع مع معالجة الفشل.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 التصنيفات الهرمية تحتاج <code>parent_id</code> يشير للجدول نفسه.</li><li>💡 استخدم <code>WITH RECURSIVE</code> لشجرة التصنيفات.</li><li>💡 معدّل الإكمال = عدد الدروس المكتملة ÷ إجمالي دروس الدورة.</li><li>💡 راجع دروس الفهارس والمعاملات قبل البدء.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ============ المخطّط ============
-
-CREATE TABLE instructors (
-  id        SERIAL PRIMARY KEY,
-  name      VARCHAR(150) NOT NULL,
-  email     VARCHAR(255) NOT NULL UNIQUE,
-  bio       TEXT,
-  joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE categories (
-  id        SERIAL PRIMARY KEY,
-  parent_id INT,
-  name      VARCHAR(100) NOT NULL,
-  slug      VARCHAR(100) NOT NULL UNIQUE,
-  FOREIGN KEY (parent_id) REFERENCES categories(id) ON DELETE SET NULL
-);
-
-CREATE TABLE courses (
-  id            SERIAL PRIMARY KEY,
-  instructor_id INT NOT NULL,
-  category_id   INT,
-  title         VARCHAR(200) NOT NULL,
-  description   TEXT,
-  price         DECIMAL(8,2) NOT NULL DEFAULT 0 CHECK (price &gt;= 0),
-  level         VARCHAR(20) NOT NULL DEFAULT &#39;beginner&#39;
-                CHECK (level IN (&#39;beginner&#39;,&#39;intermediate&#39;,&#39;advanced&#39;)),
-  is_published  BOOLEAN NOT NULL DEFAULT FALSE,
-  created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-  FOREIGN KEY (instructor_id) REFERENCES instructors(id) ON DELETE RESTRICT,
-  FOREIGN KEY (category_id)   REFERENCES categories(id)  ON DELETE SET NULL
-);
-
-CREATE TABLE lessons (
-  id           SERIAL PRIMARY KEY,
-  course_id    INT NOT NULL,
-  title        VARCHAR(200) NOT NULL,
-  duration_min INT NOT NULL CHECK (duration_min &gt; 0),
-  position     INT NOT NULL,
-
-  FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
-  UNIQUE (course_id, position)
-);
-
-CREATE TABLE students (
-  id            SERIAL PRIMARY KEY,
-  name          VARCHAR(150) NOT NULL,
-  email         VARCHAR(255) NOT NULL UNIQUE,
-  registered_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE enrollments (
-  id          SERIAL PRIMARY KEY,
-  student_id  INT NOT NULL,
-  course_id   INT NOT NULL,
-  enrolled_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  completed_at TIMESTAMP,
-
-  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-  FOREIGN KEY (course_id)  REFERENCES courses(id)  ON DELETE CASCADE,
-  UNIQUE (student_id, course_id)
-);
-
-CREATE TABLE lesson_progress (
-  id            SERIAL PRIMARY KEY,
-  enrollment_id INT NOT NULL,
-  lesson_id     INT NOT NULL,
-  completed_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-  FOREIGN KEY (enrollment_id) REFERENCES enrollments(id) ON DELETE CASCADE,
-  FOREIGN KEY (lesson_id)     REFERENCES lessons(id)     ON DELETE CASCADE,
-  UNIQUE (enrollment_id, lesson_id)
-);
-
-CREATE TABLE reviews (
-  id         SERIAL PRIMARY KEY,
-  student_id INT NOT NULL,
-  course_id  INT NOT NULL,
-  rating     INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
-  comment    TEXT,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-  FOREIGN KEY (course_id)  REFERENCES courses(id)  ON DELETE CASCADE,
-  UNIQUE (student_id, course_id)
-);
-
-CREATE TABLE payments (
-  id         SERIAL PRIMARY KEY,
-  student_id INT NOT NULL,
-  course_id  INT NOT NULL,
-  amount     DECIMAL(8,2) NOT NULL CHECK (amount &gt;= 0),
-  method     VARCHAR(20) NOT NULL CHECK (method IN (&#39;card&#39;,&#39;transfer&#39;,&#39;wallet&#39;)),
-  status     VARCHAR(20) NOT NULL DEFAULT &#39;pending&#39;
-             CHECK (status IN (&#39;pending&#39;,&#39;completed&#39;,&#39;failed&#39;,&#39;refunded&#39;)),
-  paid_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE RESTRICT,
-  FOREIGN KEY (course_id)  REFERENCES courses(id)  ON DELETE RESTRICT
-);
-
--- ============ الفهارس ============
-
--- المفاتيح الأجنبية: تسرّع الربط والحذف
-CREATE INDEX idx_courses_instructor  ON courses (instructor_id);
-CREATE INDEX idx_courses_category    ON courses (category_id);
-CREATE INDEX idx_lessons_course      ON lessons (course_id);
-CREATE INDEX idx_enroll_student      ON enrollments (student_id);
-CREATE INDEX idx_enroll_course       ON enrollments (course_id);
-CREATE INDEX idx_progress_enrollment ON lesson_progress (enrollment_id);
-CREATE INDEX idx_reviews_course      ON reviews (course_id);
-CREATE INDEX idx_payments_student    ON payments (student_id);
-
--- البحث المتكرّر عن الدورات المنشورة
-CREATE INDEX idx_courses_published ON courses (is_published, created_at DESC)
-  WHERE is_published = TRUE;
-
--- تقارير الإيراد الشهري
-CREATE INDEX idx_payments_date_status ON payments (paid_at, status);
-
--- ============ العروض ============
-
-CREATE VIEW course_stats AS
-SELECT
-  c.id,
-  c.title,
-  c.price,
-  c.level,
-  i.name                                   AS instructor,
-  COUNT(DISTINCT e.id)                     AS students_count,
-  COUNT(DISTINCT l.id)                     AS lessons_count,
-  COALESCE(SUM(l.duration_min), 0)         AS total_minutes,
-  ROUND(AVG(r.rating), 2)                  AS avg_rating,
-  COUNT(DISTINCT r.id)                     AS reviews_count
-FROM courses c
-JOIN instructors i        ON i.id = c.instructor_id
-LEFT JOIN lessons l       ON l.course_id = c.id
-LEFT JOIN enrollments e   ON e.course_id = c.id
-LEFT JOIN reviews r       ON r.course_id = c.id
-GROUP BY c.id, c.title, c.price, c.level, i.name;
-
-CREATE VIEW student_dashboard AS
-SELECT
-  s.id            AS student_id,
-  s.name          AS student_name,
-  c.id            AS course_id,
-  c.title         AS course_title,
-  e.enrolled_at,
-  COUNT(DISTINCT lp.lesson_id)                       AS completed_lessons,
-  COUNT(DISTINCT l.id)                               AS total_lessons,
-  ROUND(100.0 * COUNT(DISTINCT lp.lesson_id)
-        / NULLIF(COUNT(DISTINCT l.id), 0), 1)        AS progress_pct
-FROM students s
-JOIN enrollments e         ON e.student_id = s.id
-JOIN courses c             ON c.id = e.course_id
-LEFT JOIN lessons l        ON l.course_id = c.id
-LEFT JOIN lesson_progress lp
-       ON lp.enrollment_id = e.id AND lp.lesson_id = l.id
-GROUP BY s.id, s.name, c.id, c.title, e.enrolled_at;
-
--- ============ التقارير ============
-
--- 1) أفضل الدورات
-SELECT title, students_count, avg_rating, instructor
-FROM course_stats
-ORDER BY students_count DESC
-LIMIT 10;
-
--- 2) أنشط الطلاب
-SELECT
-  s.name,
-  COUNT(DISTINCT e.course_id)      AS courses,
-  COUNT(lp.id)                     AS lessons_completed
-FROM students s
-JOIN enrollments e      ON e.student_id = s.id
-LEFT JOIN lesson_progress lp ON lp.enrollment_id = e.id
-GROUP BY s.id, s.name
-ORDER BY lessons_completed DESC
-LIMIT 10;
-
--- 3) الإيراد الشهري
-SELECT
-  EXTRACT(YEAR  FROM paid_at) AS year,
-  EXTRACT(MONTH FROM paid_at) AS month,
-  COUNT(*)                    AS payments,
-  ROUND(SUM(amount), 2)       AS revenue
-FROM payments
-WHERE status = &#39;completed&#39;
-GROUP BY 1, 2
-ORDER BY 1, 2;
-
--- 4) متوسّط تقييم كل مدرّب
-SELECT
-  i.name,
-  COUNT(DISTINCT c.id)     AS courses,
-  ROUND(AVG(r.rating), 2)  AS avg_rating,
-  COUNT(r.id)              AS reviews
-FROM instructors i
-JOIN courses c      ON c.instructor_id = i.id
-LEFT JOIN reviews r ON r.course_id = c.id
-GROUP BY i.id, i.name
-HAVING COUNT(r.id) &gt; 0
-ORDER BY avg_rating DESC;
-
--- 5) الدورات بلا تسجيلات
-SELECT c.id, c.title, c.price
-FROM courses c
-LEFT JOIN enrollments e ON e.course_id = c.id
-WHERE e.id IS NULL AND c.is_published = TRUE;
-
--- 6) الطلاب المتعثّرون (أقل من 20٪ بعد شهر)
-SELECT student_name, course_title, progress_pct, enrolled_at
-FROM student_dashboard
-WHERE progress_pct &lt; 20
-  AND enrolled_at &lt; CURRENT_DATE - INTERVAL &#39;30 days&#39;
-ORDER BY progress_pct;
-
--- 7) شجرة التصنيفات
-WITH RECURSIVE tree AS (
-  SELECT id, name, parent_id, 1 AS level, CAST(name AS TEXT) AS path
-  FROM categories WHERE parent_id IS NULL
-  UNION ALL
-  SELECT c.id, c.name, c.parent_id, t.level + 1, t.path || &#39; &gt; &#39; || c.name
-  FROM categories c JOIN tree t ON t.id = c.parent_id
-  WHERE t.level &lt; 5
-)
-SELECT level, path FROM tree ORDER BY path;
-
--- 8) معدّل الإكمال لكل دورة
-SELECT
-  course_title,
-  COUNT(*)                     AS enrollments,
-  ROUND(AVG(progress_pct), 1)  AS avg_progress,
-  SUM(CASE WHEN progress_pct = 100 THEN 1 ELSE 0 END) AS completed
-FROM student_dashboard
-GROUP BY course_id, course_title
-ORDER BY avg_progress DESC;
-
--- 9) أفضل المدرّبين إيراداً
-SELECT
-  i.name,
-  COUNT(DISTINCT p.id)   AS sales,
-  ROUND(SUM(p.amount),2) AS revenue
-FROM instructors i
-JOIN courses c  ON c.instructor_id = i.id
-JOIN payments p ON p.course_id = c.id AND p.status = &#39;completed&#39;
-GROUP BY i.id, i.name
-ORDER BY revenue DESC;
-
--- 10) الأعلى تقييماً بأكثر من خمس مراجعات
-SELECT title, avg_rating, reviews_count, students_count
-FROM course_stats
-WHERE reviews_count &gt; 5
-ORDER BY avg_rating DESC, reviews_count DESC;
-
--- ============ معاملة التسجيل مع الدفع ============
-
-BEGIN;
-
-  -- 1) تسجيل الدفعة
-  INSERT INTO payments (student_id, course_id, amount, method, status)
-  SELECT 3, 7, price, &#39;card&#39;, &#39;completed&#39;
-  FROM courses WHERE id = 7 AND is_published = TRUE;
-
-  -- إن لم يُدرَج شيء فالدورة غير منشورة → ROLLBACK
-
-  -- 2) إنشاء التسجيل
-  INSERT INTO enrollments (student_id, course_id)
-  VALUES (3, 7)
-  ON CONFLICT (student_id, course_id) DO NOTHING;
-
-  -- 3) التحقّق من النجاح قبل التثبيت
-  -- في كود التطبيق: إن كان عدد الصفوف المتأثّرة صفراً → ROLLBACK
-
-COMMIT;</code></pre></div><div class="code-caption" style="background:var(--surface-2);color:var(--text-muted)">المشروع أساس حقيقي لأي منصة تعليمية. طوّره: أضف الشهادات، والاختبارات، والكوبونات، وسجلّ النشاط.</div></details></div></section><h2 id="sec-12">ماذا بعد؟</h2><p>أنهيت مسار SQL: التصميم والقيود والاستعلام والتجميع والربط والاستعلامات الفرعية والفهارس والمعاملات. هذه أساسيات صلبة تكفي لبناء وصيانة قواعد بيانات تطبيقات حقيقية.</p><ul><li><strong>دوال النوافذ</strong> (<code>ROW_NUMBER</code>, <code>RANK</code>, <code>LAG</code>, <code>LEAD</code>) للتحليلات المتقدّمة.</li><li><strong>التطبيع</strong> (Normalization) وأشكاله الثلاثة الأولى.</li><li><strong>الإجراءات المخزّنة والمشغّلات</strong> (Triggers).</li><li><strong>النسخ الاحتياطي والاستعادة</strong> — لا تؤجّل تعلّمها.</li><li><strong>التوسّع</strong>: النسخ المتماثل (Replication) والتقسيم (Sharding).</li><li><strong>قواعد NoSQL</strong> ومتى تكون أنسب من العلائقية.</li></ul><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما معنى «الذرّية» في ACID؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>السرعة</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>كل عمليات المعاملة تُنفَّذ أو لا يُنفَّذ أي منها</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>العزل</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>الحفظ</span></label></div><div class="q-explain"><strong>الشرح:</strong> لا حالة وسطى: إمّا نجاح كامل أو تراجع كامل.</div></div><div class="q-item"><p class="q-text">2. ما «التحديث المفقود»؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>حذف صف</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>معاملتان تقرآن ثم تكتبان فيضيع أحد التحديثين</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>خطأ اتصال</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>قفل</span></label></div><div class="q-explain"><strong>الشرح:</strong> الحل: تحديث ذرّي <code>SET stock = stock - 2</code> أو قفل الصف بـ <code>FOR UPDATE</code>.</div></div><div class="q-item"><p class="q-text">3. ما أفضل وقاية من الجمود (Deadlock)؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>معاملات أطول</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>قفل الموارد بترتيب موحّد في كل الكود</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>إلغاء الأقفال</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>عزل أقل</span></label></div><div class="q-explain"><strong>الشرح:</strong> الترتيب الموحّد يمنع الانتظار المتبادل من الأساس.</div></div><div class="q-item"><p class="q-text">4. ماذا يفعل <code>SELECT … FOR UPDATE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يحدّث الصف</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>يقفل الصفوف فتنتظرها المعاملات الأخرى حتى انتهاء معاملتك</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>ينسخ الصف</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يحذفه</span></label></div><div class="q-explain"><strong>الشرح:</strong> قفل حصري يمنع القراءة للتحديث من معاملات أخرى.</div></div><div class="q-item"><p class="q-text">5. لماذا يجب أن تبقى المعاملات قصيرة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>للذاكرة</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>لأنها تحتفظ بالأقفال فتعطّل بقية المعاملات</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>للشبكة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>للسجلّات</span></label></div><div class="q-explain"><strong>الشرح:</strong> لا تنتظر إدخال مستخدم أو خدمة خارجية داخل معاملة مفتوحة.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <h2 id="sec-1">المشكلة: العمليات نصف المكتملة</h2><p>تحويل مبلغ بين حسابين يتطلّب عمليتين: خصم من الأول وإضافة للثاني. ماذا لو انقطعت الكهرباء بينهما؟ اختفى المال.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- ✗ خطر: عمليتان منفصلتان</span>
+<span class="tok-keyword">UPDATE</span> accounts <span class="tok-keyword">SET</span> balance <span class="tok-punct">=</span> balance <span class="tok-punct">-</span> <span class="tok-number">1000</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
+<span class="tok-comment">-- 💥 انقطاع هنا يعني ضياع 1000 ريال</span>
+<span class="tok-keyword">UPDATE</span> accounts <span class="tok-keyword">SET</span> balance <span class="tok-punct">=</span> balance <span class="tok-punct">+</span> <span class="tok-number">1000</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">2</span><span class="tok-punct">;</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل: معاملة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">BEGIN</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">UPDATE</span> accounts <span class="tok-keyword">SET</span> balance <span class="tok-punct">=</span> balance <span class="tok-punct">-</span> <span class="tok-number">1000</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
+<span class="tok-keyword">UPDATE</span> accounts <span class="tok-keyword">SET</span> balance <span class="tok-punct">=</span> balance <span class="tok-punct">+</span> <span class="tok-number">1000</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">2</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">COMMIT</span><span class="tok-punct">;</span>   <span class="tok-comment">-- إمّا تنجح العمليتان معاً أو لا شيء</span></code></pre></div><p>المعاملة تجعل مجموعة العمليات <strong>وحدة ذرّية</strong>: إمّا تُنفَّذ كلها أو لا تُنفَّذ أي منها. لا حالة وسطى.</p><h2 id="sec-2">خصائص ACID</h2><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h4>الذرّية (Atomicity)</h4><p>كل العمليات أو لا شيء. فشل واحدة يُلغي الجميع.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>الاتساق (Consistency)</h4><p>القاعدة تنتقل من حالة صحيحة إلى حالة صحيحة، وكل القيود محفوظة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h4>العزل (Isolation)</h4><p>المعاملات المتزامنة لا يرى بعضها التغييرات غير المثبَّتة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><h4>الديمومة (Durability)</h4><p>بعد <code>COMMIT</code> تبقى البيانات حتى لو انقطعت الكهرباء فوراً.</p></div></div><h2 id="sec-3">التحكّم في المعاملة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">BEGIN</span><span class="tok-punct">;</span>                    <span class="tok-comment">-- أو START TRANSACTION</span>
+
+  <span class="tok-keyword">UPDATE</span> products <span class="tok-keyword">SET</span> stock <span class="tok-punct">=</span> stock <span class="tok-punct">-</span> <span class="tok-number">2</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">order_items</span> <span class="tok-punct">(</span>order_id<span class="tok-punct">,</span> product_id<span class="tok-punct">,</span> quantity<span class="tok-punct">)</span>
+  <span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">101</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">);</span>
+
+<span class="tok-keyword">COMMIT</span><span class="tok-punct">;</span>                   <span class="tok-comment">-- تثبيت</span>
+
+<span class="tok-comment">-- أو التراجع</span>
+<span class="tok-keyword">BEGIN</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">DELETE</span> <span class="tok-keyword">FROM</span> orders <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">101</span><span class="tok-punct">;</span>
+<span class="tok-keyword">ROLLBACK</span><span class="tok-punct">;</span>                 <span class="tok-comment">-- كأن شيئاً لم يكن</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">نقاط الحفظ</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">BEGIN</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">orders</span> <span class="tok-punct">(</span>customer_id<span class="tok-punct">,</span> total<span class="tok-punct">)</span> <span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">);</span>
+  <span class="tok-keyword">SAVEPOINT</span> order_created<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">order_items</span> <span class="tok-punct">(</span>order_id<span class="tok-punct">,</span> product_id<span class="tok-punct">,</span> quantity<span class="tok-punct">)</span>
+  <span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">101</span><span class="tok-punct">,</span> <span class="tok-number">999</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">);</span>       <span class="tok-comment">-- منتج غير موجود</span>
+
+  <span class="tok-keyword">ROLLBACK</span> <span class="tok-keyword">TO</span> <span class="tok-keyword">SAVEPOINT</span> order_created<span class="tok-punct">;</span>   <span class="tok-comment">-- تراجع جزئي</span>
+
+  <span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">order_items</span> <span class="tok-punct">(</span>order_id<span class="tok-punct">,</span> product_id<span class="tok-punct">,</span> quantity<span class="tok-punct">)</span>
+  <span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">101</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">);</span>         <span class="tok-comment">-- المنتج الصحيح</span>
+
+<span class="tok-keyword">COMMIT</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>نقاط الحفظ مفيدة في العمليات الطويلة: تتراجع عن جزء دون إلغاء كل ما أنجزته قبله.</p></div><h2 id="sec-4">مشكلات التزامن</h2><div class="table-wrap"><table class="data"><thead><tr><th>المشكلة</th><th>ما يحدث</th></tr></thead><tbody><tr><td><strong>القراءة الوسخة</strong> (Dirty Read)</td><td>معاملة تقرأ بيانات لم تُثبَّت بعد، وقد يُتراجَع عنها</td></tr><tr><td><strong>القراءة غير المتكرّرة</strong></td><td>قراءة نفس الصف مرتين تعطي نتيجتين مختلفتين</td></tr><tr><td><strong>القراءة الشبحية</strong> (Phantom)</td><td>تكرار نفس الاستعلام يُرجع صفوفاً جديدة أضافها آخرون</td></tr><tr><td><strong>التحديث المفقود</strong></td><td>معاملتان تحدّثان نفس الصف فيضيع أحد التحديثين</td></tr></tbody></table></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> التحديث المفقود</div><iframe title="التحديث المفقود" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.82em}th{background:#6a5acd;color:#fff;padding:7px 9px;text-align:right}td{padding:6px 9px;border-bottom:1px solid #e2e8f0;vertical-align:top}.a{background:#eef2ff}.b{background:#fef3c7}.r{color:#dc2626;font-weight:700}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;الوقت&lt;/th&gt;&lt;th&gt;المعاملة أ&lt;/th&gt;&lt;th&gt;المعاملة ب&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td class=&quot;a&quot;&gt;قرأت stock = 10&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td class=&quot;b&quot;&gt;قرأت stock = 10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td class=&quot;a&quot;&gt;كتبت stock = 10 − 2 = 8&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;4&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td class=&quot;b&quot;&gt;كتبت stock = 10 − 3 = 7&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;5&lt;/td&gt;&lt;td colspan=&quot;2&quot; class=&quot;r&quot;&gt;النتيجة 7 — والصحيح 5! ضاع خصم المعاملة أ&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:320px"></iframe></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحلّان</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- ✓ الحل 1: تحديث ذرّي — الأبسط والأفضل</span>
+<span class="tok-keyword">UPDATE</span> products <span class="tok-keyword">SET</span> stock <span class="tok-punct">=</span> stock <span class="tok-punct">-</span> <span class="tok-number">2</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span> <span class="tok-keyword">AND</span> stock <span class="tok-punct">&gt;=</span> <span class="tok-number">2</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- ✓ الحل 2: قفل الصف</span>
+<span class="tok-keyword">BEGIN</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">SELECT</span> stock <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span> <span class="tok-keyword">FOR</span> <span class="tok-keyword">UPDATE</span><span class="tok-punct">;</span>
+  <span class="tok-comment">-- الصف مقفل الآن، أي معاملة أخرى تنتظر</span>
+  <span class="tok-keyword">UPDATE</span> products <span class="tok-keyword">SET</span> stock <span class="tok-punct">=</span> <span class="tok-number">8</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span><span class="tok-punct">;</span>
+<span class="tok-keyword">COMMIT</span><span class="tok-punct">;</span></code></pre></div><h2 id="sec-5">مستويات العزل</h2><div class="table-wrap"><table class="data"><thead><tr><th>المستوى</th><th>قراءة وسخة</th><th>غير متكرّرة</th><th>شبحية</th><th>الأداء</th></tr></thead><tbody><tr><td><code>READ UNCOMMITTED</code></td><td>ممكنة</td><td>ممكنة</td><td>ممكنة</td><td>الأسرع</td></tr><tr><td><code>READ COMMITTED</code></td><td>لا</td><td>ممكنة</td><td>ممكنة</td><td>سريع — افتراضي PostgreSQL</td></tr><tr><td><code>REPEATABLE READ</code></td><td>لا</td><td>لا</td><td>ممكنة</td><td>متوسّط — افتراضي MySQL</td></tr><tr><td><code>SERIALIZABLE</code></td><td>لا</td><td>لا</td><td>لا</td><td>الأبطأ — عزل كامل</td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SET</span> <span class="tok-keyword">TRANSACTION</span> <span class="tok-keyword">ISOLATION</span> <span class="tok-keyword">LEVEL</span> READ COMMITTED<span class="tok-punct">;</span>
+
+<span class="tok-keyword">BEGIN</span><span class="tok-punct">;</span>
+  <span class="tok-comment">-- عملياتك</span>
+<span class="tok-keyword">COMMIT</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>المستوى الافتراضي يكفي في 95٪ من الحالات. ارفعه فقط للعمليات المالية الحرجة، وتذكّر أن العزل الأعلى يعني تنافساً أكبر على الأقفال وأداءً أقل.</p></div><h2 id="sec-6">الأقفال والجمود</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- قفل حصري للكتابة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span> <span class="tok-keyword">FOR</span> <span class="tok-keyword">UPDATE</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- قفل مشترك للقراءة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span> <span class="tok-keyword">FOR</span> <span class="tok-keyword">SHARE</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- بلا انتظار — يفشل فوراً إن كان مقفلاً</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span> <span class="tok-keyword">FOR</span> <span class="tok-keyword">UPDATE</span> NOWAIT<span class="tok-punct">;</span>
+
+<span class="tok-comment">-- تخطّي المقفل</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> jobs <span class="tok-keyword">WHERE</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;pending&#39;</span>
+<span class="tok-keyword">FOR</span> <span class="tok-keyword">UPDATE</span> SKIP LOCKED <span class="tok-keyword">LIMIT</span> <span class="tok-number">1</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> الجمود (Deadlock)</div><p>معاملة أ قفلت الصف 1 وتنتظر الصف 2، ومعاملة ب قفلت الصف 2 وتنتظر الصف 1. كلاهما ينتظر الآخر إلى الأبد. المحرّك يكتشف ذلك ويُفشل إحداهما.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الوقاية: ترتيب موحّد للقفل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- ✓ اقفل دائماً بترتيب المعرّف تصاعدياً</span>
+<span class="tok-keyword">BEGIN</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> accounts
+  <span class="tok-keyword">WHERE</span> id <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> id
+  <span class="tok-keyword">FOR</span> <span class="tok-keyword">UPDATE</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">UPDATE</span> accounts <span class="tok-keyword">SET</span> balance <span class="tok-punct">=</span> balance <span class="tok-punct">-</span> <span class="tok-number">1000</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
+  <span class="tok-keyword">UPDATE</span> accounts <span class="tok-keyword">SET</span> balance <span class="tok-punct">=</span> balance <span class="tok-punct">+</span> <span class="tok-number">1000</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">2</span><span class="tok-punct">;</span>
+<span class="tok-keyword">COMMIT</span><span class="tok-punct">;</span></code></pre></div><ul><li><strong>اقفل بترتيب موحّد</strong> في كل الكود — أهم قاعدة وقائية.</li><li><strong>اجعل المعاملات قصيرة</strong>: لا تنتظر إدخال المستخدم داخل معاملة مفتوحة.</li><li><strong>لا تستدعِ خدمات خارجية</strong> داخل معاملة.</li><li><strong>أعد المحاولة</strong> عند اكتشاف الجمود — إنه أمر متوقّع لا خطأ برمجي.</li></ul><h2 id="sec-7">معاملة عملية كاملة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">إتمام طلب شراء</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">BEGIN</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 1) قفل المنتجات المطلوبة بترتيب ثابت</span>
+<span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> stock<span class="tok-punct">,</span> price
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> id <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">,</span> <span class="tok-number">8</span><span class="tok-punct">)</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> id
+<span class="tok-keyword">FOR</span> <span class="tok-keyword">UPDATE</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 2) التحقّق من توفّر الكمية</span>
+<span class="tok-comment">-- يتم في كود التطبيق بعد قراءة النتيجة أعلاه</span>
+
+<span class="tok-comment">-- 3) إنشاء الطلب</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">orders</span> <span class="tok-punct">(</span>customer_id<span class="tok-punct">,</span> status<span class="tok-punct">,</span> total<span class="tok-punct">)</span>
+<span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-string">&#39;pending&#39;</span><span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">)</span>
+<span class="tok-keyword">RETURNING</span> id<span class="tok-punct">;</span>   <span class="tok-comment">-- 101</span>
+
+<span class="tok-comment">-- 4) إضافة العناصر بأسعار وقت الشراء</span>
+<span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">order_items</span> <span class="tok-punct">(</span>order_id<span class="tok-punct">,</span> product_id<span class="tok-punct">,</span> quantity<span class="tok-punct">,</span> unit_price<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-number">101</span><span class="tok-punct">,</span> id<span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> price <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span>
+<span class="tok-keyword">UNION</span> <span class="tok-keyword">ALL</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-number">101</span><span class="tok-punct">,</span> id<span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">,</span> price <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">8</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 5) خصم المخزون مع التحقّق الذرّي</span>
+<span class="tok-keyword">UPDATE</span> products <span class="tok-keyword">SET</span> stock <span class="tok-punct">=</span> stock <span class="tok-punct">-</span> <span class="tok-number">2</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">5</span> <span class="tok-keyword">AND</span> stock <span class="tok-punct">&gt;=</span> <span class="tok-number">2</span><span class="tok-punct">;</span>
+<span class="tok-keyword">UPDATE</span> products <span class="tok-keyword">SET</span> stock <span class="tok-punct">=</span> stock <span class="tok-punct">-</span> <span class="tok-number">1</span> <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">8</span> <span class="tok-keyword">AND</span> stock <span class="tok-punct">&gt;=</span> <span class="tok-number">1</span><span class="tok-punct">;</span>
+<span class="tok-comment">-- إن أرجع أيّهما صفر صفوف، فالكمية غير كافية → ROLLBACK</span>
+
+<span class="tok-comment">-- 6) حساب الإجمالي</span>
+<span class="tok-keyword">UPDATE</span> orders
+<span class="tok-keyword">SET</span> total <span class="tok-punct">=</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-func">SUM</span><span class="tok-punct">(</span>quantity <span class="tok-punct">*</span> unit_price<span class="tok-punct">)</span>
+  <span class="tok-keyword">FROM</span> order_items <span class="tok-keyword">WHERE</span> order_id <span class="tok-punct">=</span> <span class="tok-number">101</span>
+<span class="tok-punct">)</span>
+<span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">101</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 7) تأكيد الدفع</span>
+<span class="tok-keyword">UPDATE</span> orders
+<span class="tok-keyword">SET</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;paid&#39;</span><span class="tok-punct">,</span> paid_at <span class="tok-punct">=</span> CURRENT_TIMESTAMP
+<span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">101</span> <span class="tok-keyword">AND</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;pending&#39;</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">COMMIT</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>لاحظ نمط <code>AND stock &gt;= 2</code> في التحديث: يجعل التحقّق والخصم عملية ذرّية واحدة، فلا يمكن لمعاملة أخرى أن تتسلّل بينهما.</p></div><h2 id="sec-8">المشروع: قاعدة بيانات منصة تعليمية</h2><p>الآن تبني قاعدة بيانات كاملة تطبّق كل ما تعلّمته في المسار.</p><h3 id="sec-9">المتطلّبات</h3><div class="table-wrap"><table class="data"><thead><tr><th>الكيان</th><th>الوصف</th></tr></thead><tbody><tr><td><code>instructors</code></td><td>المدرّبون: الاسم، البريد، السيرة</td></tr><tr><td><code>categories</code></td><td>تصنيفات هرمية (تصنيف رئيسي وفرعي)</td></tr><tr><td><code>courses</code></td><td>الدورات: العنوان، السعر، المستوى، المدرّب، التصنيف</td></tr><tr><td><code>lessons</code></td><td>دروس كل دورة بترتيب ومدة</td></tr><tr><td><code>students</code></td><td>الطلاب</td></tr><tr><td><code>enrollments</code></td><td>التسجيلات مع نسبة التقدّم</td></tr><tr><td><code>lesson_progress</code></td><td>تقدّم الطالب في كل درس</td></tr><tr><td><code>reviews</code></td><td>التقييمات والمراجعات</td></tr><tr><td><code>payments</code></td><td>المدفوعات</td></tr></tbody></table></div><h3 id="sec-10">المطلوب</h3><ol><li><strong>المخطّط</strong>: كل الجداول بأنواع بيانات مناسبة وقيود كاملة.</li><li><strong>العلاقات</strong>: مفاتيح أجنبية بسلوك حذف مدروس لكل علاقة.</li><li><strong>البيانات</strong>: 5 مدرّبين، 10 دورات، 40 درساً، 20 طالباً، 50 تسجيلاً، 30 مراجعة.</li><li><strong>الفهارس</strong>: على كل المفاتيح الأجنبية وأعمدة البحث المتكرّرة.</li><li><strong>العروض</strong>: <code>course_stats</code> و <code>student_dashboard</code>.</li><li><strong>التقارير</strong>: عشرة استعلامات تحليلية.</li><li><strong>المعاملة</strong>: عملية تسجيل طالب في دورة مع الدفع كوحدة ذرّية.</li></ol><section class="exercise" id="sec-11"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>المشروع الكامل</h3></header><div class="exercise-body"><p>ابنِ قاعدة بيانات المنصة التعليمية كاملة.</p><p><strong>المطلوب:</strong></p><ul><li>المخطّط كاملاً مع كل القيود.</li><li>بيانات تجريبية واقعية بالأعداد المذكورة.</li><li>كل الفهارس اللازمة مع تعليق يبرّر كلاً منها.</li><li>العرضان المطلوبان.</li><li>التقارير العشرة: أفضل الدورات، أنشط الطلاب، الإيراد الشهري، متوسّط التقييم لكل مدرّب، الدورات بلا تسجيلات، الطلاب المتعثّرون، شجرة التصنيفات، معدّل الإكمال، أفضل المدرّبين إيراداً، الدورات الأعلى تقييماً بأكثر من خمس مراجعات.</li><li>معاملة التسجيل مع الدفع مع معالجة الفشل.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 التصنيفات الهرمية تحتاج <code>parent_id</code> يشير للجدول نفسه.</li><li>💡 استخدم <code>WITH RECURSIVE</code> لشجرة التصنيفات.</li><li>💡 معدّل الإكمال = عدد الدروس المكتملة ÷ إجمالي دروس الدورة.</li><li>💡 راجع دروس الفهارس والمعاملات قبل البدء.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- ============ المخطّط ============</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> <span class="tok-func">instructors</span> <span class="tok-punct">(</span>
+  id        <span class="tok-keyword">SERIAL</span> <span class="tok-keyword">PRIMARY</span> <span class="tok-keyword">KEY</span><span class="tok-punct">,</span>
+  name      <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">150</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  email     <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">255</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">UNIQUE</span><span class="tok-punct">,</span>
+  bio       TEXT<span class="tok-punct">,</span>
+  joined_at TIMESTAMP <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> CURRENT_TIMESTAMP
+<span class="tok-punct">);</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> <span class="tok-func">categories</span> <span class="tok-punct">(</span>
+  id        <span class="tok-keyword">SERIAL</span> <span class="tok-keyword">PRIMARY</span> <span class="tok-keyword">KEY</span><span class="tok-punct">,</span>
+  parent_id INT<span class="tok-punct">,</span>
+  name      <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">100</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  slug      <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">100</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">UNIQUE</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>parent_id<span class="tok-punct">)</span> <span class="tok-keyword">REFERENCES</span> <span class="tok-func">categories</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span> <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">SET</span> <span class="tok-bool">NULL</span>
+<span class="tok-punct">);</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> <span class="tok-func">courses</span> <span class="tok-punct">(</span>
+  id            <span class="tok-keyword">SERIAL</span> <span class="tok-keyword">PRIMARY</span> <span class="tok-keyword">KEY</span><span class="tok-punct">,</span>
+  instructor_id INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  category_id   INT<span class="tok-punct">,</span>
+  title         <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">200</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  description   TEXT<span class="tok-punct">,</span>
+  price         <span class="tok-func">DECIMAL</span><span class="tok-punct">(</span><span class="tok-number">8</span><span class="tok-punct">,</span><span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> <span class="tok-number">0</span> <span class="tok-keyword">CHECK</span> <span class="tok-punct">(</span>price <span class="tok-punct">&gt;=</span> <span class="tok-number">0</span><span class="tok-punct">),</span>
+  <span class="tok-keyword">level</span>         <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">20</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> <span class="tok-string">&#39;beginner&#39;</span>
+                <span class="tok-keyword">CHECK</span> <span class="tok-punct">(</span><span class="tok-keyword">level</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;beginner&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;intermediate&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;advanced&#39;</span><span class="tok-punct">)),</span>
+  is_published  BOOLEAN <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> <span class="tok-bool">FALSE</span><span class="tok-punct">,</span>
+  created_at    TIMESTAMP <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> CURRENT_TIMESTAMP<span class="tok-punct">,</span>
+
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>instructor_id<span class="tok-punct">)</span> <span class="tok-keyword">REFERENCES</span> <span class="tok-func">instructors</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span> <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">RESTRICT</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>category_id<span class="tok-punct">)</span>   <span class="tok-keyword">REFERENCES</span> <span class="tok-func">categories</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span>  <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">SET</span> <span class="tok-bool">NULL</span>
+<span class="tok-punct">);</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> <span class="tok-func">lessons</span> <span class="tok-punct">(</span>
+  id           <span class="tok-keyword">SERIAL</span> <span class="tok-keyword">PRIMARY</span> <span class="tok-keyword">KEY</span><span class="tok-punct">,</span>
+  course_id    INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  title        <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">200</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  duration_min INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">CHECK</span> <span class="tok-punct">(</span>duration_min <span class="tok-punct">&gt;</span> <span class="tok-number">0</span><span class="tok-punct">),</span>
+  position     INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>course_id<span class="tok-punct">)</span> <span class="tok-keyword">REFERENCES</span> <span class="tok-func">courses</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span> <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">CASCADE</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">UNIQUE</span> <span class="tok-punct">(</span>course_id<span class="tok-punct">,</span> position<span class="tok-punct">)</span>
+<span class="tok-punct">);</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> <span class="tok-func">students</span> <span class="tok-punct">(</span>
+  id            <span class="tok-keyword">SERIAL</span> <span class="tok-keyword">PRIMARY</span> <span class="tok-keyword">KEY</span><span class="tok-punct">,</span>
+  name          <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">150</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  email         <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">255</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">UNIQUE</span><span class="tok-punct">,</span>
+  registered_at TIMESTAMP <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> CURRENT_TIMESTAMP
+<span class="tok-punct">);</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> <span class="tok-func">enrollments</span> <span class="tok-punct">(</span>
+  id          <span class="tok-keyword">SERIAL</span> <span class="tok-keyword">PRIMARY</span> <span class="tok-keyword">KEY</span><span class="tok-punct">,</span>
+  student_id  INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  course_id   INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  enrolled_at TIMESTAMP <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> CURRENT_TIMESTAMP<span class="tok-punct">,</span>
+  completed_at TIMESTAMP<span class="tok-punct">,</span>
+
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>student_id<span class="tok-punct">)</span> <span class="tok-keyword">REFERENCES</span> <span class="tok-func">students</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span> <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">CASCADE</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>course_id<span class="tok-punct">)</span>  <span class="tok-keyword">REFERENCES</span> <span class="tok-func">courses</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span>  <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">CASCADE</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">UNIQUE</span> <span class="tok-punct">(</span>student_id<span class="tok-punct">,</span> course_id<span class="tok-punct">)</span>
+<span class="tok-punct">);</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> <span class="tok-func">lesson_progress</span> <span class="tok-punct">(</span>
+  id            <span class="tok-keyword">SERIAL</span> <span class="tok-keyword">PRIMARY</span> <span class="tok-keyword">KEY</span><span class="tok-punct">,</span>
+  enrollment_id INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  lesson_id     INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  completed_at  TIMESTAMP <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> CURRENT_TIMESTAMP<span class="tok-punct">,</span>
+
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>enrollment_id<span class="tok-punct">)</span> <span class="tok-keyword">REFERENCES</span> <span class="tok-func">enrollments</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span> <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">CASCADE</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>lesson_id<span class="tok-punct">)</span>     <span class="tok-keyword">REFERENCES</span> <span class="tok-func">lessons</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span>     <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">CASCADE</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">UNIQUE</span> <span class="tok-punct">(</span>enrollment_id<span class="tok-punct">,</span> lesson_id<span class="tok-punct">)</span>
+<span class="tok-punct">);</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> <span class="tok-func">reviews</span> <span class="tok-punct">(</span>
+  id         <span class="tok-keyword">SERIAL</span> <span class="tok-keyword">PRIMARY</span> <span class="tok-keyword">KEY</span><span class="tok-punct">,</span>
+  student_id INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  course_id  INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  rating     INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">CHECK</span> <span class="tok-punct">(</span>rating <span class="tok-keyword">BETWEEN</span> <span class="tok-number">1</span> <span class="tok-keyword">AND</span> <span class="tok-number">5</span><span class="tok-punct">),</span>
+  comment    TEXT<span class="tok-punct">,</span>
+  created_at TIMESTAMP <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> CURRENT_TIMESTAMP<span class="tok-punct">,</span>
+
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>student_id<span class="tok-punct">)</span> <span class="tok-keyword">REFERENCES</span> <span class="tok-func">students</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span> <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">CASCADE</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>course_id<span class="tok-punct">)</span>  <span class="tok-keyword">REFERENCES</span> <span class="tok-func">courses</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span>  <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">CASCADE</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">UNIQUE</span> <span class="tok-punct">(</span>student_id<span class="tok-punct">,</span> course_id<span class="tok-punct">)</span>
+<span class="tok-punct">);</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">TABLE</span> <span class="tok-func">payments</span> <span class="tok-punct">(</span>
+  id         <span class="tok-keyword">SERIAL</span> <span class="tok-keyword">PRIMARY</span> <span class="tok-keyword">KEY</span><span class="tok-punct">,</span>
+  student_id INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  course_id  INT <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">,</span>
+  amount     <span class="tok-func">DECIMAL</span><span class="tok-punct">(</span><span class="tok-number">8</span><span class="tok-punct">,</span><span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">CHECK</span> <span class="tok-punct">(</span>amount <span class="tok-punct">&gt;=</span> <span class="tok-number">0</span><span class="tok-punct">),</span>
+  method     <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">20</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">CHECK</span> <span class="tok-punct">(</span>method <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;card&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;transfer&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;wallet&#39;</span><span class="tok-punct">)),</span>
+  status     <span class="tok-func">VARCHAR</span><span class="tok-punct">(</span><span class="tok-number">20</span><span class="tok-punct">)</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> <span class="tok-string">&#39;pending&#39;</span>
+             <span class="tok-keyword">CHECK</span> <span class="tok-punct">(</span>status <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;pending&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;completed&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;failed&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;refunded&#39;</span><span class="tok-punct">)),</span>
+  paid_at    TIMESTAMP <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">DEFAULT</span> CURRENT_TIMESTAMP<span class="tok-punct">,</span>
+
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>student_id<span class="tok-punct">)</span> <span class="tok-keyword">REFERENCES</span> <span class="tok-func">students</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span> <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">RESTRICT</span><span class="tok-punct">,</span>
+  <span class="tok-keyword">FOREIGN</span> <span class="tok-keyword">KEY</span> <span class="tok-punct">(</span>course_id<span class="tok-punct">)</span>  <span class="tok-keyword">REFERENCES</span> <span class="tok-func">courses</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span>  <span class="tok-keyword">ON</span> <span class="tok-keyword">DELETE</span> <span class="tok-keyword">RESTRICT</span>
+<span class="tok-punct">);</span>
+
+<span class="tok-comment">-- ============ الفهارس ============</span>
+
+<span class="tok-comment">-- المفاتيح الأجنبية: تسرّع الربط والحذف</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">INDEX</span> idx_courses_instructor  <span class="tok-keyword">ON</span> <span class="tok-func">courses</span> <span class="tok-punct">(</span>instructor_id<span class="tok-punct">);</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">INDEX</span> idx_courses_category    <span class="tok-keyword">ON</span> <span class="tok-func">courses</span> <span class="tok-punct">(</span>category_id<span class="tok-punct">);</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">INDEX</span> idx_lessons_course      <span class="tok-keyword">ON</span> <span class="tok-func">lessons</span> <span class="tok-punct">(</span>course_id<span class="tok-punct">);</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">INDEX</span> idx_enroll_student      <span class="tok-keyword">ON</span> <span class="tok-func">enrollments</span> <span class="tok-punct">(</span>student_id<span class="tok-punct">);</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">INDEX</span> idx_enroll_course       <span class="tok-keyword">ON</span> <span class="tok-func">enrollments</span> <span class="tok-punct">(</span>course_id<span class="tok-punct">);</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">INDEX</span> idx_progress_enrollment <span class="tok-keyword">ON</span> <span class="tok-func">lesson_progress</span> <span class="tok-punct">(</span>enrollment_id<span class="tok-punct">);</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">INDEX</span> idx_reviews_course      <span class="tok-keyword">ON</span> <span class="tok-func">reviews</span> <span class="tok-punct">(</span>course_id<span class="tok-punct">);</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">INDEX</span> idx_payments_student    <span class="tok-keyword">ON</span> <span class="tok-func">payments</span> <span class="tok-punct">(</span>student_id<span class="tok-punct">);</span>
+
+<span class="tok-comment">-- البحث المتكرّر عن الدورات المنشورة</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">INDEX</span> idx_courses_published <span class="tok-keyword">ON</span> <span class="tok-func">courses</span> <span class="tok-punct">(</span>is_published<span class="tok-punct">,</span> created_at <span class="tok-keyword">DESC</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">WHERE</span> is_published <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- تقارير الإيراد الشهري</span>
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">INDEX</span> idx_payments_date_status <span class="tok-keyword">ON</span> <span class="tok-func">payments</span> <span class="tok-punct">(</span>paid_at<span class="tok-punct">,</span> status<span class="tok-punct">);</span>
+
+<span class="tok-comment">-- ============ العروض ============</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">VIEW</span> course_stats <span class="tok-keyword">AS</span>
+<span class="tok-keyword">SELECT</span>
+  c<span class="tok-punct">.</span>id<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span>title<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span>price<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span><span class="tok-keyword">level</span><span class="tok-punct">,</span>
+  i<span class="tok-punct">.</span>name                                   <span class="tok-keyword">AS</span> instructor<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span><span class="tok-keyword">DISTINCT</span> e<span class="tok-punct">.</span>id<span class="tok-punct">)</span>                     <span class="tok-keyword">AS</span> students_count<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span><span class="tok-keyword">DISTINCT</span> l<span class="tok-punct">.</span>id<span class="tok-punct">)</span>                     <span class="tok-keyword">AS</span> lessons_count<span class="tok-punct">,</span>
+  <span class="tok-func">COALESCE</span><span class="tok-punct">(</span><span class="tok-func">SUM</span><span class="tok-punct">(</span>l<span class="tok-punct">.</span>duration_min<span class="tok-punct">),</span> <span class="tok-number">0</span><span class="tok-punct">)</span>         <span class="tok-keyword">AS</span> total_minutes<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-func">AVG</span><span class="tok-punct">(</span>r<span class="tok-punct">.</span>rating<span class="tok-punct">),</span> <span class="tok-number">2</span><span class="tok-punct">)</span>                  <span class="tok-keyword">AS</span> avg_rating<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span><span class="tok-keyword">DISTINCT</span> r<span class="tok-punct">.</span>id<span class="tok-punct">)</span>                     <span class="tok-keyword">AS</span> reviews_count
+<span class="tok-keyword">FROM</span> courses c
+<span class="tok-keyword">JOIN</span> instructors i        <span class="tok-keyword">ON</span> i<span class="tok-punct">.</span>id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>instructor_id
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> lessons l       <span class="tok-keyword">ON</span> l<span class="tok-punct">.</span>course_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> enrollments e   <span class="tok-keyword">ON</span> e<span class="tok-punct">.</span>course_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> reviews r       <span class="tok-keyword">ON</span> r<span class="tok-punct">.</span>course_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>title<span class="tok-punct">,</span> c<span class="tok-punct">.</span>price<span class="tok-punct">,</span> c<span class="tok-punct">.</span><span class="tok-keyword">level</span><span class="tok-punct">,</span> i<span class="tok-punct">.</span>name<span class="tok-punct">;</span>
+
+<span class="tok-keyword">CREATE</span> <span class="tok-keyword">VIEW</span> student_dashboard <span class="tok-keyword">AS</span>
+<span class="tok-keyword">SELECT</span>
+  s<span class="tok-punct">.</span>id            <span class="tok-keyword">AS</span> student_id<span class="tok-punct">,</span>
+  s<span class="tok-punct">.</span>name          <span class="tok-keyword">AS</span> student_name<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span>id            <span class="tok-keyword">AS</span> course_id<span class="tok-punct">,</span>
+  c<span class="tok-punct">.</span>title         <span class="tok-keyword">AS</span> course_title<span class="tok-punct">,</span>
+  e<span class="tok-punct">.</span>enrolled_at<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span><span class="tok-keyword">DISTINCT</span> lp<span class="tok-punct">.</span>lesson_id<span class="tok-punct">)</span>                       <span class="tok-keyword">AS</span> completed_lessons<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span><span class="tok-keyword">DISTINCT</span> l<span class="tok-punct">.</span>id<span class="tok-punct">)</span>                               <span class="tok-keyword">AS</span> total_lessons<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-number">100.0</span> <span class="tok-punct">*</span> <span class="tok-func">COUNT</span><span class="tok-punct">(</span><span class="tok-keyword">DISTINCT</span> lp<span class="tok-punct">.</span>lesson_id<span class="tok-punct">)</span>
+        <span class="tok-punct">/</span> <span class="tok-func">NULLIF</span><span class="tok-punct">(</span><span class="tok-func">COUNT</span><span class="tok-punct">(</span><span class="tok-keyword">DISTINCT</span> l<span class="tok-punct">.</span>id<span class="tok-punct">),</span> <span class="tok-number">0</span><span class="tok-punct">),</span> <span class="tok-number">1</span><span class="tok-punct">)</span>        <span class="tok-keyword">AS</span> progress_pct
+<span class="tok-keyword">FROM</span> students s
+<span class="tok-keyword">JOIN</span> enrollments e         <span class="tok-keyword">ON</span> e<span class="tok-punct">.</span>student_id <span class="tok-punct">=</span> s<span class="tok-punct">.</span>id
+<span class="tok-keyword">JOIN</span> courses c             <span class="tok-keyword">ON</span> c<span class="tok-punct">.</span>id <span class="tok-punct">=</span> e<span class="tok-punct">.</span>course_id
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> lessons l        <span class="tok-keyword">ON</span> l<span class="tok-punct">.</span>course_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> lesson_progress lp
+       <span class="tok-keyword">ON</span> lp<span class="tok-punct">.</span>enrollment_id <span class="tok-punct">=</span> e<span class="tok-punct">.</span>id <span class="tok-keyword">AND</span> lp<span class="tok-punct">.</span>lesson_id <span class="tok-punct">=</span> l<span class="tok-punct">.</span>id
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> s<span class="tok-punct">.</span>id<span class="tok-punct">,</span> s<span class="tok-punct">.</span>name<span class="tok-punct">,</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>title<span class="tok-punct">,</span> e<span class="tok-punct">.</span>enrolled_at<span class="tok-punct">;</span>
+
+<span class="tok-comment">-- ============ التقارير ============</span>
+
+<span class="tok-comment">-- 1) أفضل الدورات</span>
+<span class="tok-keyword">SELECT</span> title<span class="tok-punct">,</span> students_count<span class="tok-punct">,</span> avg_rating<span class="tok-punct">,</span> instructor
+<span class="tok-keyword">FROM</span> course_stats
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> students_count <span class="tok-keyword">DESC</span>
+<span class="tok-keyword">LIMIT</span> <span class="tok-number">10</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 2) أنشط الطلاب</span>
+<span class="tok-keyword">SELECT</span>
+  s<span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span><span class="tok-keyword">DISTINCT</span> e<span class="tok-punct">.</span>course_id<span class="tok-punct">)</span>      <span class="tok-keyword">AS</span> courses<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span>lp<span class="tok-punct">.</span>id<span class="tok-punct">)</span>                     <span class="tok-keyword">AS</span> lessons_completed
+<span class="tok-keyword">FROM</span> students s
+<span class="tok-keyword">JOIN</span> enrollments e      <span class="tok-keyword">ON</span> e<span class="tok-punct">.</span>student_id <span class="tok-punct">=</span> s<span class="tok-punct">.</span>id
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> lesson_progress lp <span class="tok-keyword">ON</span> lp<span class="tok-punct">.</span>enrollment_id <span class="tok-punct">=</span> e<span class="tok-punct">.</span>id
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> s<span class="tok-punct">.</span>id<span class="tok-punct">,</span> s<span class="tok-punct">.</span>name
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> lessons_completed <span class="tok-keyword">DESC</span>
+<span class="tok-keyword">LIMIT</span> <span class="tok-number">10</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 3) الإيراد الشهري</span>
+<span class="tok-keyword">SELECT</span>
+  <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>YEAR  <span class="tok-keyword">FROM</span> paid_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> year<span class="tok-punct">,</span>
+  <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>MONTH <span class="tok-keyword">FROM</span> paid_at<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> month<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(*)</span>                    <span class="tok-keyword">AS</span> payments<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-func">SUM</span><span class="tok-punct">(</span>amount<span class="tok-punct">),</span> <span class="tok-number">2</span><span class="tok-punct">)</span>       <span class="tok-keyword">AS</span> revenue
+<span class="tok-keyword">FROM</span> payments
+<span class="tok-keyword">WHERE</span> status <span class="tok-punct">=</span> <span class="tok-string">&#39;completed&#39;</span>
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 4) متوسّط تقييم كل مدرّب</span>
+<span class="tok-keyword">SELECT</span>
+  i<span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span><span class="tok-keyword">DISTINCT</span> c<span class="tok-punct">.</span>id<span class="tok-punct">)</span>     <span class="tok-keyword">AS</span> courses<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-func">AVG</span><span class="tok-punct">(</span>r<span class="tok-punct">.</span>rating<span class="tok-punct">),</span> <span class="tok-number">2</span><span class="tok-punct">)</span>  <span class="tok-keyword">AS</span> avg_rating<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span>r<span class="tok-punct">.</span>id<span class="tok-punct">)</span>              <span class="tok-keyword">AS</span> reviews
+<span class="tok-keyword">FROM</span> instructors i
+<span class="tok-keyword">JOIN</span> courses c      <span class="tok-keyword">ON</span> c<span class="tok-punct">.</span>instructor_id <span class="tok-punct">=</span> i<span class="tok-punct">.</span>id
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> reviews r <span class="tok-keyword">ON</span> r<span class="tok-punct">.</span>course_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> i<span class="tok-punct">.</span>id<span class="tok-punct">,</span> i<span class="tok-punct">.</span>name
+<span class="tok-keyword">HAVING</span> <span class="tok-func">COUNT</span><span class="tok-punct">(</span>r<span class="tok-punct">.</span>id<span class="tok-punct">)</span> <span class="tok-punct">&gt;</span> <span class="tok-number">0</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> avg_rating <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 5) الدورات بلا تسجيلات</span>
+<span class="tok-keyword">SELECT</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>title<span class="tok-punct">,</span> c<span class="tok-punct">.</span>price
+<span class="tok-keyword">FROM</span> courses c
+<span class="tok-keyword">LEFT</span> <span class="tok-keyword">JOIN</span> enrollments e <span class="tok-keyword">ON</span> e<span class="tok-punct">.</span>course_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id
+<span class="tok-keyword">WHERE</span> e<span class="tok-punct">.</span>id <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span> <span class="tok-keyword">AND</span> c<span class="tok-punct">.</span>is_published <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 6) الطلاب المتعثّرون (أقل من 20٪ بعد شهر)</span>
+<span class="tok-keyword">SELECT</span> student_name<span class="tok-punct">,</span> course_title<span class="tok-punct">,</span> progress_pct<span class="tok-punct">,</span> enrolled_at
+<span class="tok-keyword">FROM</span> student_dashboard
+<span class="tok-keyword">WHERE</span> progress_pct <span class="tok-punct">&lt;</span> <span class="tok-number">20</span>
+  <span class="tok-keyword">AND</span> enrolled_at <span class="tok-punct">&lt;</span> CURRENT_DATE <span class="tok-punct">-</span> <span class="tok-keyword">INTERVAL</span> <span class="tok-string">&#39;30 days&#39;</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> progress_pct<span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 7) شجرة التصنيفات</span>
+<span class="tok-keyword">WITH</span> <span class="tok-keyword">RECURSIVE</span> tree <span class="tok-keyword">AS</span> <span class="tok-punct">(</span>
+  <span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> name<span class="tok-punct">,</span> parent_id<span class="tok-punct">,</span> <span class="tok-number">1</span> <span class="tok-keyword">AS</span> <span class="tok-keyword">level</span><span class="tok-punct">,</span> <span class="tok-func">CAST</span><span class="tok-punct">(</span>name <span class="tok-keyword">AS</span> TEXT<span class="tok-punct">)</span> <span class="tok-keyword">AS</span> path
+  <span class="tok-keyword">FROM</span> categories <span class="tok-keyword">WHERE</span> parent_id <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span>
+  <span class="tok-keyword">UNION</span> <span class="tok-keyword">ALL</span>
+  <span class="tok-keyword">SELECT</span> c<span class="tok-punct">.</span>id<span class="tok-punct">,</span> c<span class="tok-punct">.</span>name<span class="tok-punct">,</span> c<span class="tok-punct">.</span>parent_id<span class="tok-punct">,</span> t<span class="tok-punct">.</span><span class="tok-keyword">level</span> <span class="tok-punct">+</span> <span class="tok-number">1</span><span class="tok-punct">,</span> t<span class="tok-punct">.</span>path <span class="tok-punct">||</span> <span class="tok-string">&#39; &gt; &#39;</span> <span class="tok-punct">||</span> c<span class="tok-punct">.</span>name
+  <span class="tok-keyword">FROM</span> categories c <span class="tok-keyword">JOIN</span> tree t <span class="tok-keyword">ON</span> t<span class="tok-punct">.</span>id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>parent_id
+  <span class="tok-keyword">WHERE</span> t<span class="tok-punct">.</span><span class="tok-keyword">level</span> <span class="tok-punct">&lt;</span> <span class="tok-number">5</span>
+<span class="tok-punct">)</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-keyword">level</span><span class="tok-punct">,</span> path <span class="tok-keyword">FROM</span> tree <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> path<span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 8) معدّل الإكمال لكل دورة</span>
+<span class="tok-keyword">SELECT</span>
+  course_title<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(*)</span>                     <span class="tok-keyword">AS</span> enrollments<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-func">AVG</span><span class="tok-punct">(</span>progress_pct<span class="tok-punct">),</span> <span class="tok-number">1</span><span class="tok-punct">)</span>  <span class="tok-keyword">AS</span> avg_progress<span class="tok-punct">,</span>
+  <span class="tok-func">SUM</span><span class="tok-punct">(</span><span class="tok-keyword">CASE</span> <span class="tok-keyword">WHEN</span> progress_pct <span class="tok-punct">=</span> <span class="tok-number">100</span> <span class="tok-keyword">THEN</span> <span class="tok-number">1</span> <span class="tok-keyword">ELSE</span> <span class="tok-number">0</span> <span class="tok-keyword">END</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> completed
+<span class="tok-keyword">FROM</span> student_dashboard
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> course_id<span class="tok-punct">,</span> course_title
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> avg_progress <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 9) أفضل المدرّبين إيراداً</span>
+<span class="tok-keyword">SELECT</span>
+  i<span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+  <span class="tok-func">COUNT</span><span class="tok-punct">(</span><span class="tok-keyword">DISTINCT</span> p<span class="tok-punct">.</span>id<span class="tok-punct">)</span>   <span class="tok-keyword">AS</span> sales<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span><span class="tok-func">SUM</span><span class="tok-punct">(</span>p<span class="tok-punct">.</span>amount<span class="tok-punct">),</span><span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> revenue
+<span class="tok-keyword">FROM</span> instructors i
+<span class="tok-keyword">JOIN</span> courses c  <span class="tok-keyword">ON</span> c<span class="tok-punct">.</span>instructor_id <span class="tok-punct">=</span> i<span class="tok-punct">.</span>id
+<span class="tok-keyword">JOIN</span> payments p <span class="tok-keyword">ON</span> p<span class="tok-punct">.</span>course_id <span class="tok-punct">=</span> c<span class="tok-punct">.</span>id <span class="tok-keyword">AND</span> p<span class="tok-punct">.</span>status <span class="tok-punct">=</span> <span class="tok-string">&#39;completed&#39;</span>
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> i<span class="tok-punct">.</span>id<span class="tok-punct">,</span> i<span class="tok-punct">.</span>name
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> revenue <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- 10) الأعلى تقييماً بأكثر من خمس مراجعات</span>
+<span class="tok-keyword">SELECT</span> title<span class="tok-punct">,</span> avg_rating<span class="tok-punct">,</span> reviews_count<span class="tok-punct">,</span> students_count
+<span class="tok-keyword">FROM</span> course_stats
+<span class="tok-keyword">WHERE</span> reviews_count <span class="tok-punct">&gt;</span> <span class="tok-number">5</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> avg_rating <span class="tok-keyword">DESC</span><span class="tok-punct">,</span> reviews_count <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
+
+<span class="tok-comment">-- ============ معاملة التسجيل مع الدفع ============</span>
+
+<span class="tok-keyword">BEGIN</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">-- 1) تسجيل الدفعة</span>
+  <span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">payments</span> <span class="tok-punct">(</span>student_id<span class="tok-punct">,</span> course_id<span class="tok-punct">,</span> amount<span class="tok-punct">,</span> method<span class="tok-punct">,</span> status<span class="tok-punct">)</span>
+  <span class="tok-keyword">SELECT</span> <span class="tok-number">3</span><span class="tok-punct">,</span> <span class="tok-number">7</span><span class="tok-punct">,</span> price<span class="tok-punct">,</span> <span class="tok-string">&#39;card&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;completed&#39;</span>
+  <span class="tok-keyword">FROM</span> courses <span class="tok-keyword">WHERE</span> id <span class="tok-punct">=</span> <span class="tok-number">7</span> <span class="tok-keyword">AND</span> is_published <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">-- إن لم يُدرَج شيء فالدورة غير منشورة → ROLLBACK</span>
+
+  <span class="tok-comment">-- 2) إنشاء التسجيل</span>
+  <span class="tok-keyword">INSERT</span> <span class="tok-keyword">INTO</span> <span class="tok-func">enrollments</span> <span class="tok-punct">(</span>student_id<span class="tok-punct">,</span> course_id<span class="tok-punct">)</span>
+  <span class="tok-keyword">VALUES</span> <span class="tok-punct">(</span><span class="tok-number">3</span><span class="tok-punct">,</span> <span class="tok-number">7</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">ON</span> <span class="tok-keyword">CONFLICT</span> <span class="tok-punct">(</span>student_id<span class="tok-punct">,</span> course_id<span class="tok-punct">)</span> <span class="tok-keyword">DO</span> <span class="tok-keyword">NOTHING</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">-- 3) التحقّق من النجاح قبل التثبيت</span>
+  <span class="tok-comment">-- في كود التطبيق: إن كان عدد الصفوف المتأثّرة صفراً → ROLLBACK</span>
+
+<span class="tok-keyword">COMMIT</span><span class="tok-punct">;</span></code></pre></div><div class="code-caption" style="background:var(--surface-2);color:var(--text-muted)">المشروع أساس حقيقي لأي منصة تعليمية. طوّره: أضف الشهادات، والاختبارات، والكوبونات، وسجلّ النشاط.</div></details></div></section><h2 id="sec-12">ماذا بعد؟</h2><p>أنهيت مسار SQL: التصميم والقيود والاستعلام والتجميع والربط والاستعلامات الفرعية والفهارس والمعاملات. هذه أساسيات صلبة تكفي لبناء وصيانة قواعد بيانات تطبيقات حقيقية.</p><ul><li><strong>دوال النوافذ</strong> (<code>ROW_NUMBER</code>, <code>RANK</code>, <code>LAG</code>, <code>LEAD</code>) للتحليلات المتقدّمة.</li><li><strong>التطبيع</strong> (Normalization) وأشكاله الثلاثة الأولى.</li><li><strong>الإجراءات المخزّنة والمشغّلات</strong> (Triggers).</li><li><strong>النسخ الاحتياطي والاستعادة</strong> — لا تؤجّل تعلّمها.</li><li><strong>التوسّع</strong>: النسخ المتماثل (Replication) والتقسيم (Sharding).</li><li><strong>قواعد NoSQL</strong> ومتى تكون أنسب من العلائقية.</li></ul><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما معنى «الذرّية» في ACID؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>السرعة</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>كل عمليات المعاملة تُنفَّذ أو لا يُنفَّذ أي منها</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>العزل</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>الحفظ</span></label></div><div class="q-explain"><strong>الشرح:</strong> لا حالة وسطى: إمّا نجاح كامل أو تراجع كامل.</div></div><div class="q-item"><p class="q-text">2. ما «التحديث المفقود»؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>حذف صف</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>معاملتان تقرآن ثم تكتبان فيضيع أحد التحديثين</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>خطأ اتصال</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>قفل</span></label></div><div class="q-explain"><strong>الشرح:</strong> الحل: تحديث ذرّي <code>SET stock = stock - 2</code> أو قفل الصف بـ <code>FOR UPDATE</code>.</div></div><div class="q-item"><p class="q-text">3. ما أفضل وقاية من الجمود (Deadlock)؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>معاملات أطول</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>قفل الموارد بترتيب موحّد في كل الكود</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>إلغاء الأقفال</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>عزل أقل</span></label></div><div class="q-explain"><strong>الشرح:</strong> الترتيب الموحّد يمنع الانتظار المتبادل من الأساس.</div></div><div class="q-item"><p class="q-text">4. ماذا يفعل <code>SELECT … FOR UPDATE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يحدّث الصف</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>يقفل الصفوف فتنتظرها المعاملات الأخرى حتى انتهاء معاملتك</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>ينسخ الصف</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يحذفه</span></label></div><div class="q-explain"><strong>الشرح:</strong> قفل حصري يمنع القراءة للتحديث من معاملات أخرى.</div></div><div class="q-item"><p class="q-text">5. لماذا يجب أن تبقى المعاملات قصيرة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>للذاكرة</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>لأنها تحتفظ بالأقفال فتعطّل بقية المعاملات</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>للشبكة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>للسجلّات</span></label></div><div class="q-explain"><strong>الشرح:</strong> لا تنتظر إدخال مستخدم أو خدمة خارجية داخل معاملة مفتوحة.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
       <div class="complete-box">
         <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
         <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/10-transactions" aria-pressed="false">

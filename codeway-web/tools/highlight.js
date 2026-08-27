@@ -31,7 +31,7 @@ function runRules(code, rules) {
   return out;
 }
 
-const sticky = (source) => new RegExp(source, 'gy');
+const sticky = (source, flags) => new RegExp(source, 'gy' + (flags || ''));
 
 /* ------------------------------------------------------------------ */
 /* JavaScript / TypeScript                                             */
@@ -190,6 +190,78 @@ function highlightHTML(code) {
 }
 
 /* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/* SQL                                                                 */
+/* ------------------------------------------------------------------ */
+const SQL_KEYWORDS =
+  'SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|ALTER|DROP|TABLE|' +
+  'DATABASE|SCHEMA|VIEW|INDEX|UNIQUE|PRIMARY|FOREIGN|KEY|REFERENCES|CONSTRAINT|CHECK|' +
+  'DEFAULT|NOT|NULL|AUTO_INCREMENT|SERIAL|JOIN|INNER|LEFT|RIGHT|FULL|OUTER|CROSS|ON|' +
+  'GROUP|BY|ORDER|HAVING|LIMIT|OFFSET|FETCH|UNION|ALL|DISTINCT|AS|AND|OR|IN|BETWEEN|' +
+  'LIKE|ILIKE|IS|EXISTS|CASE|WHEN|THEN|ELSE|END|WITH|RECURSIVE|RETURNING|CONFLICT|DO|' +
+  'NOTHING|BEGIN|COMMIT|ROLLBACK|SAVEPOINT|TRANSACTION|ISOLATION|LEVEL|EXPLAIN|ANALYZE|' +
+  'TRUNCATE|CASCADE|RESTRICT|GRANT|REVOKE|USING|ASC|DESC|INTERVAL|OVER|PARTITION|FOR|' +
+  'UPDATE|SHARE|IF|ADD|COLUMN|RENAME|TO';
+const sqlRules = [
+  { cls: 'comment', re: sticky('--[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/') },
+  { cls: 'string', re: sticky("'(?:''|[^'])*'") },
+  { cls: 'bool', re: sticky('\\b(?:TRUE|FALSE|NULL|true|false|null)\\b') },
+  { cls: 'keyword', re: sticky(`\\b(?:${SQL_KEYWORDS})\\b`, 'i') },
+  { cls: 'number', re: sticky('\\b\\d+(?:\\.\\d+)?\\b') },
+  { cls: 'func', re: sticky('[A-Za-z_][\\w]*(?=\\s*\\()') },
+  { cls: 'punct', re: sticky('[{}()\\[\\];,.:?=+\\-*/%<>!&|^~]+') },
+  { cls: null, re: sticky('[A-Za-z_"][\\w"]*|\\s+') }
+];
+const highlightSQL = (code) => runRules(code, sqlRules);
+
+/* ------------------------------------------------------------------ */
+/* Ruby                                                                */
+/* ------------------------------------------------------------------ */
+const RUBY_KEYWORDS =
+  'def|end|class|module|if|elsif|else|unless|while|until|for|in|do|then|case|when|' +
+  'begin|rescue|ensure|raise|retry|yield|return|break|next|redo|self|super|require|' +
+  'require_relative|include|extend|prepend|attr_accessor|attr_reader|attr_writer|' +
+  'private|public|protected|new|lambda|proc|puts|print|p|loop|freeze|alias|defined';
+const rubyRules = [
+  { cls: 'comment', re: sticky('#[^\\n]*|=begin[\\s\\S]*?=end') },
+  { cls: 'string', re: sticky('"(?:\\\\.|[^"\\\\])*"|\'(?:\\\\.|[^\'\\\\])*\'|%[wiWI][\\[({][^\\])}]*[\\])}]|:"[^"]*"') },
+  { cls: 'bool', re: sticky('\\b(?:true|false|nil)\\b') },
+  { cls: 'attr', re: sticky('@@?[A-Za-z_]\\w*|\\$[A-Za-z_]\\w*') },
+  { cls: 'keyword', re: sticky(`\\b(?:${RUBY_KEYWORDS})\\b`) },
+  { cls: 'number', re: sticky('\\b\\d[\\d_]*(?:\\.\\d+)?\\b') },
+  { cls: 'bool', re: sticky('(?<![:\\w]):[A-Za-z_]\\w*[?!]?') },
+  { cls: 'prop', re: sticky('\\b[A-Z]\\w*\\b') },
+  { cls: 'func', re: sticky('[A-Za-z_]\\w*[?!]?(?=\\s*\\()') },
+  { cls: 'punct', re: sticky('[{}()\\[\\];,.:?=+\\-*/%<>!&|^~]+') },
+  { cls: null, re: sticky('[A-Za-z_]\\w*[?!]?|\\s+') }
+];
+const highlightRuby = (code) => runRules(code, rubyRules);
+
+/* ------------------------------------------------------------------ */
+/* PHP / Blade                                                         */
+/* ------------------------------------------------------------------ */
+const PHP_KEYWORDS =
+  'abstract|and|array|as|break|callable|case|catch|class|clone|const|continue|declare|' +
+  'default|do|echo|else|elseif|empty|enum|extends|final|finally|fn|for|foreach|function|' +
+  'global|if|implements|include|instanceof|insteadof|interface|isset|list|match|namespace|' +
+  'new|or|print|private|protected|public|readonly|require|require_once|return|static|' +
+  'switch|throw|trait|try|unset|use|var|while|xor|yield';
+const phpRules = [
+  { cls: 'comment', re: sticky('\\/\\/[^\\n]*|#[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/') },
+  { cls: 'string', re: sticky('"(?:\\\\.|[^"\\\\])*"|\'(?:\\\\.|[^\'\\\\])*\'') },
+  { cls: 'attr', re: sticky('\\$[A-Za-z_]\\w*') },
+  { cls: 'keyword', re: sticky(`\\b(?:${PHP_KEYWORDS})\\b`) },
+  { cls: 'bool', re: sticky('\\b(?:true|false|null|TRUE|FALSE|NULL)\\b') },
+  { cls: 'keyword', re: sticky('@[A-Za-z_]\\w*|<\\?php|\\?>') },
+  { cls: 'number', re: sticky('\\b\\d[\\d_]*(?:\\.\\d+)?\\b') },
+  { cls: 'func', re: sticky('[A-Za-z_]\\w*(?=\\s*\\()') },
+  { cls: 'prop', re: sticky('\\b[A-Z]\\w*\\b') },
+  { cls: 'punct', re: sticky('[{}()\\[\\];,.:?=+\\-*/%<>!&|^~]+') },
+  { cls: null, re: sticky('[A-Za-z_]\\w*|\\s+') }
+];
+const highlightPHP = (code) => runRules(code, phpRules);
+
 const LANGS = {
   html: highlightHTML,
   xml: highlightHTML,
@@ -203,6 +275,12 @@ const LANGS = {
   json: highlightJSON,
   bash: highlightBash,
   sh: highlightBash,
+  sql: highlightSQL,
+  ruby: highlightRuby,
+  rb: highlightRuby,
+  erb: highlightRuby,
+  php: highlightPHP,
+  blade: highlightPHP,
   text: (c) => esc(c)
 };
 

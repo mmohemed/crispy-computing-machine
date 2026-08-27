@@ -71,236 +71,236 @@
   <div class="lesson-layout">
     <article class="lesson-main">
       <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تختار أعمدة محدّدة وتسمّيها.</li><li>ترشّح الصفوف بشروط بسيطة ومركّبة.</li><li>تبحث في النصوص بأنماط.</li><li>تتعامل مع القوائم والمدَيات و NULL.</li><li>تفهم ترتيب تنفيذ الاستعلام.</li></ul></div>
-      <h2 id="sec-1">بنية الاستعلام</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT   الأعمدة
-FROM     الجدول
-WHERE    شرط الترشيح
-GROUP BY التجميع
-HAVING   شرط على المجموعات
-ORDER BY الترتيب
-LIMIT    عدد النتائج;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> ترتيب التنفيذ يخالف ترتيب الكتابة</div><p>المحرّك ينفّذ: <code>FROM</code> ← <code>WHERE</code> ← <code>GROUP BY</code> ← <code>HAVING</code> ← <code>SELECT</code> ← <code>ORDER BY</code> ← <code>LIMIT</code>. لهذا <strong>لا تستطيع</strong> استخدام اسم بديل عرّفته في <code>SELECT</code> داخل <code>WHERE</code> — لأن <code>WHERE</code> تُنفَّذ قبله.</p></div><h2 id="sec-2">اختيار الأعمدة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- كل الأعمدة
-SELECT * FROM products;
+      <h2 id="sec-1">بنية الاستعلام</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span>   الأعمدة
+<span class="tok-keyword">FROM</span>     الجدول
+<span class="tok-keyword">WHERE</span>    شرط الترشيح
+<span class="tok-keyword">GROUP</span> <span class="tok-keyword">BY</span> التجميع
+<span class="tok-keyword">HAVING</span>   شرط على المجموعات
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> الترتيب
+<span class="tok-keyword">LIMIT</span>    عدد النتائج<span class="tok-punct">;</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> ترتيب التنفيذ يخالف ترتيب الكتابة</div><p>المحرّك ينفّذ: <code>FROM</code> ← <code>WHERE</code> ← <code>GROUP BY</code> ← <code>HAVING</code> ← <code>SELECT</code> ← <code>ORDER BY</code> ← <code>LIMIT</code>. لهذا <strong>لا تستطيع</strong> استخدام اسم بديل عرّفته في <code>SELECT</code> داخل <code>WHERE</code> — لأن <code>WHERE</code> تُنفَّذ قبله.</p></div><h2 id="sec-2">اختيار الأعمدة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- كل الأعمدة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products<span class="tok-punct">;</span>
 
--- أعمدة محدّدة — الأفضل دائماً
-SELECT name, price, stock FROM products;
+<span class="tok-comment">-- أعمدة محدّدة — الأفضل دائماً</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price<span class="tok-punct">,</span> stock <span class="tok-keyword">FROM</span> products<span class="tok-punct">;</span>
 
--- أسماء بديلة
-SELECT
-  name        AS product_name,
-  price * 1.15 AS price_with_vat,
-  stock       AS &quot;الكمية المتاحة&quot;
-FROM products;
+<span class="tok-comment">-- أسماء بديلة</span>
+<span class="tok-keyword">SELECT</span>
+  name        <span class="tok-keyword">AS</span> product_name<span class="tok-punct">,</span>
+  price <span class="tok-punct">*</span> <span class="tok-number">1.15</span> <span class="tok-keyword">AS</span> price_with_vat<span class="tok-punct">,</span>
+  stock       <span class="tok-keyword">AS</span> &quot;الكمية المتاحة&quot;
+<span class="tok-keyword">FROM</span> products<span class="tok-punct">;</span>
 
--- تعبيرات محسوبة
-SELECT
-  name,
-  price,
-  stock,
-  price * stock AS inventory_value
-FROM products;
+<span class="tok-comment">-- تعبيرات محسوبة</span>
+<span class="tok-keyword">SELECT</span>
+  name<span class="tok-punct">,</span>
+  price<span class="tok-punct">,</span>
+  stock<span class="tok-punct">,</span>
+  price <span class="tok-punct">*</span> stock <span class="tok-keyword">AS</span> inventory_value
+<span class="tok-keyword">FROM</span> products<span class="tok-punct">;</span>
 
--- قيم ثابتة
-SELECT name, &#39;ريال&#39; AS currency FROM products;
+<span class="tok-comment">-- قيم ثابتة</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> <span class="tok-string">&#39;ريال&#39;</span> <span class="tok-keyword">AS</span> currency <span class="tok-keyword">FROM</span> products<span class="tok-punct">;</span>
 
--- قيم مميّزة بلا تكرار
-SELECT DISTINCT city FROM customers;
-SELECT DISTINCT city, country FROM customers;</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> تجنّب `SELECT *` في التطبيقات</div><p>ينقل أعمدة لا تحتاجها فيستهلك شبكة وذاكرة، ويكسر كودك عند إضافة عمود جديد، ويمنع المحرّك من استخدام «الفهرس المغطّي». استخدمه للاستكشاف اليدوي فقط.</p></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> الأسماء البديلة في الناتج</div><iframe title="الأسماء البديلة في الناتج" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.88em}th{background:#6a5acd;color:#fff;padding:8px 12px;text-align:right}td{padding:7px 12px;border-bottom:1px solid #e2e8f0}tr:nth-child(even) td{background:#f8fafc}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;product_name&lt;/th&gt;&lt;th&gt;price_with_vat&lt;/th&gt;&lt;th&gt;inventory_value&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;سماعة لاسلكية&lt;/td&gt;&lt;td&gt;343.85&lt;/td&gt;&lt;td&gt;14950.00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;لوحة مفاتيح&lt;/td&gt;&lt;td&gt;517.50&lt;/td&gt;&lt;td&gt;13500.00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ماوس لاسلكي&lt;/td&gt;&lt;td&gt;149.50&lt;/td&gt;&lt;td&gt;8450.00&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:240px"></iframe></div><h2 id="sec-3">الترشيح بـ WHERE</h2><h3 id="sec-4">معاملات المقارنة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT * FROM products WHERE price = 299;
-SELECT * FROM products WHERE price &gt; 500;
-SELECT * FROM products WHERE price &gt;= 500;
-SELECT * FROM products WHERE price &lt; 100;
-SELECT * FROM products WHERE price &lt;&gt; 299;   -- لا يساوي
-SELECT * FROM products WHERE price != 299;   -- نفس المعنى</code></pre></div><h3 id="sec-5">دمج الشروط</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- كلا الشرطين
-SELECT * FROM products
-WHERE price &gt; 100 AND stock &gt; 0;
+<span class="tok-comment">-- قيم مميّزة بلا تكرار</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-keyword">DISTINCT</span> city <span class="tok-keyword">FROM</span> customers<span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-keyword">DISTINCT</span> city<span class="tok-punct">,</span> country <span class="tok-keyword">FROM</span> customers<span class="tok-punct">;</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> تجنّب `SELECT *` في التطبيقات</div><p>ينقل أعمدة لا تحتاجها فيستهلك شبكة وذاكرة، ويكسر كودك عند إضافة عمود جديد، ويمنع المحرّك من استخدام «الفهرس المغطّي». استخدمه للاستكشاف اليدوي فقط.</p></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> الأسماء البديلة في الناتج</div><iframe title="الأسماء البديلة في الناتج" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.88em}th{background:#6a5acd;color:#fff;padding:8px 12px;text-align:right}td{padding:7px 12px;border-bottom:1px solid #e2e8f0}tr:nth-child(even) td{background:#f8fafc}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;product_name&lt;/th&gt;&lt;th&gt;price_with_vat&lt;/th&gt;&lt;th&gt;inventory_value&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;سماعة لاسلكية&lt;/td&gt;&lt;td&gt;343.85&lt;/td&gt;&lt;td&gt;14950.00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;لوحة مفاتيح&lt;/td&gt;&lt;td&gt;517.50&lt;/td&gt;&lt;td&gt;13500.00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ماوس لاسلكي&lt;/td&gt;&lt;td&gt;149.50&lt;/td&gt;&lt;td&gt;8450.00&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:240px"></iframe></div><h2 id="sec-3">الترشيح بـ WHERE</h2><h3 id="sec-4">معاملات المقارنة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> price <span class="tok-punct">=</span> <span class="tok-number">299</span><span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> price <span class="tok-punct">&gt;</span> <span class="tok-number">500</span><span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> price <span class="tok-punct">&gt;=</span> <span class="tok-number">500</span><span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> price <span class="tok-punct">&lt;</span> <span class="tok-number">100</span><span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> price <span class="tok-punct">&lt;&gt;</span> <span class="tok-number">299</span><span class="tok-punct">;</span>   <span class="tok-comment">-- لا يساوي</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> price <span class="tok-punct">!=</span> <span class="tok-number">299</span><span class="tok-punct">;</span>   <span class="tok-comment">-- نفس المعنى</span></code></pre></div><h3 id="sec-5">دمج الشروط</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- كلا الشرطين</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> price <span class="tok-punct">&gt;</span> <span class="tok-number">100</span> <span class="tok-keyword">AND</span> stock <span class="tok-punct">&gt;</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
 
--- أحد الشرطين
-SELECT * FROM products
-WHERE category_id = 1 OR category_id = 2;
+<span class="tok-comment">-- أحد الشرطين</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> category_id <span class="tok-punct">=</span> <span class="tok-number">1</span> <span class="tok-keyword">OR</span> category_id <span class="tok-punct">=</span> <span class="tok-number">2</span><span class="tok-punct">;</span>
 
--- النفي
-SELECT * FROM products
-WHERE NOT is_active;
+<span class="tok-comment">-- النفي</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> <span class="tok-keyword">NOT</span> is_active<span class="tok-punct">;</span>
 
--- الأقواس تحسم الأولوية — استخدمها دائماً
-SELECT * FROM products
-WHERE (category_id = 1 OR category_id = 2)
-  AND price &lt; 500;</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> أولوية AND أعلى من OR</div><p>الشرط <code>a OR b AND c</code> يُفسَّر <code>a OR (b AND c)</code> لا <code>(a OR b) AND c</code>. هذا مصدر أخطاء منطقية يصعب اكتشافها. <strong>ضع أقواساً صريحة دائماً</strong> حتى لو لم تكن ضرورية.</p></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> أثر الأقواس</div><iframe title="أثر الأقواس" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}pre{background:#0f1729;color:#e2e8f0;padding:12px;border-radius:10px;direction:ltr;text-align:left;font-family:monospace;font-size:.82em;line-height:1.85;margin:0 0 10px;overflow-x:auto}.c{color:#fca5a5}.g{color:#86efac}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;pre&gt;&lt;span class=&quot;c&quot;&gt;-- بلا أقواس: يُفسَّر خطأً&lt;/span&gt;
+<span class="tok-comment">-- الأقواس تحسم الأولوية — استخدمها دائماً</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> <span class="tok-punct">(</span>category_id <span class="tok-punct">=</span> <span class="tok-number">1</span> <span class="tok-keyword">OR</span> category_id <span class="tok-punct">=</span> <span class="tok-number">2</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">AND</span> price <span class="tok-punct">&lt;</span> <span class="tok-number">500</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> أولوية AND أعلى من OR</div><p>الشرط <code>a OR b AND c</code> يُفسَّر <code>a OR (b AND c)</code> لا <code>(a OR b) AND c</code>. هذا مصدر أخطاء منطقية يصعب اكتشافها. <strong>ضع أقواساً صريحة دائماً</strong> حتى لو لم تكن ضرورية.</p></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> أثر الأقواس</div><iframe title="أثر الأقواس" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}pre{background:#0f1729;color:#e2e8f0;padding:12px;border-radius:10px;direction:ltr;text-align:left;font-family:monospace;font-size:.82em;line-height:1.85;margin:0 0 10px;overflow-x:auto}.c{color:#fca5a5}.g{color:#86efac}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;pre&gt;&lt;span class=&quot;c&quot;&gt;-- بلا أقواس: يُفسَّر خطأً&lt;/span&gt;
 WHERE city = 'الرياض' OR city = 'جدة' AND price &amp;lt; 500
 
 &lt;span class=&quot;c&quot;&gt;-- المعنى الفعلي:&lt;/span&gt;
 WHERE city = 'الرياض' OR (city = 'جدة' AND price &amp;lt; 500)
 &lt;span class=&quot;c&quot;&gt;-- كل منتجات الرياض تظهر مهما كان سعرها!&lt;/span&gt;&lt;/pre&gt;&lt;pre&gt;&lt;span class=&quot;g&quot;&gt;-- بالأقواس: المعنى المقصود&lt;/span&gt;
-WHERE (city = 'الرياض' OR city = 'جدة') AND price &amp;lt; 500&lt;/pre&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><h3 id="sec-6">القوائم والمدَيات</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ضمن قائمة
-SELECT * FROM products WHERE category_id IN (1, 2, 5);
-SELECT * FROM customers WHERE city IN (&#39;الرياض&#39;, &#39;جدة&#39;, &#39;الدمام&#39;);
+WHERE (city = 'الرياض' OR city = 'جدة') AND price &amp;lt; 500&lt;/pre&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><h3 id="sec-6">القوائم والمدَيات</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- ضمن قائمة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> category_id <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">);</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers <span class="tok-keyword">WHERE</span> city <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;الرياض&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;جدة&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;الدمام&#39;</span><span class="tok-punct">);</span>
 
--- خارج القائمة
-SELECT * FROM orders WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;);
+<span class="tok-comment">-- خارج القائمة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> orders <span class="tok-keyword">WHERE</span> status <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;cancelled&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;refunded&#39;</span><span class="tok-punct">);</span>
 
--- ضمن مدى — شامل الطرفين
-SELECT * FROM products WHERE price BETWEEN 100 AND 500;
--- تكافئ: price &gt;= 100 AND price &lt;= 500
+<span class="tok-comment">-- ضمن مدى — شامل الطرفين</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> price <span class="tok-keyword">BETWEEN</span> <span class="tok-number">100</span> <span class="tok-keyword">AND</span> <span class="tok-number">500</span><span class="tok-punct">;</span>
+<span class="tok-comment">-- تكافئ: price &gt;= 100 AND price &lt;= 500</span>
 
-SELECT * FROM orders
-WHERE ordered_at BETWEEN &#39;2026-01-01&#39; AND &#39;2026-03-31&#39;;
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> orders
+<span class="tok-keyword">WHERE</span> ordered_at <span class="tok-keyword">BETWEEN</span> <span class="tok-string">&#39;2026-01-01&#39;</span> <span class="tok-keyword">AND</span> <span class="tok-string">&#39;2026-03-31&#39;</span><span class="tok-punct">;</span>
 
--- خارج المدى
-SELECT * FROM products WHERE price NOT BETWEEN 100 AND 500;</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> فخّ BETWEEN مع التواريخ</div><p><code>BETWEEN &quot;2026-01-01&quot; AND &quot;2026-03-31&quot;</code> مع عمود <code>TIMESTAMP</code> <strong>يستثني</strong> كل ما بعد منتصف ليل 31 مارس. الأصح: <code>&gt;= &quot;2026-01-01&quot; AND &lt; &quot;2026-04-01&quot;</code>.</p></div><h3 id="sec-7">القيم الفارغة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT * FROM customers WHERE phone IS NULL;
-SELECT * FROM customers WHERE phone IS NOT NULL;
+<span class="tok-comment">-- خارج المدى</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> price <span class="tok-keyword">NOT</span> <span class="tok-keyword">BETWEEN</span> <span class="tok-number">100</span> <span class="tok-keyword">AND</span> <span class="tok-number">500</span><span class="tok-punct">;</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> فخّ BETWEEN مع التواريخ</div><p><code>BETWEEN &quot;2026-01-01&quot; AND &quot;2026-03-31&quot;</code> مع عمود <code>TIMESTAMP</code> <strong>يستثني</strong> كل ما بعد منتصف ليل 31 مارس. الأصح: <code>&gt;= &quot;2026-01-01&quot; AND &lt; &quot;2026-04-01&quot;</code>.</p></div><h3 id="sec-7">القيم الفارغة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers <span class="tok-keyword">WHERE</span> phone <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span><span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers <span class="tok-keyword">WHERE</span> phone <span class="tok-keyword">IS</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span><span class="tok-punct">;</span>
 
--- استبدال NULL بقيمة
-SELECT name, COALESCE(phone, &#39;غير متوفّر&#39;) AS phone
-FROM customers;
+<span class="tok-comment">-- استبدال NULL بقيمة</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> <span class="tok-func">COALESCE</span><span class="tok-punct">(</span>phone<span class="tok-punct">,</span> <span class="tok-string">&#39;غير متوفّر&#39;</span><span class="tok-punct">)</span> <span class="tok-keyword">AS</span> phone
+<span class="tok-keyword">FROM</span> customers<span class="tok-punct">;</span>
 
--- انتبه: NOT IN مع NULL لا تُرجع شيئاً
-SELECT * FROM products
-WHERE category_id NOT IN (1, 2, NULL);   -- ✗ نتيجة فارغة دائماً!</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>سبب الفخّ الأخير: <code>NOT IN</code> تتحوّل إلى سلسلة <code>&lt;&gt;</code> مع <code>AND</code>، وأي مقارنة مع <code>NULL</code> تُنتج <code>NULL</code> فيصبح الشرط كله غير محقّق. تجنّب <code>NULL</code> داخل قوائم <code>NOT IN</code>.</p></div><h2 id="sec-8">البحث النصّي بـ LIKE</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- % تعني أي عدد من المحارف (بما فيه صفر)
-SELECT * FROM products WHERE name LIKE &#39;سماعة%&#39;;    -- يبدأ بـ
-SELECT * FROM products WHERE name LIKE &#39;%لاسلكي&#39;;   -- ينتهي بـ
-SELECT * FROM products WHERE name LIKE &#39;%لاسلكي%&#39;;  -- يحتوي
+<span class="tok-comment">-- انتبه: NOT IN مع NULL لا تُرجع شيئاً</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> category_id <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-bool">NULL</span><span class="tok-punct">);</span>   <span class="tok-comment">-- ✗ نتيجة فارغة دائماً!</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>سبب الفخّ الأخير: <code>NOT IN</code> تتحوّل إلى سلسلة <code>&lt;&gt;</code> مع <code>AND</code>، وأي مقارنة مع <code>NULL</code> تُنتج <code>NULL</code> فيصبح الشرط كله غير محقّق. تجنّب <code>NULL</code> داخل قوائم <code>NOT IN</code>.</p></div><h2 id="sec-8">البحث النصّي بـ LIKE</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- % تعني أي عدد من المحارف (بما فيه صفر)</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> name <span class="tok-keyword">LIKE</span> <span class="tok-string">&#39;سماعة%&#39;</span><span class="tok-punct">;</span>    <span class="tok-comment">-- يبدأ بـ</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> name <span class="tok-keyword">LIKE</span> <span class="tok-string">&#39;%لاسلكي&#39;</span><span class="tok-punct">;</span>   <span class="tok-comment">-- ينتهي بـ</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> name <span class="tok-keyword">LIKE</span> <span class="tok-string">&#39;%لاسلكي%&#39;</span><span class="tok-punct">;</span>  <span class="tok-comment">-- يحتوي</span>
 
--- _ تعني محرفاً واحداً بالضبط
-SELECT * FROM products WHERE sku LIKE &#39;SKU-00_&#39;;
+<span class="tok-comment">-- _ تعني محرفاً واحداً بالضبط</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> sku <span class="tok-keyword">LIKE</span> <span class="tok-string">&#39;SKU-00_&#39;</span><span class="tok-punct">;</span>
 
--- النفي
-SELECT * FROM products WHERE name NOT LIKE &#39;%مستعمل%&#39;;
+<span class="tok-comment">-- النفي</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> name <span class="tok-keyword">NOT</span> <span class="tok-keyword">LIKE</span> <span class="tok-string">&#39;%مستعمل%&#39;</span><span class="tok-punct">;</span>
 
--- بلا حساسية لحالة الأحرف (PostgreSQL)
-SELECT * FROM products WHERE name ILIKE &#39;%laptop%&#39;;</code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> أنماط LIKE</div><iframe title="أنماط LIKE" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.88em}th{background:#6a5acd;color:#fff;padding:8px 12px;text-align:right}td{padding:7px 12px;border-bottom:1px solid #e2e8f0}code{font-family:monospace;direction:ltr;display:inline-block;background:#f1f5f9;padding:2px 7px;border-radius:5px;font-size:.88em}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;النمط&lt;/th&gt;&lt;th&gt;يطابق&lt;/th&gt;&lt;th&gt;لا يطابق&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'سماعة%'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;سماعة لاسلكية&lt;/td&gt;&lt;td&gt;سماعات رأس&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'%لاسلكي%'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;ماوس لاسلكي&lt;/td&gt;&lt;td&gt;لوحة مفاتيح&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'SKU-00_'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;SKU-001&lt;/td&gt;&lt;td&gt;SKU-0012&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'a%b'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;ab, axxb&lt;/td&gt;&lt;td&gt;ba&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> مشكلة الأداء</div><p>نمط يبدأ بـ <code>%</code> مثل <code>LIKE &quot;%نص%&quot;</code> <strong>لا يستطيع استخدام الفهرس</strong>، فيمسح المحرّك الجدول كله. مع مليون صف يصبح بطيئاً جداً. للبحث النصّي الجادّ استخدم فهرسة النص الكامل (Full-Text Search) أو محرك بحث مخصّص.</p></div><h2 id="sec-9">التعامل مع التواريخ</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- مقارنة مباشرة
-SELECT * FROM orders WHERE ordered_at &gt;= &#39;2026-01-01&#39;;
+<span class="tok-comment">-- بلا حساسية لحالة الأحرف (PostgreSQL)</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">WHERE</span> name <span class="tok-keyword">ILIKE</span> <span class="tok-string">&#39;%laptop%&#39;</span><span class="tok-punct">;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> أنماط LIKE</div><iframe title="أنماط LIKE" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.88em}th{background:#6a5acd;color:#fff;padding:8px 12px;text-align:right}td{padding:7px 12px;border-bottom:1px solid #e2e8f0}code{font-family:monospace;direction:ltr;display:inline-block;background:#f1f5f9;padding:2px 7px;border-radius:5px;font-size:.88em}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;النمط&lt;/th&gt;&lt;th&gt;يطابق&lt;/th&gt;&lt;th&gt;لا يطابق&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'سماعة%'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;سماعة لاسلكية&lt;/td&gt;&lt;td&gt;سماعات رأس&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'%لاسلكي%'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;ماوس لاسلكي&lt;/td&gt;&lt;td&gt;لوحة مفاتيح&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'SKU-00_'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;SKU-001&lt;/td&gt;&lt;td&gt;SKU-0012&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'a%b'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;ab, axxb&lt;/td&gt;&lt;td&gt;ba&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> مشكلة الأداء</div><p>نمط يبدأ بـ <code>%</code> مثل <code>LIKE &quot;%نص%&quot;</code> <strong>لا يستطيع استخدام الفهرس</strong>، فيمسح المحرّك الجدول كله. مع مليون صف يصبح بطيئاً جداً. للبحث النصّي الجادّ استخدم فهرسة النص الكامل (Full-Text Search) أو محرك بحث مخصّص.</p></div><h2 id="sec-9">التعامل مع التواريخ</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- مقارنة مباشرة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> orders <span class="tok-keyword">WHERE</span> ordered_at <span class="tok-punct">&gt;=</span> <span class="tok-string">&#39;2026-01-01&#39;</span><span class="tok-punct">;</span>
 
--- استخراج أجزاء
-SELECT * FROM orders WHERE EXTRACT(YEAR FROM ordered_at) = 2026;
-SELECT * FROM orders WHERE EXTRACT(MONTH FROM ordered_at) = 3;
+<span class="tok-comment">-- استخراج أجزاء</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> orders <span class="tok-keyword">WHERE</span> <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>YEAR <span class="tok-keyword">FROM</span> ordered_at<span class="tok-punct">)</span> <span class="tok-punct">=</span> <span class="tok-number">2026</span><span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> orders <span class="tok-keyword">WHERE</span> <span class="tok-func">EXTRACT</span><span class="tok-punct">(</span>MONTH <span class="tok-keyword">FROM</span> ordered_at<span class="tok-punct">)</span> <span class="tok-punct">=</span> <span class="tok-number">3</span><span class="tok-punct">;</span>
 
--- MySQL
-SELECT * FROM orders WHERE YEAR(ordered_at) = 2026;
-SELECT * FROM orders WHERE DATE(ordered_at) = &#39;2026-03-15&#39;;
+<span class="tok-comment">-- MySQL</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> orders <span class="tok-keyword">WHERE</span> <span class="tok-func">YEAR</span><span class="tok-punct">(</span>ordered_at<span class="tok-punct">)</span> <span class="tok-punct">=</span> <span class="tok-number">2026</span><span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> orders <span class="tok-keyword">WHERE</span> <span class="tok-func">DATE</span><span class="tok-punct">(</span>ordered_at<span class="tok-punct">)</span> <span class="tok-punct">=</span> <span class="tok-string">&#39;2026-03-15&#39;</span><span class="tok-punct">;</span>
 
--- آخر ثلاثين يوماً
-SELECT * FROM orders
-WHERE ordered_at &gt;= CURRENT_DATE - INTERVAL &#39;30 days&#39;;   -- PostgreSQL
+<span class="tok-comment">-- آخر ثلاثين يوماً</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> orders
+<span class="tok-keyword">WHERE</span> ordered_at <span class="tok-punct">&gt;=</span> CURRENT_DATE <span class="tok-punct">-</span> <span class="tok-keyword">INTERVAL</span> <span class="tok-string">&#39;30 days&#39;</span><span class="tok-punct">;</span>   <span class="tok-comment">-- PostgreSQL</span>
 
-SELECT * FROM orders
-WHERE ordered_at &gt;= DATE_SUB(CURDATE(), INTERVAL 30 DAY);  -- MySQL</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> لا تلفّ العمود بدالة</div><p><code>WHERE YEAR(ordered_at) = 2026</code> تمنع استخدام الفهرس لأن المحرّك يجب أن يحسب الدالة لكل صف. الأفضل: <code>WHERE ordered_at &gt;= &quot;2026-01-01&quot; AND ordered_at &lt; &quot;2027-01-01&quot;</code>.</p></div><h2 id="sec-10">الترتيب والتحديد</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ترتيب تصاعدي (الافتراضي)
-SELECT * FROM products ORDER BY price;
-SELECT * FROM products ORDER BY price ASC;
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> orders
+<span class="tok-keyword">WHERE</span> ordered_at <span class="tok-punct">&gt;=</span> <span class="tok-func">DATE_SUB</span><span class="tok-punct">(</span><span class="tok-func">CURDATE</span><span class="tok-punct">(),</span> <span class="tok-keyword">INTERVAL</span> <span class="tok-number">30</span> DAY<span class="tok-punct">);</span>  <span class="tok-comment">-- MySQL</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> لا تلفّ العمود بدالة</div><p><code>WHERE YEAR(ordered_at) = 2026</code> تمنع استخدام الفهرس لأن المحرّك يجب أن يحسب الدالة لكل صف. الأفضل: <code>WHERE ordered_at &gt;= &quot;2026-01-01&quot; AND ordered_at &lt; &quot;2027-01-01&quot;</code>.</p></div><h2 id="sec-10">الترتيب والتحديد</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- ترتيب تصاعدي (الافتراضي)</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price<span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price <span class="tok-keyword">ASC</span><span class="tok-punct">;</span>
 
--- تنازلي
-SELECT * FROM products ORDER BY price DESC;
+<span class="tok-comment">-- تنازلي</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
 
--- عدة أعمدة
-SELECT * FROM products ORDER BY category_id ASC, price DESC;
+<span class="tok-comment">-- عدة أعمدة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> category_id <span class="tok-keyword">ASC</span><span class="tok-punct">,</span> price <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
 
--- بترتيب العمود في SELECT
-SELECT name, price FROM products ORDER BY 2 DESC;
+<span class="tok-comment">-- بترتيب العمود في SELECT</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price <span class="tok-keyword">FROM</span> products <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> <span class="tok-number">2</span> <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
 
--- موضع NULL
-SELECT * FROM customers ORDER BY phone NULLS LAST;   -- PostgreSQL
+<span class="tok-comment">-- موضع NULL</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> customers <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> phone NULLS LAST<span class="tok-punct">;</span>   <span class="tok-comment">-- PostgreSQL</span>
 
--- التحديد
-SELECT * FROM products ORDER BY price DESC LIMIT 10;
-SELECT * FROM products ORDER BY price DESC LIMIT 10 OFFSET 20;  -- الصفحة الثالثة</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>للترقيم (Pagination): الصفحة رقم <code>n</code> بحجم <code>s</code> تكون <code>LIMIT s OFFSET (n-1)*s</code>. لكن <code>OFFSET</code> الكبير بطيء لأن المحرّك يقرأ ويتخطّى؛ في الجداول الضخمة استخدم الترقيم بالمفتاح: <code>WHERE id &gt; last_id ORDER BY id LIMIT 20</code>.</p></div><h2 id="sec-11">استعلامات عملية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- المنتجات المتاحة في نطاق سعري
-SELECT name, price, stock
-FROM products
-WHERE is_active = TRUE
-  AND stock &gt; 0
-  AND price BETWEEN 100 AND 1000
-ORDER BY price ASC;
+<span class="tok-comment">-- التحديد</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price <span class="tok-keyword">DESC</span> <span class="tok-keyword">LIMIT</span> <span class="tok-number">10</span><span class="tok-punct">;</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-punct">*</span> <span class="tok-keyword">FROM</span> products <span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price <span class="tok-keyword">DESC</span> <span class="tok-keyword">LIMIT</span> <span class="tok-number">10</span> <span class="tok-keyword">OFFSET</span> <span class="tok-number">20</span><span class="tok-punct">;</span>  <span class="tok-comment">-- الصفحة الثالثة</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>للترقيم (Pagination): الصفحة رقم <code>n</code> بحجم <code>s</code> تكون <code>LIMIT s OFFSET (n-1)*s</code>. لكن <code>OFFSET</code> الكبير بطيء لأن المحرّك يقرأ ويتخطّى؛ في الجداول الضخمة استخدم الترقيم بالمفتاح: <code>WHERE id &gt; last_id ORDER BY id LIMIT 20</code>.</p></div><h2 id="sec-11">استعلامات عملية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- المنتجات المتاحة في نطاق سعري</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price<span class="tok-punct">,</span> stock
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> is_active <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span>
+  <span class="tok-keyword">AND</span> stock <span class="tok-punct">&gt;</span> <span class="tok-number">0</span>
+  <span class="tok-keyword">AND</span> price <span class="tok-keyword">BETWEEN</span> <span class="tok-number">100</span> <span class="tok-keyword">AND</span> <span class="tok-number">1000</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price <span class="tok-keyword">ASC</span><span class="tok-punct">;</span>
 
--- العملاء بلا رقم جوال في مدن محدّدة
-SELECT name, email, city
-FROM customers
-WHERE city IN (&#39;الرياض&#39;, &#39;جدة&#39;)
-  AND phone IS NULL
-  AND deleted_at IS NULL;
+<span class="tok-comment">-- العملاء بلا رقم جوال في مدن محدّدة</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> email<span class="tok-punct">,</span> city
+<span class="tok-keyword">FROM</span> customers
+<span class="tok-keyword">WHERE</span> city <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;الرياض&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;جدة&#39;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">AND</span> phone <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span>
+  <span class="tok-keyword">AND</span> deleted_at <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span><span class="tok-punct">;</span>
 
--- الطلبات النشطة هذا الشهر
-SELECT id, customer_id, total, status
-FROM orders
-WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
-  AND ordered_at &gt;= &#39;2026-03-01&#39;
-  AND ordered_at &lt;  &#39;2026-04-01&#39;
-ORDER BY total DESC
-LIMIT 20;
+<span class="tok-comment">-- الطلبات النشطة هذا الشهر</span>
+<span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> customer_id<span class="tok-punct">,</span> total<span class="tok-punct">,</span> status
+<span class="tok-keyword">FROM</span> orders
+<span class="tok-keyword">WHERE</span> status <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;cancelled&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;refunded&#39;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">AND</span> ordered_at <span class="tok-punct">&gt;=</span> <span class="tok-string">&#39;2026-03-01&#39;</span>
+  <span class="tok-keyword">AND</span> ordered_at <span class="tok-punct">&lt;</span>  <span class="tok-string">&#39;2026-04-01&#39;</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> total <span class="tok-keyword">DESC</span>
+<span class="tok-keyword">LIMIT</span> <span class="tok-number">20</span><span class="tok-punct">;</span>
 
--- بحث في المنتجات
-SELECT name, price
-FROM products
-WHERE (name LIKE &#39;%سماعة%&#39; OR sku LIKE &#39;%SKU-00%&#39;)
-  AND is_active = TRUE
-ORDER BY name;</code></pre></div><section class="exercise" id="sec-12"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: استعلامات متجر</h3></header><div class="exercise-body"><p>اكتب اثني عشر استعلاماً على قاعدة المتجر.</p><p><strong>المطلوب:</strong></p><ul><li>كل المنتجات النشطة مرتّبة بالسعر تنازلياً.</li><li>اسم المنتج وسعره شاملاً ضريبة 15٪ باسم بديل عربي.</li><li>المنتجات التي سعرها بين 200 و 800 ومخزونها أكبر من صفر.</li><li>المنتجات في التصنيفات 1 أو 3، بسعر أقل من 500 (انتبه للأقواس).</li><li>العملاء الذين لا يملكون رقم جوال.</li><li>المدن المميّزة التي ينتمي إليها العملاء بلا تكرار.</li><li>المنتجات التي يحتوي اسمها كلمة «لاسلكي».</li><li>المنتجات التي رمزها يبدأ بـ <code>SKU-00</code> ويليه رقم واحد.</li><li>الطلبات التي حالتها ليست ملغاة ولا مستردّة.</li><li>الطلبات في الربع الأول من 2026 (انتبه لفخّ BETWEEN).</li><li>أغلى خمسة منتجات في التصنيف 2.</li><li>الصفحة الثالثة من المنتجات بحجم صفحة 10.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 استخدم الأقواس صراحةً مع أي خليط من <code>AND</code> و <code>OR</code>.</li><li>💡 للتواريخ استخدم <code>&gt;=</code> و <code>&lt;</code> بدل <code>BETWEEN</code>.</li><li>💡 <code>_</code> في <code>LIKE</code> تطابق محرفاً واحداً بالضبط.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- 1) المنتجات النشطة
-SELECT name, price, stock
-FROM products
-WHERE is_active = TRUE
-ORDER BY price DESC;
+<span class="tok-comment">-- بحث في المنتجات</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> <span class="tok-punct">(</span>name <span class="tok-keyword">LIKE</span> <span class="tok-string">&#39;%سماعة%&#39;</span> <span class="tok-keyword">OR</span> sku <span class="tok-keyword">LIKE</span> <span class="tok-string">&#39;%SKU-00%&#39;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">AND</span> is_active <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> name<span class="tok-punct">;</span></code></pre></div><section class="exercise" id="sec-12"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: استعلامات متجر</h3></header><div class="exercise-body"><p>اكتب اثني عشر استعلاماً على قاعدة المتجر.</p><p><strong>المطلوب:</strong></p><ul><li>كل المنتجات النشطة مرتّبة بالسعر تنازلياً.</li><li>اسم المنتج وسعره شاملاً ضريبة 15٪ باسم بديل عربي.</li><li>المنتجات التي سعرها بين 200 و 800 ومخزونها أكبر من صفر.</li><li>المنتجات في التصنيفات 1 أو 3، بسعر أقل من 500 (انتبه للأقواس).</li><li>العملاء الذين لا يملكون رقم جوال.</li><li>المدن المميّزة التي ينتمي إليها العملاء بلا تكرار.</li><li>المنتجات التي يحتوي اسمها كلمة «لاسلكي».</li><li>المنتجات التي رمزها يبدأ بـ <code>SKU-00</code> ويليه رقم واحد.</li><li>الطلبات التي حالتها ليست ملغاة ولا مستردّة.</li><li>الطلبات في الربع الأول من 2026 (انتبه لفخّ BETWEEN).</li><li>أغلى خمسة منتجات في التصنيف 2.</li><li>الصفحة الثالثة من المنتجات بحجم صفحة 10.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 استخدم الأقواس صراحةً مع أي خليط من <code>AND</code> و <code>OR</code>.</li><li>💡 للتواريخ استخدم <code>&gt;=</code> و <code>&lt;</code> بدل <code>BETWEEN</code>.</li><li>💡 <code>_</code> في <code>LIKE</code> تطابق محرفاً واحداً بالضبط.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">-- 1) المنتجات النشطة</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price<span class="tok-punct">,</span> stock
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> is_active <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price <span class="tok-keyword">DESC</span><span class="tok-punct">;</span>
 
--- 2) السعر شاملاً الضريبة
-SELECT
-  name                        AS &quot;المنتج&quot;,
-  price                       AS &quot;السعر&quot;,
-  ROUND(price * 1.15, 2)      AS &quot;السعر شامل الضريبة&quot;
-FROM products
-WHERE is_active = TRUE;
+<span class="tok-comment">-- 2) السعر شاملاً الضريبة</span>
+<span class="tok-keyword">SELECT</span>
+  name                        <span class="tok-keyword">AS</span> &quot;المنتج&quot;<span class="tok-punct">,</span>
+  price                       <span class="tok-keyword">AS</span> &quot;السعر&quot;<span class="tok-punct">,</span>
+  <span class="tok-func">ROUND</span><span class="tok-punct">(</span>price <span class="tok-punct">*</span> <span class="tok-number">1.15</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span>      <span class="tok-keyword">AS</span> &quot;السعر شامل الضريبة&quot;
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> is_active <span class="tok-punct">=</span> <span class="tok-bool">TRUE</span><span class="tok-punct">;</span>
 
--- 3) نطاق سعري ومخزون متاح
-SELECT name, price, stock
-FROM products
-WHERE price BETWEEN 200 AND 800
-  AND stock &gt; 0
-ORDER BY price;
+<span class="tok-comment">-- 3) نطاق سعري ومخزون متاح</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price<span class="tok-punct">,</span> stock
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> price <span class="tok-keyword">BETWEEN</span> <span class="tok-number">200</span> <span class="tok-keyword">AND</span> <span class="tok-number">800</span>
+  <span class="tok-keyword">AND</span> stock <span class="tok-punct">&gt;</span> <span class="tok-number">0</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price<span class="tok-punct">;</span>
 
--- 4) تصنيفات محدّدة بسعر أقل من 500
-SELECT name, price, category_id
-FROM products
-WHERE (category_id = 1 OR category_id = 3)
-  AND price &lt; 500;
+<span class="tok-comment">-- 4) تصنيفات محدّدة بسعر أقل من 500</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price<span class="tok-punct">,</span> category_id
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> <span class="tok-punct">(</span>category_id <span class="tok-punct">=</span> <span class="tok-number">1</span> <span class="tok-keyword">OR</span> category_id <span class="tok-punct">=</span> <span class="tok-number">3</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">AND</span> price <span class="tok-punct">&lt;</span> <span class="tok-number">500</span><span class="tok-punct">;</span>
 
--- 5) عملاء بلا جوال
-SELECT name, email, city
-FROM customers
-WHERE phone IS NULL
-  AND deleted_at IS NULL;
+<span class="tok-comment">-- 5) عملاء بلا جوال</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> email<span class="tok-punct">,</span> city
+<span class="tok-keyword">FROM</span> customers
+<span class="tok-keyword">WHERE</span> phone <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span>
+  <span class="tok-keyword">AND</span> deleted_at <span class="tok-keyword">IS</span> <span class="tok-bool">NULL</span><span class="tok-punct">;</span>
 
--- 6) المدن المميّزة
-SELECT DISTINCT city
-FROM customers
-WHERE city IS NOT NULL
-ORDER BY city;
+<span class="tok-comment">-- 6) المدن المميّزة</span>
+<span class="tok-keyword">SELECT</span> <span class="tok-keyword">DISTINCT</span> city
+<span class="tok-keyword">FROM</span> customers
+<span class="tok-keyword">WHERE</span> city <span class="tok-keyword">IS</span> <span class="tok-keyword">NOT</span> <span class="tok-bool">NULL</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> city<span class="tok-punct">;</span>
 
--- 7) بحث نصّي
-SELECT name, price
-FROM products
-WHERE name LIKE &#39;%لاسلكي%&#39;;
+<span class="tok-comment">-- 7) بحث نصّي</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> name <span class="tok-keyword">LIKE</span> <span class="tok-string">&#39;%لاسلكي%&#39;</span><span class="tok-punct">;</span>
 
--- 8) نمط الرمز
-SELECT name, sku
-FROM products
-WHERE sku LIKE &#39;SKU-00_&#39;;
+<span class="tok-comment">-- 8) نمط الرمز</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> sku
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> sku <span class="tok-keyword">LIKE</span> <span class="tok-string">&#39;SKU-00_&#39;</span><span class="tok-punct">;</span>
 
--- 9) الطلبات النشطة
-SELECT id, customer_id, total, status
-FROM orders
-WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;);
+<span class="tok-comment">-- 9) الطلبات النشطة</span>
+<span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> customer_id<span class="tok-punct">,</span> total<span class="tok-punct">,</span> status
+<span class="tok-keyword">FROM</span> orders
+<span class="tok-keyword">WHERE</span> status <span class="tok-keyword">NOT</span> <span class="tok-keyword">IN</span> <span class="tok-punct">(</span><span class="tok-string">&#39;cancelled&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;refunded&#39;</span><span class="tok-punct">);</span>
 
--- 10) الربع الأول 2026 — بلا فخّ BETWEEN
-SELECT id, total, ordered_at
-FROM orders
-WHERE ordered_at &gt;= &#39;2026-01-01&#39;
-  AND ordered_at &lt;  &#39;2026-04-01&#39;
-ORDER BY ordered_at;
+<span class="tok-comment">-- 10) الربع الأول 2026 — بلا فخّ BETWEEN</span>
+<span class="tok-keyword">SELECT</span> id<span class="tok-punct">,</span> total<span class="tok-punct">,</span> ordered_at
+<span class="tok-keyword">FROM</span> orders
+<span class="tok-keyword">WHERE</span> ordered_at <span class="tok-punct">&gt;=</span> <span class="tok-string">&#39;2026-01-01&#39;</span>
+  <span class="tok-keyword">AND</span> ordered_at <span class="tok-punct">&lt;</span>  <span class="tok-string">&#39;2026-04-01&#39;</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> ordered_at<span class="tok-punct">;</span>
 
--- 11) أغلى خمسة في التصنيف 2
-SELECT name, price
-FROM products
-WHERE category_id = 2
-ORDER BY price DESC
-LIMIT 5;
+<span class="tok-comment">-- 11) أغلى خمسة في التصنيف 2</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">WHERE</span> category_id <span class="tok-punct">=</span> <span class="tok-number">2</span>
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> price <span class="tok-keyword">DESC</span>
+<span class="tok-keyword">LIMIT</span> <span class="tok-number">5</span><span class="tok-punct">;</span>
 
--- 12) الصفحة الثالثة
-SELECT name, price
-FROM products
-ORDER BY id
-LIMIT 10 OFFSET 20;</code></pre></div></details></div></section><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الترتيب الفعلي لتنفيذ الاستعلام؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>SELECT ثم FROM ثم WHERE</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>FROM ثم WHERE ثم SELECT ثم ORDER BY</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>WHERE ثم SELECT</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>عشوائي</span></label></div><div class="q-explain"><strong>الشرح:</strong> لهذا لا يمكن استخدام اسم بديل من <code>SELECT</code> داخل <code>WHERE</code>.</div></div><div class="q-item"><p class="q-text">2. كيف يُفسَّر <code>a OR b AND c</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>(a OR b) AND c</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span><code>a OR (b AND c)</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>من اليسار لليمين</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>خطأ</span></label></div><div class="q-explain"><strong>الشرح:</strong> أولوية <code>AND</code> أعلى؛ استخدم أقواساً صريحة دائماً.</div></div><div class="q-item"><p class="q-text">3. لماذا <code>LIKE &quot;%نص%&quot;</code> بطيئة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>طويلة</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>لا تستطيع استخدام الفهرس فيُمسح الجدول كله</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>تحتاج ترميزاً</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>غير مدعومة</span></label></div><div class="q-explain"><strong>الشرح:</strong> الفهرس يعمل من بداية القيمة؛ البدء بـ <code>%</code> يعطّله.</div></div><div class="q-item"><p class="q-text">4. ما مشكلة <code>BETWEEN &quot;2026-01-01&quot; AND &quot;2026-03-31&quot;</code> مع <code>TIMESTAMP</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا مشكلة</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>تستثني ما بعد منتصف ليل 31 مارس</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>بطيئة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>خطأ صياغة</span></label></div><div class="q-explain"><strong>الشرح:</strong> الأصح: <code>&gt;= &quot;2026-01-01&quot; AND &lt; &quot;2026-04-01&quot;</code>.</div></div><div class="q-item"><p class="q-text">5. لماذا نتجنّب <code>SELECT *</code> في التطبيقات؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>غير مدعوم</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>ينقل بيانات لا تحتاجها ويكسر الكود عند إضافة عمود ويمنع الفهرس المغطّي</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>أطول</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا سبب</span></label></div><div class="q-explain"><strong>الشرح:</strong> حدّد الأعمدة التي تحتاجها فعلاً.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+<span class="tok-comment">-- 12) الصفحة الثالثة</span>
+<span class="tok-keyword">SELECT</span> name<span class="tok-punct">,</span> price
+<span class="tok-keyword">FROM</span> products
+<span class="tok-keyword">ORDER</span> <span class="tok-keyword">BY</span> id
+<span class="tok-keyword">LIMIT</span> <span class="tok-number">10</span> <span class="tok-keyword">OFFSET</span> <span class="tok-number">20</span><span class="tok-punct">;</span></code></pre></div></details></div></section><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الترتيب الفعلي لتنفيذ الاستعلام؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>SELECT ثم FROM ثم WHERE</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>FROM ثم WHERE ثم SELECT ثم ORDER BY</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>WHERE ثم SELECT</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>عشوائي</span></label></div><div class="q-explain"><strong>الشرح:</strong> لهذا لا يمكن استخدام اسم بديل من <code>SELECT</code> داخل <code>WHERE</code>.</div></div><div class="q-item"><p class="q-text">2. كيف يُفسَّر <code>a OR b AND c</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>(a OR b) AND c</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span><code>a OR (b AND c)</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>من اليسار لليمين</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>خطأ</span></label></div><div class="q-explain"><strong>الشرح:</strong> أولوية <code>AND</code> أعلى؛ استخدم أقواساً صريحة دائماً.</div></div><div class="q-item"><p class="q-text">3. لماذا <code>LIKE &quot;%نص%&quot;</code> بطيئة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>طويلة</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>لا تستطيع استخدام الفهرس فيُمسح الجدول كله</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>تحتاج ترميزاً</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>غير مدعومة</span></label></div><div class="q-explain"><strong>الشرح:</strong> الفهرس يعمل من بداية القيمة؛ البدء بـ <code>%</code> يعطّله.</div></div><div class="q-item"><p class="q-text">4. ما مشكلة <code>BETWEEN &quot;2026-01-01&quot; AND &quot;2026-03-31&quot;</code> مع <code>TIMESTAMP</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا مشكلة</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>تستثني ما بعد منتصف ليل 31 مارس</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>بطيئة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>خطأ صياغة</span></label></div><div class="q-explain"><strong>الشرح:</strong> الأصح: <code>&gt;= &quot;2026-01-01&quot; AND &lt; &quot;2026-04-01&quot;</code>.</div></div><div class="q-item"><p class="q-text">5. لماذا نتجنّب <code>SELECT *</code> في التطبيقات؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>غير مدعوم</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>ينقل بيانات لا تحتاجها ويكسر الكود عند إضافة عمود ويمنع الفهرس المغطّي</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>أطول</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا سبب</span></label></div><div class="q-explain"><strong>الشرح:</strong> حدّد الأعمدة التي تحتاجها فعلاً.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
       <div class="complete-box">
         <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
         <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/04-select" aria-pressed="false">
