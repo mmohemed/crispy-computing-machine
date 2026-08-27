@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sql">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المعاملات وسلامة البيانات ومشروع — مسار SQL | CodeWay Web</title>
+<meta name="description" content="ضمان تنفيذ العمليات المترابطة كوحدة واحدة، ومستويات العزل، ثم مشروع قاعدة بيانات متكامل.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="المعاملات وسلامة البيانات ومشروع — مسار SQL | CodeWay Web">
+<meta property="og:description" content="ضمان تنفيذ العمليات المترابطة كوحدة واحدة، ومستويات العزل، ثم مشروع قاعدة بيانات متكامل.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">SQL</a></li>
+      <li aria-current="page">المعاملات وسلامة البيانات ومشروع</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 10 من 10</span>
+      <span class="badge level-متقدم">متقدم</span>
+      <span class="badge">المعاملات</span><span class="badge">مشروع</span>
+    </div>
+    <h1>المعاملات وسلامة البيانات ومشروع</h1>
+    <p class="summary">ضمان تنفيذ العمليات المترابطة كوحدة واحدة، ومستويات العزل، ثم مشروع قاعدة بيانات متكامل.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 90 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار SQL</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تستخدم المعاملات لضمان اتساق البيانات.</li><li>تفهم خصائص ACID الأربع.</li><li>تعرف مستويات العزل ومشكلات التزامن.</li><li>تتعامل مع الأقفال والجمود.</li><li>تبني قاعدة بيانات كاملة لمشروع حقيقي.</li></ul></div>
+      <h2 id="sec-1">المشكلة: العمليات نصف المكتملة</h2><p>تحويل مبلغ بين حسابين يتطلّب عمليتين: خصم من الأول وإضافة للثاني. ماذا لو انقطعت الكهرباء بينهما؟ اختفى المال.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ✗ خطر: عمليتان منفصلتان
+UPDATE accounts SET balance = balance - 1000 WHERE id = 1;
+-- 💥 انقطاع هنا يعني ضياع 1000 ريال
+UPDATE accounts SET balance = balance + 1000 WHERE id = 2;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل: معاملة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>BEGIN;
+
+UPDATE accounts SET balance = balance - 1000 WHERE id = 1;
+UPDATE accounts SET balance = balance + 1000 WHERE id = 2;
+
+COMMIT;   -- إمّا تنجح العمليتان معاً أو لا شيء</code></pre></div><p>المعاملة تجعل مجموعة العمليات <strong>وحدة ذرّية</strong>: إمّا تُنفَّذ كلها أو لا تُنفَّذ أي منها. لا حالة وسطى.</p><h2 id="sec-2">خصائص ACID</h2><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h4>الذرّية (Atomicity)</h4><p>كل العمليات أو لا شيء. فشل واحدة يُلغي الجميع.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>الاتساق (Consistency)</h4><p>القاعدة تنتقل من حالة صحيحة إلى حالة صحيحة، وكل القيود محفوظة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h4>العزل (Isolation)</h4><p>المعاملات المتزامنة لا يرى بعضها التغييرات غير المثبَّتة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><h4>الديمومة (Durability)</h4><p>بعد <code>COMMIT</code> تبقى البيانات حتى لو انقطعت الكهرباء فوراً.</p></div></div><h2 id="sec-3">التحكّم في المعاملة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>BEGIN;                    -- أو START TRANSACTION
+
+  UPDATE products SET stock = stock - 2 WHERE id = 5;
+  INSERT INTO order_items (order_id, product_id, quantity)
+  VALUES (101, 5, 2);
+
+COMMIT;                   -- تثبيت
+
+-- أو التراجع
+BEGIN;
+  DELETE FROM orders WHERE id = 101;
+ROLLBACK;                 -- كأن شيئاً لم يكن</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">نقاط الحفظ</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>BEGIN;
+
+  INSERT INTO orders (customer_id, total) VALUES (1, 0);
+  SAVEPOINT order_created;
+
+  INSERT INTO order_items (order_id, product_id, quantity)
+  VALUES (101, 999, 1);       -- منتج غير موجود
+
+  ROLLBACK TO SAVEPOINT order_created;   -- تراجع جزئي
+
+  INSERT INTO order_items (order_id, product_id, quantity)
+  VALUES (101, 5, 1);         -- المنتج الصحيح
+
+COMMIT;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>نقاط الحفظ مفيدة في العمليات الطويلة: تتراجع عن جزء دون إلغاء كل ما أنجزته قبله.</p></div><h2 id="sec-4">مشكلات التزامن</h2><div class="table-wrap"><table class="data"><thead><tr><th>المشكلة</th><th>ما يحدث</th></tr></thead><tbody><tr><td><strong>القراءة الوسخة</strong> (Dirty Read)</td><td>معاملة تقرأ بيانات لم تُثبَّت بعد، وقد يُتراجَع عنها</td></tr><tr><td><strong>القراءة غير المتكرّرة</strong></td><td>قراءة نفس الصف مرتين تعطي نتيجتين مختلفتين</td></tr><tr><td><strong>القراءة الشبحية</strong> (Phantom)</td><td>تكرار نفس الاستعلام يُرجع صفوفاً جديدة أضافها آخرون</td></tr><tr><td><strong>التحديث المفقود</strong></td><td>معاملتان تحدّثان نفس الصف فيضيع أحد التحديثين</td></tr></tbody></table></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> التحديث المفقود</div><iframe title="التحديث المفقود" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.82em}th{background:#6a5acd;color:#fff;padding:7px 9px;text-align:right}td{padding:6px 9px;border-bottom:1px solid #e2e8f0;vertical-align:top}.a{background:#eef2ff}.b{background:#fef3c7}.r{color:#dc2626;font-weight:700}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;الوقت&lt;/th&gt;&lt;th&gt;المعاملة أ&lt;/th&gt;&lt;th&gt;المعاملة ب&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td class=&quot;a&quot;&gt;قرأت stock = 10&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td class=&quot;b&quot;&gt;قرأت stock = 10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td class=&quot;a&quot;&gt;كتبت stock = 10 − 2 = 8&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;4&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td class=&quot;b&quot;&gt;كتبت stock = 10 − 3 = 7&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;5&lt;/td&gt;&lt;td colspan=&quot;2&quot; class=&quot;r&quot;&gt;النتيجة 7 — والصحيح 5! ضاع خصم المعاملة أ&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:320px"></iframe></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحلّان</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ✓ الحل 1: تحديث ذرّي — الأبسط والأفضل
+UPDATE products SET stock = stock - 2 WHERE id = 5 AND stock &gt;= 2;
+
+-- ✓ الحل 2: قفل الصف
+BEGIN;
+  SELECT stock FROM products WHERE id = 5 FOR UPDATE;
+  -- الصف مقفل الآن، أي معاملة أخرى تنتظر
+  UPDATE products SET stock = 8 WHERE id = 5;
+COMMIT;</code></pre></div><h2 id="sec-5">مستويات العزل</h2><div class="table-wrap"><table class="data"><thead><tr><th>المستوى</th><th>قراءة وسخة</th><th>غير متكرّرة</th><th>شبحية</th><th>الأداء</th></tr></thead><tbody><tr><td><code>READ UNCOMMITTED</code></td><td>ممكنة</td><td>ممكنة</td><td>ممكنة</td><td>الأسرع</td></tr><tr><td><code>READ COMMITTED</code></td><td>لا</td><td>ممكنة</td><td>ممكنة</td><td>سريع — افتراضي PostgreSQL</td></tr><tr><td><code>REPEATABLE READ</code></td><td>لا</td><td>لا</td><td>ممكنة</td><td>متوسّط — افتراضي MySQL</td></tr><tr><td><code>SERIALIZABLE</code></td><td>لا</td><td>لا</td><td>لا</td><td>الأبطأ — عزل كامل</td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+BEGIN;
+  -- عملياتك
+COMMIT;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>المستوى الافتراضي يكفي في 95٪ من الحالات. ارفعه فقط للعمليات المالية الحرجة، وتذكّر أن العزل الأعلى يعني تنافساً أكبر على الأقفال وأداءً أقل.</p></div><h2 id="sec-6">الأقفال والجمود</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- قفل حصري للكتابة
+SELECT * FROM products WHERE id = 5 FOR UPDATE;
+
+-- قفل مشترك للقراءة
+SELECT * FROM products WHERE id = 5 FOR SHARE;
+
+-- بلا انتظار — يفشل فوراً إن كان مقفلاً
+SELECT * FROM products WHERE id = 5 FOR UPDATE NOWAIT;
+
+-- تخطّي المقفل
+SELECT * FROM jobs WHERE status = &#39;pending&#39;
+FOR UPDATE SKIP LOCKED LIMIT 1;</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> الجمود (Deadlock)</div><p>معاملة أ قفلت الصف 1 وتنتظر الصف 2، ومعاملة ب قفلت الصف 2 وتنتظر الصف 1. كلاهما ينتظر الآخر إلى الأبد. المحرّك يكتشف ذلك ويُفشل إحداهما.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الوقاية: ترتيب موحّد للقفل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ✓ اقفل دائماً بترتيب المعرّف تصاعدياً
+BEGIN;
+  SELECT * FROM accounts
+  WHERE id IN (1, 2)
+  ORDER BY id
+  FOR UPDATE;
+
+  UPDATE accounts SET balance = balance - 1000 WHERE id = 1;
+  UPDATE accounts SET balance = balance + 1000 WHERE id = 2;
+COMMIT;</code></pre></div><ul><li><strong>اقفل بترتيب موحّد</strong> في كل الكود — أهم قاعدة وقائية.</li><li><strong>اجعل المعاملات قصيرة</strong>: لا تنتظر إدخال المستخدم داخل معاملة مفتوحة.</li><li><strong>لا تستدعِ خدمات خارجية</strong> داخل معاملة.</li><li><strong>أعد المحاولة</strong> عند اكتشاف الجمود — إنه أمر متوقّع لا خطأ برمجي.</li></ul><h2 id="sec-7">معاملة عملية كاملة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">إتمام طلب شراء</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>BEGIN;
+
+-- 1) قفل المنتجات المطلوبة بترتيب ثابت
+SELECT id, stock, price
+FROM products
+WHERE id IN (5, 8)
+ORDER BY id
+FOR UPDATE;
+
+-- 2) التحقّق من توفّر الكمية
+-- يتم في كود التطبيق بعد قراءة النتيجة أعلاه
+
+-- 3) إنشاء الطلب
+INSERT INTO orders (customer_id, status, total)
+VALUES (1, &#39;pending&#39;, 0)
+RETURNING id;   -- 101
+
+-- 4) إضافة العناصر بأسعار وقت الشراء
+INSERT INTO order_items (order_id, product_id, quantity, unit_price)
+SELECT 101, id, 2, price FROM products WHERE id = 5
+UNION ALL
+SELECT 101, id, 1, price FROM products WHERE id = 8;
+
+-- 5) خصم المخزون مع التحقّق الذرّي
+UPDATE products SET stock = stock - 2 WHERE id = 5 AND stock &gt;= 2;
+UPDATE products SET stock = stock - 1 WHERE id = 8 AND stock &gt;= 1;
+-- إن أرجع أيّهما صفر صفوف، فالكمية غير كافية → ROLLBACK
+
+-- 6) حساب الإجمالي
+UPDATE orders
+SET total = (
+  SELECT SUM(quantity * unit_price)
+  FROM order_items WHERE order_id = 101
+)
+WHERE id = 101;
+
+-- 7) تأكيد الدفع
+UPDATE orders
+SET status = &#39;paid&#39;, paid_at = CURRENT_TIMESTAMP
+WHERE id = 101 AND status = &#39;pending&#39;;
+
+COMMIT;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>لاحظ نمط <code>AND stock &gt;= 2</code> في التحديث: يجعل التحقّق والخصم عملية ذرّية واحدة، فلا يمكن لمعاملة أخرى أن تتسلّل بينهما.</p></div><h2 id="sec-8">المشروع: قاعدة بيانات منصة تعليمية</h2><p>الآن تبني قاعدة بيانات كاملة تطبّق كل ما تعلّمته في المسار.</p><h3 id="sec-9">المتطلّبات</h3><div class="table-wrap"><table class="data"><thead><tr><th>الكيان</th><th>الوصف</th></tr></thead><tbody><tr><td><code>instructors</code></td><td>المدرّبون: الاسم، البريد، السيرة</td></tr><tr><td><code>categories</code></td><td>تصنيفات هرمية (تصنيف رئيسي وفرعي)</td></tr><tr><td><code>courses</code></td><td>الدورات: العنوان، السعر، المستوى، المدرّب، التصنيف</td></tr><tr><td><code>lessons</code></td><td>دروس كل دورة بترتيب ومدة</td></tr><tr><td><code>students</code></td><td>الطلاب</td></tr><tr><td><code>enrollments</code></td><td>التسجيلات مع نسبة التقدّم</td></tr><tr><td><code>lesson_progress</code></td><td>تقدّم الطالب في كل درس</td></tr><tr><td><code>reviews</code></td><td>التقييمات والمراجعات</td></tr><tr><td><code>payments</code></td><td>المدفوعات</td></tr></tbody></table></div><h3 id="sec-10">المطلوب</h3><ol><li><strong>المخطّط</strong>: كل الجداول بأنواع بيانات مناسبة وقيود كاملة.</li><li><strong>العلاقات</strong>: مفاتيح أجنبية بسلوك حذف مدروس لكل علاقة.</li><li><strong>البيانات</strong>: 5 مدرّبين، 10 دورات، 40 درساً، 20 طالباً، 50 تسجيلاً، 30 مراجعة.</li><li><strong>الفهارس</strong>: على كل المفاتيح الأجنبية وأعمدة البحث المتكرّرة.</li><li><strong>العروض</strong>: <code>course_stats</code> و <code>student_dashboard</code>.</li><li><strong>التقارير</strong>: عشرة استعلامات تحليلية.</li><li><strong>المعاملة</strong>: عملية تسجيل طالب في دورة مع الدفع كوحدة ذرّية.</li></ol><section class="exercise" id="sec-11"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>المشروع الكامل</h3></header><div class="exercise-body"><p>ابنِ قاعدة بيانات المنصة التعليمية كاملة.</p><p><strong>المطلوب:</strong></p><ul><li>المخطّط كاملاً مع كل القيود.</li><li>بيانات تجريبية واقعية بالأعداد المذكورة.</li><li>كل الفهارس اللازمة مع تعليق يبرّر كلاً منها.</li><li>العرضان المطلوبان.</li><li>التقارير العشرة: أفضل الدورات، أنشط الطلاب، الإيراد الشهري، متوسّط التقييم لكل مدرّب، الدورات بلا تسجيلات، الطلاب المتعثّرون، شجرة التصنيفات، معدّل الإكمال، أفضل المدرّبين إيراداً، الدورات الأعلى تقييماً بأكثر من خمس مراجعات.</li><li>معاملة التسجيل مع الدفع مع معالجة الفشل.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 التصنيفات الهرمية تحتاج <code>parent_id</code> يشير للجدول نفسه.</li><li>💡 استخدم <code>WITH RECURSIVE</code> لشجرة التصنيفات.</li><li>💡 معدّل الإكمال = عدد الدروس المكتملة ÷ إجمالي دروس الدورة.</li><li>💡 راجع دروس الفهارس والمعاملات قبل البدء.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ============ المخطّط ============
+
+CREATE TABLE instructors (
+  id        SERIAL PRIMARY KEY,
+  name      VARCHAR(150) NOT NULL,
+  email     VARCHAR(255) NOT NULL UNIQUE,
+  bio       TEXT,
+  joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE categories (
+  id        SERIAL PRIMARY KEY,
+  parent_id INT,
+  name      VARCHAR(100) NOT NULL,
+  slug      VARCHAR(100) NOT NULL UNIQUE,
+  FOREIGN KEY (parent_id) REFERENCES categories(id) ON DELETE SET NULL
+);
+
+CREATE TABLE courses (
+  id            SERIAL PRIMARY KEY,
+  instructor_id INT NOT NULL,
+  category_id   INT,
+  title         VARCHAR(200) NOT NULL,
+  description   TEXT,
+  price         DECIMAL(8,2) NOT NULL DEFAULT 0 CHECK (price &gt;= 0),
+  level         VARCHAR(20) NOT NULL DEFAULT &#39;beginner&#39;
+                CHECK (level IN (&#39;beginner&#39;,&#39;intermediate&#39;,&#39;advanced&#39;)),
+  is_published  BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (instructor_id) REFERENCES instructors(id) ON DELETE RESTRICT,
+  FOREIGN KEY (category_id)   REFERENCES categories(id)  ON DELETE SET NULL
+);
+
+CREATE TABLE lessons (
+  id           SERIAL PRIMARY KEY,
+  course_id    INT NOT NULL,
+  title        VARCHAR(200) NOT NULL,
+  duration_min INT NOT NULL CHECK (duration_min &gt; 0),
+  position     INT NOT NULL,
+
+  FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+  UNIQUE (course_id, position)
+);
+
+CREATE TABLE students (
+  id            SERIAL PRIMARY KEY,
+  name          VARCHAR(150) NOT NULL,
+  email         VARCHAR(255) NOT NULL UNIQUE,
+  registered_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE enrollments (
+  id          SERIAL PRIMARY KEY,
+  student_id  INT NOT NULL,
+  course_id   INT NOT NULL,
+  enrolled_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  completed_at TIMESTAMP,
+
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+  FOREIGN KEY (course_id)  REFERENCES courses(id)  ON DELETE CASCADE,
+  UNIQUE (student_id, course_id)
+);
+
+CREATE TABLE lesson_progress (
+  id            SERIAL PRIMARY KEY,
+  enrollment_id INT NOT NULL,
+  lesson_id     INT NOT NULL,
+  completed_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (enrollment_id) REFERENCES enrollments(id) ON DELETE CASCADE,
+  FOREIGN KEY (lesson_id)     REFERENCES lessons(id)     ON DELETE CASCADE,
+  UNIQUE (enrollment_id, lesson_id)
+);
+
+CREATE TABLE reviews (
+  id         SERIAL PRIMARY KEY,
+  student_id INT NOT NULL,
+  course_id  INT NOT NULL,
+  rating     INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  comment    TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+  FOREIGN KEY (course_id)  REFERENCES courses(id)  ON DELETE CASCADE,
+  UNIQUE (student_id, course_id)
+);
+
+CREATE TABLE payments (
+  id         SERIAL PRIMARY KEY,
+  student_id INT NOT NULL,
+  course_id  INT NOT NULL,
+  amount     DECIMAL(8,2) NOT NULL CHECK (amount &gt;= 0),
+  method     VARCHAR(20) NOT NULL CHECK (method IN (&#39;card&#39;,&#39;transfer&#39;,&#39;wallet&#39;)),
+  status     VARCHAR(20) NOT NULL DEFAULT &#39;pending&#39;
+             CHECK (status IN (&#39;pending&#39;,&#39;completed&#39;,&#39;failed&#39;,&#39;refunded&#39;)),
+  paid_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE RESTRICT,
+  FOREIGN KEY (course_id)  REFERENCES courses(id)  ON DELETE RESTRICT
+);
+
+-- ============ الفهارس ============
+
+-- المفاتيح الأجنبية: تسرّع الربط والحذف
+CREATE INDEX idx_courses_instructor  ON courses (instructor_id);
+CREATE INDEX idx_courses_category    ON courses (category_id);
+CREATE INDEX idx_lessons_course      ON lessons (course_id);
+CREATE INDEX idx_enroll_student      ON enrollments (student_id);
+CREATE INDEX idx_enroll_course       ON enrollments (course_id);
+CREATE INDEX idx_progress_enrollment ON lesson_progress (enrollment_id);
+CREATE INDEX idx_reviews_course      ON reviews (course_id);
+CREATE INDEX idx_payments_student    ON payments (student_id);
+
+-- البحث المتكرّر عن الدورات المنشورة
+CREATE INDEX idx_courses_published ON courses (is_published, created_at DESC)
+  WHERE is_published = TRUE;
+
+-- تقارير الإيراد الشهري
+CREATE INDEX idx_payments_date_status ON payments (paid_at, status);
+
+-- ============ العروض ============
+
+CREATE VIEW course_stats AS
+SELECT
+  c.id,
+  c.title,
+  c.price,
+  c.level,
+  i.name                                   AS instructor,
+  COUNT(DISTINCT e.id)                     AS students_count,
+  COUNT(DISTINCT l.id)                     AS lessons_count,
+  COALESCE(SUM(l.duration_min), 0)         AS total_minutes,
+  ROUND(AVG(r.rating), 2)                  AS avg_rating,
+  COUNT(DISTINCT r.id)                     AS reviews_count
+FROM courses c
+JOIN instructors i        ON i.id = c.instructor_id
+LEFT JOIN lessons l       ON l.course_id = c.id
+LEFT JOIN enrollments e   ON e.course_id = c.id
+LEFT JOIN reviews r       ON r.course_id = c.id
+GROUP BY c.id, c.title, c.price, c.level, i.name;
+
+CREATE VIEW student_dashboard AS
+SELECT
+  s.id            AS student_id,
+  s.name          AS student_name,
+  c.id            AS course_id,
+  c.title         AS course_title,
+  e.enrolled_at,
+  COUNT(DISTINCT lp.lesson_id)                       AS completed_lessons,
+  COUNT(DISTINCT l.id)                               AS total_lessons,
+  ROUND(100.0 * COUNT(DISTINCT lp.lesson_id)
+        / NULLIF(COUNT(DISTINCT l.id), 0), 1)        AS progress_pct
+FROM students s
+JOIN enrollments e         ON e.student_id = s.id
+JOIN courses c             ON c.id = e.course_id
+LEFT JOIN lessons l        ON l.course_id = c.id
+LEFT JOIN lesson_progress lp
+       ON lp.enrollment_id = e.id AND lp.lesson_id = l.id
+GROUP BY s.id, s.name, c.id, c.title, e.enrolled_at;
+
+-- ============ التقارير ============
+
+-- 1) أفضل الدورات
+SELECT title, students_count, avg_rating, instructor
+FROM course_stats
+ORDER BY students_count DESC
+LIMIT 10;
+
+-- 2) أنشط الطلاب
+SELECT
+  s.name,
+  COUNT(DISTINCT e.course_id)      AS courses,
+  COUNT(lp.id)                     AS lessons_completed
+FROM students s
+JOIN enrollments e      ON e.student_id = s.id
+LEFT JOIN lesson_progress lp ON lp.enrollment_id = e.id
+GROUP BY s.id, s.name
+ORDER BY lessons_completed DESC
+LIMIT 10;
+
+-- 3) الإيراد الشهري
+SELECT
+  EXTRACT(YEAR  FROM paid_at) AS year,
+  EXTRACT(MONTH FROM paid_at) AS month,
+  COUNT(*)                    AS payments,
+  ROUND(SUM(amount), 2)       AS revenue
+FROM payments
+WHERE status = &#39;completed&#39;
+GROUP BY 1, 2
+ORDER BY 1, 2;
+
+-- 4) متوسّط تقييم كل مدرّب
+SELECT
+  i.name,
+  COUNT(DISTINCT c.id)     AS courses,
+  ROUND(AVG(r.rating), 2)  AS avg_rating,
+  COUNT(r.id)              AS reviews
+FROM instructors i
+JOIN courses c      ON c.instructor_id = i.id
+LEFT JOIN reviews r ON r.course_id = c.id
+GROUP BY i.id, i.name
+HAVING COUNT(r.id) &gt; 0
+ORDER BY avg_rating DESC;
+
+-- 5) الدورات بلا تسجيلات
+SELECT c.id, c.title, c.price
+FROM courses c
+LEFT JOIN enrollments e ON e.course_id = c.id
+WHERE e.id IS NULL AND c.is_published = TRUE;
+
+-- 6) الطلاب المتعثّرون (أقل من 20٪ بعد شهر)
+SELECT student_name, course_title, progress_pct, enrolled_at
+FROM student_dashboard
+WHERE progress_pct &lt; 20
+  AND enrolled_at &lt; CURRENT_DATE - INTERVAL &#39;30 days&#39;
+ORDER BY progress_pct;
+
+-- 7) شجرة التصنيفات
+WITH RECURSIVE tree AS (
+  SELECT id, name, parent_id, 1 AS level, CAST(name AS TEXT) AS path
+  FROM categories WHERE parent_id IS NULL
+  UNION ALL
+  SELECT c.id, c.name, c.parent_id, t.level + 1, t.path || &#39; &gt; &#39; || c.name
+  FROM categories c JOIN tree t ON t.id = c.parent_id
+  WHERE t.level &lt; 5
+)
+SELECT level, path FROM tree ORDER BY path;
+
+-- 8) معدّل الإكمال لكل دورة
+SELECT
+  course_title,
+  COUNT(*)                     AS enrollments,
+  ROUND(AVG(progress_pct), 1)  AS avg_progress,
+  SUM(CASE WHEN progress_pct = 100 THEN 1 ELSE 0 END) AS completed
+FROM student_dashboard
+GROUP BY course_id, course_title
+ORDER BY avg_progress DESC;
+
+-- 9) أفضل المدرّبين إيراداً
+SELECT
+  i.name,
+  COUNT(DISTINCT p.id)   AS sales,
+  ROUND(SUM(p.amount),2) AS revenue
+FROM instructors i
+JOIN courses c  ON c.instructor_id = i.id
+JOIN payments p ON p.course_id = c.id AND p.status = &#39;completed&#39;
+GROUP BY i.id, i.name
+ORDER BY revenue DESC;
+
+-- 10) الأعلى تقييماً بأكثر من خمس مراجعات
+SELECT title, avg_rating, reviews_count, students_count
+FROM course_stats
+WHERE reviews_count &gt; 5
+ORDER BY avg_rating DESC, reviews_count DESC;
+
+-- ============ معاملة التسجيل مع الدفع ============
+
+BEGIN;
+
+  -- 1) تسجيل الدفعة
+  INSERT INTO payments (student_id, course_id, amount, method, status)
+  SELECT 3, 7, price, &#39;card&#39;, &#39;completed&#39;
+  FROM courses WHERE id = 7 AND is_published = TRUE;
+
+  -- إن لم يُدرَج شيء فالدورة غير منشورة → ROLLBACK
+
+  -- 2) إنشاء التسجيل
+  INSERT INTO enrollments (student_id, course_id)
+  VALUES (3, 7)
+  ON CONFLICT (student_id, course_id) DO NOTHING;
+
+  -- 3) التحقّق من النجاح قبل التثبيت
+  -- في كود التطبيق: إن كان عدد الصفوف المتأثّرة صفراً → ROLLBACK
+
+COMMIT;</code></pre></div><div class="code-caption" style="background:var(--surface-2);color:var(--text-muted)">المشروع أساس حقيقي لأي منصة تعليمية. طوّره: أضف الشهادات، والاختبارات، والكوبونات، وسجلّ النشاط.</div></details></div></section><h2 id="sec-12">ماذا بعد؟</h2><p>أنهيت مسار SQL: التصميم والقيود والاستعلام والتجميع والربط والاستعلامات الفرعية والفهارس والمعاملات. هذه أساسيات صلبة تكفي لبناء وصيانة قواعد بيانات تطبيقات حقيقية.</p><ul><li><strong>دوال النوافذ</strong> (<code>ROW_NUMBER</code>, <code>RANK</code>, <code>LAG</code>, <code>LEAD</code>) للتحليلات المتقدّمة.</li><li><strong>التطبيع</strong> (Normalization) وأشكاله الثلاثة الأولى.</li><li><strong>الإجراءات المخزّنة والمشغّلات</strong> (Triggers).</li><li><strong>النسخ الاحتياطي والاستعادة</strong> — لا تؤجّل تعلّمها.</li><li><strong>التوسّع</strong>: النسخ المتماثل (Replication) والتقسيم (Sharding).</li><li><strong>قواعد NoSQL</strong> ومتى تكون أنسب من العلائقية.</li></ul><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما معنى «الذرّية» في ACID؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>السرعة</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>كل عمليات المعاملة تُنفَّذ أو لا يُنفَّذ أي منها</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>العزل</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>الحفظ</span></label></div><div class="q-explain"><strong>الشرح:</strong> لا حالة وسطى: إمّا نجاح كامل أو تراجع كامل.</div></div><div class="q-item"><p class="q-text">2. ما «التحديث المفقود»؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>حذف صف</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>معاملتان تقرآن ثم تكتبان فيضيع أحد التحديثين</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>خطأ اتصال</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>قفل</span></label></div><div class="q-explain"><strong>الشرح:</strong> الحل: تحديث ذرّي <code>SET stock = stock - 2</code> أو قفل الصف بـ <code>FOR UPDATE</code>.</div></div><div class="q-item"><p class="q-text">3. ما أفضل وقاية من الجمود (Deadlock)؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>معاملات أطول</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>قفل الموارد بترتيب موحّد في كل الكود</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>إلغاء الأقفال</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>عزل أقل</span></label></div><div class="q-explain"><strong>الشرح:</strong> الترتيب الموحّد يمنع الانتظار المتبادل من الأساس.</div></div><div class="q-item"><p class="q-text">4. ماذا يفعل <code>SELECT … FOR UPDATE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يحدّث الصف</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>يقفل الصفوف فتنتظرها المعاملات الأخرى حتى انتهاء معاملتك</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>ينسخ الصف</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يحذفه</span></label></div><div class="q-explain"><strong>الشرح:</strong> قفل حصري يمنع القراءة للتحديث من معاملات أخرى.</div></div><div class="q-item"><p class="q-text">5. لماذا يجب أن تبقى المعاملات قصيرة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>للذاكرة</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>لأنها تحتفظ بالأقفال فتعطّل بقية المعاملات</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>للشبكة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>للسجلّات</span></label></div><div class="q-explain"><strong>الشرح:</strong> لا تنتظر إدخال مستخدم أو خدمة خارجية داخل معاملة مفتوحة.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/10-transactions" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="09-indexes.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>الفهارس والأداء</b></span></a>
+  <a class="next" href="../../tracks.html"><span><small>أنهيت المسار 🎉</small><b>تصفّح بقية المسارات</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار SQL</h3>
+        <div class="ring-wrap" data-ring data-track="sql" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">المشكلة: العمليات نصف المكتملة</a></li><li><a href="#sec-2">خصائص ACID</a></li><li><a href="#sec-3">التحكّم في المعاملة</a></li><li><a href="#sec-4">مشكلات التزامن</a></li><li><a href="#sec-5">مستويات العزل</a></li><li><a href="#sec-6">الأقفال والجمود</a></li><li><a href="#sec-7">معاملة عملية كاملة</a></li><li><a href="#sec-8">المشروع: قاعدة بيانات منصة تعليمية</a></li><li class="sub"><a href="#sec-9">المتطلّبات</a></li><li class="sub"><a href="#sec-10">المطلوب</a></li><li><a href="#sec-11">المشروع الكامل</a></li><li><a href="#sec-12">ماذا بعد؟</a></li><li><a href="#sec-13">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>BEGIN;</code><small>بدء معاملة</small></div><div class="ref-item"><code>COMMIT;</code><small>تثبيت التغييرات</small></div><div class="ref-item"><code>ROLLBACK;</code><small>التراجع عن الكل</small></div><div class="ref-item"><code>SAVEPOINT name</code><small>نقطة حفظ داخلية</small></div><div class="ref-item"><code>SELECT … FOR UPDATE</code><small>قفل الصفوف</small></div><div class="ref-item"><code>SET TRANSACTION ISOLATION</code><small>مستوى العزل</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

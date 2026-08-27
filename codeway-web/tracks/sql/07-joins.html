@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sql">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الربط بين الجداول: JOIN — مسار SQL | CodeWay Web</title>
+<meta name="description" content="دمج البيانات من عدة جداول: INNER و LEFT و RIGHT و FULL، والربط الذاتي، والأخطاء التي تضاعف نتائجك.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="الربط بين الجداول: JOIN — مسار SQL | CodeWay Web">
+<meta property="og:description" content="دمج البيانات من عدة جداول: INNER و LEFT و RIGHT و FULL، والربط الذاتي، والأخطاء التي تضاعف نتائجك.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">SQL</a></li>
+      <li aria-current="page">الربط بين الجداول: JOIN</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 7 من 10</span>
+      <span class="badge level-متوسط">متوسط</span>
+      <span class="badge">JOIN</span><span class="badge">العلاقات</span>
+    </div>
+    <h1>الربط بين الجداول: JOIN</h1>
+    <p class="summary">دمج البيانات من عدة جداول: INNER و LEFT و RIGHT و FULL، والربط الذاتي، والأخطاء التي تضاعف نتائجك.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 55 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار SQL</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تربط جدولين أو أكثر باستعلام واحد.</li><li>تفرّق بين أنواع الربط الأربعة.</li><li>تستخدم الربط الذاتي.</li><li>تتجنّب مضاعفة الصفوف عند الربط المتعدّد.</li><li>تكتب استعلامات تقارير مركّبة.</li></ul></div>
+      <h2 id="sec-1">لماذا نربط؟</h2><p>البيانات موزّعة على جداول لتجنّب التكرار: الطلب يحمل <code>customer_id</code> لا اسم العميل كاملاً. لكن التقرير يحتاج <strong>الاسم</strong>. الربط هو الجسر.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- بلا ربط: أرقام بلا معنى
+SELECT id, customer_id, total FROM orders;
+
+-- مع ربط: تقرير مفهوم
+SELECT
+  o.id,
+  c.name AS customer,
+  c.city,
+  o.total
+FROM orders o
+JOIN customers c ON c.id = o.customer_id;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> الأسماء المختصرة</div><p><code>FROM orders o</code> تعطي الجدول اسماً مختصراً. مع ثلاثة جداول أو أكثر تصبح ضرورية لتقصير الاستعلام وتوضيح مصدر كل عمود.</p></div><h2 id="sec-2"><code>INNER JOIN</code> — التقاطع</h2><p>يُرجع الصفوف التي لها <strong>مطابق في الجدولين معاً</strong>. أي صف بلا مطابق يُستبعد. وهو الافتراضي: <code>JOIN</code> وحدها تعني <code>INNER JOIN</code>.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  o.id       AS order_id,
+  c.name     AS customer,
+  o.total
+FROM orders o
+INNER JOIN customers c ON c.id = o.customer_id
+ORDER BY o.total DESC;</code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ما يحدث في INNER JOIN</div><iframe title="ما يحدث في INNER JOIN" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.82em;margin-bottom:10px}th{background:#6a5acd;color:#fff;padding:6px 9px;text-align:right}td{padding:5px 9px;border-bottom:1px solid #e2e8f0}b{display:block;font-size:.78em;color:#64748b;margin-bottom:4px}.x{background:#fee2e2;color:#991b1b}.ok{background:#dcfce7}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;b&gt;customers&lt;/b&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;id&lt;/th&gt;&lt;th&gt;name&lt;/th&gt;&lt;/tr&gt;&lt;tr class=&quot;ok&quot;&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;سارة&lt;/td&gt;&lt;/tr&gt;&lt;tr class=&quot;ok&quot;&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;خالد&lt;/td&gt;&lt;/tr&gt;&lt;tr class=&quot;x&quot;&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;نورة (بلا طلبات)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;b&gt;orders&lt;/b&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;id&lt;/th&gt;&lt;th&gt;customer_id&lt;/th&gt;&lt;th&gt;total&lt;/th&gt;&lt;/tr&gt;&lt;tr class=&quot;ok&quot;&gt;&lt;td&gt;101&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;450&lt;/td&gt;&lt;/tr&gt;&lt;tr class=&quot;ok&quot;&gt;&lt;td&gt;102&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;230&lt;/td&gt;&lt;/tr&gt;&lt;tr class=&quot;ok&quot;&gt;&lt;td&gt;103&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;899&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;b&gt;النتيجة — نورة استُبعدت&lt;/b&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;order_id&lt;/th&gt;&lt;th&gt;customer&lt;/th&gt;&lt;th&gt;total&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;101&lt;/td&gt;&lt;td&gt;سارة&lt;/td&gt;&lt;td&gt;450&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;102&lt;/td&gt;&lt;td&gt;سارة&lt;/td&gt;&lt;td&gt;230&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;103&lt;/td&gt;&lt;td&gt;خالد&lt;/td&gt;&lt;td&gt;899&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:380px"></iframe></div><h2 id="sec-3"><code>LEFT JOIN</code> — كل صفوف اليسار</h2><p>يُرجع <strong>كل</strong> صفوف الجدول الأيسر، ومعها المطابق من الأيمن إن وُجد، وإلا فقيم <code>NULL</code>.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  c.name,
+  COUNT(o.id)                        AS order_count,
+  COALESCE(SUM(o.total), 0)          AS total_spent
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+GROUP BY c.id, c.name
+ORDER BY total_spent DESC;</code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> نورة تظهر بأصفار</div><iframe title="نورة تظهر بأصفار" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.86em}th{background:#6a5acd;color:#fff;padding:7px 10px;text-align:right}td{padding:6px 10px;border-bottom:1px solid #e2e8f0}.z{background:#fef3c7}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;name&lt;/th&gt;&lt;th&gt;order_count&lt;/th&gt;&lt;th&gt;total_spent&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;خالد&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;899&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;سارة&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;680&lt;/td&gt;&lt;/tr&gt;&lt;tr class=&quot;z&quot;&gt;&lt;td&gt;نورة&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:220px"></iframe></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استخدم <code>LEFT JOIN</code> كلّما أردت الاحتفاظ بكل صفوف الجدول الرئيسي حتى لو لم يكن لها بيانات مرتبطة — تقارير «كل العملاء حتى من لم يشترِ» و«كل المنتجات حتى ما لم يُبَع».</p></div><h3 id="sec-4">إيجاد الصفوف بلا مطابق</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- العملاء الذين لم يطلبوا قط
+SELECT c.id, c.name, c.email
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+WHERE o.id IS NULL;
+
+-- المنتجات التي لم تُبَع أبداً
+SELECT p.id, p.name, p.stock
+FROM products p
+LEFT JOIN order_items oi ON oi.product_id = p.id
+WHERE oi.id IS NULL;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> نمط مهم جداً</div><p><code>LEFT JOIN</code> مع <code>WHERE right.id IS NULL</code> هو النمط القياسي لإيجاد «ما ليس له مطابق». احفظه — ستستخدمه كثيراً.</p></div><h2 id="sec-5">بقية الأنواع</h2><div class="table-wrap"><table class="data"><thead><tr><th>النوع</th><th>يُرجع</th></tr></thead><tbody><tr><td><code>INNER JOIN</code></td><td>المتطابق في الجدولين فقط</td></tr><tr><td><code>LEFT JOIN</code></td><td>كل اليسار + المطابق من اليمين</td></tr><tr><td><code>RIGHT JOIN</code></td><td>كل اليمين + المطابق من اليسار</td></tr><tr><td><code>FULL OUTER JOIN</code></td><td>كل الصفوف من الطرفين</td></tr><tr><td><code>CROSS JOIN</code></td><td>كل التوافيق الممكنة (حاصل ضرب ديكارتي)</td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- RIGHT JOIN — نادر الاستخدام
+SELECT c.name, o.total
+FROM orders o
+RIGHT JOIN customers c ON c.id = o.customer_id;
+-- يكافئ: FROM customers c LEFT JOIN orders o …
+
+-- FULL OUTER JOIN — غير مدعوم في MySQL
+SELECT c.name, o.total
+FROM customers c
+FULL OUTER JOIN orders o ON o.customer_id = c.id;
+
+-- CROSS JOIN — كل التوافيق
+SELECT s.size, cl.color
+FROM sizes s
+CROSS JOIN colors cl;
+-- 4 مقاسات × 5 ألوان = 20 صفاً</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استخدم <code>LEFT JOIN</code> دائماً بدل <code>RIGHT JOIN</code>: القراءة من اليسار لليمين أكثر طبيعية، وكل <code>RIGHT JOIN</code> يمكن إعادة كتابته كـ <code>LEFT JOIN</code> بتبديل ترتيب الجدولين.</p></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> خطر CROSS JOIN غير المقصود</div><p>نسيان شرط <code>ON</code> يحوّل الربط إلى <code>CROSS JOIN</code>: جدولان بألف صف لكل منهما يعطيان <strong>مليون صف</strong>. راجع دائماً وجود <code>ON</code> في كل ربط.</p></div><h2 id="sec-6">ربط عدة جداول</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  o.id                          AS order_id,
+  c.name                        AS customer,
+  c.city,
+  p.name                        AS product,
+  cat.name                      AS category,
+  oi.quantity,
+  oi.unit_price,
+  oi.quantity * oi.unit_price   AS line_total
+FROM orders o
+JOIN customers   c   ON c.id   = o.customer_id
+JOIN order_items oi  ON oi.order_id = o.id
+JOIN products    p   ON p.id   = oi.product_id
+LEFT JOIN categories cat ON cat.id = p.category_id
+WHERE o.status = &#39;delivered&#39;
+  AND o.ordered_at &gt;= &#39;2026-01-01&#39;
+ORDER BY o.ordered_at DESC, p.name;</code></pre></div><p>اقرأ الاستعلام كسلسلة: ابدأ بالطلبات، أضف بيانات العميل، ثم عناصر الطلب، ثم بيانات المنتج، ثم التصنيف. كل <code>JOIN</code> يوسّع الصورة.</p><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ترتيب الربط مع LEFT JOIN</div><p>إن وضعت <code>LEFT JOIN</code> ثم <code>INNER JOIN</code> بعده على الجدول نفسه، فقد يُلغي الثاني أثر الأول ويحوّله عملياً إلى <code>INNER</code>. رتّب الروابط بحيث تأتي الخارجية في النهاية.</p></div><h2 id="sec-7">مضاعفة الصفوف — الفخّ الكبير</h2><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> أخطر خطأ في التقارير</div><p>عند ربط جدول بعلاقة «واحد إلى متعدّد»، <strong>يتكرّر صف الأب</strong> لكل ابن. فإذا جمعت عموداً من الأب، حصلت على مجموع مضخّم — وهذا خطأ صامت يمرّ بلا ملاحظة.</p></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> كيف يحدث التضخيم</div><iframe title="كيف يحدث التضخيم" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.82em;margin-bottom:10px}th{background:#6a5acd;color:#fff;padding:6px 9px;text-align:right}td{padding:5px 9px;border-bottom:1px solid #e2e8f0}b{display:block;font-size:.78em;color:#64748b;margin-bottom:4px}.d{background:#fee2e2}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;b&gt;orders — طلب واحد بإجمالي 1000&lt;/b&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;id&lt;/th&gt;&lt;th&gt;total&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;101&lt;/td&gt;&lt;td&gt;1000&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;b&gt;order_items — ثلاثة عناصر&lt;/b&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;order_id&lt;/th&gt;&lt;th&gt;product_id&lt;/th&gt;&lt;th&gt;qty&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;101&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;101&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;101&lt;/td&gt;&lt;td&gt;9&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;b&gt;بعد JOIN — total تكرّر ثلاث مرات!&lt;/b&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;order_id&lt;/th&gt;&lt;th&gt;total&lt;/th&gt;&lt;th&gt;product_id&lt;/th&gt;&lt;/tr&gt;&lt;tr class=&quot;d&quot;&gt;&lt;td&gt;101&lt;/td&gt;&lt;td&gt;1000&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;/tr&gt;&lt;tr class=&quot;d&quot;&gt;&lt;td&gt;101&lt;/td&gt;&lt;td&gt;1000&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;/tr&gt;&lt;tr class=&quot;d&quot;&gt;&lt;td&gt;101&lt;/td&gt;&lt;td&gt;1000&lt;/td&gt;&lt;td&gt;9&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;p style=&quot;color:#dc2626;font-size:.82em;margin:0&quot;&gt;&lt;b&gt;SUM(total) = 3000&lt;/b&gt; بدل 1000!&lt;/p&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:360px"></iframe></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحلول الثلاثة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ✗ خطأ: تضخيم
+SELECT c.name, SUM(o.total)
+FROM customers c
+JOIN orders o      ON o.customer_id = c.id
+JOIN order_items oi ON oi.order_id = o.id
+GROUP BY c.id, c.name;
+
+-- ✓ الحل 1: احذف الربط غير اللازم
+SELECT c.name, SUM(o.total)
+FROM customers c
+JOIN orders o ON o.customer_id = c.id
+GROUP BY c.id, c.name;
+
+-- ✓ الحل 2: DISTINCT داخل التجميع
+SELECT
+  c.name,
+  SUM(DISTINCT o.total) AS revenue,   -- حذر: يخطئ لو تساوت المبالغ
+  COUNT(DISTINCT o.id)  AS order_count
+FROM customers c
+JOIN orders o       ON o.customer_id = c.id
+JOIN order_items oi ON oi.order_id = o.id
+GROUP BY c.id, c.name;
+
+-- ✓ الحل 3: جمّع أولاً ثم اربط — الأصحّ
+SELECT c.name, agg.revenue, agg.order_count
+FROM customers c
+JOIN (
+  SELECT customer_id,
+         SUM(total) AS revenue,
+         COUNT(*)   AS order_count
+  FROM orders
+  GROUP BY customer_id
+) agg ON agg.customer_id = c.id;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>القاعدة الوقائية: قبل أي <code>SUM</code> في استعلام فيه أكثر من ربط، اسأل نفسك «هل تكرّرت صفوف الجدول الذي أجمع منه؟». وللتأكّد شغّل الاستعلام بلا تجميع وعدّ الصفوف.</p></div><h2 id="sec-8">الربط الذاتي</h2><p>ربط الجدول بنفسه — مفيد للبنى الهرمية والمقارنات الداخلية.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الموظّف ومديره</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  e.name       AS employee,
+  m.name       AS manager
+FROM employees e
+LEFT JOIN employees m ON m.id = e.manager_id
+ORDER BY m.name, e.name;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">التصنيفات والتصنيفات الفرعية</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  parent.name AS category,
+  child.name  AS subcategory
+FROM categories parent
+JOIN categories child ON child.parent_id = parent.id
+ORDER BY parent.name, child.name;</code></pre></div><p>المفتاح هنا: أسماء مختصرة <strong>مختلفة</strong> للجدول نفسه (<code>e</code> و <code>m</code>)، وإلا لم يعرف المحرّك أي نسخة تقصد.</p><h2 id="sec-9"><code>USING</code> و <code>NATURAL JOIN</code></h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- إن تطابق اسم العمود في الجدولين
+SELECT * FROM orders JOIN customers USING (customer_id);
+
+-- يكافئ
+SELECT * FROM orders o JOIN customers c ON c.customer_id = o.customer_id;
+
+-- NATURAL JOIN — يربط تلقائياً بكل الأعمدة المتطابقة الأسماء
+SELECT * FROM orders NATURAL JOIN customers;</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> تجنّب NATURAL JOIN</div><p>يربط بكل عمود يتطابق اسمه في الجدولين — بما فيها <code>id</code> و <code>created_at</code>! إضافة عمود جديد باسم مشترك قد تكسر الاستعلام بصمت. اكتب <code>ON</code> صراحةً دائماً.</p></div><h2 id="sec-10">تقارير مركّبة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">تقرير مبيعات لكل تصنيف ومدينة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  cat.name                                   AS category,
+  c.city,
+  COUNT(DISTINCT o.id)                       AS orders,
+  SUM(oi.quantity)                           AS units,
+  ROUND(SUM(oi.quantity * oi.unit_price), 2) AS revenue
+FROM order_items oi
+JOIN orders     o   ON o.id   = oi.order_id
+JOIN customers  c   ON c.id   = o.customer_id
+JOIN products   p   ON p.id   = oi.product_id
+JOIN categories cat ON cat.id = p.category_id
+WHERE o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+  AND o.ordered_at &gt;= &#39;2026-01-01&#39;
+GROUP BY cat.id, cat.name, c.city
+HAVING SUM(oi.quantity * oi.unit_price) &gt; 1000
+ORDER BY revenue DESC;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">المنتجات التي لم تُبَع هذا العام</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT p.id, p.name, p.price, p.stock
+FROM products p
+LEFT JOIN order_items oi ON oi.product_id = p.id
+LEFT JOIN orders o
+       ON o.id = oi.order_id
+      AND o.ordered_at &gt;= &#39;2026-01-01&#39;
+WHERE p.is_active = TRUE
+  AND o.id IS NULL
+ORDER BY p.stock DESC;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>لاحظ وضع شرط التاريخ في <code>ON</code> لا في <code>WHERE</code>: لو وضعناه في <code>WHERE</code> لتحوّل <code>LEFT JOIN</code> إلى <code>INNER JOIN</code> عملياً واختفت الصفوف التي نبحث عنها.</p></div><section class="exercise" id="sec-11"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: تقارير مترابطة</h3></header><div class="exercise-body"><p>اكتب اثني عشر استعلام ربط على قاعدة المتجر.</p><p><strong>المطلوب:</strong></p><ul><li>كل الطلبات مع اسم العميل ومدينته.</li><li>كل عناصر الطلبات مع اسم المنتج والتصنيف.</li><li>كل العملاء مع عدد طلباتهم — بمن فيهم من لم يطلب.</li><li>العملاء الذين لم يطلبوا قط.</li><li>المنتجات التي لم تُبَع أبداً.</li><li>إجمالي إنفاق كل عميل — احذر التضخيم.</li><li>أفضل خمسة منتجات مبيعاً مع اسم تصنيفها.</li><li>الإيراد لكل تصنيف مرتّباً تنازلياً.</li><li>الإيراد لكل مدينة مع عدد العملاء وعدد الطلبات.</li><li>تفاصيل طلب واحد كاملة: العميل والمنتجات والكميات والإجماليات.</li><li>ربط ذاتي: التصنيفات مع تصنيفاتها الفرعية.</li><li>المنتجات التي لم تُبَع في 2026 (استخدم شرط التاريخ في <code>ON</code>).</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 «لم يطلب قط» = <code>LEFT JOIN</code> + <code>WHERE o.id IS NULL</code>.</li><li>💡 قبل أي <code>SUM</code> تحقّق من عدم تكرار الصفوف.</li><li>💡 الربط الذاتي يحتاج اسمين مختصرين مختلفين.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- 1) الطلبات مع بيانات العميل
+SELECT o.id, o.ordered_at, c.name AS customer, c.city, o.total, o.status
+FROM orders o
+JOIN customers c ON c.id = o.customer_id
+ORDER BY o.ordered_at DESC;
+
+-- 2) عناصر الطلبات مع المنتج والتصنيف
+SELECT
+  oi.order_id, p.name AS product, cat.name AS category,
+  oi.quantity, oi.unit_price,
+  oi.quantity * oi.unit_price AS line_total
+FROM order_items oi
+JOIN products p       ON p.id = oi.product_id
+LEFT JOIN categories cat ON cat.id = p.category_id
+ORDER BY oi.order_id;
+
+-- 3) كل العملاء وعدد طلباتهم
+SELECT c.id, c.name, COUNT(o.id) AS order_count
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+GROUP BY c.id, c.name
+ORDER BY order_count DESC;
+
+-- 4) العملاء بلا طلبات
+SELECT c.id, c.name, c.email, c.city
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+WHERE o.id IS NULL;
+
+-- 5) المنتجات التي لم تُبَع
+SELECT p.id, p.name, p.price, p.stock
+FROM products p
+LEFT JOIN order_items oi ON oi.product_id = p.id
+WHERE oi.id IS NULL
+ORDER BY p.stock DESC;
+
+-- 6) إجمالي الإنفاق — بلا تضخيم
+SELECT c.name, COUNT(o.id) AS orders, ROUND(SUM(o.total), 2) AS spent
+FROM customers c
+JOIN orders o ON o.customer_id = c.id
+WHERE o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+GROUP BY c.id, c.name
+ORDER BY spent DESC;
+
+-- 7) أفضل خمسة منتجات
+SELECT
+  p.name, cat.name AS category,
+  SUM(oi.quantity) AS units_sold,
+  ROUND(SUM(oi.quantity * oi.unit_price), 2) AS revenue
+FROM order_items oi
+JOIN products p       ON p.id = oi.product_id
+JOIN orders   o       ON o.id = oi.order_id
+LEFT JOIN categories cat ON cat.id = p.category_id
+WHERE o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+GROUP BY p.id, p.name, cat.name
+ORDER BY revenue DESC
+LIMIT 5;
+
+-- 8) الإيراد لكل تصنيف
+SELECT
+  cat.name AS category,
+  COUNT(DISTINCT o.id) AS orders,
+  ROUND(SUM(oi.quantity * oi.unit_price), 2) AS revenue
+FROM order_items oi
+JOIN products p       ON p.id = oi.product_id
+JOIN orders   o       ON o.id = oi.order_id
+JOIN categories cat   ON cat.id = p.category_id
+WHERE o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+GROUP BY cat.id, cat.name
+ORDER BY revenue DESC;
+
+-- 9) الإيراد لكل مدينة
+SELECT
+  c.city,
+  COUNT(DISTINCT c.id) AS customers,
+  COUNT(DISTINCT o.id) AS orders,
+  ROUND(COALESCE(SUM(o.total), 0), 2) AS revenue
+FROM customers c
+LEFT JOIN orders o
+       ON o.customer_id = c.id
+      AND o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+GROUP BY c.city
+ORDER BY revenue DESC;
+
+-- 10) تفاصيل طلب كامل
+SELECT
+  o.id AS order_id, o.ordered_at, o.status,
+  c.name AS customer, c.phone, c.city,
+  p.name AS product, oi.quantity, oi.unit_price,
+  oi.quantity * oi.unit_price AS line_total,
+  o.total AS order_total
+FROM orders o
+JOIN customers   c  ON c.id = o.customer_id
+JOIN order_items oi ON oi.order_id = o.id
+JOIN products    p  ON p.id = oi.product_id
+WHERE o.id = 101;
+
+-- 11) ربط ذاتي: التصنيفات الفرعية
+SELECT
+  parent.name AS category,
+  child.name  AS subcategory
+FROM categories parent
+LEFT JOIN categories child ON child.parent_id = parent.id
+WHERE parent.parent_id IS NULL
+ORDER BY parent.name, child.name;
+
+-- 12) لم تُبَع في 2026 — الشرط في ON
+SELECT p.id, p.name, p.stock
+FROM products p
+LEFT JOIN order_items oi ON oi.product_id = p.id
+LEFT JOIN orders o
+       ON o.id = oi.order_id
+      AND o.ordered_at &gt;= &#39;2026-01-01&#39;
+      AND o.ordered_at &lt;  &#39;2027-01-01&#39;
+WHERE p.is_active = TRUE
+  AND o.id IS NULL
+ORDER BY p.stock DESC;</code></pre></div></details></div></section><section class="quiz"><h2 id="sec-12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الفرق بين <code>INNER JOIN</code> و <code>LEFT JOIN</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>الأول يستبعد ما لا مطابق له، والثاني يبقي كل صفوف اليسار</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>الثاني أسرع</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>LEFT JOIN</code> يملأ الأعمدة غير المطابقة بـ <code>NULL</code> بدل استبعاد الصف.</div></div><div class="q-item"><p class="q-text">2. كيف تجد العملاء الذين لم يطلبوا قط؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>INNER JOIN</code> + <code>WHERE</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span><code>LEFT JOIN</code> مع <code>WHERE orders.id IS NULL</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>NOT JOIN</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>مستحيل</span></label></div><div class="q-explain"><strong>الشرح:</strong> النمط القياسي لإيجاد «ما ليس له مطابق».</div></div><div class="q-item"><p class="q-text">3. ما سبب تضخيم <code>SUM</code> عند ربط عدة جداول؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>خطأ في المحرّك</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>تكرار صف الأب لكل ابن في علاقة واحد إلى متعدّد</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>نوع البيانات</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>الفهارس</span></label></div><div class="q-explain"><strong>الشرح:</strong> الحل: جمّع في استعلام فرعي ثم اربط، أو احذف الربط غير اللازم.</div></div><div class="q-item"><p class="q-text">4. لماذا نتجنّب <code>NATURAL JOIN</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>يربط بكل عمود متطابق الاسم فقد يكسر الاستعلام عند إضافة عمود</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>غير مدعوم</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>أطول</span></label></div><div class="q-explain"><strong>الشرح:</strong> الربط الضمني خطر؛ اكتب <code>ON</code> صراحةً دائماً.</div></div><div class="q-item"><p class="q-text">5. أين تضع شرطاً إضافياً على الجدول الأيمن في <code>LEFT JOIN</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>في <code>WHERE</code></span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>في <code>ON</code> — وإلا تحوّل الربط إلى <code>INNER</code> عملياً</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>في <code>HAVING</code></span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا فرق</span></label></div><div class="q-explain"><strong>الشرح:</strong> شرط في <code>WHERE</code> على عمود قد يكون <code>NULL</code> يستبعد الصفوف غير المطابقة.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/07-joins" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="06-aggregate.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>الدوال التجميعية و GROUP BY</b></span></a>
+  <a class="next" href="08-subqueries.html"><span><small>الدرس التالي</small><b>الاستعلامات الفرعية والعروض و CTE</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار SQL</h3>
+        <div class="ring-wrap" data-ring data-track="sql" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">لماذا نربط؟</a></li><li><a href="#sec-2">INNER JOIN — التقاطع</a></li><li><a href="#sec-3">LEFT JOIN — كل صفوف اليسار</a></li><li class="sub"><a href="#sec-4">إيجاد الصفوف بلا مطابق</a></li><li><a href="#sec-5">بقية الأنواع</a></li><li><a href="#sec-6">ربط عدة جداول</a></li><li><a href="#sec-7">مضاعفة الصفوف — الفخّ الكبير</a></li><li><a href="#sec-8">الربط الذاتي</a></li><li><a href="#sec-9">USING و NATURAL JOIN</a></li><li><a href="#sec-10">تقارير مركّبة</a></li><li><a href="#sec-11">تمرين: تقارير مترابطة</a></li><li><a href="#sec-12">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>INNER JOIN … ON …</code><small>المتطابق في الجدولين</small></div><div class="ref-item"><code>LEFT JOIN</code><small>كل صفوف اليسار + المطابق</small></div><div class="ref-item"><code>RIGHT JOIN</code><small>كل صفوف اليمين + المطابق</small></div><div class="ref-item"><code>FULL OUTER JOIN</code><small>كل الصفوف من الطرفين</small></div><div class="ref-item"><code>CROSS JOIN</code><small>كل التوافيق الممكنة</small></div><div class="ref-item"><code>USING (col)</code><small>اختصار عند تطابق الاسم</small></div><div class="ref-item"><code>AS alias</code><small>اسم مختصر للجدول</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="08-subqueries.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الاستعلامات الفرعية والعروض و CTE<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sql">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاستعلامات الفرعية والعروض و CTE — مسار SQL | CodeWay Web</title>
+<meta name="description" content="استعلامات داخل استعلامات، والعروض المحفوظة، وتعبيرات الجداول المشتركة التي تجعل الاستعلامات المعقّدة مقروءة.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="الاستعلامات الفرعية والعروض و CTE — مسار SQL | CodeWay Web">
+<meta property="og:description" content="استعلامات داخل استعلامات، والعروض المحفوظة، وتعبيرات الجداول المشتركة التي تجعل الاستعلامات المعقّدة مقروءة.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">SQL</a></li>
+      <li aria-current="page">الاستعلامات الفرعية والعروض و CTE</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 8 من 10</span>
+      <span class="badge level-متقدم">متقدم</span>
+      <span class="badge">استعلامات فرعية</span><span class="badge">CTE</span>
+    </div>
+    <h1>الاستعلامات الفرعية والعروض و CTE</h1>
+    <p class="summary">استعلامات داخل استعلامات، والعروض المحفوظة، وتعبيرات الجداول المشتركة التي تجعل الاستعلامات المعقّدة مقروءة.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 50 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار SQL</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تكتب استعلامات فرعية في المواضع المختلفة.</li><li>تستخدم <code>EXISTS</code> و <code>IN</code> بوعي بالفروق.</li><li>تنشئ عروضاً لتبسيط الاستعلامات المتكرّرة.</li><li>تستخدم <code>WITH</code> لتقسيم الاستعلامات المعقّدة.</li><li>تكتب استعلامات تكرارية للبنى الهرمية.</li></ul></div>
+      <h2 id="sec-1">ما الاستعلام الفرعي؟</h2><p>استعلام <code>SELECT</code> داخل استعلام آخر. يُنفَّذ أولاً وتُستخدم نتيجته في الاستعلام الخارجي.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- المنتجات الأغلى من المتوسّط
+SELECT name, price
+FROM products
+WHERE price &gt; (SELECT AVG(price) FROM products)
+ORDER BY price DESC;</code></pre></div><p>الاستعلام الداخلي يُرجع رقماً واحداً (المتوسّط)، فيُستخدم في المقارنة. هذا ما يُسمّى <strong>استعلاماً فرعياً قياسياً</strong>.</p><h2 id="sec-2">المواضع الأربعة</h2><h3 id="sec-3">1. في <code>WHERE</code></h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- قيمة واحدة
+SELECT * FROM products
+WHERE price &gt; (SELECT AVG(price) FROM products);
+
+-- قائمة قيم
+SELECT * FROM customers
+WHERE id IN (
+  SELECT DISTINCT customer_id
+  FROM orders
+  WHERE total &gt; 5000
+);
+
+-- النفي
+SELECT * FROM products
+WHERE id NOT IN (SELECT product_id FROM order_items);</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> فخّ NOT IN مع NULL</div><p>إن أرجع الاستعلام الفرعي قيمة <code>NULL</code> واحدة، فإن <code>NOT IN</code> <strong>لا تُرجع أي صف</strong> إطلاقاً. أضف <code>WHERE col IS NOT NULL</code> داخل الاستعلام الفرعي، أو استخدم <code>NOT EXISTS</code> بدلاً منه.</p></div><h3 id="sec-4">2. في <code>FROM</code> — جدول مشتقّ</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  city,
+  AVG(order_count) AS avg_orders_per_customer
+FROM (
+  SELECT c.city, c.id, COUNT(o.id) AS order_count
+  FROM customers c
+  LEFT JOIN orders o ON o.customer_id = c.id
+  GROUP BY c.city, c.id
+) AS per_customer
+GROUP BY city;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>الجدول المشتقّ <strong>يجب</strong> أن يحمل اسماً بديلاً (<code>AS per_customer</code>) وإلا رفض المحرّك الاستعلام.</p></div><h3 id="sec-5">3. في <code>SELECT</code> — عمود محسوب</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  c.name,
+  c.city,
+  (SELECT COUNT(*) FROM orders o WHERE o.customer_id = c.id)     AS order_count,
+  (SELECT MAX(ordered_at) FROM orders o WHERE o.customer_id = c.id) AS last_order
+FROM customers c;</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> الاستعلام المترابط بطيء</div><p>هذا النوع يُنفَّذ <strong>مرة لكل صف</strong> في الاستعلام الخارجي. مع عشرة آلاف عميل يعني عشرين ألف استعلام فرعي. البديل الأسرع دائماً: <code>LEFT JOIN</code> مع <code>GROUP BY</code>.</p></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code>SELECT
+  c.name,
+  (SELECT COUNT(*) FROM orders o WHERE o.customer_id = c.id) AS cnt
+FROM customers c;</code></pre></div><div class="why">استعلام فرعي لكل صف — بطيء جداً مع البيانات الكبيرة.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code>SELECT c.name, COUNT(o.id) AS cnt
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+GROUP BY c.id, c.name;</code></pre></div><div class="why">مسح واحد للجدولين مع تجميع — أسرع بمراحل.</div></div></div><h3 id="sec-6">4. في <code>HAVING</code></h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT category_id, AVG(price) AS avg_price
+FROM products
+GROUP BY category_id
+HAVING AVG(price) &gt; (SELECT AVG(price) FROM products);</code></pre></div><h2 id="sec-7"><code>EXISTS</code> مقابل <code>IN</code></h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- بـ IN
+SELECT * FROM customers c
+WHERE c.id IN (SELECT customer_id FROM orders);
+
+-- بـ EXISTS — غالباً أسرع
+SELECT * FROM customers c
+WHERE EXISTS (
+  SELECT 1 FROM orders o WHERE o.customer_id = c.id
+);
+
+-- النفي
+SELECT * FROM customers c
+WHERE NOT EXISTS (
+  SELECT 1 FROM orders o WHERE o.customer_id = c.id
+);</code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th><code>IN</code></th><th><code>EXISTS</code></th></tr></thead><tbody><tr><td>يُرجع</td><td>قائمة قيم</td><td>صح أو خطأ</td></tr><tr><td>يتوقّف عند</td><td>بناء القائمة كاملة</td><td><strong>أول مطابقة</strong></td></tr><tr><td>مع <code>NULL</code></td><td><strong>فخّ خطر</strong> في <code>NOT IN</code></td><td>آمن تماماً</td></tr><tr><td>الأداء</td><td>جيد مع القوائم الصغيرة</td><td>أفضل مع الجداول الكبيرة</td></tr><tr><td>الأنسب لـ</td><td>قائمة ثابتة معروفة</td><td>فحص الوجود المترابط</td></tr></tbody></table></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>داخل <code>EXISTS</code> اكتب <code>SELECT 1</code> لا <code>SELECT *</code> — المحرّك لا يهتم بالأعمدة أصلاً، بل بوجود صف واحد على الأقل.</p></div><h2 id="sec-8">العروض (Views)</h2><p>العرض استعلام <strong>محفوظ باسم</strong> تستخدمه كأنه جدول. لا يخزّن بيانات بل يُنفَّذ عند كل استدعاء.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>CREATE VIEW active_products AS
+SELECT id, name, price, stock, category_id
+FROM products
+WHERE is_active = TRUE AND deleted_at IS NULL;
+
+-- الاستخدام كجدول عادي
+SELECT * FROM active_products WHERE price &lt; 500;
+
+-- عرض أعقد
+CREATE VIEW order_summary AS
+SELECT
+  o.id,
+  o.ordered_at,
+  o.status,
+  c.name  AS customer_name,
+  c.city,
+  COUNT(oi.id)                       AS item_count,
+  SUM(oi.quantity)                   AS total_quantity,
+  SUM(oi.quantity * oi.unit_price)   AS calculated_total
+FROM orders o
+JOIN customers   c  ON c.id = o.customer_id
+LEFT JOIN order_items oi ON oi.order_id = o.id
+GROUP BY o.id, o.ordered_at, o.status, c.name, c.city;
+
+-- تعديل وحذف
+CREATE OR REPLACE VIEW active_products AS SELECT … ;
+DROP VIEW active_products;</code></pre></div><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h4>تبسيط</h4><p>استعلام معقّد يُكتب مرة ويُستخدم بسطر.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>أمان</h4><p>امنح صلاحية على العرض بدل الجدول لإخفاء أعمدة حسّاسة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div><h4>اتّساق</h4><p>منطق العمل في مكان واحد بدل تكراره في كل تطبيق.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h4>تجريد</h4><p>تغيّر بنية الجداول دون كسر الاستعلامات المعتمدة على العرض.</p></div></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> العرض ليس ذاكرة تخزين</div><p>يُنفَّذ استعلامه في كل مرة، فلا يحسّن الأداء بذاته. إن احتجت تسريعاً حقيقياً استخدم <strong>العرض المُجسَّد</strong> (Materialized View) الذي يخزّن النتيجة فعلاً ويُحدَّث عند الطلب — متاح في PostgreSQL وOracle.</p></div><h2 id="sec-9">تعبيرات الجداول المشتركة (CTE)</h2><p>توجيه <code>WITH</code> يعرّف نتيجة مؤقتة باسم، تُستخدم في نفس الاستعلام. الفائدة الكبرى: <strong>تحويل استعلام متشابك إلى خطوات مقروءة</strong>.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>WITH customer_totals AS (
+  SELECT
+    customer_id,
+    COUNT(*)   AS order_count,
+    SUM(total) AS total_spent
+  FROM orders
+  WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+  GROUP BY customer_id
+)
+SELECT
+  c.name,
+  c.city,
+  ct.order_count,
+  ct.total_spent
+FROM customers c
+JOIN customer_totals ct ON ct.customer_id = c.id
+WHERE ct.total_spent &gt; 5000
+ORDER BY ct.total_spent DESC;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">عدة CTE متسلسلة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>WITH
+monthly_sales AS (
+  SELECT
+    EXTRACT(YEAR  FROM ordered_at) AS year,
+    EXTRACT(MONTH FROM ordered_at) AS month,
+    SUM(total) AS revenue
+  FROM orders
+  WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+  GROUP BY 1, 2
+),
+avg_monthly AS (
+  SELECT AVG(revenue) AS avg_revenue FROM monthly_sales
+)
+SELECT
+  ms.year,
+  ms.month,
+  ROUND(ms.revenue, 2) AS revenue,
+  ROUND(am.avg_revenue, 2) AS avg_revenue,
+  ROUND(100.0 * (ms.revenue - am.avg_revenue) / am.avg_revenue, 1) AS pct_vs_avg
+FROM monthly_sales ms
+CROSS JOIN avg_monthly am
+ORDER BY ms.year, ms.month;</code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th>استعلام فرعي</th><th>CTE</th></tr></thead><tbody><tr><td>القراءة</td><td>متداخل يصعب تتبّعه</td><td><strong>خطوات متسلسلة واضحة</strong></td></tr><tr><td>إعادة الاستخدام</td><td>يُكتب في كل موضع</td><td>يُعرَّف مرة ويُستخدم مراراً</td></tr><tr><td>التكرار الذاتي</td><td>غير ممكن</td><td>ممكن بـ <code>RECURSIVE</code></td></tr><tr><td>التشخيص</td><td>صعب</td><td>شغّل كل خطوة وحدها</td></tr><tr><td>الأداء</td><td>متقارب غالباً</td><td>متقارب غالباً</td></tr></tbody></table></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>قاعدة عملية: إن تجاوز استعلامك ثلاثين سطراً أو احتوى استعلامين فرعيين متداخلين، حوّله إلى CTE. زميلك — وأنت بعد شهر — ستشكران نفسيكما.</p></div><h2 id="sec-10">الاستعلامات التكرارية</h2><p><code>WITH RECURSIVE</code> يحلّ مشكلة البنى الهرمية غير محدّدة العمق: شجرة تصنيفات، هيكل تنظيمي، سلسلة تعليقات.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>WITH RECURSIVE category_tree AS (
+  -- الحالة الأساسية: الجذور
+  SELECT id, name, parent_id, 1 AS level, name AS path
+  FROM categories
+  WHERE parent_id IS NULL
+
+  UNION ALL
+
+  -- الخطوة التكرارية: الأبناء
+  SELECT
+    c.id,
+    c.name,
+    c.parent_id,
+    ct.level + 1,
+    ct.path || &#39; &gt; &#39; || c.name
+  FROM categories c
+  JOIN category_tree ct ON ct.id = c.parent_id
+)
+SELECT level, path
+FROM category_tree
+ORDER BY path;</code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ناتج الاستعلام التكراري</div><iframe title="ناتج الاستعلام التكراري" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.86em}th{background:#6a5acd;color:#fff;padding:7px 10px;text-align:right}td{padding:6px 10px;border-bottom:1px solid #e2e8f0}code{font-family:monospace;direction:ltr;display:inline-block}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;level&lt;/th&gt;&lt;th&gt;path&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;إلكترونيات&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;إلكترونيات &amp;gt; صوتيات&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;3&lt;/td&gt;&lt;td&gt;إلكترونيات &amp;gt; صوتيات &amp;gt; سماعات&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;إلكترونيات &amp;gt; حواسيب&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;ملابس&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:250px"></iframe></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> احذر الحلقة اللانهائية</div><p>إن كانت بياناتك تحوي دورة (تصنيف أبوه ابنه) فسيدور الاستعلام إلى ما لا نهاية. أضف حدّاً للعمق: <code>WHERE level &lt; 10</code> داخل الجزء التكراري.</p></div><h2 id="sec-11">مثال شامل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">تحليل شرائح العملاء</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>WITH
+customer_stats AS (
+  SELECT
+    c.id,
+    c.name,
+    c.city,
+    COUNT(o.id)                        AS order_count,
+    COALESCE(SUM(o.total), 0)          AS total_spent,
+    MAX(o.ordered_at)                  AS last_order
+  FROM customers c
+  LEFT JOIN orders o
+         ON o.customer_id = c.id
+        AND o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+  WHERE c.deleted_at IS NULL
+  GROUP BY c.id, c.name, c.city
+),
+segmented AS (
+  SELECT
+    *,
+    CASE
+      WHEN order_count = 0                          THEN &#39;لم يشترِ&#39;
+      WHEN total_spent &gt;= 10000                     THEN &#39;عميل ذهبي&#39;
+      WHEN total_spent &gt;= 3000                      THEN &#39;عميل فضّي&#39;
+      WHEN last_order &lt; CURRENT_DATE - INTERVAL &#39;180 days&#39; THEN &#39;خامل&#39;
+      ELSE &#39;عميل عادي&#39;
+    END AS segment
+  FROM customer_stats
+)
+SELECT
+  segment,
+  COUNT(*)                       AS customers,
+  ROUND(AVG(total_spent), 2)     AS avg_spent,
+  ROUND(SUM(total_spent), 2)     AS segment_revenue
+FROM segmented
+GROUP BY segment
+ORDER BY segment_revenue DESC;</code></pre></div><section class="exercise" id="sec-12"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: تحليلات متقدّمة</h3></header><div class="exercise-body"><p>اكتب عشرة استعلامات متقدّمة باستخدام الاستعلامات الفرعية والعروض و CTE.</p><p><strong>المطلوب:</strong></p><ul><li>المنتجات الأغلى من متوسّط سعر تصنيفها (استعلام فرعي مترابط).</li><li>العملاء الذين طلبوا منتجاً من التصنيف 1 (بـ <code>EXISTS</code>).</li><li>العملاء الذين لم يطلبوا قط (بـ <code>NOT EXISTS</code>).</li><li>أعلى ثلاثة منتجات مبيعاً في كل تصنيف.</li><li>عرض <code>active_products</code> يخفي المنتجات المعطّلة والمحذوفة.</li><li>عرض <code>order_summary</code> يجمع بيانات الطلب مع العميل وعدد العناصر.</li><li>CTE يحسب إجمالي إنفاق كل عميل ثم يصنّفه إلى شرائح.</li><li>CTE متعدّد: المبيعات الشهرية ثم مقارنتها بالمتوسّط العام.</li><li>استعلام تكراري يبني شجرة التصنيفات بمساراتها الكاملة.</li><li>مقارنة أداء: نفس التقرير مرة باستعلام فرعي مترابط ومرة بـ <code>JOIN</code>.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 «الأغلى من متوسّط تصنيفه» يحتاج استعلاماً فرعياً يشير للعمود الخارجي.</li><li>💡 الجدول المشتقّ في <code>FROM</code> يحتاج اسماً بديلاً إلزامياً.</li><li>💡 أضف حدّ عمق في الاستعلام التكراري للأمان.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- 1) أغلى من متوسّط تصنيفه
+SELECT p.name, p.price, p.category_id
+FROM products p
+WHERE p.price &gt; (
+  SELECT AVG(p2.price)
+  FROM products p2
+  WHERE p2.category_id = p.category_id
+)
+ORDER BY p.category_id, p.price DESC;
+
+-- 2) من طلب من التصنيف 1
+SELECT c.id, c.name
+FROM customers c
+WHERE EXISTS (
+  SELECT 1
+  FROM orders o
+  JOIN order_items oi ON oi.order_id = o.id
+  JOIN products p     ON p.id = oi.product_id
+  WHERE o.customer_id = c.id
+    AND p.category_id = 1
+);
+
+-- 3) من لم يطلب قط
+SELECT c.id, c.name, c.email
+FROM customers c
+WHERE NOT EXISTS (
+  SELECT 1 FROM orders o WHERE o.customer_id = c.id
+);
+
+-- 4) أعلى ثلاثة في كل تصنيف
+WITH ranked AS (
+  SELECT
+    p.category_id,
+    p.name,
+    SUM(oi.quantity) AS units,
+    ROW_NUMBER() OVER (
+      PARTITION BY p.category_id
+      ORDER BY SUM(oi.quantity) DESC
+    ) AS rn
+  FROM order_items oi
+  JOIN products p ON p.id = oi.product_id
+  JOIN orders   o ON o.id = oi.order_id
+  WHERE o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+  GROUP BY p.category_id, p.id, p.name
+)
+SELECT category_id, name, units
+FROM ranked
+WHERE rn &lt;= 3
+ORDER BY category_id, units DESC;
+
+-- 5) عرض المنتجات النشطة
+CREATE OR REPLACE VIEW active_products AS
+SELECT id, name, sku, price, stock, category_id
+FROM products
+WHERE is_active = TRUE;
+
+-- 6) عرض ملخّص الطلبات
+CREATE OR REPLACE VIEW order_summary AS
+SELECT
+  o.id,
+  o.ordered_at,
+  o.status,
+  c.name AS customer_name,
+  c.city,
+  COUNT(oi.id)                     AS item_count,
+  COALESCE(SUM(oi.quantity), 0)    AS total_quantity,
+  o.total
+FROM orders o
+JOIN customers c        ON c.id = o.customer_id
+LEFT JOIN order_items oi ON oi.order_id = o.id
+GROUP BY o.id, o.ordered_at, o.status, c.name, c.city, o.total;
+
+-- 7) شرائح العملاء
+WITH customer_stats AS (
+  SELECT
+    c.id, c.name, c.city,
+    COUNT(o.id)               AS order_count,
+    COALESCE(SUM(o.total), 0) AS total_spent
+  FROM customers c
+  LEFT JOIN orders o
+         ON o.customer_id = c.id
+        AND o.status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+  GROUP BY c.id, c.name, c.city
+)
+SELECT
+  name, city, order_count, total_spent,
+  CASE
+    WHEN order_count = 0      THEN &#39;لم يشترِ&#39;
+    WHEN total_spent &gt;= 10000 THEN &#39;ذهبي&#39;
+    WHEN total_spent &gt;= 3000  THEN &#39;فضّي&#39;
+    ELSE &#39;عادي&#39;
+  END AS segment
+FROM customer_stats
+ORDER BY total_spent DESC;
+
+-- 8) المبيعات الشهرية مقابل المتوسّط
+WITH
+monthly AS (
+  SELECT
+    EXTRACT(YEAR  FROM ordered_at) AS y,
+    EXTRACT(MONTH FROM ordered_at) AS m,
+    SUM(total) AS revenue
+  FROM orders
+  WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+  GROUP BY 1, 2
+),
+overall AS (
+  SELECT AVG(revenue) AS avg_rev FROM monthly
+)
+SELECT
+  mo.y, mo.m,
+  ROUND(mo.revenue, 2) AS revenue,
+  ROUND(ov.avg_rev, 2) AS average,
+  ROUND(100.0 * (mo.revenue - ov.avg_rev) / NULLIF(ov.avg_rev, 0), 1) AS pct_diff
+FROM monthly mo
+CROSS JOIN overall ov
+ORDER BY mo.y, mo.m;
+
+-- 9) شجرة التصنيفات
+WITH RECURSIVE tree AS (
+  SELECT id, name, parent_id, 1 AS level, CAST(name AS TEXT) AS path
+  FROM categories
+  WHERE parent_id IS NULL
+
+  UNION ALL
+
+  SELECT c.id, c.name, c.parent_id, t.level + 1, t.path || &#39; &gt; &#39; || c.name
+  FROM categories c
+  JOIN tree t ON t.id = c.parent_id
+  WHERE t.level &lt; 10          -- حدّ أمان
+)
+SELECT level, path
+FROM tree
+ORDER BY path;
+
+-- 10) مقارنة الأداء
+-- (أ) استعلام فرعي مترابط — أبطأ
+SELECT
+  c.name,
+  (SELECT COUNT(*) FROM orders o WHERE o.customer_id = c.id) AS order_count
+FROM customers c;
+
+-- (ب) بالربط والتجميع — أسرع
+SELECT c.name, COUNT(o.id) AS order_count
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+GROUP BY c.id, c.name;
+
+-- استخدم EXPLAIN لمقارنة الخطتين
+-- EXPLAIN ANALYZE SELECT …;</code></pre></div></details></div></section><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما فخّ <code>NOT IN</code> مع الاستعلامات الفرعية؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>إن أرجع الفرعي <code>NULL</code> واحدة لا تُرجع الجملة أي صف</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا يعمل</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يحتاج فهرساً</span></label></div><div class="q-explain"><strong>الشرح:</strong> استخدم <code>NOT EXISTS</code> أو استبعد <code>NULL</code> داخل الاستعلام الفرعي.</div></div><div class="q-item"><p class="q-text">2. لماذا <code>EXISTS</code> غالباً أسرع من <code>IN</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أقصر</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>يتوقّف عند أول مطابقة بدل بناء القائمة كاملة</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>يستخدم فهرساً</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>لا فرق</span></label></div><div class="q-explain"><strong>الشرح:</strong> ويتجنّب أيضاً مشكلة <code>NULL</code> تماماً.</div></div><div class="q-item"><p class="q-text">3. هل يخزّن العرض (View) البيانات؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>نعم</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>لا — يُنفَّذ استعلامه عند كل استدعاء</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أحياناً</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يعتمد</span></label></div><div class="q-explain"><strong>الشرح:</strong> للتخزين الفعلي استخدم العرض المُجسَّد (Materialized View).</div></div><div class="q-item"><p class="q-text">4. ما الفائدة الأهم لـ CTE؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>السرعة</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>تحويل استعلام متشابك إلى خطوات مقروءة قابلة للتشخيص</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>الأمان</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>الحجم</span></label></div><div class="q-explain"><strong>الشرح:</strong> الأداء متقارب غالباً؛ المكسب الحقيقي في الوضوح وقابلية الصيانة.</div></div><div class="q-item"><p class="q-text">5. متى تحتاج <code>WITH RECURSIVE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع الجداول الكبيرة</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>مع البنى الهرمية غير محدّدة العمق كشجرة التصنيفات</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع التجميع</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع الفهارس</span></label></div><div class="q-explain"><strong>الشرح:</strong> يبني النتيجة طبقة بعد طبقة حتى تنتهي الأبناء.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/08-subqueries" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="07-joins.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>الربط بين الجداول: JOIN</b></span></a>
+  <a class="next" href="09-indexes.html"><span><small>الدرس التالي</small><b>الفهارس والأداء</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار SQL</h3>
+        <div class="ring-wrap" data-ring data-track="sql" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">ما الاستعلام الفرعي؟</a></li><li><a href="#sec-2">المواضع الأربعة</a></li><li class="sub"><a href="#sec-3">1. في WHERE</a></li><li class="sub"><a href="#sec-4">2. في FROM — جدول مشتقّ</a></li><li class="sub"><a href="#sec-5">3. في SELECT — عمود محسوب</a></li><li class="sub"><a href="#sec-6">4. في HAVING</a></li><li><a href="#sec-7">EXISTS مقابل IN</a></li><li><a href="#sec-8">العروض (Views)</a></li><li><a href="#sec-9">تعبيرات الجداول المشتركة (CTE)</a></li><li><a href="#sec-10">الاستعلامات التكرارية</a></li><li><a href="#sec-11">مثال شامل</a></li><li><a href="#sec-12">تمرين: تحليلات متقدّمة</a></li><li><a href="#sec-13">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>WHERE x IN (SELECT …)</code><small>فرعي في الشرط</small></div><div class="ref-item"><code>WHERE EXISTS (SELECT 1 …)</code><small>فحص الوجود</small></div><div class="ref-item"><code>FROM (SELECT …) AS t</code><small>فرعي كجدول</small></div><div class="ref-item"><code>SELECT (SELECT …) AS c</code><small>فرعي كعمود</small></div><div class="ref-item"><code>CREATE VIEW v AS …</code><small>عرض محفوظ</small></div><div class="ref-item"><code>WITH t AS (…) SELECT …</code><small>تعبير جدول مشترك</small></div><div class="ref-item"><code>WITH RECURSIVE</code><small>استعلام تكراري</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="09-indexes.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الفهارس والأداء<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>
