@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="tailwind">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مسار Tailwind CSS — CodeWay Web</title>
+<meta name="description" content="بدل كتابة CSS مخصّص لكل مكوّن، تركّب التصميم من أصناف مساعدة صغيرة مباشرة في الترميز — أسرع في البناء وأسهل في الاتّساق.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="مسار Tailwind CSS — CodeWay Web">
+<meta property="og:description" content="بدل كتابة CSS مخصّص لكل مكوّن، تركّب التصميم من أصناف مساعدة صغيرة مباشرة في الترميز — أسرع في البناء وأسهل في الاتّساق.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li aria-current="page">Tailwind CSS</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="hero" style="padding-top:var(--space-6)">
+  <div class="container">
+    <span class="eyebrow"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg> الواجهة الأمامية</span>
+    <h1>مسار <span class="gradient-text">Tailwind CSS</span></h1>
+    <p class="lead">بدل كتابة CSS مخصّص لكل مكوّن، تركّب التصميم من أصناف مساعدة صغيرة مباشرة في الترميز — أسرع في البناء وأسهل في الاتّساق.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="01-utility-first.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg> ابدأ من الدرس الأول</a>
+      <a class="btn btn-ghost" href="../../tracks.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> كل المسارات</a>
+    </div>
+    <div class="stats"><div class="stat"><div class="stat-num gradient-text">6</div><div class="stat-label">درساً</div></div><div class="stat"><div class="stat-num gradient-text">4 س 25 د</div><div class="stat-label">زمن الدراسة</div></div><div class="stat"><div class="stat-num gradient-text">6</div><div class="stat-label">تمريناً</div></div><div class="stat"><div class="stat-num gradient-text">30</div><div class="stat-label">سؤالاً</div></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="card" style="margin-bottom:var(--space-6)" data-track-progress="tailwind" data-total="6">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.7rem">
+        <strong>تقدّمك في المسار</strong>
+        <span class="muted" data-progress-label>لم تبدأ بعد</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%"></div></div>
+      <p style="margin-top:.8rem;font-size:.9rem" class="muted"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> يُحفظ تقدّمك في متصفحك فقط (localStorage) ولا يُرسل لأي جهة.</p>
+    </div>
+
+    <div class="section-head">
+      <h2>دروس المسار</h2>
+      <p>المستويات المتوفّرة: <span class="badge level-مبتدئ">مبتدئ</span> <span class="badge level-متوسط">متوسط</span> — المتطلّب السابق: أساسيات CSS جيدة (الصندوق، Flexbox، Grid).</p>
+    </div>
+
+    <div class="search-box" style="margin-bottom:var(--space-5)">
+      <input type="search" placeholder="ابحث في دروس Tailwind CSS…" data-search-for="#lessonGrid" aria-label="بحث في الدروس">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+
+    <div class="grid grid-3" id="lessonGrid">
+<a class="card lesson-card" href="01-utility-first.html" data-lesson-id="tailwind/01-utility-first"
+   data-search-text="فلسفة Utility-First والإعداد لماذا تُكتب الأنماط في الترميز نفسه، والاعتراضات الشائعة والردّ عليها، وكيف تبدأ مشروعك. مقدمة الإعداد">
+  <span class="num">1</span>
+  <h3>فلسفة Utility-First والإعداد</h3>
+  <p>لماذا تُكتب الأنماط في الترميز نفسه، والاعتراضات الشائعة والردّ عليها، وكيف تبدأ مشروعك.</p>
+  <div class="track-meta">
+    <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 40 د</span>
+    <span class="badge level-مبتدئ">مبتدئ</span>
+    <span class="done-flag"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> مكتمل</span>
+  </div>
+</a>
+<a class="card lesson-card" href="02-spacing-sizing.html" data-lesson-id="tailwind/02-spacing-sizing"
+   data-search-text="المسافات والأحجام مقياس المسافات، الحشو والهوامش بكل الاتجاهات، العرض والارتفاع، والقيم العشوائية. المسافات الأحجام">
+  <span class="num">2</span>
+  <h3>المسافات والأحجام</h3>
+  <p>مقياس المسافات، الحشو والهوامش بكل الاتجاهات، العرض والارتفاع، والقيم العشوائية.</p>
+  <div class="track-meta">
+    <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 40 د</span>
+    <span class="badge level-مبتدئ">مبتدئ</span>
+    <span class="done-flag"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> مكتمل</span>
+  </div>
+</a>
+<a class="card lesson-card" href="03-colors-typography.html" data-lesson-id="tailwind/03-colors-typography"
+   data-search-text="الألوان والطباعة لوحة الألوان ودرجاتها، والخلفيات والتدرّجات، وكل ما يخصّ النص من حجم ووزن وتباعد. الألوان الطباعة">
+  <span class="num">3</span>
+  <h3>الألوان والطباعة</h3>
+  <p>لوحة الألوان ودرجاتها، والخلفيات والتدرّجات، وكل ما يخصّ النص من حجم ووزن وتباعد.</p>
+  <div class="track-meta">
+    <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 45 د</span>
+    <span class="badge level-مبتدئ">مبتدئ</span>
+    <span class="done-flag"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> مكتمل</span>
+  </div>
+</a>
+<a class="card lesson-card" href="04-layout.html" data-lesson-id="tailwind/04-layout"
+   data-search-text="التخطيط: Flexbox و Grid بناء التخطيطات بأصناف Flexbox و Grid، والتموضع، والتحكّم في التدفّق. Flexbox Grid">
+  <span class="num">4</span>
+  <h3>التخطيط: Flexbox و Grid</h3>
+  <p>بناء التخطيطات بأصناف Flexbox و Grid، والتموضع، والتحكّم في التدفّق.</p>
+  <div class="track-meta">
+    <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 50 د</span>
+    <span class="badge level-متوسط">متوسط</span>
+    <span class="done-flag"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> مكتمل</span>
+  </div>
+</a>
+<a class="card lesson-card" href="05-states-variants.html" data-lesson-id="tailwind/05-states-variants"
+   data-search-text="الحالات والمتغيّرات تنسيق الحالات التفاعلية والوضع الليلي والتفاعل بين العناصر بالمجموعات والأقران. الحالات التفاعل">
+  <span class="num">5</span>
+  <h3>الحالات والمتغيّرات</h3>
+  <p>تنسيق الحالات التفاعلية والوضع الليلي والتفاعل بين العناصر بالمجموعات والأقران.</p>
+  <div class="track-meta">
+    <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 45 د</span>
+    <span class="badge level-متوسط">متوسط</span>
+    <span class="done-flag"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> مكتمل</span>
+  </div>
+</a>
+<a class="card lesson-card" href="06-responsive.html" data-lesson-id="tailwind/06-responsive"
+   data-search-text="التصميم المتجاوب منهجية الجوال أولاً، نقاط التوقف، والاستعلامات الحاوية، وأنماط التجاوب العملية. متجاوب الجوال">
+  <span class="num">6</span>
+  <h3>التصميم المتجاوب</h3>
+  <p>منهجية الجوال أولاً، نقاط التوقف، والاستعلامات الحاوية، وأنماط التجاوب العملية.</p>
+  <div class="track-meta">
+    <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 45 د</span>
+    <span class="badge level-متوسط">متوسط</span>
+    <span class="done-flag"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> مكتمل</span>
+  </div>
+</a></div>
+    <p class="no-results">لا توجد دروس مطابقة لبحثك.</p>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+
+</body>
+</html>
