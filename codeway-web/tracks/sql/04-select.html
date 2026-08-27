@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sql">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاستعلام: SELECT و WHERE — مسار SQL | CodeWay Web</title>
+<meta name="description" content="قلب SQL: اختيار الأعمدة، وترشيح الصفوف بكل أنواع الشروط، والتعامل مع النصوص والقوائم والمدَيات.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="الاستعلام: SELECT و WHERE — مسار SQL | CodeWay Web">
+<meta property="og:description" content="قلب SQL: اختيار الأعمدة، وترشيح الصفوف بكل أنواع الشروط، والتعامل مع النصوص والقوائم والمدَيات.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">SQL</a></li>
+      <li aria-current="page">الاستعلام: SELECT و WHERE</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 4 من 6</span>
+      <span class="badge level-مبتدئ">مبتدئ</span>
+      <span class="badge">SELECT</span><span class="badge">الترشيح</span>
+    </div>
+    <h1>الاستعلام: SELECT و WHERE</h1>
+    <p class="summary">قلب SQL: اختيار الأعمدة، وترشيح الصفوف بكل أنواع الشروط، والتعامل مع النصوص والقوائم والمدَيات.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 50 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار SQL</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تختار أعمدة محدّدة وتسمّيها.</li><li>ترشّح الصفوف بشروط بسيطة ومركّبة.</li><li>تبحث في النصوص بأنماط.</li><li>تتعامل مع القوائم والمدَيات و NULL.</li><li>تفهم ترتيب تنفيذ الاستعلام.</li></ul></div>
+      <h2 id="sec-1">بنية الاستعلام</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT   الأعمدة
+FROM     الجدول
+WHERE    شرط الترشيح
+GROUP BY التجميع
+HAVING   شرط على المجموعات
+ORDER BY الترتيب
+LIMIT    عدد النتائج;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> ترتيب التنفيذ يخالف ترتيب الكتابة</div><p>المحرّك ينفّذ: <code>FROM</code> ← <code>WHERE</code> ← <code>GROUP BY</code> ← <code>HAVING</code> ← <code>SELECT</code> ← <code>ORDER BY</code> ← <code>LIMIT</code>. لهذا <strong>لا تستطيع</strong> استخدام اسم بديل عرّفته في <code>SELECT</code> داخل <code>WHERE</code> — لأن <code>WHERE</code> تُنفَّذ قبله.</p></div><h2 id="sec-2">اختيار الأعمدة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- كل الأعمدة
+SELECT * FROM products;
+
+-- أعمدة محدّدة — الأفضل دائماً
+SELECT name, price, stock FROM products;
+
+-- أسماء بديلة
+SELECT
+  name        AS product_name,
+  price * 1.15 AS price_with_vat,
+  stock       AS &quot;الكمية المتاحة&quot;
+FROM products;
+
+-- تعبيرات محسوبة
+SELECT
+  name,
+  price,
+  stock,
+  price * stock AS inventory_value
+FROM products;
+
+-- قيم ثابتة
+SELECT name, &#39;ريال&#39; AS currency FROM products;
+
+-- قيم مميّزة بلا تكرار
+SELECT DISTINCT city FROM customers;
+SELECT DISTINCT city, country FROM customers;</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> تجنّب `SELECT *` في التطبيقات</div><p>ينقل أعمدة لا تحتاجها فيستهلك شبكة وذاكرة، ويكسر كودك عند إضافة عمود جديد، ويمنع المحرّك من استخدام «الفهرس المغطّي». استخدمه للاستكشاف اليدوي فقط.</p></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> الأسماء البديلة في الناتج</div><iframe title="الأسماء البديلة في الناتج" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.88em}th{background:#6a5acd;color:#fff;padding:8px 12px;text-align:right}td{padding:7px 12px;border-bottom:1px solid #e2e8f0}tr:nth-child(even) td{background:#f8fafc}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;product_name&lt;/th&gt;&lt;th&gt;price_with_vat&lt;/th&gt;&lt;th&gt;inventory_value&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;سماعة لاسلكية&lt;/td&gt;&lt;td&gt;343.85&lt;/td&gt;&lt;td&gt;14950.00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;لوحة مفاتيح&lt;/td&gt;&lt;td&gt;517.50&lt;/td&gt;&lt;td&gt;13500.00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ماوس لاسلكي&lt;/td&gt;&lt;td&gt;149.50&lt;/td&gt;&lt;td&gt;8450.00&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:240px"></iframe></div><h2 id="sec-3">الترشيح بـ WHERE</h2><h3 id="sec-4">معاملات المقارنة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT * FROM products WHERE price = 299;
+SELECT * FROM products WHERE price &gt; 500;
+SELECT * FROM products WHERE price &gt;= 500;
+SELECT * FROM products WHERE price &lt; 100;
+SELECT * FROM products WHERE price &lt;&gt; 299;   -- لا يساوي
+SELECT * FROM products WHERE price != 299;   -- نفس المعنى</code></pre></div><h3 id="sec-5">دمج الشروط</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- كلا الشرطين
+SELECT * FROM products
+WHERE price &gt; 100 AND stock &gt; 0;
+
+-- أحد الشرطين
+SELECT * FROM products
+WHERE category_id = 1 OR category_id = 2;
+
+-- النفي
+SELECT * FROM products
+WHERE NOT is_active;
+
+-- الأقواس تحسم الأولوية — استخدمها دائماً
+SELECT * FROM products
+WHERE (category_id = 1 OR category_id = 2)
+  AND price &lt; 500;</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> أولوية AND أعلى من OR</div><p>الشرط <code>a OR b AND c</code> يُفسَّر <code>a OR (b AND c)</code> لا <code>(a OR b) AND c</code>. هذا مصدر أخطاء منطقية يصعب اكتشافها. <strong>ضع أقواساً صريحة دائماً</strong> حتى لو لم تكن ضرورية.</p></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> أثر الأقواس</div><iframe title="أثر الأقواس" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}pre{background:#0f1729;color:#e2e8f0;padding:12px;border-radius:10px;direction:ltr;text-align:left;font-family:monospace;font-size:.82em;line-height:1.85;margin:0 0 10px;overflow-x:auto}.c{color:#fca5a5}.g{color:#86efac}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;pre&gt;&lt;span class=&quot;c&quot;&gt;-- بلا أقواس: يُفسَّر خطأً&lt;/span&gt;
+WHERE city = 'الرياض' OR city = 'جدة' AND price &amp;lt; 500
+
+&lt;span class=&quot;c&quot;&gt;-- المعنى الفعلي:&lt;/span&gt;
+WHERE city = 'الرياض' OR (city = 'جدة' AND price &amp;lt; 500)
+&lt;span class=&quot;c&quot;&gt;-- كل منتجات الرياض تظهر مهما كان سعرها!&lt;/span&gt;&lt;/pre&gt;&lt;pre&gt;&lt;span class=&quot;g&quot;&gt;-- بالأقواس: المعنى المقصود&lt;/span&gt;
+WHERE (city = 'الرياض' OR city = 'جدة') AND price &amp;lt; 500&lt;/pre&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><h3 id="sec-6">القوائم والمدَيات</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ضمن قائمة
+SELECT * FROM products WHERE category_id IN (1, 2, 5);
+SELECT * FROM customers WHERE city IN (&#39;الرياض&#39;, &#39;جدة&#39;, &#39;الدمام&#39;);
+
+-- خارج القائمة
+SELECT * FROM orders WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;);
+
+-- ضمن مدى — شامل الطرفين
+SELECT * FROM products WHERE price BETWEEN 100 AND 500;
+-- تكافئ: price &gt;= 100 AND price &lt;= 500
+
+SELECT * FROM orders
+WHERE ordered_at BETWEEN &#39;2026-01-01&#39; AND &#39;2026-03-31&#39;;
+
+-- خارج المدى
+SELECT * FROM products WHERE price NOT BETWEEN 100 AND 500;</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> فخّ BETWEEN مع التواريخ</div><p><code>BETWEEN &quot;2026-01-01&quot; AND &quot;2026-03-31&quot;</code> مع عمود <code>TIMESTAMP</code> <strong>يستثني</strong> كل ما بعد منتصف ليل 31 مارس. الأصح: <code>&gt;= &quot;2026-01-01&quot; AND &lt; &quot;2026-04-01&quot;</code>.</p></div><h3 id="sec-7">القيم الفارغة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT * FROM customers WHERE phone IS NULL;
+SELECT * FROM customers WHERE phone IS NOT NULL;
+
+-- استبدال NULL بقيمة
+SELECT name, COALESCE(phone, &#39;غير متوفّر&#39;) AS phone
+FROM customers;
+
+-- انتبه: NOT IN مع NULL لا تُرجع شيئاً
+SELECT * FROM products
+WHERE category_id NOT IN (1, 2, NULL);   -- ✗ نتيجة فارغة دائماً!</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>سبب الفخّ الأخير: <code>NOT IN</code> تتحوّل إلى سلسلة <code>&lt;&gt;</code> مع <code>AND</code>، وأي مقارنة مع <code>NULL</code> تُنتج <code>NULL</code> فيصبح الشرط كله غير محقّق. تجنّب <code>NULL</code> داخل قوائم <code>NOT IN</code>.</p></div><h2 id="sec-8">البحث النصّي بـ LIKE</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- % تعني أي عدد من المحارف (بما فيه صفر)
+SELECT * FROM products WHERE name LIKE &#39;سماعة%&#39;;    -- يبدأ بـ
+SELECT * FROM products WHERE name LIKE &#39;%لاسلكي&#39;;   -- ينتهي بـ
+SELECT * FROM products WHERE name LIKE &#39;%لاسلكي%&#39;;  -- يحتوي
+
+-- _ تعني محرفاً واحداً بالضبط
+SELECT * FROM products WHERE sku LIKE &#39;SKU-00_&#39;;
+
+-- النفي
+SELECT * FROM products WHERE name NOT LIKE &#39;%مستعمل%&#39;;
+
+-- بلا حساسية لحالة الأحرف (PostgreSQL)
+SELECT * FROM products WHERE name ILIKE &#39;%laptop%&#39;;</code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> أنماط LIKE</div><iframe title="أنماط LIKE" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.88em}th{background:#6a5acd;color:#fff;padding:8px 12px;text-align:right}td{padding:7px 12px;border-bottom:1px solid #e2e8f0}code{font-family:monospace;direction:ltr;display:inline-block;background:#f1f5f9;padding:2px 7px;border-radius:5px;font-size:.88em}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;النمط&lt;/th&gt;&lt;th&gt;يطابق&lt;/th&gt;&lt;th&gt;لا يطابق&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'سماعة%'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;سماعة لاسلكية&lt;/td&gt;&lt;td&gt;سماعات رأس&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'%لاسلكي%'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;ماوس لاسلكي&lt;/td&gt;&lt;td&gt;لوحة مفاتيح&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'SKU-00_'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;SKU-001&lt;/td&gt;&lt;td&gt;SKU-0012&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;'a%b'&lt;/code&gt;&lt;/td&gt;&lt;td&gt;ab, axxb&lt;/td&gt;&lt;td&gt;ba&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> مشكلة الأداء</div><p>نمط يبدأ بـ <code>%</code> مثل <code>LIKE &quot;%نص%&quot;</code> <strong>لا يستطيع استخدام الفهرس</strong>، فيمسح المحرّك الجدول كله. مع مليون صف يصبح بطيئاً جداً. للبحث النصّي الجادّ استخدم فهرسة النص الكامل (Full-Text Search) أو محرك بحث مخصّص.</p></div><h2 id="sec-9">التعامل مع التواريخ</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- مقارنة مباشرة
+SELECT * FROM orders WHERE ordered_at &gt;= &#39;2026-01-01&#39;;
+
+-- استخراج أجزاء
+SELECT * FROM orders WHERE EXTRACT(YEAR FROM ordered_at) = 2026;
+SELECT * FROM orders WHERE EXTRACT(MONTH FROM ordered_at) = 3;
+
+-- MySQL
+SELECT * FROM orders WHERE YEAR(ordered_at) = 2026;
+SELECT * FROM orders WHERE DATE(ordered_at) = &#39;2026-03-15&#39;;
+
+-- آخر ثلاثين يوماً
+SELECT * FROM orders
+WHERE ordered_at &gt;= CURRENT_DATE - INTERVAL &#39;30 days&#39;;   -- PostgreSQL
+
+SELECT * FROM orders
+WHERE ordered_at &gt;= DATE_SUB(CURDATE(), INTERVAL 30 DAY);  -- MySQL</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> لا تلفّ العمود بدالة</div><p><code>WHERE YEAR(ordered_at) = 2026</code> تمنع استخدام الفهرس لأن المحرّك يجب أن يحسب الدالة لكل صف. الأفضل: <code>WHERE ordered_at &gt;= &quot;2026-01-01&quot; AND ordered_at &lt; &quot;2027-01-01&quot;</code>.</p></div><h2 id="sec-10">الترتيب والتحديد</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ترتيب تصاعدي (الافتراضي)
+SELECT * FROM products ORDER BY price;
+SELECT * FROM products ORDER BY price ASC;
+
+-- تنازلي
+SELECT * FROM products ORDER BY price DESC;
+
+-- عدة أعمدة
+SELECT * FROM products ORDER BY category_id ASC, price DESC;
+
+-- بترتيب العمود في SELECT
+SELECT name, price FROM products ORDER BY 2 DESC;
+
+-- موضع NULL
+SELECT * FROM customers ORDER BY phone NULLS LAST;   -- PostgreSQL
+
+-- التحديد
+SELECT * FROM products ORDER BY price DESC LIMIT 10;
+SELECT * FROM products ORDER BY price DESC LIMIT 10 OFFSET 20;  -- الصفحة الثالثة</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>للترقيم (Pagination): الصفحة رقم <code>n</code> بحجم <code>s</code> تكون <code>LIMIT s OFFSET (n-1)*s</code>. لكن <code>OFFSET</code> الكبير بطيء لأن المحرّك يقرأ ويتخطّى؛ في الجداول الضخمة استخدم الترقيم بالمفتاح: <code>WHERE id &gt; last_id ORDER BY id LIMIT 20</code>.</p></div><h2 id="sec-11">استعلامات عملية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- المنتجات المتاحة في نطاق سعري
+SELECT name, price, stock
+FROM products
+WHERE is_active = TRUE
+  AND stock &gt; 0
+  AND price BETWEEN 100 AND 1000
+ORDER BY price ASC;
+
+-- العملاء بلا رقم جوال في مدن محدّدة
+SELECT name, email, city
+FROM customers
+WHERE city IN (&#39;الرياض&#39;, &#39;جدة&#39;)
+  AND phone IS NULL
+  AND deleted_at IS NULL;
+
+-- الطلبات النشطة هذا الشهر
+SELECT id, customer_id, total, status
+FROM orders
+WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;)
+  AND ordered_at &gt;= &#39;2026-03-01&#39;
+  AND ordered_at &lt;  &#39;2026-04-01&#39;
+ORDER BY total DESC
+LIMIT 20;
+
+-- بحث في المنتجات
+SELECT name, price
+FROM products
+WHERE (name LIKE &#39;%سماعة%&#39; OR sku LIKE &#39;%SKU-00%&#39;)
+  AND is_active = TRUE
+ORDER BY name;</code></pre></div><section class="exercise" id="sec-12"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: استعلامات متجر</h3></header><div class="exercise-body"><p>اكتب اثني عشر استعلاماً على قاعدة المتجر.</p><p><strong>المطلوب:</strong></p><ul><li>كل المنتجات النشطة مرتّبة بالسعر تنازلياً.</li><li>اسم المنتج وسعره شاملاً ضريبة 15٪ باسم بديل عربي.</li><li>المنتجات التي سعرها بين 200 و 800 ومخزونها أكبر من صفر.</li><li>المنتجات في التصنيفات 1 أو 3، بسعر أقل من 500 (انتبه للأقواس).</li><li>العملاء الذين لا يملكون رقم جوال.</li><li>المدن المميّزة التي ينتمي إليها العملاء بلا تكرار.</li><li>المنتجات التي يحتوي اسمها كلمة «لاسلكي».</li><li>المنتجات التي رمزها يبدأ بـ <code>SKU-00</code> ويليه رقم واحد.</li><li>الطلبات التي حالتها ليست ملغاة ولا مستردّة.</li><li>الطلبات في الربع الأول من 2026 (انتبه لفخّ BETWEEN).</li><li>أغلى خمسة منتجات في التصنيف 2.</li><li>الصفحة الثالثة من المنتجات بحجم صفحة 10.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 استخدم الأقواس صراحةً مع أي خليط من <code>AND</code> و <code>OR</code>.</li><li>💡 للتواريخ استخدم <code>&gt;=</code> و <code>&lt;</code> بدل <code>BETWEEN</code>.</li><li>💡 <code>_</code> في <code>LIKE</code> تطابق محرفاً واحداً بالضبط.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- 1) المنتجات النشطة
+SELECT name, price, stock
+FROM products
+WHERE is_active = TRUE
+ORDER BY price DESC;
+
+-- 2) السعر شاملاً الضريبة
+SELECT
+  name                        AS &quot;المنتج&quot;,
+  price                       AS &quot;السعر&quot;,
+  ROUND(price * 1.15, 2)      AS &quot;السعر شامل الضريبة&quot;
+FROM products
+WHERE is_active = TRUE;
+
+-- 3) نطاق سعري ومخزون متاح
+SELECT name, price, stock
+FROM products
+WHERE price BETWEEN 200 AND 800
+  AND stock &gt; 0
+ORDER BY price;
+
+-- 4) تصنيفات محدّدة بسعر أقل من 500
+SELECT name, price, category_id
+FROM products
+WHERE (category_id = 1 OR category_id = 3)
+  AND price &lt; 500;
+
+-- 5) عملاء بلا جوال
+SELECT name, email, city
+FROM customers
+WHERE phone IS NULL
+  AND deleted_at IS NULL;
+
+-- 6) المدن المميّزة
+SELECT DISTINCT city
+FROM customers
+WHERE city IS NOT NULL
+ORDER BY city;
+
+-- 7) بحث نصّي
+SELECT name, price
+FROM products
+WHERE name LIKE &#39;%لاسلكي%&#39;;
+
+-- 8) نمط الرمز
+SELECT name, sku
+FROM products
+WHERE sku LIKE &#39;SKU-00_&#39;;
+
+-- 9) الطلبات النشطة
+SELECT id, customer_id, total, status
+FROM orders
+WHERE status NOT IN (&#39;cancelled&#39;, &#39;refunded&#39;);
+
+-- 10) الربع الأول 2026 — بلا فخّ BETWEEN
+SELECT id, total, ordered_at
+FROM orders
+WHERE ordered_at &gt;= &#39;2026-01-01&#39;
+  AND ordered_at &lt;  &#39;2026-04-01&#39;
+ORDER BY ordered_at;
+
+-- 11) أغلى خمسة في التصنيف 2
+SELECT name, price
+FROM products
+WHERE category_id = 2
+ORDER BY price DESC
+LIMIT 5;
+
+-- 12) الصفحة الثالثة
+SELECT name, price
+FROM products
+ORDER BY id
+LIMIT 10 OFFSET 20;</code></pre></div></details></div></section><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الترتيب الفعلي لتنفيذ الاستعلام؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>SELECT ثم FROM ثم WHERE</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>FROM ثم WHERE ثم SELECT ثم ORDER BY</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>WHERE ثم SELECT</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>عشوائي</span></label></div><div class="q-explain"><strong>الشرح:</strong> لهذا لا يمكن استخدام اسم بديل من <code>SELECT</code> داخل <code>WHERE</code>.</div></div><div class="q-item"><p class="q-text">2. كيف يُفسَّر <code>a OR b AND c</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>(a OR b) AND c</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span><code>a OR (b AND c)</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>من اليسار لليمين</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>خطأ</span></label></div><div class="q-explain"><strong>الشرح:</strong> أولوية <code>AND</code> أعلى؛ استخدم أقواساً صريحة دائماً.</div></div><div class="q-item"><p class="q-text">3. لماذا <code>LIKE &quot;%نص%&quot;</code> بطيئة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>طويلة</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>لا تستطيع استخدام الفهرس فيُمسح الجدول كله</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>تحتاج ترميزاً</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>غير مدعومة</span></label></div><div class="q-explain"><strong>الشرح:</strong> الفهرس يعمل من بداية القيمة؛ البدء بـ <code>%</code> يعطّله.</div></div><div class="q-item"><p class="q-text">4. ما مشكلة <code>BETWEEN &quot;2026-01-01&quot; AND &quot;2026-03-31&quot;</code> مع <code>TIMESTAMP</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا مشكلة</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>تستثني ما بعد منتصف ليل 31 مارس</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>بطيئة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>خطأ صياغة</span></label></div><div class="q-explain"><strong>الشرح:</strong> الأصح: <code>&gt;= &quot;2026-01-01&quot; AND &lt; &quot;2026-04-01&quot;</code>.</div></div><div class="q-item"><p class="q-text">5. لماذا نتجنّب <code>SELECT *</code> في التطبيقات؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>غير مدعوم</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>ينقل بيانات لا تحتاجها ويكسر الكود عند إضافة عمود ويمنع الفهرس المغطّي</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>أطول</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا سبب</span></label></div><div class="q-explain"><strong>الشرح:</strong> حدّد الأعمدة التي تحتاجها فعلاً.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/04-select" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="03-dml.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>إدراج البيانات وتعديلها وحذفها</b></span></a>
+  <a class="next" href="05-functions.html"><span><small>الدرس التالي</small><b>الدوال ومعالجة القيم</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار SQL</h3>
+        <div class="ring-wrap" data-ring data-track="sql" data-total="6">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">بنية الاستعلام</a></li><li><a href="#sec-2">اختيار الأعمدة</a></li><li><a href="#sec-3">الترشيح بـ WHERE</a></li><li class="sub"><a href="#sec-4">معاملات المقارنة</a></li><li class="sub"><a href="#sec-5">دمج الشروط</a></li><li class="sub"><a href="#sec-6">القوائم والمدَيات</a></li><li class="sub"><a href="#sec-7">القيم الفارغة</a></li><li><a href="#sec-8">البحث النصّي بـ LIKE</a></li><li><a href="#sec-9">التعامل مع التواريخ</a></li><li><a href="#sec-10">الترتيب والتحديد</a></li><li><a href="#sec-11">استعلامات عملية</a></li><li><a href="#sec-12">تمرين: استعلامات متجر</a></li><li><a href="#sec-13">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>SELECT col FROM t</code><small>اختيار أعمدة</small></div><div class="ref-item"><code>AS alias</code><small>تسمية بديلة</small></div><div class="ref-item"><code>WHERE cond</code><small>ترشيح الصفوف</small></div><div class="ref-item"><code>AND / OR / NOT</code><small>دمج الشروط</small></div><div class="ref-item"><code>IN (a, b, c)</code><small>ضمن قائمة</small></div><div class="ref-item"><code>BETWEEN a AND b</code><small>ضمن مدى</small></div><div class="ref-item"><code>LIKE &quot;%نص%&quot;</code><small>بحث نمطي</small></div><div class="ref-item"><code>IS NULL</code><small>فحص القيمة الفارغة</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="05-functions.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الدوال ومعالجة القيم<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

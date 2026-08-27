@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sql">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إدراج البيانات وتعديلها وحذفها — مسار SQL | CodeWay Web</title>
+<meta name="description" content="أوامر INSERT و UPDATE و DELETE، والاحتياطات التي تمنعك من إتلاف بياناتك.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="إدراج البيانات وتعديلها وحذفها — مسار SQL | CodeWay Web">
+<meta property="og:description" content="أوامر INSERT و UPDATE و DELETE، والاحتياطات التي تمنعك من إتلاف بياناتك.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">SQL</a></li>
+      <li aria-current="page">إدراج البيانات وتعديلها وحذفها</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 3 من 6</span>
+      <span class="badge level-مبتدئ">مبتدئ</span>
+      <span class="badge">DML</span><span class="badge">البيانات</span>
+    </div>
+    <h1>إدراج البيانات وتعديلها وحذفها</h1>
+    <p class="summary">أوامر INSERT و UPDATE و DELETE، والاحتياطات التي تمنعك من إتلاف بياناتك.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 40 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار SQL</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تدرج صفوفاً مفردة ومتعدّدة.</li><li>تحدّث البيانات بأمان.</li><li>تحذف الصفوف مع فهم المخاطر.</li><li>تستخدم الإدراج من استعلام.</li><li>تتعامل مع التعارضات (Upsert).</li></ul></div>
+      <h2 id="sec-1">الإدراج</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- صف واحد بأعمدة محدّدة — الطريقة الموصى بها
+INSERT INTO customers (name, email, city)
+VALUES (&#39;سارة عبدالله&#39;, &#39;sara@example.com&#39;, &#39;الرياض&#39;);
+
+-- عدة صفوف دفعة واحدة — أسرع بكثير
+INSERT INTO customers (name, email, city) VALUES
+  (&#39;خالد الأحمد&#39;,   &#39;khalid@example.com&#39;, &#39;جدة&#39;),
+  (&#39;نورة القحطاني&#39;, &#39;noura@example.com&#39;,  &#39;الدمام&#39;),
+  (&#39;فهد العتيبي&#39;,   &#39;fahad@example.com&#39;,  &#39;الرياض&#39;);
+
+-- بلا تحديد الأعمدة — تجنّبها
+INSERT INTO customers VALUES (1, &#39;سارة&#39;, &#39;sara@example.com&#39;, &#39;الرياض&#39;);</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> حدّد الأعمدة دائماً</div><p>الإدراج بلا تحديد أعمدة يعتمد على <strong>ترتيبها</strong> في الجدول. إن أضاف زميلك عموداً جديداً أو غيّر الترتيب، سينكسر كل كود الإدراج لديك — وقد يدخل البيانات في أعمدة خاطئة بصمت.</p></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>إدراج 1000 صف في أمر واحد أسرع عشرات المرات من 1000 أمر منفصل، لأن كل أمر يحمل تكلفة اتصال ومعاملة مستقلة.</p></div><h3 id="sec-2">الإدراج من استعلام</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- نسخ صفوف من جدول لآخر
+INSERT INTO customers_archive (id, name, email, city)
+SELECT id, name, email, city
+FROM customers
+WHERE created_at &lt; &#39;2024-01-01&#39;;
+
+-- إنشاء جدول من نتيجة استعلام
+CREATE TABLE top_customers AS
+SELECT * FROM customers WHERE total_spent &gt; 10000;</code></pre></div><h3 id="sec-3">إرجاع الصفوف المدرجة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- PostgreSQL و SQLite الحديثة
+INSERT INTO orders (customer_id, total)
+VALUES (1, 450.00)
+RETURNING id, ordered_at;
+
+-- MySQL
+INSERT INTO orders (customer_id, total) VALUES (1, 450.00);
+SELECT LAST_INSERT_ID();</code></pre></div><p><code>RETURNING</code> مفيدة جداً: تحصل على المعرّف المولَّد والقيم الافتراضية في استعلام واحد بدل استعلامين.</p><h2 id="sec-4">التحديث</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- تحديث عمود واحد
+UPDATE products
+SET price = 349.00
+WHERE id = 5;
+
+-- عدة أعمدة
+UPDATE products
+SET price = 349.00,
+    stock = stock - 1,
+    updated_at = CURRENT_TIMESTAMP
+WHERE id = 5;
+
+-- تحديث بحساب من القيمة الحالية
+UPDATE products
+SET price = price * 0.9        -- خصم 10٪
+WHERE category_id = 3;
+
+-- تحديث بشرط مركّب
+UPDATE orders
+SET status = &#39;cancelled&#39;
+WHERE status = &#39;pending&#39;
+  AND ordered_at &lt; CURRENT_DATE - INTERVAL &#39;7 days&#39;;</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> أخطر خطأ في SQL</div><p><code>UPDATE</code> بلا <code>WHERE</code> يحدّث <strong>كل صفوف الجدول</strong>. جملة واحدة منسية قد تدمّر قاعدة بيانات إنتاج كاملة. هذا ليس تحذيراً نظرياً — حدث لشركات كبرى.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">عادة تحميك</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- 1) اكتب SELECT أولاً وتحقّق من الصفوف
+SELECT * FROM products WHERE category_id = 3;
+
+-- 2) عدّ الصفوف — هل العدد متوقّع؟
+SELECT COUNT(*) FROM products WHERE category_id = 3;
+
+-- 3) بعدها فقط حوّلها إلى UPDATE بنفس الشرط
+UPDATE products SET price = price * 0.9 WHERE category_id = 3;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>في بيئة الإنتاج، شغّل التحديثات داخل معاملة: <code>BEGIN;</code> ثم <code>UPDATE</code> ثم تحقّق من النتيجة، ثم <code>COMMIT;</code> أو <code>ROLLBACK;</code> إن كانت خاطئة. سنفصّل المعاملات في الدرس العاشر.</p></div><h3 id="sec-5">التحديث من جدول آخر</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- PostgreSQL
+UPDATE products p
+SET price = n.new_price
+FROM new_prices n
+WHERE p.id = n.product_id;
+
+-- MySQL
+UPDATE products p
+JOIN new_prices n ON p.id = n.product_id
+SET p.price = n.new_price;</code></pre></div><h2 id="sec-6">الحذف</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- حذف صف واحد
+DELETE FROM customers WHERE id = 42;
+
+-- حذف بشرط
+DELETE FROM sessions
+WHERE expires_at &lt; CURRENT_TIMESTAMP;
+
+-- حذف كل الصفوف (بطيء — يسجّل كل صف)
+DELETE FROM logs;
+
+-- تفريغ الجدول (سريع جداً — لا يمكن التراجع)
+TRUNCATE TABLE logs;</code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th><code>DELETE</code></th><th><code>TRUNCATE</code></th></tr></thead><tbody><tr><td>الشرط <code>WHERE</code></td><td>مدعوم</td><td>غير مدعوم — يحذف الكل</td></tr><tr><td>السرعة</td><td>بطيء مع الصفوف الكثيرة</td><td>فوري تقريباً</td></tr><tr><td>التراجع في معاملة</td><td>ممكن</td><td>غير ممكن غالباً</td></tr><tr><td>عدّاد <code>AUTO_INCREMENT</code></td><td>يبقى كما هو</td><td>يُصفَّر</td></tr><tr><td>المشغّلات (Triggers)</td><td>تُنفَّذ</td><td>لا تُنفَّذ</td></tr></tbody></table></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> الحذف الناعم بديل أفضل غالباً</div><p>بدل حذف البيانات فعلياً، أضف عمود <code>deleted_at</code>. تحتفظ بالسجلّ التاريخي، وتستطيع التراجع، ولا تكسر المفاتيح الأجنبية.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحذف الناعم</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- بدل DELETE
+UPDATE customers
+SET deleted_at = CURRENT_TIMESTAMP
+WHERE id = 42;
+
+-- وفي كل الاستعلامات
+SELECT * FROM customers WHERE deleted_at IS NULL;
+
+-- أو أنشئ عرضاً يخفي المحذوفات
+CREATE VIEW active_customers AS
+SELECT * FROM customers WHERE deleted_at IS NULL;</code></pre></div><h2 id="sec-7">الإدراج أو التحديث (Upsert)</h2><p>حالة شائعة: أدرج الصف إن لم يكن موجوداً، وحدّثه إن كان. الحلّ يختلف بين الأنظمة.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">PostgreSQL و SQLite</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>INSERT INTO product_stats (product_id, views)
+VALUES (5, 1)
+ON CONFLICT (product_id)
+DO UPDATE SET views = product_stats.views + 1;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">MySQL</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>INSERT INTO product_stats (product_id, views)
+VALUES (5, 1)
+ON DUPLICATE KEY UPDATE views = views + 1;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">تجاهل التعارض</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- لا تفعل شيئاً إن كان موجوداً
+INSERT INTO tags (name) VALUES (&#39;css&#39;)
+ON CONFLICT (name) DO NOTHING;</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>شرط عمل Upsert وجود قيد <code>UNIQUE</code> أو <code>PRIMARY KEY</code> على العمود المذكور — هو ما يكتشف به المحرّك التعارض.</p></div><h2 id="sec-8">سيناريو كامل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">دورة حياة طلب</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- 1) إنشاء الطلب
+INSERT INTO orders (customer_id, status, total)
+VALUES (1, &#39;pending&#39;, 0)
+RETURNING id;   -- لنفترض أنه 101
+
+-- 2) إضافة العناصر
+INSERT INTO order_items (order_id, product_id, quantity, unit_price)
+VALUES
+  (101, 5, 2, 299.00),
+  (101, 8, 1, 450.00);
+
+-- 3) تحديث إجمالي الطلب
+UPDATE orders
+SET total = (
+  SELECT SUM(quantity * unit_price)
+  FROM order_items
+  WHERE order_id = 101
+)
+WHERE id = 101;
+
+-- 4) خصم المخزون
+UPDATE products
+SET stock = stock - (
+  SELECT quantity FROM order_items
+  WHERE order_id = 101 AND product_id = products.id
+)
+WHERE id IN (SELECT product_id FROM order_items WHERE order_id = 101);
+
+-- 5) تأكيد الدفع
+UPDATE orders
+SET status = &#39;paid&#39;, paid_at = CURRENT_TIMESTAMP
+WHERE id = 101 AND status = &#39;pending&#39;;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>لاحظ <code>AND status = &quot;pending&quot;</code> في الخطوة الأخيرة: تمنع تحديث طلب أُلغي أو دُفع مسبقاً. هذا نمط مهم يُسمّى <strong>القفل المتفائل</strong> ويحمي من حالات التسابق.</p></div><h2 id="sec-9">أخطاء شائعة</h2><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code>-- ✗ نسيان WHERE
+UPDATE users SET is_admin = TRUE;
+
+-- ✗ مقارنة NULL
+DELETE FROM users WHERE deleted_at = NULL;
+
+-- ✗ إدراج بلا أعمدة
+INSERT INTO users VALUES (1, &quot;سارة&quot;);</code></pre></div><div class="why">الأولى تجعل كل المستخدمين مدراء، والثانية لا تحذف شيئاً، والثالثة تنكسر عند أي تغيير في الجدول.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span></div><pre><code>-- ✓
+UPDATE users SET is_admin = TRUE WHERE id = 1;
+
+-- ✓
+DELETE FROM users WHERE deleted_at IS NOT NULL;
+
+-- ✓
+INSERT INTO users (id, name) VALUES (1, &quot;سارة&quot;);</code></pre></div><div class="why">شرط محدّد، ومقارنة NULL صحيحة، وأعمدة صريحة.</div></div></div><ul><li>نسيان <code>WHERE</code> في <code>UPDATE</code> أو <code>DELETE</code>.</li><li>استخدام <code>=</code> مع <code>NULL</code> بدل <code>IS</code>.</li><li>الإدراج بلا تحديد أعمدة.</li><li>تحديث سجلّ تاريخي بدل إنشاء سجلّ جديد.</li><li>الحذف الفعلي حيث يكفي الحذف الناعم.</li><li>إدراج آلاف الصفوف في أوامر منفصلة بدل دفعة واحدة.</li></ul><section class="exercise" id="sec-10"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: إدارة بيانات متجر</h3></header><div class="exercise-body"><p>نفّذ سلسلة عمليات على قاعدة المتجر التي بنيتها في الدرس السابق.</p><p><strong>المطلوب:</strong></p><ul><li>أدرج خمسة منتجات في أمر <code>INSERT</code> واحد.</li><li>أدرج ثلاثة عملاء مع <code>RETURNING</code> لمعرّفاتهم (أو ما يعادلها).</li><li>أنشئ طلباً لعميل، وأضف له ثلاثة عناصر، ثم حدّث إجماليه من عناصره.</li><li>اخصم الكميات المطلوبة من مخزون المنتجات.</li><li>ارفع سعر كل منتجات تصنيف معيّن بنسبة 15٪.</li><li>ألغِ كل الطلبات المعلّقة الأقدم من ثلاثين يوماً.</li><li>استخدم Upsert لتسجيل مشاهدة منتج: أدرج بعدّاد 1 أو زد العدّاد الحالي.</li><li>طبّق الحذف الناعم على عميل بدل حذفه فعلياً.</li><li>قبل كل <code>UPDATE</code> أو <code>DELETE</code>، اكتب <code>SELECT</code> مقابلاً في تعليق للتحقّق.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 الاستعلام الفرعي داخل <code>SET</code> يحسب الإجمالي من <code>order_items</code>.</li><li>💡 Upsert يحتاج قيد <code>UNIQUE</code> على العمود المستهدف.</li><li>💡 استخدم <code>CURRENT_DATE - INTERVAL</code> لحساب التواريخ.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ===== 1) إدراج منتجات =====
+INSERT INTO products (category_id, name, sku, price, stock) VALUES
+  (1, &#39;سماعة لاسلكية&#39;,  &#39;SKU-001&#39;, 299.00, 50),
+  (1, &#39;سماعة سلكية&#39;,    &#39;SKU-002&#39;, 120.00, 80),
+  (2, &#39;لوحة مفاتيح&#39;,    &#39;SKU-003&#39;, 450.00, 30),
+  (2, &#39;ماوس لاسلكي&#39;,    &#39;SKU-004&#39;, 130.00, 65),
+  (3, &#39;شاشة 27 بوصة&#39;,   &#39;SKU-005&#39;, 1450.00, 12);
+
+-- ===== 2) إدراج عملاء =====
+INSERT INTO customers (name, email, phone, city) VALUES
+  (&#39;سارة عبدالله&#39;, &#39;sara@example.com&#39;,   &#39;0501112222&#39;, &#39;الرياض&#39;),
+  (&#39;خالد الأحمد&#39;,  &#39;khalid@example.com&#39;, &#39;0553334444&#39;, &#39;جدة&#39;),
+  (&#39;نورة القحطاني&#39;,&#39;noura@example.com&#39;,  NULL,         &#39;الدمام&#39;)
+RETURNING id, name;
+
+-- ===== 3) إنشاء طلب =====
+INSERT INTO orders (customer_id, status, total)
+VALUES (1, &#39;pending&#39;, 0)
+RETURNING id;    -- افترض 101
+
+INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES
+  (101, 1, 2, 299.00),
+  (101, 3, 1, 450.00),
+  (101, 4, 3, 130.00);
+
+-- التحقّق قبل التحديث
+-- SELECT SUM(quantity * unit_price) FROM order_items WHERE order_id = 101;
+
+UPDATE orders
+SET total = (
+  SELECT SUM(quantity * unit_price)
+  FROM order_items
+  WHERE order_id = 101
+)
+WHERE id = 101;
+
+-- ===== 4) خصم المخزون =====
+-- SELECT id, name, stock FROM products
+-- WHERE id IN (SELECT product_id FROM order_items WHERE order_id = 101);
+
+UPDATE products
+SET stock = stock - (
+  SELECT oi.quantity
+  FROM order_items oi
+  WHERE oi.order_id = 101 AND oi.product_id = products.id
+)
+WHERE id IN (
+  SELECT product_id FROM order_items WHERE order_id = 101
+);
+
+-- ===== 5) رفع أسعار تصنيف =====
+-- SELECT COUNT(*) FROM products WHERE category_id = 2;
+
+UPDATE products
+SET price = ROUND(price * 1.15, 2),
+    updated_at = CURRENT_TIMESTAMP
+WHERE category_id = 2;
+
+-- ===== 6) إلغاء الطلبات القديمة =====
+-- SELECT COUNT(*) FROM orders
+-- WHERE status = &#39;pending&#39; AND ordered_at &lt; CURRENT_DATE - INTERVAL &#39;30 days&#39;;
+
+UPDATE orders
+SET status = &#39;cancelled&#39;
+WHERE status = &#39;pending&#39;
+  AND ordered_at &lt; CURRENT_DATE - INTERVAL &#39;30 days&#39;;
+
+-- ===== 7) تسجيل مشاهدة (Upsert) =====
+CREATE TABLE IF NOT EXISTS product_stats (
+  product_id INT PRIMARY KEY,
+  views      INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+INSERT INTO product_stats (product_id, views)
+VALUES (1, 1)
+ON CONFLICT (product_id)
+DO UPDATE SET views = product_stats.views + 1;
+
+-- ===== 8) حذف ناعم =====
+ALTER TABLE customers ADD COLUMN deleted_at TIMESTAMP NULL;
+
+-- SELECT id, name FROM customers WHERE id = 3;
+
+UPDATE customers
+SET deleted_at = CURRENT_TIMESTAMP
+WHERE id = 3;
+
+-- الاستعلامات اللاحقة تستثني المحذوفين
+SELECT id, name, city
+FROM customers
+WHERE deleted_at IS NULL;</code></pre></div></details></div></section><section class="quiz"><h2 id="sec-11"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ماذا يحدث عند <code>UPDATE users SET active = 0;</code> بلا <code>WHERE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا شيء</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>يُحدَّث كل صفوف الجدول</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>خطأ</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يُحدَّث أول صف</span></label></div><div class="q-explain"><strong>الشرح:</strong> أخطر خطأ في SQL؛ اكتب <code>SELECT</code> بنفس الشرط أولاً دائماً.</div></div><div class="q-item"><p class="q-text">2. لماذا نحدّد الأعمدة في <code>INSERT</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أوضح فقط</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>لأن الإدراج بلا أعمدة يعتمد على ترتيبها فينكسر عند أي تغيير في الجدول</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>إلزامي</span></label></div><div class="q-explain"><strong>الشرح:</strong> قد يدخل البيانات في أعمدة خاطئة بصمت عند تغيّر البنية.</div></div><div class="q-item"><p class="q-text">3. ما ميزة الحذف الناعم؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>يحفظ السجلّ التاريخي ويسمح بالتراجع ولا يكسر المفاتيح الأجنبية</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يوفّر مساحة</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أبسط</span></label></div><div class="q-explain"><strong>الشرح:</strong> البيانات المحذوفة نهائياً لا تعود؛ عمود <code>deleted_at</code> يحلّ ذلك.</div></div><div class="q-item"><p class="q-text">4. ما شرط عمل Upsert؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>فهرس</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>وجود قيد <code>UNIQUE</code> أو <code>PRIMARY KEY</code> يكتشف به المحرّك التعارض</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>معاملة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا شرط</span></label></div><div class="q-explain"><strong>الشرح:</strong> بدون قيد فريد لا يعرف المحرّك أن الصف مكرّر.</div></div><div class="q-item"><p class="q-text">5. ما الفرق الأهم بين <code>DELETE</code> و <code>TRUNCATE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span><code>TRUNCATE</code> يحذف الكل بسرعة بلا شرط ولا يمكن التراجع عنه غالباً</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span><code>DELETE</code> أسرع</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>TRUNCATE</code> لا يقبل <code>WHERE</code> ولا يشغّل المشغّلات ويصفّر العدّاد.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/03-dml" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="02-tables.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>إنشاء الجداول وأنواع البيانات والقيود</b></span></a>
+  <a class="next" href="04-select.html"><span><small>الدرس التالي</small><b>الاستعلام: SELECT و WHERE</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار SQL</h3>
+        <div class="ring-wrap" data-ring data-track="sql" data-total="6">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">الإدراج</a></li><li class="sub"><a href="#sec-2">الإدراج من استعلام</a></li><li class="sub"><a href="#sec-3">إرجاع الصفوف المدرجة</a></li><li><a href="#sec-4">التحديث</a></li><li class="sub"><a href="#sec-5">التحديث من جدول آخر</a></li><li><a href="#sec-6">الحذف</a></li><li><a href="#sec-7">الإدراج أو التحديث (Upsert)</a></li><li><a href="#sec-8">سيناريو كامل</a></li><li><a href="#sec-9">أخطاء شائعة</a></li><li><a href="#sec-10">تمرين: إدارة بيانات متجر</a></li><li><a href="#sec-11">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>INSERT INTO t (cols) VALUES (…)</code><small>إدراج</small></div><div class="ref-item"><code>INSERT … SELECT …</code><small>إدراج من استعلام</small></div><div class="ref-item"><code>UPDATE t SET c = v WHERE …</code><small>تحديث</small></div><div class="ref-item"><code>DELETE FROM t WHERE …</code><small>حذف</small></div><div class="ref-item"><code>ON CONFLICT DO UPDATE</code><small>إدراج أو تحديث</small></div><div class="ref-item"><code>RETURNING *</code><small>إرجاع الصفوف المتأثّرة</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="04-select.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الاستعلام: SELECT و WHERE<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

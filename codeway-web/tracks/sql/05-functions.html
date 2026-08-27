@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sql">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الدوال ومعالجة القيم — مسار SQL | CodeWay Web</title>
+<meta name="description" content="دوال النصوص والأرقام والتواريخ، والتعبيرات الشرطية CASE، وتحويل الأنواع.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="الدوال ومعالجة القيم — مسار SQL | CodeWay Web">
+<meta property="og:description" content="دوال النصوص والأرقام والتواريخ، والتعبيرات الشرطية CASE، وتحويل الأنواع.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">SQL</a></li>
+      <li aria-current="page">الدوال ومعالجة القيم</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 5 من 6</span>
+      <span class="badge level-متوسط">متوسط</span>
+      <span class="badge">الدوال</span><span class="badge">المعالجة</span>
+    </div>
+    <h1>الدوال ومعالجة القيم</h1>
+    <p class="summary">دوال النصوص والأرقام والتواريخ، والتعبيرات الشرطية CASE، وتحويل الأنواع.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 45 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار SQL</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تعالج النصوص: القصّ والدمج والاستبدال.</li><li>تجري عمليات رياضية وتقرّب الأرقام.</li><li>تستخرج أجزاء التواريخ وتحسب الفروق.</li><li>تكتب منطقاً شرطياً بـ <code>CASE</code>.</li><li>تحوّل بين أنواع البيانات.</li></ul></div>
+      <h2 id="sec-1">دوال النصوص</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- الدمج
+SELECT CONCAT(first_name, &#39; &#39;, last_name) AS full_name FROM users;
+SELECT first_name || &#39; &#39; || last_name AS full_name FROM users;  -- معيار SQL
+
+-- حالة الأحرف
+SELECT UPPER(code), LOWER(email) FROM users;
+
+-- الطول
+SELECT name, LENGTH(name) AS name_length FROM products;
+
+-- إزالة المسافات
+SELECT TRIM(&#39;  نص  &#39;);        -- &#39;نص&#39;
+SELECT LTRIM(s), RTRIM(s);     -- من البداية أو النهاية
+
+-- الاقتطاع
+SELECT SUBSTRING(description, 1, 100) FROM products;
+SELECT LEFT(name, 10), RIGHT(sku, 3) FROM products;
+
+-- الاستبدال
+SELECT REPLACE(phone, &#39;-&#39;, &#39;&#39;) FROM customers;
+
+-- البحث عن موضع
+SELECT POSITION(&#39;@&#39; IN email) FROM users;
+
+-- الحشو
+SELECT LPAD(CAST(id AS TEXT), 6, &#39;0&#39;) AS order_code FROM orders;
+-- 42 → &#39;000042&#39;</code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> أمثلة تطبيقية</div><iframe title="أمثلة تطبيقية" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.86em}th{background:#6a5acd;color:#fff;padding:8px 10px;text-align:right}td{padding:7px 10px;border-bottom:1px solid #e2e8f0}code{font-family:monospace;direction:ltr;display:inline-block;font-size:.9em}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;التعبير&lt;/th&gt;&lt;th&gt;النتيجة&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;UPPER('sku-001')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;SKU-001&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;LENGTH('سماعة')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;SUBSTRING('CodeWay',1,4)&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Code&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;REPLACE('050-123','-','')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;050123&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;LPAD('42',6,'0')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;000042&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;TRIM('  نص  ')&lt;/code&gt;&lt;/td&gt;&lt;td&gt;نص&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">مثال عملي: توليد رمز طلب</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  id,
+  &#39;ORD-&#39; || TO_CHAR(ordered_at, &#39;YYYYMM&#39;) || &#39;-&#39; || LPAD(id::TEXT, 5, &#39;0&#39;)
+    AS order_code
+FROM orders;
+-- ORD-202603-00042</code></pre></div><h2 id="sec-2">الدوال الرياضية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT ROUND(299.567, 2);    -- 299.57
+SELECT ROUND(299.567);       -- 300
+SELECT CEIL(299.1);          -- 300 — التقريب لأعلى
+SELECT FLOOR(299.9);         -- 299 — التقريب لأسفل
+SELECT ABS(-50);             -- 50
+SELECT POWER(2, 10);         -- 1024
+SELECT SQRT(144);            -- 12
+SELECT MOD(17, 5);           -- 2 — باقي القسمة
+SELECT GREATEST(5, 12, 3);   -- 12
+SELECT LEAST(5, 12, 3);      -- 3</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">حساب الخصم والضريبة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  name,
+  price                                    AS original,
+  ROUND(price * (1 - discount / 100.0), 2) AS after_discount,
+  ROUND(price * (1 - discount / 100.0) * 1.15, 2) AS with_vat
+FROM products
+WHERE discount &gt; 0;</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> فخّ القسمة الصحيحة</div><p>في معظم الأنظمة <code>10 / 3</code> بين عددين صحيحين تعطي <code>3</code> لا <code>3.33</code>. أضف <code>.0</code> لأحد الطرفين: <code>10 / 3.0</code> أو حوّل النوع: <code>CAST(10 AS DECIMAL) / 3</code>.</p></div><h2 id="sec-3">دوال التواريخ</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- الوقت الحالي
+SELECT CURRENT_DATE;        -- 2026-03-15
+SELECT CURRENT_TIME;        -- 14:30:00
+SELECT CURRENT_TIMESTAMP;   -- 2026-03-15 14:30:00
+SELECT NOW();               -- MySQL و PostgreSQL
+
+-- استخراج الأجزاء
+SELECT EXTRACT(YEAR  FROM ordered_at) AS year,
+       EXTRACT(MONTH FROM ordered_at) AS month,
+       EXTRACT(DAY   FROM ordered_at) AS day,
+       EXTRACT(DOW   FROM ordered_at) AS day_of_week
+FROM orders;
+
+-- MySQL
+SELECT YEAR(ordered_at), MONTH(ordered_at), DAYNAME(ordered_at) FROM orders;
+
+-- الحساب
+SELECT ordered_at + INTERVAL &#39;7 days&#39;  AS due_date FROM orders;      -- PostgreSQL
+SELECT DATE_ADD(ordered_at, INTERVAL 7 DAY) AS due_date FROM orders; -- MySQL
+
+-- الفرق بين تاريخين
+SELECT CURRENT_DATE - ordered_at::DATE AS days_ago FROM orders;      -- PostgreSQL
+SELECT DATEDIFF(CURRENT_DATE, ordered_at) AS days_ago FROM orders;   -- MySQL
+
+-- التنسيق
+SELECT TO_CHAR(ordered_at, &#39;YYYY-MM-DD&#39;)     FROM orders;  -- PostgreSQL
+SELECT DATE_FORMAT(ordered_at, &#39;%Y-%m-%d&#39;)   FROM orders;  -- MySQL
+
+-- التقريب لبداية الفترة
+SELECT DATE_TRUNC(&#39;month&#39;, ordered_at) FROM orders;   -- PostgreSQL</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">حساب العمر ومدّة الاشتراك</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  name,
+  birth_date,
+  EXTRACT(YEAR FROM AGE(birth_date)) AS age,
+  CURRENT_DATE - joined_at::DATE     AS days_as_member
+FROM members;</code></pre></div><h2 id="sec-4">التعبيرات الشرطية</h2><h3 id="sec-5"><code>CASE</code> — الشكل المبحوث</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  name,
+  stock,
+  CASE
+    WHEN stock = 0        THEN &#39;نفدت الكمية&#39;
+    WHEN stock &lt; 5        THEN &#39;كمية محدودة&#39;
+    WHEN stock &lt; 20       THEN &#39;متوفّر&#39;
+    ELSE                       &#39;متوفّر بكثرة&#39;
+  END AS stock_status
+FROM products;</code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ناتج CASE</div><iframe title="ناتج CASE" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}table{width:100%;border-collapse:collapse;font-size:.88em}th{background:#6a5acd;color:#fff;padding:8px 12px;text-align:right}td{padding:7px 12px;border-bottom:1px solid #e2e8f0}.b{font-weight:700}.r{color:#dc2626}.o{color:#d97706}.g{color:#059669}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;name&lt;/th&gt;&lt;th&gt;stock&lt;/th&gt;&lt;th&gt;stock_status&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;سماعة لاسلكية&lt;/td&gt;&lt;td&gt;0&lt;/td&gt;&lt;td class=&quot;b r&quot;&gt;نفدت الكمية&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;لوحة مفاتيح&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;td class=&quot;b o&quot;&gt;كمية محدودة&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ماوس لاسلكي&lt;/td&gt;&lt;td&gt;14&lt;/td&gt;&lt;td class=&quot;b g&quot;&gt;متوفّر&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;كابل USB&lt;/td&gt;&lt;td&gt;85&lt;/td&gt;&lt;td class=&quot;b g&quot;&gt;متوفّر بكثرة&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:250px"></iframe></div><h3 id="sec-6"><code>CASE</code> — الشكل البسيط</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  id,
+  CASE status
+    WHEN &#39;pending&#39;   THEN &#39;قيد المراجعة&#39;
+    WHEN &#39;paid&#39;      THEN &#39;مدفوع&#39;
+    WHEN &#39;shipped&#39;   THEN &#39;تم الشحن&#39;
+    WHEN &#39;delivered&#39; THEN &#39;تم التسليم&#39;
+    ELSE &#39;غير معروف&#39;
+  END AS status_ar
+FROM orders;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">استخدامات متقدّمة</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- في الترتيب: حالة مخصّصة
+SELECT * FROM orders
+ORDER BY
+  CASE status
+    WHEN &#39;pending&#39; THEN 1
+    WHEN &#39;paid&#39;    THEN 2
+    WHEN &#39;shipped&#39; THEN 3
+    ELSE 4
+  END;
+
+-- في التجميع: عدّ شرطي
+SELECT
+  COUNT(*) AS total,
+  SUM(CASE WHEN status = &#39;paid&#39;      THEN 1 ELSE 0 END) AS paid_count,
+  SUM(CASE WHEN status = &#39;cancelled&#39; THEN 1 ELSE 0 END) AS cancelled_count
+FROM orders;
+
+-- في التحديث
+UPDATE products
+SET price = CASE
+  WHEN category_id = 1 THEN price * 1.10
+  WHEN category_id = 2 THEN price * 1.15
+  ELSE price
+END;</code></pre></div><h2 id="sec-7">التعامل مع NULL</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- أول قيمة غير فارغة
+SELECT COALESCE(phone, mobile, email, &#39;لا توجد وسيلة تواصل&#39;) FROM customers;
+
+-- بديل بسيط
+SELECT IFNULL(discount, 0) FROM orders;      -- MySQL
+SELECT NVL(discount, 0) FROM orders;         -- Oracle
+
+-- NULL إن تساوت القيمتان — مفيد لتفادي القسمة على صفر
+SELECT total / NULLIF(quantity, 0) AS unit_price FROM order_items;</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p><code>NULLIF(x, 0)</code> حيلة أنيقة: تحوّل الصفر إلى <code>NULL</code> فتتجنّب خطأ القسمة على صفر، والنتيجة تصبح <code>NULL</code> بدل انهيار الاستعلام.</p></div><h2 id="sec-8">تحويل الأنواع</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT CAST(&#39;123&#39; AS INTEGER);
+SELECT CAST(price AS TEXT);
+SELECT CAST(&#39;2026-03-15&#39; AS DATE);
+
+-- اختصار PostgreSQL
+SELECT price::TEXT, &#39;123&#39;::INT, ordered_at::DATE;
+
+-- التحويل الضمني قد يفاجئك
+SELECT &#39;10&#39; + 5;    -- 15 في MySQL، خطأ في PostgreSQL</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه</div><p>لا تعتمد على التحويل الضمني — يختلف بين الأنظمة وقد يعطي نتائج صامتة خاطئة. حوّل صراحةً بـ <code>CAST</code> دائماً.</p></div><h2 id="sec-9">استعلام تقرير متكامل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>SELECT
+  &#39;ORD-&#39; || LPAD(o.id::TEXT, 6, &#39;0&#39;)          AS order_code,
+  UPPER(TRIM(c.name))                          AS customer,
+  COALESCE(c.phone, c.email, &#39;—&#39;)              AS contact,
+
+  TO_CHAR(o.ordered_at, &#39;YYYY-MM-DD&#39;)          AS order_date,
+  CURRENT_DATE - o.ordered_at::DATE            AS days_ago,
+
+  ROUND(o.total, 2)                            AS total,
+  ROUND(o.total * 0.15, 2)                     AS vat,
+  ROUND(o.total * 1.15, 2)                     AS grand_total,
+
+  CASE o.status
+    WHEN &#39;pending&#39;   THEN &#39;قيد المراجعة&#39;
+    WHEN &#39;paid&#39;      THEN &#39;مدفوع&#39;
+    WHEN &#39;shipped&#39;   THEN &#39;تم الشحن&#39;
+    WHEN &#39;delivered&#39; THEN &#39;تم التسليم&#39;
+    ELSE &#39;ملغى&#39;
+  END                                          AS status_ar,
+
+  CASE
+    WHEN o.total &gt;= 5000 THEN &#39;ذهبي&#39;
+    WHEN o.total &gt;= 1000 THEN &#39;فضّي&#39;
+    ELSE &#39;عادي&#39;
+  END                                          AS tier
+
+FROM orders o
+JOIN customers c ON c.id = o.customer_id
+WHERE o.ordered_at &gt;= CURRENT_DATE - INTERVAL &#39;90 days&#39;
+ORDER BY o.ordered_at DESC;</code></pre></div><section class="exercise" id="sec-10"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: تقرير مبيعات منسّق</h3></header><div class="exercise-body"><p>اكتب استعلامات تستخدم الدوال لإنتاج تقارير جاهزة للعرض.</p><p><strong>المطلوب:</strong></p><ul><li>اسم المنتج بحروف كبيرة مع طوله وعدد أحرفه.</li><li>رمز منتج مركّب: <code>PRD-</code> + التصنيف + <code>-</code> + المعرّف محشوّاً إلى 5 خانات.</li><li>السعر الأصلي والسعر بعد خصم 10٪ والسعر شاملاً ضريبة 15٪ — كلها مقرّبة لخانتين.</li><li>تصنيف المخزون بـ <code>CASE</code> إلى أربع حالات عربية.</li><li>وسيلة تواصل العميل: الجوال أو البريد أو نص بديل، بـ <code>COALESCE</code>.</li><li>عمر الطلب بالأيام، وتاريخه بصيغة <code>YYYY-MM-DD</code>.</li><li>تصنيف العميل إلى ذهبي/فضّي/عادي بحسب إجمالي طلبه.</li><li>عدّ الطلبات المدفوعة والملغاة في صف واحد بـ <code>SUM(CASE …)</code>.</li><li>متوسّط سعر الوحدة مع تفادي القسمة على صفر بـ <code>NULLIF</code>.</li><li>ترتيب مخصّص للحالات بـ <code>CASE</code> داخل <code>ORDER BY</code>.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>LPAD(CAST(id AS TEXT), 5, &quot;0&quot;)</code> للحشو.</li><li>💡 <code>SUM(CASE WHEN cond THEN 1 ELSE 0 END)</code> للعدّ الشرطي.</li><li>💡 انتبه للقسمة الصحيحة: أضف <code>.0</code> أو حوّل النوع.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">sql</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>-- ===== 1) معلومات المنتج المنسّقة =====
+SELECT
+  UPPER(name)                                       AS product_upper,
+  LENGTH(name)                                      AS name_length,
+  &#39;PRD-&#39; || category_id || &#39;-&#39; ||
+    LPAD(CAST(id AS TEXT), 5, &#39;0&#39;)                  AS product_code,
+
+  ROUND(price, 2)                                   AS original_price,
+  ROUND(price * 0.90, 2)                            AS discounted_price,
+  ROUND(price * 0.90 * 1.15, 2)                     AS final_with_vat,
+
+  stock,
+  CASE
+    WHEN stock = 0  THEN &#39;نفدت الكمية&#39;
+    WHEN stock &lt; 5  THEN &#39;كمية محدودة&#39;
+    WHEN stock &lt; 20 THEN &#39;متوفّر&#39;
+    ELSE                 &#39;متوفّر بكثرة&#39;
+  END                                               AS stock_status
+
+FROM products
+WHERE is_active = TRUE
+ORDER BY price DESC;
+
+-- ===== 2) تقرير الطلبات =====
+SELECT
+  &#39;ORD-&#39; || LPAD(CAST(o.id AS TEXT), 6, &#39;0&#39;)        AS order_code,
+  TRIM(c.name)                                      AS customer,
+  COALESCE(c.phone, c.email, &#39;لا توجد وسيلة تواصل&#39;) AS contact,
+
+  TO_CHAR(o.ordered_at, &#39;YYYY-MM-DD&#39;)               AS order_date,
+  CURRENT_DATE - CAST(o.ordered_at AS DATE)         AS days_ago,
+
+  ROUND(o.total, 2)                                 AS total,
+  ROUND(o.total * 1.15, 2)                          AS grand_total,
+
+  CASE o.status
+    WHEN &#39;pending&#39;   THEN &#39;قيد المراجعة&#39;
+    WHEN &#39;paid&#39;      THEN &#39;مدفوع&#39;
+    WHEN &#39;shipped&#39;   THEN &#39;تم الشحن&#39;
+    WHEN &#39;delivered&#39; THEN &#39;تم التسليم&#39;
+    ELSE                  &#39;ملغى&#39;
+  END                                               AS status_ar,
+
+  CASE
+    WHEN o.total &gt;= 5000 THEN &#39;ذهبي&#39;
+    WHEN o.total &gt;= 1000 THEN &#39;فضّي&#39;
+    ELSE                      &#39;عادي&#39;
+  END                                               AS tier
+
+FROM orders o
+JOIN customers c ON c.id = o.customer_id
+ORDER BY
+  CASE o.status
+    WHEN &#39;pending&#39;   THEN 1
+    WHEN &#39;paid&#39;      THEN 2
+    WHEN &#39;shipped&#39;   THEN 3
+    WHEN &#39;delivered&#39; THEN 4
+    ELSE 5
+  END,
+  o.ordered_at DESC;
+
+-- ===== 3) ملخّص الحالات =====
+SELECT
+  COUNT(*)                                                    AS total_orders,
+  SUM(CASE WHEN status = &#39;paid&#39;      THEN 1 ELSE 0 END)       AS paid_count,
+  SUM(CASE WHEN status = &#39;cancelled&#39; THEN 1 ELSE 0 END)       AS cancelled_count,
+  SUM(CASE WHEN status = &#39;pending&#39;   THEN 1 ELSE 0 END)       AS pending_count,
+  ROUND(
+    100.0 * SUM(CASE WHEN status = &#39;paid&#39; THEN 1 ELSE 0 END)
+    / NULLIF(COUNT(*), 0), 1
+  )                                                           AS paid_percentage
+FROM orders;
+
+-- ===== 4) متوسّط سعر الوحدة بأمان =====
+SELECT
+  order_id,
+  SUM(quantity * unit_price)                                  AS line_total,
+  SUM(quantity)                                               AS total_qty,
+  ROUND(
+    SUM(quantity * unit_price) / NULLIF(SUM(quantity), 0), 2
+  )                                                           AS avg_unit_price
+FROM order_items
+GROUP BY order_id;</code></pre></div></details></div></section><section class="quiz"><h2 id="sec-11"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ماذا تعطي <code>10 / 3</code> بين عددين صحيحين في معظم الأنظمة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>3.33</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>3</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>خطأ</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>4</span></label></div><div class="q-explain"><strong>الشرح:</strong> القسمة الصحيحة تقتطع الكسر؛ أضف <code>.0</code> أو حوّل النوع.</div></div><div class="q-item"><p class="q-text">2. ما وظيفة <code>COALESCE(a, b, c)</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>جمع القيم</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>إرجاع أول قيمة غير فارغة</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>مقارنة</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>دمج نصوص</span></label></div><div class="q-explain"><strong>الشرح:</strong> مفيدة لتوفير قيمة بديلة حين يكون العمود فارغاً.</div></div><div class="q-item"><p class="q-text">3. كيف تتجنّب القسمة على صفر؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>بشرط <code>WHERE</code></span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>بـ <code>NULLIF(divisor, 0)</code></span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>بـ <code>CASE</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>لا يمكن</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>NULLIF</code> تحوّل الصفر إلى <code>NULL</code> فتصبح النتيجة <code>NULL</code> بدل الخطأ.</div></div><div class="q-item"><p class="q-text">4. أين يمكن استخدام <code>CASE</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>في <code>SELECT</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>في <code>SELECT</code> و <code>WHERE</code> و <code>ORDER BY</code> و <code>UPDATE</code></span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>في <code>WHERE</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>في الدوال فقط</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>CASE</code> تعبير يُرجع قيمة، فيصلح في أي موضع يقبل تعبيراً.</div></div><div class="q-item"><p class="q-text">5. لماذا نتجنّب التحويل الضمني للأنواع؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>يختلف بين الأنظمة وقد يعطي نتائج صامتة خاطئة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>غير مدعوم</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>يحتاج فهرساً</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>&quot;10&quot; + 5</code> تعطي 15 في MySQL وخطأً في PostgreSQL.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sql/05-functions" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="04-select.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>الاستعلام: SELECT و WHERE</b></span></a>
+  <a class="next" href="06-aggregate.html"><span><small>الدرس التالي</small><b>الدوال التجميعية و GROUP BY</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار SQL</h3>
+        <div class="ring-wrap" data-ring data-track="sql" data-total="6">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">دوال النصوص</a></li><li><a href="#sec-2">الدوال الرياضية</a></li><li><a href="#sec-3">دوال التواريخ</a></li><li><a href="#sec-4">التعبيرات الشرطية</a></li><li class="sub"><a href="#sec-5">CASE — الشكل المبحوث</a></li><li class="sub"><a href="#sec-6">CASE — الشكل البسيط</a></li><li><a href="#sec-7">التعامل مع NULL</a></li><li><a href="#sec-8">تحويل الأنواع</a></li><li><a href="#sec-9">استعلام تقرير متكامل</a></li><li><a href="#sec-10">تمرين: تقرير مبيعات منسّق</a></li><li><a href="#sec-11">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>CONCAT(a, b) أو a || b</code><small>دمج نصوص</small></div><div class="ref-item"><code>UPPER / LOWER / TRIM</code><small>معالجة نصّية</small></div><div class="ref-item"><code>SUBSTRING(s, from, len)</code><small>اقتطاع</small></div><div class="ref-item"><code>ROUND(n, d)</code><small>تقريب</small></div><div class="ref-item"><code>CURRENT_DATE / NOW()</code><small>التاريخ الحالي</small></div><div class="ref-item"><code>CASE WHEN … THEN … END</code><small>منطق شرطي</small></div><div class="ref-item"><code>CAST(x AS type)</code><small>تحويل نوع</small></div><div class="ref-item"><code>COALESCE(a, b)</code><small>أول قيمة غير فارغة</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="06-aggregate.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الدوال التجميعية و GROUP BY<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>
