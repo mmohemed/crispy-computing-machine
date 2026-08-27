@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="tailwind">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المكوّنات وأفضل الممارسات — مسار Tailwind CSS | CodeWay Web</title>
+<meta name="description" content="كيف تنظّم أصنافاً كثيرة، وتبني مكوّنات قابلة لإعادة الاستخدام، وتتجنّب فوضى الترميز.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="المكوّنات وأفضل الممارسات — مسار Tailwind CSS | CodeWay Web">
+<meta property="og:description" content="كيف تنظّم أصنافاً كثيرة، وتبني مكوّنات قابلة لإعادة الاستخدام، وتتجنّب فوضى الترميز.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Tailwind CSS</a></li>
+      <li aria-current="page">المكوّنات وأفضل الممارسات</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 9 من 10</span>
+      <span class="badge level-متقدم">متقدم</span>
+      <span class="badge">التنظيم</span><span class="badge">ممارسات</span>
+    </div>
+    <h1>المكوّنات وأفضل الممارسات</h1>
+    <p class="summary">كيف تنظّم أصنافاً كثيرة، وتبني مكوّنات قابلة لإعادة الاستخدام، وتتجنّب فوضى الترميز.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 45 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Tailwind CSS</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>ترتّب الأصناف بمنطق ثابت.</li><li>تبني مكوّنات بمتغيّرات (variants) منظّمة.</li><li>تستخدم أدوات دمج الأصناف.</li><li>تتجنّب أخطاء شائعة تكسر Tailwind.</li><li>تحسّن حجم الناتج وأداء المشروع.</li></ul></div>
+      <h2 id="sec-1">مشكلة السطر الطويل</h2><p>أول ما يزعج في Tailwind: سطر بعشرين صنفاً. لكن المشكلة الحقيقية ليست الطول بل <strong>الفوضى</strong>: كل مطوّر يرتّبها بطريقته فيصعب المسح البصري والمقارنة.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل: ترتيب آلي</span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">npm</span> install <span class="tok-attr">-D</span> prettier prettier-plugin-tailwindcss</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">.prettierrc</span><span class="code-lang">json</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-punct">{</span>
+  <span class="tok-prop">&quot;plugins&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-string">&quot;prettier-plugin-tailwindcss&quot;</span><span class="tok-punct">]</span>
+<span class="tok-punct">}</span></code></pre></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span></div><pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-white p-4 flex bg-sky-600 rounded-lg items-center hover:bg-sky-700 gap-2 font-bold&quot;</span><span class="tok-tag">&gt;</span></code></pre></div><div class="why">ترتيب عشوائي: تبحث عن اللون بين الأصناف بلا منطق.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span></div><pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex items-center gap-2 rounded-lg bg-sky-600 p-4 font-bold text-white hover:bg-sky-700&quot;</span><span class="tok-tag">&gt;</span></code></pre></div><div class="why">ترتيب موحّد يفرضه الملحق آلياً: التخطيط ← المسافات ← المظهر ← النص ← الحالات.</div></div></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>ثبّت هذا الملحق في أول يوم. يرتّب الأصناف عند كل حفظ، فتتوقّف نقاشات الفريق حول الترتيب تماماً.</p></div><h2 id="sec-2">المكوّن هو وحدة إعادة الاستخدام</h2><p>لا تكرّر عشرين صنفاً في عشرة أماكن. أنشئ مكوّناً — هذا هو الحل الصحيح لا <code>@apply</code>.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">React</span><span class="code-lang">jsx</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-func">Button</span><span class="tok-punct">({</span> variant <span class="tok-punct">=</span> <span class="tok-string">&#39;primary&#39;</span><span class="tok-punct">,</span> size <span class="tok-punct">=</span> <span class="tok-string">&#39;md&#39;</span><span class="tok-punct">,</span> className <span class="tok-punct">=</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">...</span><span class="tok-prop">props</span> <span class="tok-punct">})</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> base <span class="tok-punct">=</span> <span class="tok-string">&#39;inline-flex items-center justify-center gap-2 rounded-lg font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed&#39;</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">const</span> variants <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+    primary<span class="tok-punct">:</span> <span class="tok-string">&#39;bg-sky-600 text-white hover:bg-sky-700&#39;</span><span class="tok-punct">,</span>
+    ghost<span class="tok-punct">:</span>   <span class="tok-string">&#39;border-2 border-sky-600 text-sky-600 hover:bg-sky-50&#39;</span><span class="tok-punct">,</span>
+    danger<span class="tok-punct">:</span>  <span class="tok-string">&#39;bg-rose-600 text-white hover:bg-rose-700&#39;</span>
+  <span class="tok-punct">};</span>
+
+  <span class="tok-keyword">const</span> sizes <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+    sm<span class="tok-punct">:</span> <span class="tok-string">&#39;px-3 py-1.5 text-sm&#39;</span><span class="tok-punct">,</span>
+    md<span class="tok-punct">:</span> <span class="tok-string">&#39;px-5 py-2.5&#39;</span><span class="tok-punct">,</span>
+    lg<span class="tok-punct">:</span> <span class="tok-string">&#39;px-7 py-3.5 text-lg&#39;</span>
+  <span class="tok-punct">};</span>
+
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-punct">&lt;</span>button
+      className<span class="tok-punct">={</span><span class="tok-string">`${base} ${variants[variant]} ${sizes[size]} ${className}`</span><span class="tok-punct">}</span>
+      <span class="tok-punct">{...</span><span class="tok-prop">props</span><span class="tok-punct">}</span>
+    <span class="tok-punct">/&gt;</span>
+  <span class="tok-punct">);</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الاستخدام</span><span class="code-lang">jsx</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-punct">&lt;</span>Button<span class="tok-punct">&gt;</span>إرسال<span class="tok-punct">&lt;/</span>Button<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;</span>Button variant<span class="tok-punct">=</span><span class="tok-string">&quot;ghost&quot;</span> size<span class="tok-punct">=</span><span class="tok-string">&quot;sm&quot;</span><span class="tok-punct">&gt;</span>إلغاء<span class="tok-punct">&lt;/</span>Button<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;</span>Button variant<span class="tok-punct">=</span><span class="tok-string">&quot;danger&quot;</span> size<span class="tok-punct">=</span><span class="tok-string">&quot;lg&quot;</span><span class="tok-punct">&gt;</span>حذف<span class="tok-punct">&lt;/</span>Button<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;</span>Button className<span class="tok-punct">=</span><span class="tok-string">&quot;w-full&quot;</span><span class="tok-punct">&gt;</span>بعرض كامل<span class="tok-punct">&lt;/</span>Button<span class="tok-punct">&gt;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> المتغيّرات المولّدة</div><iframe title="المتغيّرات المولّدة" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;font-weight:700;transition:.2s;cursor:pointer;font-family:inherit;margin:4px;border:0}.p{background:#0284c7;color:#fff;padding:10px 20px}.g{background:transparent;color:#0284c7;border:2px solid #0284c7;padding:6px 12px;font-size:.875rem}.d{background:#e11d48;color:#fff;padding:14px 28px;font-size:1.125rem}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;button class=&quot;p&quot;&gt;primary / md&lt;/button&gt;&lt;button class=&quot;g&quot;&gt;ghost / sm&lt;/button&gt;&lt;button class=&quot;d&quot;&gt;danger / lg&lt;/button&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:240px"></iframe></div><h2 id="sec-3">أدوات الدمج</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">npm</span> install clsx tailwind-merge</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">lib/cn.ts</span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">import</span> <span class="tok-punct">{</span> clsx<span class="tok-punct">,</span> <span class="tok-keyword">type</span> ClassValue <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;clsx&#39;</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> twMerge <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;tailwind-merge&#39;</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-func">cn</span><span class="tok-punct">(...</span><span class="tok-prop">inputs</span><span class="tok-punct">:</span> ClassValue<span class="tok-punct">[])</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-func">twMerge</span><span class="tok-punct">(</span><span class="tok-func">clsx</span><span class="tok-punct">(</span>inputs<span class="tok-punct">));</span>
+<span class="tok-punct">}</span></code></pre></div><p>لماذا نحتاج أداتين؟ لأن كلاً منهما تحلّ مشكلة مختلفة:</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">// clsx: الدمج الشرطي</span>
+<span class="tok-func">cn</span><span class="tok-punct">(</span><span class="tok-string">&#39;p-4&#39;</span><span class="tok-punct">,</span> isActive <span class="tok-punct">&amp;&amp;</span> <span class="tok-string">&#39;bg-sky-600&#39;</span><span class="tok-punct">,</span> isBig <span class="tok-punct">?</span> <span class="tok-string">&#39;text-xl&#39;</span> <span class="tok-punct">:</span> <span class="tok-string">&#39;text-base&#39;</span><span class="tok-punct">)</span>
+
+<span class="tok-comment">// twMerge: حلّ التعارض — الأخير يفوز</span>
+<span class="tok-func">cn</span><span class="tok-punct">(</span><span class="tok-string">&#39;p-4&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;p-8&#39;</span><span class="tok-punct">)</span>                    <span class="tok-comment">// → &#39;p-8&#39;</span>
+<span class="tok-func">cn</span><span class="tok-punct">(</span><span class="tok-string">&#39;bg-red-500&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;bg-blue-500&#39;</span><span class="tok-punct">)</span>     <span class="tok-comment">// → &#39;bg-blue-500&#39;</span>
+<span class="tok-func">cn</span><span class="tok-punct">(</span><span class="tok-string">&#39;px-4 py-2&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;p-6&#39;</span><span class="tok-punct">)</span>              <span class="tok-comment">// → &#39;p-6&#39;</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> المشكلة التي يحلّها twMerge</div><p>كتابة <code>class=&quot;p-4 p-8&quot;</code> تجعل الفائز هو <strong>الأخير في ملف CSS المولَّد</strong> لا الأخير في الترميز. فقد تكتب <code>p-8</code> وتحصل على <code>p-4</code>! <code>twMerge</code> يحذف المتعارض ويُبقي الأخير فعلاً.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">مكوّن يقبل التخصيص بأمان</span><span class="code-lang">jsx</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">import</span> <span class="tok-punct">{</span> cn <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;@/lib/cn&#39;</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-func">Card</span><span class="tok-punct">({</span> className<span class="tok-punct">,</span> <span class="tok-punct">...</span><span class="tok-prop">props</span> <span class="tok-punct">})</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-punct">&lt;</span>div
+      className<span class="tok-punct">={</span><span class="tok-func">cn</span><span class="tok-punct">(</span>
+        <span class="tok-string">&#39;rounded-2xl border border-slate-200 bg-white p-6 shadow-sm&#39;</span><span class="tok-punct">,</span>
+        className
+      <span class="tok-punct">)}</span>
+      <span class="tok-punct">{...</span><span class="tok-prop">props</span><span class="tok-punct">}</span>
+    <span class="tok-punct">/&gt;</span>
+  <span class="tok-punct">);</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// الاستخدام — p-10 تتغلّب على p-6 بشكل صحيح</span>
+<span class="tok-punct">&lt;</span>Card className<span class="tok-punct">=</span><span class="tok-string">&quot;p-10 bg-sky-50&quot;</span><span class="tok-punct">&gt;</span>…<span class="tok-punct">&lt;/</span>Card<span class="tok-punct">&gt;</span></code></pre></div><h2 id="sec-4">إدارة المتغيّرات بـ CVA</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">npm</span> install class-variance-authority</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ts</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">import</span> <span class="tok-punct">{</span> cva<span class="tok-punct">,</span> <span class="tok-keyword">type</span> VariantProps <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;class-variance-authority&#39;</span><span class="tok-punct">;</span>
+<span class="tok-keyword">import</span> <span class="tok-punct">{</span> cn <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;@/lib/cn&#39;</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">const</span> button <span class="tok-punct">=</span> <span class="tok-func">cva</span><span class="tok-punct">(</span>
+  <span class="tok-string">&#39;inline-flex items-center justify-center gap-2 rounded-lg font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50&#39;</span><span class="tok-punct">,</span>
+  <span class="tok-punct">{</span>
+    variants<span class="tok-punct">:</span> <span class="tok-punct">{</span>
+      variant<span class="tok-punct">:</span> <span class="tok-punct">{</span>
+        primary<span class="tok-punct">:</span> <span class="tok-string">&#39;bg-sky-600 text-white hover:bg-sky-700&#39;</span><span class="tok-punct">,</span>
+        ghost<span class="tok-punct">:</span>   <span class="tok-string">&#39;border-2 border-sky-600 text-sky-600 hover:bg-sky-50&#39;</span><span class="tok-punct">,</span>
+        danger<span class="tok-punct">:</span>  <span class="tok-string">&#39;bg-rose-600 text-white hover:bg-rose-700&#39;</span>
+      <span class="tok-punct">},</span>
+      size<span class="tok-punct">:</span> <span class="tok-punct">{</span>
+        sm<span class="tok-punct">:</span> <span class="tok-string">&#39;px-3 py-1.5 text-sm&#39;</span><span class="tok-punct">,</span>
+        md<span class="tok-punct">:</span> <span class="tok-string">&#39;px-5 py-2.5&#39;</span><span class="tok-punct">,</span>
+        lg<span class="tok-punct">:</span> <span class="tok-string">&#39;px-7 py-3.5 text-lg&#39;</span>
+      <span class="tok-punct">},</span>
+      block<span class="tok-punct">:</span> <span class="tok-punct">{</span>
+        <span class="tok-bool">true</span><span class="tok-punct">:</span> <span class="tok-string">&#39;w-full&#39;</span>
+      <span class="tok-punct">}</span>
+    <span class="tok-punct">},</span>
+    compoundVariants<span class="tok-punct">:</span> <span class="tok-punct">[</span>
+      <span class="tok-punct">{</span> variant<span class="tok-punct">:</span> <span class="tok-string">&#39;ghost&#39;</span><span class="tok-punct">,</span> size<span class="tok-punct">:</span> <span class="tok-string">&#39;lg&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">class</span><span class="tok-punct">:</span> <span class="tok-string">&#39;border-4&#39;</span> <span class="tok-punct">}</span>
+    <span class="tok-punct">],</span>
+    defaultVariants<span class="tok-punct">:</span> <span class="tok-punct">{</span> variant<span class="tok-punct">:</span> <span class="tok-string">&#39;primary&#39;</span><span class="tok-punct">,</span> size<span class="tok-punct">:</span> <span class="tok-string">&#39;md&#39;</span> <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">);</span>
+
+<span class="tok-keyword">type</span> ButtonProps <span class="tok-punct">=</span> React<span class="tok-punct">.</span><span class="tok-prop">ButtonHTMLAttributes</span><span class="tok-punct">&lt;</span>HTMLButtonElement<span class="tok-punct">&gt;</span>
+  <span class="tok-punct">&amp;</span> VariantProps<span class="tok-punct">&lt;</span><span class="tok-keyword">typeof</span> button<span class="tok-punct">&gt;;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-func">Button</span><span class="tok-punct">({</span> variant<span class="tok-punct">,</span> size<span class="tok-punct">,</span> block<span class="tok-punct">,</span> className<span class="tok-punct">,</span> <span class="tok-punct">...</span><span class="tok-prop">props</span> <span class="tok-punct">}:</span> ButtonProps<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-punct">&lt;</span>button
+      className<span class="tok-punct">={</span><span class="tok-func">cn</span><span class="tok-punct">(</span><span class="tok-func">button</span><span class="tok-punct">({</span> variant<span class="tok-punct">,</span> size<span class="tok-punct">,</span> block <span class="tok-punct">}),</span> className<span class="tok-punct">)}</span>
+      <span class="tok-punct">{...</span><span class="tok-prop">props</span><span class="tok-punct">}</span>
+    <span class="tok-punct">/&gt;</span>
+  <span class="tok-punct">);</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>CVA يعطيك أنواعاً آمنة تلقائياً: <code>&lt;Button variant=&quot;primry&quot;&gt;</code> سيعطي خطأ ترجمة في TypeScript. هذا وحده يستحق التبنّي في أي مشروع جادّ.</p></div><h2 id="sec-5">خطأ يكسر Tailwind تماماً</h2><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> لا تبنِ أسماء الأصناف ديناميكياً</div><p>Tailwind يفحص ملفاتك كنصّ ويبحث عن <strong>أسماء أصناف كاملة</strong>. لا يشغّل كودك ولا يفهم تسلسل النصوص. أي اسم مبني ديناميكياً لن يُولَّد إطلاقاً.</p></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">jsx</span></div><pre><code><span class="tok-comment">// ✗ لن يعمل</span>
+<span class="tok-keyword">const</span> color <span class="tok-punct">=</span> <span class="tok-string">&quot;sky&quot;</span><span class="tok-punct">;</span>
+<span class="tok-punct">&lt;</span>div className<span class="tok-punct">={</span><span class="tok-string">`bg-${color}-500`</span><span class="tok-punct">}</span> <span class="tok-punct">/&gt;</span>
+
+<span class="tok-comment">// ✗ ولا هذا</span>
+<span class="tok-punct">&lt;</span>div className<span class="tok-punct">={</span><span class="tok-string">`text-${size}`</span><span class="tok-punct">}</span> <span class="tok-punct">/&gt;</span>
+
+<span class="tok-comment">// ✗ ولا هذا</span>
+<span class="tok-punct">&lt;</span>div className<span class="tok-punct">={</span><span class="tok-string">&quot;p-&quot;</span> <span class="tok-punct">+</span> spacing<span class="tok-punct">}</span> <span class="tok-punct">/&gt;</span></code></pre></div><div class="why">Tailwind لا يرى <code>bg-sky-500</code> في الملف، فلا يولّدها، فلا يوجد الصنف في CSS.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">jsx</span></div><pre><code><span class="tok-comment">// ✓ خريطة بأسماء كاملة</span>
+<span class="tok-keyword">const</span> colors <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+  sky<span class="tok-punct">:</span> <span class="tok-string">&quot;bg-sky-500&quot;</span><span class="tok-punct">,</span>
+  rose<span class="tok-punct">:</span> <span class="tok-string">&quot;bg-rose-500&quot;</span><span class="tok-punct">,</span>
+  emerald<span class="tok-punct">:</span> <span class="tok-string">&quot;bg-emerald-500&quot;</span>
+<span class="tok-punct">};</span>
+<span class="tok-punct">&lt;</span>div className<span class="tok-punct">={</span>colors<span class="tok-punct">[</span>color<span class="tok-punct">]}</span> <span class="tok-punct">/&gt;</span>
+
+<span class="tok-comment">// ✓ أو شرط صريح</span>
+<span class="tok-punct">&lt;</span>div className<span class="tok-punct">={</span>isActive <span class="tok-punct">?</span> <span class="tok-string">&quot;bg-sky-500&quot;</span> <span class="tok-punct">:</span> <span class="tok-string">&quot;bg-slate-300&quot;</span><span class="tok-punct">}</span> <span class="tok-punct">/&gt;</span></code></pre></div><div class="why">الأسماء الكاملة موجودة في الملف، فيراها الفاحص ويولّدها.</div></div></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>إن اضطررت لأسماء ديناميكية (من قاعدة بيانات مثلاً)، أضفها إلى قائمة <code>@source inline(…)</code> في CSS كي يعرف Tailwind بوجودها.</p></div><h2 id="sec-6">متى تكتب CSS مخصّصة؟</h2><p>Tailwind لا تمنعك من CSS. هناك حالات تكون فيها CSS المخصّصة هي الأصح:</p><ul><li><strong>حركات معقّدة</strong> بعدة إطارات مفتاحية.</li><li><strong>تنسيق محتوى خارجي</strong> من محرّر نصوص أو Markdown (أو استخدم إضافة typography).</li><li><strong>خصائص نادرة</strong> لا تغطّيها Tailwind.</li><li><strong>تنسيق شريط التمرير</strong> أو عناصر المتصفح الداخلية.</li><li><strong>أنماط الطباعة المعقّدة</strong>.</li></ul><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">css</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@layer</span> <span class="tok-sel">components</span> <span class="tok-punct">{</span>
+  .custom-scrollbar <span class="tok-punct">{</span>
+    <span class="tok-prop">scrollbar-width</span><span class="tok-punct">:</span> thin<span class="tok-punct">;</span>
+    <span class="tok-prop">scrollbar-color</span><span class="tok-punct">:</span> <span class="tok-func">var</span><span class="tok-punct">(</span>--color-slate-400<span class="tok-punct">)</span> transparent<span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  .<span class="tok-prop">custom-scrollbar</span><span class="tok-punct">:</span><span class="tok-punct">:</span>-webkit-scrollbar <span class="tok-punct">{</span>
+    <span class="tok-prop">width</span><span class="tok-punct">:</span> <span class="tok-number">8px</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  .<span class="tok-prop">custom-scrollbar</span><span class="tok-punct">:</span><span class="tok-punct">:</span>-webkit-scrollbar-thumb <span class="tok-punct">{</span>
+    <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-func">var</span><span class="tok-punct">(</span>--color-slate-400<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">999px</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><h2 id="sec-7">تحسين الناتج</h2><ul><li><strong>الفحص التلقائي</strong>: Tailwind 4 يكتشف ملفاتك تلقائياً ويتجاهل <code>.gitignore</code> — نادراً ما تحتاج إعداداً.</li><li><strong>لا تستورد كل شيء</strong>: <code>@import &quot;tailwindcss&quot;</code> تشمل ما تحتاجه فقط بعد الفحص.</li><li><strong>احذف الأصناف غير المستخدمة</strong> من الترميز نفسه — لا تُبقِ كوداً معطّلاً بالتعليق.</li><li><strong>راقب الحجم</strong>: <code>npm run build</code> ثم قِس الملف الناتج مضغوطاً.</li><li><strong>تجنّب <code>@apply</code> المفرط</strong>: كل قاعدة تضيف حجماً ثابتاً لا يُعاد استخدامه.</li></ul><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># البناء وقياس الحجم</span>
+<span class="tok-keyword">npx</span> @tailwindcss/cli <span class="tok-attr">-i</span> src/style.css <span class="tok-attr">-o</span> dist/style.css <span class="tok-attr">--minify</span>
+gzip <span class="tok-attr">-c</span> dist/style.css <span class="tok-punct">|</span> wc <span class="tok-attr">-c</span></code></pre></div><h2 id="sec-8">قائمة أفضل الممارسات</h2><ol class="steps"><li>ثبّت <code>prettier-plugin-tailwindcss</code> من اليوم الأول.</li><li>استخدم المكوّنات لإعادة الاستخدام لا <code>@apply</code>.</li><li>استخدم <code>cn()</code> (clsx + tailwind-merge) في كل مكوّن يقبل <code>className</code>.</li><li>استخدم CVA للمكوّنات ذات المتغيّرات المتعدّدة.</li><li>لا تبنِ أسماء أصناف ديناميكياً أبداً.</li><li>استخدم الاتجاهات المنطقية (<code>ps</code>/<code>pe</code>/<code>start</code>/<code>end</code>) في المشاريع العربية.</li><li>ابدأ بالجوال ثم أضف نقاط التوقف.</li><li>احترم <code>motion-reduce</code> في كل حركة.</li><li>استخدم <code>focus-visible</code> لا <code>focus</code> لمؤشّر التركيز.</li><li>خصّص الثيم في <code>@theme</code> بدل نثر القيم العشوائية.</li></ol><h2 id="sec-9">مكتبة مكوّنات مصغّرة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">components/ui/Card.jsx</span><span class="code-lang">jsx</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">import</span> <span class="tok-punct">{</span> cn <span class="tok-punct">}</span> <span class="tok-keyword">from</span> <span class="tok-string">&#39;@/lib/cn&#39;</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-func">Card</span><span class="tok-punct">({</span> className<span class="tok-punct">,</span> <span class="tok-punct">...</span><span class="tok-prop">props</span> <span class="tok-punct">})</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">(</span>
+    <span class="tok-punct">&lt;</span>div
+      className<span class="tok-punct">={</span><span class="tok-func">cn</span><span class="tok-punct">(</span>
+        <span class="tok-string">&#39;rounded-2xl border border-slate-200 bg-white shadow-sm&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;dark:border-slate-700 dark:bg-slate-800&#39;</span><span class="tok-punct">,</span>
+        className
+      <span class="tok-punct">)}</span>
+      <span class="tok-punct">{...</span><span class="tok-prop">props</span><span class="tok-punct">}</span>
+    <span class="tok-punct">/&gt;</span>
+  <span class="tok-punct">);</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-func">CardHeader</span><span class="tok-punct">({</span> className<span class="tok-punct">,</span> <span class="tok-punct">...</span><span class="tok-prop">props</span> <span class="tok-punct">})</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">&lt;</span>div className<span class="tok-punct">={</span><span class="tok-func">cn</span><span class="tok-punct">(</span><span class="tok-string">&#39;border-b border-slate-200 p-5 dark:border-slate-700&#39;</span><span class="tok-punct">,</span> className<span class="tok-punct">)}</span> <span class="tok-punct">{...</span><span class="tok-prop">props</span><span class="tok-punct">}</span> <span class="tok-punct">/&gt;;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-func">CardBody</span><span class="tok-punct">({</span> className<span class="tok-punct">,</span> <span class="tok-punct">...</span><span class="tok-prop">props</span> <span class="tok-punct">})</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">&lt;</span>div className<span class="tok-punct">={</span><span class="tok-func">cn</span><span class="tok-punct">(</span><span class="tok-string">&#39;p-5&#39;</span><span class="tok-punct">,</span> className<span class="tok-punct">)}</span> <span class="tok-punct">{...</span><span class="tok-prop">props</span><span class="tok-punct">}</span> <span class="tok-punct">/&gt;;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">export</span> <span class="tok-keyword">function</span> <span class="tok-func">CardFooter</span><span class="tok-punct">({</span> className<span class="tok-punct">,</span> <span class="tok-punct">...</span><span class="tok-prop">props</span> <span class="tok-punct">})</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">return</span> <span class="tok-punct">&lt;</span>div className<span class="tok-punct">={</span><span class="tok-func">cn</span><span class="tok-punct">(</span><span class="tok-string">&#39;border-t border-slate-200 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-900&#39;</span><span class="tok-punct">,</span> className<span class="tok-punct">)}</span> <span class="tok-punct">{...</span><span class="tok-prop">props</span><span class="tok-punct">}</span> <span class="tok-punct">/&gt;;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الاستخدام</span><span class="code-lang">jsx</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-punct">&lt;</span>Card className<span class="tok-punct">=</span><span class="tok-string">&quot;max-w-md&quot;</span><span class="tok-punct">&gt;</span>
+  <span class="tok-punct">&lt;</span>CardHeader<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>h3 className<span class="tok-punct">=</span><span class="tok-string">&quot;text-lg font-bold&quot;</span><span class="tok-punct">&gt;</span>تفاصيل الطلب<span class="tok-punct">&lt;/</span>h3<span class="tok-punct">&gt;</span>
+  <span class="tok-punct">&lt;/</span>CardHeader<span class="tok-punct">&gt;</span>
+
+  <span class="tok-punct">&lt;</span>CardBody<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>p className<span class="tok-punct">=</span><span class="tok-string">&quot;text-slate-500&quot;</span><span class="tok-punct">&gt;</span>سيصل طلبك خلال ثلاثة أيام<span class="tok-punct">.&lt;/</span>p<span class="tok-punct">&gt;</span>
+  <span class="tok-punct">&lt;/</span>CardBody<span class="tok-punct">&gt;</span>
+
+  <span class="tok-punct">&lt;</span>CardFooter className<span class="tok-punct">=</span><span class="tok-string">&quot;flex gap-2&quot;</span><span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>Button size<span class="tok-punct">=</span><span class="tok-string">&quot;sm&quot;</span><span class="tok-punct">&gt;</span>تتبّع<span class="tok-punct">&lt;/</span>Button<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>Button size<span class="tok-punct">=</span><span class="tok-string">&quot;sm&quot;</span> variant<span class="tok-punct">=</span><span class="tok-string">&quot;ghost&quot;</span><span class="tok-punct">&gt;</span>إلغاء<span class="tok-punct">&lt;/</span>Button<span class="tok-punct">&gt;</span>
+  <span class="tok-punct">&lt;/</span>CardFooter<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;/</span>Card<span class="tok-punct">&gt;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> النتيجة</div><iframe title="النتيجة" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}.card{border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.08);max-width:340px;overflow:hidden}.h{border-bottom:1px solid #e2e8f0;padding:16px}.h h3{margin:0;font-size:1.05rem}.b{padding:16px;color:#64748b;font-size:.92em}.f{border-top:1px solid #e2e8f0;background:#f8fafc;padding:14px;display:flex;gap:8px}button{border-radius:8px;padding:6px 14px;font-size:.85em;font-weight:700;font-family:inherit;cursor:pointer;border:0}.p{background:#0284c7;color:#fff}.g{background:transparent;color:#0284c7;border:2px solid #0284c7}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;card&quot;&gt;&lt;div class=&quot;h&quot;&gt;&lt;h3&gt;تفاصيل الطلب&lt;/h3&gt;&lt;/div&gt;&lt;div class=&quot;b&quot;&gt;سيصل طلبك خلال ثلاثة أيام عمل.&lt;/div&gt;&lt;div class=&quot;f&quot;&gt;&lt;button class=&quot;p&quot;&gt;تتبّع&lt;/button&gt;&lt;button class=&quot;g&quot;&gt;إلغاء&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><section class="exercise" id="sec-10"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: مكتبة مكوّنات</h3></header><div class="exercise-body"><p>ابنِ خمسة مكوّنات قابلة لإعادة الاستخدام بأفضل الممارسات.</p><p><strong>المطلوب:</strong></p><ul><li>دالة <code>cn()</code> تجمع <code>clsx</code> و <code>tailwind-merge</code>.</li><li><code>Button</code> بـ CVA: ثلاثة أنماط، ثلاثة أحجام، وخيار <code>block</code>.</li><li><code>Card</code> مركّب: <code>Card</code> و <code>CardHeader</code> و <code>CardBody</code> و <code>CardFooter</code>.</li><li><code>Badge</code> بخمسة ألوان دلالية وحجمين.</li><li><code>Input</code> مع حالة خطأ ورسالة، وتسمية مرتبطة.</li><li><code>Alert</code> بأربعة أنواع وأيقونة وزر إغلاق اختياري.</li><li>كل مكوّن يقبل <code>className</code> ويدمجه بـ <code>cn()</code>.</li><li>كل مكوّن يدعم الوضع الليلي.</li><li>كل مكوّن تفاعلي له <code>focus-visible</code>.</li><li>لا اسم صنف مبني ديناميكياً في أي مكان.</li><li>ثبّت <code>prettier-plugin-tailwindcss</code> وشغّله على المشروع.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 CVA يعطيك أنواعاً آمنة عبر <code>VariantProps</code>.</li><li>💡 <code>cn()</code> تحلّ تعارض <code>p-6</code> مع <code>p-10</code> القادمة من <code>className</code>.</li><li>💡 استخدم خريطة أصناف كاملة لا بناء نصّي.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">tsx</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>/* ===== lib/cn.ts ===== */
+import { clsx, type ClassValue } from &#39;clsx&#39;;
+import { twMerge } from &#39;tailwind-merge&#39;;
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+/* ===== components/ui/Button.tsx ===== */
+import { cva, type VariantProps } from &#39;class-variance-authority&#39;;
+import { cn } from &#39;@/lib/cn&#39;;
+
+const button = cva(
+  &#39;inline-flex items-center justify-center gap-2 rounded-lg font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50&#39;,
+  {
+    variants: {
+      variant: {
+        primary: &#39;bg-sky-600 text-white hover:bg-sky-700 focus-visible:outline-sky-600&#39;,
+        ghost: &#39;border-2 border-sky-600 text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950&#39;,
+        danger: &#39;bg-rose-600 text-white hover:bg-rose-700 focus-visible:outline-rose-600&#39;
+      },
+      size: {
+        sm: &#39;px-3 py-1.5 text-sm&#39;,
+        md: &#39;px-5 py-2.5&#39;,
+        lg: &#39;px-7 py-3.5 text-lg&#39;
+      },
+      block: { true: &#39;w-full&#39; }
+    },
+    defaultVariants: { variant: &#39;primary&#39;, size: &#39;md&#39; }
+  }
+);
+
+type ButtonProps = React.ButtonHTMLAttributes&lt;HTMLButtonElement&gt; &amp;
+  VariantProps&lt;typeof button&gt;;
+
+export function Button({ variant, size, block, className, ...props }: ButtonProps) {
+  return &lt;button className={cn(button({ variant, size, block }), className)} {...props} /&gt;;
+}
+
+/* ===== components/ui/Card.tsx ===== */
+export function Card({ className, ...props }: React.HTMLAttributes&lt;HTMLDivElement&gt;) {
+  return (
+    &lt;div
+      className={cn(
+        &#39;rounded-2xl border border-slate-200 bg-white shadow-sm&#39;,
+        &#39;dark:border-slate-700 dark:bg-slate-800&#39;,
+        className
+      )}
+      {...props}
+    /&gt;
+  );
+}
+
+export function CardHeader({ className, ...props }: React.HTMLAttributes&lt;HTMLDivElement&gt;) {
+  return &lt;div className={cn(&#39;border-b border-slate-200 p-5 dark:border-slate-700&#39;, className)} {...props} /&gt;;
+}
+
+export function CardBody({ className, ...props }: React.HTMLAttributes&lt;HTMLDivElement&gt;) {
+  return &lt;div className={cn(&#39;p-5&#39;, className)} {...props} /&gt;;
+}
+
+export function CardFooter({ className, ...props }: React.HTMLAttributes&lt;HTMLDivElement&gt;) {
+  return (
+    &lt;div
+      className={cn(
+        &#39;border-t border-slate-200 bg-slate-50 p-5&#39;,
+        &#39;dark:border-slate-700 dark:bg-slate-900&#39;,
+        className
+      )}
+      {...props}
+    /&gt;
+  );
+}
+
+/* ===== components/ui/Badge.tsx ===== */
+const badge = cva(&#39;inline-flex items-center rounded-full font-bold&#39;, {
+  variants: {
+    tone: {
+      neutral: &#39;bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200&#39;,
+      info: &#39;bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300&#39;,
+      success: &#39;bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300&#39;,
+      warning: &#39;bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300&#39;,
+      danger: &#39;bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300&#39;
+    },
+    size: {
+      sm: &#39;px-2 py-0.5 text-xs&#39;,
+      md: &#39;px-3 py-1 text-sm&#39;
+    }
+  },
+  defaultVariants: { tone: &#39;neutral&#39;, size: &#39;md&#39; }
+});
+
+export function Badge({ tone, size, className, ...props }) {
+  return &lt;span className={cn(badge({ tone, size }), className)} {...props} /&gt;;
+}
+
+/* ===== components/ui/Input.tsx ===== */
+export function Input({ label, error, id, className, ...props }) {
+  return (
+    &lt;div className=&quot;space-y-1.5&quot;&gt;
+      &lt;label htmlFor={id} className=&quot;block font-semibold text-slate-700 dark:text-slate-200&quot;&gt;
+        {label}
+      &lt;/label&gt;
+
+      &lt;input
+        id={id}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${id}-error` : undefined}
+        className={cn(
+          &#39;w-full rounded-lg border px-4 py-2.5 transition&#39;,
+          &#39;border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200&#39;,
+          &#39;dark:border-slate-600 dark:bg-slate-900&#39;,
+          error &amp;&amp; &#39;border-rose-500 focus:border-rose-500 focus:ring-rose-200&#39;,
+          className
+        )}
+        {...props}
+      /&gt;
+
+      {error &amp;&amp; (
+        &lt;p id={`${id}-error`} className=&quot;text-sm text-rose-600&quot;&gt;
+          {error}
+        &lt;/p&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+
+/* ===== components/ui/Alert.tsx ===== */
+const alert = cva(&#39;flex items-start gap-3 rounded-xl border p-4&#39;, {
+  variants: {
+    tone: {
+      info: &#39;border-sky-300 bg-sky-50 text-sky-800 dark:border-sky-800 dark:bg-sky-950 dark:text-sky-200&#39;,
+      success: &#39;border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-200&#39;,
+      warning: &#39;border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200&#39;,
+      danger: &#39;border-rose-300 bg-rose-50 text-rose-800 dark:border-rose-800 dark:bg-rose-950 dark:text-rose-200&#39;
+    }
+  },
+  defaultVariants: { tone: &#39;info&#39; }
+});
+
+const alertIcons = {
+  info: &#39;ℹ️&#39;,
+  success: &#39;✅&#39;,
+  warning: &#39;⚠️&#39;,
+  danger: &#39;⛔&#39;
+};
+
+export function Alert({ tone = &#39;info&#39;, onClose, className, children, ...props }) {
+  return (
+    &lt;div role=&quot;alert&quot; className={cn(alert({ tone }), className)} {...props}&gt;
+      &lt;span aria-hidden=&quot;true&quot;&gt;{alertIcons[tone]}&lt;/span&gt;
+      &lt;div className=&quot;flex-1&quot;&gt;{children}&lt;/div&gt;
+
+      {onClose &amp;&amp; (
+        &lt;button
+          onClick={onClose}
+          className=&quot;rounded p-1 transition hover:bg-black/5 focus-visible:outline-2&quot;
+          aria-label=&quot;إغلاق&quot;
+        &gt;
+          ✕
+        &lt;/button&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre></div><div class="code-caption" style="background:var(--surface-2);color:var(--text-muted)">لاحظ <code>alertIcons</code> خريطة بقيم كاملة — لا بناء نصّي لأسماء الأصناف في أي مكان.</div></details></div></section><section class="quiz"><h2 id="sec-11"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. لماذا لا يعمل `<code> className={</code>bg-${color}-500<code>} </code>`؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>خطأ صياغة</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>لأن Tailwind يبحث عن أسماء أصناف كاملة في النص ولا ينفّذ كودك</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يحتاج إعداداً</span></label></div><div class="q-explain"><strong>الشرح:</strong> الفاحص نصّي بحت؛ الاسم المبني وقت التشغيل غير موجود في الملف فلا يُولَّد.</div></div><div class="q-item"><p class="q-text">2. ما المشكلة التي يحلّها <code>tailwind-merge</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>الأداء</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>تعارض الأصناف: <code>p-4 p-8</code> قد لا يفوز فيها الأخير كما تتوقّع</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>الترتيب</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>الحجم</span></label></div><div class="q-explain"><strong>الشرح:</strong> الفائز يحدّده ترتيب CSS المولَّد لا ترتيب الترميز؛ <code>twMerge</code> يحسمها.</div></div><div class="q-item"><p class="q-text">3. ما البديل الصحيح لـ <code>@apply</code> في مشروع React؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>CSS Modules</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>مكوّن قابل لإعادة الاستخدام</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>متغيّرات CSS</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>قيم عشوائية</span></label></div><div class="q-explain"><strong>الشرح:</strong> المكوّن هو وحدة إعادة الاستخدام الطبيعية في أطر المكوّنات.</div></div><div class="q-item"><p class="q-text">4. ما فائدة CVA؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>ترتيب الأصناف</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>إدارة متغيّرات المكوّن بأنواع آمنة ومتغيّرات مركّبة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>ضغط CSS</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>الفحص</span></label></div><div class="q-explain"><strong>الشرح:</strong> يجمع تعريف الأنماط والأنواع في مكان واحد ويمنع الأخطاء المطبعية.</div></div><div class="q-item"><p class="q-text">5. ما أول أداة تثبّتها في مشروع Tailwind؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>CVA</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span><code>prettier-plugin-tailwindcss</code> لترتيب الأصناف آلياً</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>clsx</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>typography</span></label></div><div class="q-explain"><strong>الشرح:</strong> الترتيب الموحّد يجعل الأسطر الطويلة مقروءة وينهي نقاشات الفريق.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="tailwind/09-components" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="08-customization.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>التخصيص وبناء نظامك</b></span></a>
+  <a class="next" href="10-project.html"><span><small>الدرس التالي</small><b>مشروع: صفحة هبوط متكاملة</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Tailwind CSS</h3>
+        <div class="ring-wrap" data-ring data-track="tailwind" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">مشكلة السطر الطويل</a></li><li><a href="#sec-2">المكوّن هو وحدة إعادة الاستخدام</a></li><li><a href="#sec-3">أدوات الدمج</a></li><li><a href="#sec-4">إدارة المتغيّرات بـ CVA</a></li><li><a href="#sec-5">خطأ يكسر Tailwind تماماً</a></li><li><a href="#sec-6">متى تكتب CSS مخصّصة؟</a></li><li><a href="#sec-7">تحسين الناتج</a></li><li><a href="#sec-8">قائمة أفضل الممارسات</a></li><li><a href="#sec-9">مكتبة مكوّنات مصغّرة</a></li><li><a href="#sec-10">تمرين: مكتبة مكوّنات</a></li><li><a href="#sec-11">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>prettier-plugin-tailwindcss</code><small>ترتيب الأصناف آلياً</small></div><div class="ref-item"><code>clsx / cn()</code><small>دمج الأصناف الشرطية</small></div><div class="ref-item"><code>tailwind-merge</code><small>حلّ تعارض الأصناف</small></div><div class="ref-item"><code>cva</code><small>إدارة متغيّرات المكوّن</small></div><div class="ref-item"><code>اسم الصنف كاملاً</code><small>لا تبنِ الأسماء ديناميكياً</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="10-project.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>مشروع: صفحة هبوط متكاملة<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

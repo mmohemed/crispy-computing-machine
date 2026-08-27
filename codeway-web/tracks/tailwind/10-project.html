@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="tailwind">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مشروع: صفحة هبوط متكاملة — مسار Tailwind CSS | CodeWay Web</title>
+<meta name="description" content="بناء صفحة هبوط احترافية متجاوبة بالوضع الليلي، تطبّق كل ما تعلّمته في المسار.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="مشروع: صفحة هبوط متكاملة — مسار Tailwind CSS | CodeWay Web">
+<meta property="og:description" content="بناء صفحة هبوط احترافية متجاوبة بالوضع الليلي، تطبّق كل ما تعلّمته في المسار.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Tailwind CSS</a></li>
+      <li aria-current="page">مشروع: صفحة هبوط متكاملة</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 10 من 10</span>
+      <span class="badge level-احترافي">احترافي</span>
+      <span class="badge">مشروع</span><span class="badge">تطبيق</span>
+    </div>
+    <h1>مشروع: صفحة هبوط متكاملة</h1>
+    <p class="summary">بناء صفحة هبوط احترافية متجاوبة بالوضع الليلي، تطبّق كل ما تعلّمته في المسار.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 120 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Tailwind CSS</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تخطّط صفحة هبوط بأقسامها المعتادة.</li><li>تدمج كل أدوات Tailwind في مشروع واحد.</li><li>تبني واجهة متجاوبة تماماً وبوضع ليلي.</li><li>تحقّق معايير إمكانية الوصول والأداء.</li><li>تنشر المشروع على الإنترنت.</li></ul></div>
+      <h2 id="sec-1">ما ستبنيه</h2><p>صفحة هبوط لمنتج تقني اسمه <strong>نَسَق</strong>: منصة إدارة مشاريع عربية. صفحة واحدة كاملة تعرض كل ما يجيده مطوّر واجهات.</p><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> قاعدة الورشة</div><p>اقرأ المواصفات كاملة، خطّط الأقسام على ورقة، ثم ابنِ قسماً قسماً واختبره على ثلاثة أحجام قبل الانتقال. لا تنظر للحل قبل إنهاء محاولتك.</p></div><h2 id="sec-2">الأقسام المطلوبة</h2><div class="table-wrap"><table class="data"><thead><tr><th>القسم</th><th>المحتوى</th><th>التحدّي التقني</th></tr></thead><tbody><tr><td><strong>الترويسة</strong></td><td>شعار + قائمة + زر ثيم + زر تسجيل</td><td>لاصقة بضبابية، قائمة جوال</td></tr><tr><td><strong>البطل</strong></td><td>شارة + عنوان + وصف + زرّان + صورة</td><td>شبكة تتحوّل، عنوان متدرّج الحجم</td></tr><tr><td><strong>الشعارات</strong></td><td>شعارات عملاء</td><td>شبكة متجاوبة بشفافية</td></tr><tr><td><strong>المميزات</strong></td><td>ستّ بطاقات بأيقونات</td><td>شبكة 1→2→3، تأثير group</td></tr><tr><td><strong>كيف يعمل</strong></td><td>ثلاث خطوات مرقّمة</td><td>خطّ رابط بين الخطوات</td></tr><tr><td><strong>الأسعار</strong></td><td>ثلاث باقات</td><td>تمييز الباقة الوسطى بالحجم واللون</td></tr><tr><td><strong>آراء العملاء</strong></td><td>ثلاث شهادات</td><td>اقتباس + صورة + تقييم نجوم</td></tr><tr><td><strong>الأسئلة</strong></td><td>خمسة أسئلة</td><td><code>details</code> مع دوران السهم</td></tr><tr><td><strong>دعوة أخيرة</strong></td><td>عنوان + زر</td><td>خلفية متدرّجة</td></tr><tr><td><strong>الفوتر</strong></td><td>أربعة أعمدة + حقوق</td><td>شبكة متجاوبة</td></tr></tbody></table></div><h2 id="sec-3">المتطلّبات التقنية</h2><h3 id="sec-4">التصميم</h3><ul><li>لوحة ألوان مخصّصة في <code>@theme</code> (لا <code>blue</code> الافتراضي).</li><li>خط عربي محمّل بثلاثة أوزان.</li><li>وضع ليلي كامل يعمل تلقائياً ويدوياً مع حفظ التفضيل.</li><li>نظام مسافات متّسق — لا قيم عشوائية إلا بمبرّر.</li></ul><h3 id="sec-5">التجاوب</h3><ul><li>يعمل بامتياز من 375 بكسل إلى 1920.</li><li>لا تمرير أفقي على أي حجم.</li><li>قائمة جوال تعمل (يمكن بـ <code>details</code> بلا جافاسكربت).</li><li>أحجام الخطوط متدرّجة عبر نقاط التوقف.</li></ul><h3 id="sec-6">إمكانية الوصول</h3><ul><li>رابط تخطٍّ إلى المحتوى.</li><li><code>focus-visible</code> واضح على كل عنصر تفاعلي.</li><li>تباين ألوان يحقّق المستوى AA.</li><li>كل الأيقونات الزخرفية بـ <code>aria-hidden</code>.</li><li>كل الحركات محمية بـ <code>motion-safe</code>/<code>motion-reduce</code>.</li><li>ترتيب عناوين منطقي: <code>h1</code> واحد ثم <code>h2</code> للأقسام.</li></ul><h2 id="sec-7">نقطة الانطلاق</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">src/style.css</span><span class="code-lang">css</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@import</span> <span class="tok-string">&quot;tailwindcss&quot;</span>;
+
+<span class="tok-keyword">@custom-variant</span> <span class="tok-sel">dark</span> (&amp;<span class="tok-sel">:where([data-theme=&quot;dark&quot;], [data-theme=&quot;dark&quot;] *)</span>);
+
+<span class="tok-keyword">@theme</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">--color-brand-50</span><span class="tok-punct">:</span>  <span class="tok-number">#eef2ff</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-brand-100</span><span class="tok-punct">:</span> <span class="tok-number">#e0e7ff</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-brand-300</span><span class="tok-punct">:</span> <span class="tok-number">#a5b4fc</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-brand-500</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-brand-600</span><span class="tok-punct">:</span> <span class="tok-number">#4f46e5</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-brand-700</span><span class="tok-punct">:</span> <span class="tok-number">#4338ca</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-brand-900</span><span class="tok-punct">:</span> <span class="tok-number">#312e81</span><span class="tok-punct">;</span>
+
+  <span class="tok-prop">--color-surface</span><span class="tok-punct">:</span> <span class="tok-number">#ffffff</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-canvas</span><span class="tok-punct">:</span>  <span class="tok-number">#f8fafc</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-ink</span><span class="tok-punct">:</span>     <span class="tok-number">#0f172a</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-muted</span><span class="tok-punct">:</span>   <span class="tok-number">#64748b</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-line</span><span class="tok-punct">:</span>    <span class="tok-number">#e2e8f0</span><span class="tok-punct">;</span>
+
+  <span class="tok-prop">--font-sans</span><span class="tok-punct">:</span> <span class="tok-string">&#39;Cairo&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;Segoe UI&#39;</span><span class="tok-punct">,</span> sans-serif<span class="tok-punct">;</span>
+
+  <span class="tok-prop">--animate-fade-up</span><span class="tok-punct">:</span> fade-up .<span class="tok-number">6s</span> ease-out both<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">@keyframes</span> <span class="tok-sel">fade-up</span> <span class="tok-punct">{</span>
+  from <span class="tok-punct">{</span> <span class="tok-prop">opacity</span><span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">;</span> <span class="tok-prop">transform</span><span class="tok-punct">:</span> <span class="tok-func">translateY</span><span class="tok-punct">(</span><span class="tok-number">20px</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  to   <span class="tok-punct">{</span> <span class="tok-prop">opacity</span><span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">;</span> <span class="tok-prop">transform</span><span class="tok-punct">:</span> <span class="tok-func">translateY</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">@layer</span> <span class="tok-sel">base</span> <span class="tok-punct">{</span>
+  [data-theme=<span class="tok-string">&#39;dark&#39;</span>] <span class="tok-punct">{</span>
+    <span class="tok-prop">--color-surface</span><span class="tok-punct">:</span> <span class="tok-number">#111a2e</span><span class="tok-punct">;</span>
+    <span class="tok-prop">--color-canvas</span><span class="tok-punct">:</span>  <span class="tok-number">#0a0f1e</span><span class="tok-punct">;</span>
+    <span class="tok-prop">--color-ink</span><span class="tok-punct">:</span>     <span class="tok-number">#e8edf9</span><span class="tok-punct">;</span>
+    <span class="tok-prop">--color-muted</span><span class="tok-punct">:</span>   <span class="tok-number">#a9b6d3</span><span class="tok-punct">;</span>
+    <span class="tok-prop">--color-line</span><span class="tok-punct">:</span>    <span class="tok-number">#22304f</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  body <span class="tok-punct">{</span>
+    <span class="tok-keyword">@apply</span> bg-canvas font-sans text-ink antialiased<span class="tok-punct">;</span>
+    <span class="tok-prop">line-height</span><span class="tok-punct">:</span> <span class="tok-number">1.9</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  h1<span class="tok-punct">,</span> h2<span class="tok-punct">,</span> h3 <span class="tok-punct">{</span> <span class="tok-prop">line-height</span><span class="tok-punct">:</span> <span class="tok-number">1.3</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+  <span class="tok-punct">:</span>focus-visible <span class="tok-punct">{</span>
+    <span class="tok-keyword">@apply</span> outline-2 outline-offset-2 outline-brand-500<span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">@utility</span> <span class="tok-sel">container-page</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">margin-inline</span><span class="tok-punct">:</span> auto<span class="tok-punct">;</span>
+  <span class="tok-prop">max-width</span><span class="tok-punct">:</span> <span class="tok-number">80rem</span><span class="tok-punct">;</span>
+  <span class="tok-prop">padding-inline</span><span class="tok-punct">:</span> <span class="tok-func">--spacing</span><span class="tok-punct">(</span><span class="tok-number">4</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الهيكل العام</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;!DOCTYPE html&gt;</span>
+<span class="tok-tag">&lt;html</span> <span class="tok-attr">lang</span><span class="tok-punct">=</span><span class="tok-string">&quot;ar&quot;</span> <span class="tok-attr">dir</span><span class="tok-punct">=</span><span class="tok-string">&quot;rtl&quot;</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;head</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">charset</span><span class="tok-punct">=</span><span class="tok-string">&quot;UTF-8&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;viewport&quot;</span> <span class="tok-attr">content</span><span class="tok-punct">=</span><span class="tok-string">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;title</span><span class="tok-tag">&gt;</span>نَسَق — إدارة مشاريعك بالعربية<span class="tok-tag">&lt;/title</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;meta</span> <span class="tok-attr">name</span><span class="tok-punct">=</span><span class="tok-string">&quot;description&quot;</span> <span class="tok-attr">content</span><span class="tok-punct">=</span><span class="tok-string">&quot;منصة عربية لإدارة المشاريع والمهام مع فريقك.&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span><span class="tok-punct">=</span><span class="tok-string">&quot;stylesheet&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/dist/style.css&quot;</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/head</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;body</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#main&quot;</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;sr-only focus:not-sr-only …&quot;</span><span class="tok-tag">&gt;</span>تخطّي إلى المحتوى<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;header</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/header</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;main</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;main&quot;</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;hero&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;logos&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;features&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;how&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;pricing&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;testimonials&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;faq&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;cta&quot;</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/main</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;footer</span><span class="tok-tag">&gt;</span>…<span class="tok-tag">&lt;/footer</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span><span class="tok-punct">=</span><span class="tok-string">&quot;/src/theme.js&quot;</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/script</span><span class="tok-tag">&gt;</span>
+<span class="tok-punct">&lt;/</span>body<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;/</span>html<span class="tok-punct">&gt;</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">src/theme.js</span><span class="code-lang">js</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">const</span> KEY <span class="tok-punct">=</span> <span class="tok-string">&#39;theme&#39;</span><span class="tok-punct">;</span>
+
+  <span class="tok-comment">// تطبيق التفضيل المحفوظ قبل الرسم</span>
+  <span class="tok-keyword">try</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">const</span> saved <span class="tok-punct">=</span> localStorage<span class="tok-punct">.</span><span class="tok-func">getItem</span><span class="tok-punct">(</span>KEY<span class="tok-punct">);</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span>saved<span class="tok-punct">)</span> document<span class="tok-punct">.</span><span class="tok-prop">documentElement</span><span class="tok-punct">.</span><span class="tok-prop">dataset</span><span class="tok-punct">.</span><span class="tok-prop">theme</span> <span class="tok-punct">=</span> saved<span class="tok-punct">;</span>
+  <span class="tok-punct">}</span> <span class="tok-keyword">catch</span> <span class="tok-punct">(</span>e<span class="tok-punct">)</span> <span class="tok-punct">{}</span>
+
+  document<span class="tok-punct">.</span><span class="tok-func">addEventListener</span><span class="tok-punct">(</span><span class="tok-string">&#39;click&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">(</span>e<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">if</span> <span class="tok-punct">(!</span>e<span class="tok-punct">.</span><span class="tok-prop">target</span><span class="tok-punct">.</span><span class="tok-func">closest</span><span class="tok-punct">(</span><span class="tok-string">&#39;[data-theme-toggle]&#39;</span><span class="tok-punct">))</span> <span class="tok-keyword">return</span><span class="tok-punct">;</span>
+
+    <span class="tok-keyword">const</span> isDark <span class="tok-punct">=</span> document<span class="tok-punct">.</span><span class="tok-prop">documentElement</span><span class="tok-punct">.</span><span class="tok-prop">dataset</span><span class="tok-punct">.</span><span class="tok-prop">theme</span> <span class="tok-punct">===</span> <span class="tok-string">&#39;dark&#39;</span>
+      <span class="tok-punct">||</span> <span class="tok-punct">(!</span>document<span class="tok-punct">.</span><span class="tok-prop">documentElement</span><span class="tok-punct">.</span><span class="tok-prop">dataset</span><span class="tok-punct">.</span><span class="tok-prop">theme</span>
+          <span class="tok-punct">&amp;&amp;</span> <span class="tok-func">matchMedia</span><span class="tok-punct">(</span><span class="tok-string">&#39;(prefers-color-scheme: dark)&#39;</span><span class="tok-punct">).</span><span class="tok-prop">matches</span><span class="tok-punct">);</span>
+
+    <span class="tok-keyword">const</span> next <span class="tok-punct">=</span> isDark <span class="tok-punct">?</span> <span class="tok-string">&#39;light&#39;</span> <span class="tok-punct">:</span> <span class="tok-string">&#39;dark&#39;</span><span class="tok-punct">;</span>
+    document<span class="tok-punct">.</span><span class="tok-prop">documentElement</span><span class="tok-punct">.</span><span class="tok-prop">dataset</span><span class="tok-punct">.</span><span class="tok-prop">theme</span> <span class="tok-punct">=</span> next<span class="tok-punct">;</span>
+
+    <span class="tok-keyword">try</span> <span class="tok-punct">{</span> localStorage<span class="tok-punct">.</span><span class="tok-func">setItem</span><span class="tok-punct">(</span>KEY<span class="tok-punct">,</span> next<span class="tok-punct">);</span> <span class="tok-punct">}</span> <span class="tok-keyword">catch</span> <span class="tok-punct">(</span>e<span class="tok-punct">)</span> <span class="tok-punct">{}</span>
+  <span class="tok-punct">});</span>
+<span class="tok-punct">})();</span></code></pre></div><h2 id="sec-8">مقتطف مرجعي: قسم الأسعار</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;pricing&quot;</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;py-20&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;container-page&quot;</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mx-auto max-w-2xl text-center&quot;</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h2</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-3xl font-extrabold sm:text-4xl&quot;</span><span class="tok-tag">&gt;</span>أسعار بسيطة وواضحة<span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;p</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-4 text-muted&quot;</span><span class="tok-tag">&gt;</span>ابدأ مجاناً وارتقِ حين تحتاج.<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-12 grid gap-6 md:grid-cols-3 md:items-center&quot;</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-comment">&lt;!-- المجانية --&gt;</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;rounded-2xl border border-line bg-surface p-8&quot;</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;h3</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-lg font-bold&quot;</span><span class="tok-tag">&gt;</span>المجانية<span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-4 text-4xl font-extrabold&quot;</span><span class="tok-tag">&gt;</span>0 <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-base font-normal text-muted&quot;</span><span class="tok-tag">&gt;</span>ر.س<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;ul</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-6 space-y-3 text-muted&quot;</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;li</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex gap-2&quot;</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-emerald-500&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>✓<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span> 3 مشاريع<span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;li</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex gap-2&quot;</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-emerald-500&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>✓<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span> عضوان<span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-8 w-full rounded-lg border-2 border-brand-500 py-3 font-bold text-brand-600&quot;</span><span class="tok-tag">&gt;</span>
+          ابدأ مجاناً
+        <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-comment">&lt;!-- الاحترافية — مميّزة --&gt;</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;relative rounded-2xl border-2 border-brand-500 bg-surface p-8 shadow-xl shadow-brand-500/20 md:scale-105&quot;</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;absolute -top-3 start-1/2 -translate-x-1/2 rounded-full bg-brand-500 px-4 py-1 text-sm font-bold text-white&quot;</span><span class="tok-tag">&gt;</span>
+          الأكثر شيوعاً
+        <span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;h3</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-lg font-bold&quot;</span><span class="tok-tag">&gt;</span>الاحترافية<span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-4 text-4xl font-extrabold&quot;</span><span class="tok-tag">&gt;</span>49 <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-base font-normal text-muted&quot;</span><span class="tok-tag">&gt;</span>ر.س/شهرياً<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;ul</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-6 space-y-3 text-muted&quot;</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;li</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex gap-2&quot;</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-emerald-500&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>✓<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span> مشاريع غير محدودة<span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;li</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex gap-2&quot;</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-emerald-500&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>✓<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span> 20 عضواً<span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-8 w-full rounded-lg bg-brand-600 py-3 font-bold text-white transition hover:bg-brand-700&quot;</span><span class="tok-tag">&gt;</span>
+          جرّبها 14 يوماً
+        <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-comment">&lt;!-- الشركات --&gt;</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;rounded-2xl border border-line bg-surface p-8&quot;</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;h3</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-lg font-bold&quot;</span><span class="tok-tag">&gt;</span>الشركات<span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;p</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-4 text-4xl font-extrabold&quot;</span><span class="tok-tag">&gt;</span>199 <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-base font-normal text-muted&quot;</span><span class="tok-tag">&gt;</span>ر.س/شهرياً<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;ul</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-6 space-y-3 text-muted&quot;</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;li</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex gap-2&quot;</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-emerald-500&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>✓<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span> كل شيء<span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;li</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex gap-2&quot;</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;text-emerald-500&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>✓<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span> مدير حساب<span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-8 w-full rounded-lg border-2 border-brand-500 py-3 font-bold text-brand-600&quot;</span><span class="tok-tag">&gt;</span>
+          تواصل معنا
+        <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> شكل قسم الأسعار</div><iframe title="شكل قسم الأسعار" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}.g{display:grid;gap:14px}@media(min-width:520px){.g{grid-template-columns:repeat(3,1fr);align-items:center}}.p{border:1px solid #e2e8f0;border-radius:16px;background:#fff;padding:18px;text-align:center}.f{position:relative;border:2px solid #6366f1;box-shadow:0 12px 32px rgba(99,102,241,.2)}@media(min-width:520px){.f{transform:scale(1.06)}}.tag{position:absolute;inset-block-start:-12px;inset-inline-start:50%;transform:translateX(50%);background:#6366f1;color:#fff;border-radius:999px;padding:3px 14px;font-size:.72em;font-weight:700;white-space:nowrap}h4{margin:0;font-size:.95em}.pr{margin:10px 0;font-size:1.7rem;font-weight:800}.pr small{font-size:.5em;font-weight:400;color:#64748b}button{width:100%;border-radius:8px;padding:9px;font-weight:700;font-family:inherit;cursor:pointer;font-size:.85em}.o{background:transparent;border:2px solid #6366f1;color:#4f46e5}.s{background:#4f46e5;color:#fff;border:0}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;g&quot;&gt;&lt;div class=&quot;p&quot;&gt;&lt;h4&gt;المجانية&lt;/h4&gt;&lt;p class=&quot;pr&quot;&gt;0 &lt;small&gt;ر.س&lt;/small&gt;&lt;/p&gt;&lt;button class=&quot;o&quot;&gt;ابدأ مجاناً&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;p f&quot;&gt;&lt;span class=&quot;tag&quot;&gt;الأكثر شيوعاً&lt;/span&gt;&lt;h4&gt;الاحترافية&lt;/h4&gt;&lt;p class=&quot;pr&quot;&gt;49 &lt;small&gt;ر.س&lt;/small&gt;&lt;/p&gt;&lt;button class=&quot;s&quot;&gt;جرّبها&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;p&quot;&gt;&lt;h4&gt;الشركات&lt;/h4&gt;&lt;p class=&quot;pr&quot;&gt;199 &lt;small&gt;ر.س&lt;/small&gt;&lt;/p&gt;&lt;button class=&quot;o&quot;&gt;تواصل&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:400px"></iframe></div><h2 id="sec-9">مقتطف: قائمة الجوال بلا جافاسكربت</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;details</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;group md:hidden&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;summary</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;cursor-pointer list-none p-2 text-2xl&quot;</span> <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;القائمة&quot;</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;group-open:hidden&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>☰<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;hidden group-open:inline&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>✕<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/summary</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;nav</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;absolute inset-x-0 top-16 border-b border-line bg-surface p-4&quot;</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;ul</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex flex-col gap-2&quot;</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;block rounded-lg p-3 hover:bg-canvas&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#features&quot;</span><span class="tok-tag">&gt;</span>المميزات<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;block rounded-lg p-3 hover:bg-canvas&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#pricing&quot;</span><span class="tok-tag">&gt;</span>الأسعار<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;block rounded-lg p-3 hover:bg-canvas&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#faq&quot;</span><span class="tok-tag">&gt;</span>الأسئلة<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/nav</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/details</span><span class="tok-tag">&gt;</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>حيلة أنيقة: <code>details</code> تعطيك قائمة جوال تعمل بلوحة المفاتيح وقارئات الشاشة بلا سطر جافاسكربت واحد.</p></div><h2 id="sec-10">قائمة المراجعة النهائية</h2><ol class="steps"><li>الصفحة تعمل على 375 و 768 و 1440 و 1920 بلا تمرير أفقي.</li><li>الوضع الليلي يعمل تلقائياً ويدوياً ويحفظ التفضيل.</li><li>التنقّل بمفتاح Tab يصل لكل عنصر تفاعلي بمؤشّر واضح.</li><li>رابط التخطّي يظهر عند أول ضغطة Tab.</li><li>كل الحركات تتوقّف مع <code>prefers-reduced-motion</code>.</li><li>Lighthouse: 90+ في Performance و Accessibility و SEO.</li><li>حجم CSS المضغوط أقل من 20 كيلوبايت.</li><li>لا اسم صنف مبني ديناميكياً.</li><li>الأصناف مرتّبة بـ Prettier.</li><li>الصفحة منشورة على رابط حقيقي.</li></ol><section class="exercise" id="sec-11"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>المشروع الكامل</h3></header><div class="exercise-body"><p>نفّذ صفحة هبوط «نَسَق» بكل المواصفات أعلاه.</p><p><strong>المطلوب:</strong></p><ul><li>الأقسام العشرة كلها.</li><li>كل المتطلّبات التقنية (تصميم، تجاوب، وصول).</li><li>قائمة المراجعة كلها ✓.</li><li>منشورة على Netlify أو Vercel أو GitHub Pages.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 ابنِ قسماً واحداً كاملاً واختبره على ثلاثة أحجام قبل التالي.</li><li>💡 ابدأ بالجوال دائماً ثم أضف البادئات.</li><li>💡 استخدم <code>container-page</code> لكل قسم لتوحيد الحاوية.</li><li>💡 اختبر الوضع الليلي بعد كل قسم لا في النهاية.</li><li>💡 إن تعثّرت في موضوع، عد إلى درسه لا إلى بداية المسار.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">مقتطف: الترويسة والبطل</span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-tag">&lt;body</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;bg-canvas font-sans text-ink&quot;</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#main&quot;</span>
+     <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;sr-only focus:not-sr-only focus:absolute focus:start-1/2 focus:top-2
+            focus:-translate-x-1/2 focus:rounded-lg focus:bg-brand-600
+            focus:px-5 focus:py-2 focus:font-bold focus:text-white&quot;</span><span class="tok-tag">&gt;</span>
+    تخطّي إلى المحتوى
+  <span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-comment">&lt;!-- ===== الترويسة ===== --&gt;</span>
+  <span class="tok-tag">&lt;header</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;sticky top-0 z-50 border-b border-line bg-surface/80 backdrop-blur-lg&quot;</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;container-page flex h-16 items-center justify-between gap-4&quot;</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;/&quot;</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex items-center gap-2 text-xl font-extrabold&quot;</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;grid h-9 w-9 place-items-center rounded-xl bg-brand-600 text-white&quot;</span>
+              <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>ن<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+        نَسَق
+      <span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-tag">&lt;nav</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;hidden gap-6 text-muted md:flex&quot;</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;a</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;transition hover:text-brand-600&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#features&quot;</span><span class="tok-tag">&gt;</span>المميزات<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;a</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;transition hover:text-brand-600&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#pricing&quot;</span><span class="tok-tag">&gt;</span>الأسعار<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;a</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;transition hover:text-brand-600&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#faq&quot;</span><span class="tok-tag">&gt;</span>الأسئلة<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/nav</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex items-center gap-2&quot;</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;button</span> <span class="tok-attr">data-theme-toggle</span>
+                <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;grid h-10 w-10 place-items-center rounded-lg border border-line
+                       transition hover:bg-canvas&quot;</span>
+                <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;تبديل الوضع الليلي&quot;</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;dark:hidden&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>🌙<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;hidden dark:inline&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>☀️<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/button</span><span class="tok-tag">&gt;</span>
+
+        <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#cta&quot;</span>
+           <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;hidden rounded-lg bg-brand-600 px-5 py-2.5 font-bold text-white
+                  transition hover:bg-brand-700 sm:inline-block&quot;</span><span class="tok-tag">&gt;</span>
+          ابدأ مجاناً
+        <span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+
+        <span class="tok-tag">&lt;details</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;group md:hidden&quot;</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;summary</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;cursor-pointer list-none p-2 text-2xl&quot;</span> <span class="tok-attr">aria-label</span><span class="tok-punct">=</span><span class="tok-string">&quot;القائمة&quot;</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;group-open:hidden&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>☰<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;hidden group-open:inline&quot;</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>✕<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;/summary</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;nav</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;absolute inset-x-0 top-16 border-b border-line bg-surface p-4&quot;</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;ul</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;flex flex-col gap-1&quot;</span><span class="tok-tag">&gt;</span>
+              <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;block rounded-lg p-3 hover:bg-canvas&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#features&quot;</span><span class="tok-tag">&gt;</span>المميزات<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+              <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;block rounded-lg p-3 hover:bg-canvas&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#pricing&quot;</span><span class="tok-tag">&gt;</span>الأسعار<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+              <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;block rounded-lg p-3 hover:bg-canvas&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#faq&quot;</span><span class="tok-tag">&gt;</span>الأسئلة<span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;/nav</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/details</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;/header</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;main</span> <span class="tok-attr">id</span><span class="tok-punct">=</span><span class="tok-string">&quot;main&quot;</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-comment">&lt;!-- ===== البطل ===== --&gt;</span>
+    <span class="tok-tag">&lt;section</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;relative overflow-hidden py-16 sm:py-24&quot;</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;absolute inset-0 -z-10 bg-[radial-gradient(60rem_30rem_at_70%_-10%,var(--color-brand-100),transparent)]
+                  dark:bg-[radial-gradient(60rem_30rem_at_70%_-10%,var(--color-brand-900),transparent)]&quot;</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;container-page grid items-center gap-12 lg:grid-cols-2&quot;</span><span class="tok-tag">&gt;</span>
+
+        <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;motion-safe:animate-fade-up&quot;</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;inline-flex items-center gap-2 rounded-full border border-brand-300
+                       bg-brand-50 px-4 py-1.5 text-sm font-bold text-brand-700
+                       dark:bg-brand-900 dark:text-brand-100&quot;</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;span</span> <span class="tok-attr">aria-hidden</span><span class="tok-punct">=</span><span class="tok-string">&quot;true&quot;</span><span class="tok-tag">&gt;</span>✨<span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span> الإصدار الثاني متاح الآن
+          <span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+
+          <span class="tok-tag">&lt;h1</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-6 text-4xl font-extrabold sm:text-5xl lg:text-6xl&quot;</span><span class="tok-tag">&gt;</span>
+            أدِر مشاريعك
+            <span class="tok-tag">&lt;span</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;bg-gradient-to-l from-brand-500 to-fuchsia-500 bg-clip-text text-transparent&quot;</span><span class="tok-tag">&gt;</span>
+              بالعربية
+            <span class="tok-tag">&lt;/span</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;/h1</span><span class="tok-tag">&gt;</span>
+
+          <span class="tok-tag">&lt;p</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-6 max-w-prose text-lg text-muted&quot;</span><span class="tok-tag">&gt;</span>
+            منصة تخطيط ومتابعة مصمّمة للفرق العربية من الأساس: واجهة من
+            اليمين لليسار، تقاويم هجرية وميلادية، ودعم بلغتك.
+          <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+
+          <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-8 flex flex-col gap-3 sm:flex-row&quot;</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#cta&quot;</span>
+               <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;rounded-xl bg-brand-600 px-8 py-4 text-center font-bold text-white
+                      shadow-lg shadow-brand-500/30 transition
+                      hover:bg-brand-700 motion-safe:hover:-translate-y-0.5&quot;</span><span class="tok-tag">&gt;</span>
+              ابدأ مجاناً — بلا بطاقة
+            <span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;#features&quot;</span>
+               <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;rounded-xl border-2 border-line px-8 py-4 text-center font-bold
+                      transition hover:border-brand-500 hover:text-brand-600&quot;</span><span class="tok-tag">&gt;</span>
+              شاهد المميزات
+            <span class="tok-tag">&lt;/a</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+          <span class="tok-tag">&lt;p</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;mt-6 text-sm text-muted&quot;</span><span class="tok-tag">&gt;</span>
+            انضمّ إلى أكثر من 12,000 فريق عربي
+          <span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+        <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;motion-safe:animate-fade-up&quot;</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;aspect-video rounded-2xl border border-line bg-surface p-3 shadow-2xl&quot;</span><span class="tok-tag">&gt;</span>
+            <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;h-full rounded-xl bg-gradient-to-br from-brand-400 to-fuchsia-500&quot;</span><span class="tok-tag">&gt;</span><span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+          <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/section</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-comment">&lt;!-- بقية الأقسام تتبع النمط نفسه --&gt;</span>
+
+  <span class="tok-tag">&lt;/main</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;/body</span><span class="tok-tag">&gt;</span></code></pre></div><div class="code-caption" style="background:var(--surface-2);color:var(--text-muted)">بقية الأقسام تتبع النمط ذاته: <code>container-page</code> للحاوية، عنوان <code>h2</code> موسّط، ثم شبكة متجاوبة بالمحتوى.</div></details></div></section><h2 id="sec-12">النشر</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># البناء</span>
+<span class="tok-keyword">npx</span> @tailwindcss/cli <span class="tok-attr">-i</span> src/style.css <span class="tok-attr">-o</span> dist/style.css <span class="tok-attr">--minify</span>
+
+<span class="tok-comment"># النشر على Netlify</span>
+<span class="tok-keyword">npx</span> netlify-cli deploy <span class="tok-attr">--prod</span> <span class="tok-attr">--dir</span>=.
+
+<span class="tok-comment"># أو على Vercel</span>
+<span class="tok-keyword">npx</span> vercel <span class="tok-attr">--prod</span>
+
+<span class="tok-comment"># أو GitHub Pages</span>
+<span class="tok-keyword">git</span> add . <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-keyword">git</span> commit <span class="tok-attr">-m</span> <span class="tok-string">&quot;صفحة الهبوط&quot;</span> <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-keyword">git</span> push</code></pre></div><h2 id="sec-13">ماذا بعد؟</h2><p>أنهيت مسار Tailwind: الفلسفة والمسافات والألوان والطباعة والتخطيط والحالات والتجاوب والتأثيرات والتخصيص والمكوّنات. أنت الآن قادر على بناء أي واجهة بسرعة واتّساق.</p><ul><li><strong>shadcn/ui</strong> — مكوّنات جاهزة تنسخها إلى مشروعك وتملكها بالكامل.</li><li><strong>Headless UI</strong> — مكوّنات تفاعلية بلا أنماط، تنسّقها بـ Tailwind.</li><li><strong>Framer Motion</strong> — حركات متقدّمة تتكامل مع Tailwind.</li><li><strong>Tailwind UI</strong> — قوالب رسمية مدفوعة عالية الجودة.</li><li><strong>بناء نظام تصميم كامل</strong> لفريقك بالمبادئ التي تعلّمتها.</li></ul><section class="quiz"><h2 id="sec-14"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما ترتيب البناء الصحيح في التصميم المتجاوب؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>الحاسوب ثم الجوال</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>الجوال أولاً ثم إضافة نقاط التوقف</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>عشوائي</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>اللوحي أولاً</span></label></div><div class="q-explain"><strong>الشرح:</strong> يتوافق مع منطق Tailwind ويقلّل الأصناف المطلوبة.</div></div><div class="q-item"><p class="q-text">2. كيف تبني قائمة جوال بلا جافاسكربت؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>بـ checkbox مخفي</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>بعنصر <code>details</code> و <code>summary</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>بـ CSS فقط</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>مستحيل</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>details</code> تأتي بدعم لوحة المفاتيح وقارئات الشاشة مجاناً.</div></div><div class="q-item"><p class="q-text">3. أين تُحفظ تفضيلات الثيم؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>في الخادم</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>في <code>localStorage</code> مع تطبيقها قبل الرسم</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>في ملف</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>لا تُحفظ</span></label></div><div class="q-explain"><strong>الشرح:</strong> التطبيق المبكر يمنع ومضة الوضع الفاتح قبل تحميل السكربت.</div></div><div class="q-item"><p class="q-text">4. ما الهدف المعقول لحجم CSS في صفحة هبوط؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>أقل من 5kb</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>أقل من 20kb مضغوطة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>أقل من 200kb</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا يهم</span></label></div><div class="q-explain"><strong>الشرح:</strong> Tailwind تولّد المستخدم فقط، فصفحة كاملة تبقى عادةً تحت 20 كيلوبايت.</div></div><div class="q-item"><p class="q-text">5. ما أول ما تختبره بعد إنهاء كل قسم؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>السرعة</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>التجاوب على ثلاثة أحجام والوضع الليلي</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>السيو</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>الطباعة</span></label></div><div class="q-explain"><strong>الشرح:</strong> الاختبار المبكر والمتكرّر أرخص بكثير من إصلاح كل شيء في النهاية.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="tailwind/10-project" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="09-components.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>المكوّنات وأفضل الممارسات</b></span></a>
+  <a class="next" href="../../tracks.html"><span><small>أنهيت المسار 🎉</small><b>تصفّح بقية المسارات</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Tailwind CSS</h3>
+        <div class="ring-wrap" data-ring data-track="tailwind" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">ما ستبنيه</a></li><li><a href="#sec-2">الأقسام المطلوبة</a></li><li><a href="#sec-3">المتطلّبات التقنية</a></li><li class="sub"><a href="#sec-4">التصميم</a></li><li class="sub"><a href="#sec-5">التجاوب</a></li><li class="sub"><a href="#sec-6">إمكانية الوصول</a></li><li><a href="#sec-7">نقطة الانطلاق</a></li><li><a href="#sec-8">مقتطف مرجعي: قسم الأسعار</a></li><li><a href="#sec-9">مقتطف: قائمة الجوال بلا جافاسكربت</a></li><li><a href="#sec-10">قائمة المراجعة النهائية</a></li><li><a href="#sec-11">المشروع الكامل</a></li><li><a href="#sec-12">النشر</a></li><li><a href="#sec-13">ماذا بعد؟</a></li><li><a href="#sec-14">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>الترويسة</code><small>شعار + قائمة + تبديل الثيم</small></div><div class="ref-item"><code>البطل</code><small>عنوان + وصف + دعوة لإجراء</small></div><div class="ref-item"><code>المميزات</code><small>شبكة بطاقات بأيقونات</small></div><div class="ref-item"><code>الأسعار</code><small>ثلاث باقات مع تمييز الأوسط</small></div><div class="ref-item"><code>الأسئلة</code><small>details/summary</small></div><div class="ref-item"><code>الفوتر</code><small>روابط + حقوق</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>
