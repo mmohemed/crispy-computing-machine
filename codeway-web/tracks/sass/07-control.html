@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sass">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التوجيهات التحكّمية: الشروط والحلقات — مسار Sass | CodeWay Web</title>
+<meta name="description" content="توليد الأنماط آلياً بالشروط والحلقات، بدل كتابة عشرات القواعد المتشابهة يدوياً.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="التوجيهات التحكّمية: الشروط والحلقات — مسار Sass | CodeWay Web">
+<meta property="og:description" content="توليد الأنماط آلياً بالشروط والحلقات، بدل كتابة عشرات القواعد المتشابهة يدوياً.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Sass</a></li>
+      <li aria-current="page">التوجيهات التحكّمية: الشروط والحلقات</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 7 من 10</span>
+      <span class="badge level-متوسط">متوسط</span>
+      <span class="badge">الحلقات</span><span class="badge">المنطق</span>
+    </div>
+    <h1>التوجيهات التحكّمية: الشروط والحلقات</h1>
+    <p class="summary">توليد الأنماط آلياً بالشروط والحلقات، بدل كتابة عشرات القواعد المتشابهة يدوياً.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 45 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Sass</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تستخدم <code>@if</code> و <code>@else</code> لتوليد أنماط شرطية.</li><li>تكرّر بـ <code>@for</code> و <code>@each</code> و <code>@while</code>.</li><li>تولّد أصناف مساعدة آلياً من خرائط.</li><li>تبني نظام شبكة كاملاً بحلقة واحدة.</li><li>تتجنّب توليد كود منتفخ لا يُستخدم.</li></ul></div>
+      <h2 id="sec-1"><code>@if</code> — الشروط</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@mixin</span> <span class="tok-sel">theme</span>($<span class="tok-sel">mode</span>) <span class="tok-punct">{</span>
+  <span class="tok-keyword">@if</span> $mode == <span class="tok-string">&#39;dark&#39;</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#0f172a</span><span class="tok-punct">;</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#e8edf9</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span> <span class="tok-keyword">@else</span> if $mode == <span class="tok-string">&#39;light&#39;</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#ffffff</span><span class="tok-punct">;</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#0f172a</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span> <span class="tok-keyword">@else</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">@error</span> <span class="tok-string">&quot;وضع غير معروف: #{$mode}. المتاح: dark أو light&quot;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.panel</span> <span class="tok-punct">{</span> <span class="tok-keyword">@include</span> <span class="tok-func">theme</span><span class="tok-punct">(</span><span class="tok-string">&#39;dark&#39;</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">شرط داخل mixin بمعامل</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:color&#39;</span>;
+
+<span class="tok-keyword">@mixin</span> <span class="tok-sel">button</span>($<span class="tok-sel">bg</span><span class="tok-punct">,</span> $<span class="tok-sel">outline</span>: <span class="tok-sel">false</span>) <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">12px</span> <span class="tok-number">24px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">10px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">font-weight</span><span class="tok-punct">:</span> <span class="tok-number">700</span><span class="tok-punct">;</span>
+  <span class="tok-prop">cursor</span><span class="tok-punct">:</span> pointer<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">@if</span> $outline <span class="tok-punct">{</span>
+    <span class="tok-prop">background</span><span class="tok-punct">:</span> transparent<span class="tok-punct">;</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> $bg<span class="tok-punct">;</span>
+    <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">2px</span> solid $bg<span class="tok-punct">;</span>
+  <span class="tok-punct">}</span> <span class="tok-keyword">@else</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">background</span><span class="tok-punct">:</span> $bg<span class="tok-punct">;</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#fff</span><span class="tok-punct">;</span>
+    <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.btn</span>        <span class="tok-punct">{</span> <span class="tok-keyword">@include</span> <span class="tok-func">button</span><span class="tok-punct">(</span><span class="tok-number">#6366f1</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.btn-ghost</span>  <span class="tok-punct">{</span> <span class="tok-keyword">@include</span> <span class="tok-func">button</span><span class="tok-punct">(</span><span class="tok-number">#6366f1</span><span class="tok-punct">,</span> $<span class="tok-prop">outline</span><span class="tok-punct">:</span> true<span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> زر ممتلئ وآخر محدّد</div><iframe title="زر ممتلئ وآخر محدّد" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}button{padding:12px 24px;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit;margin:4px}.f{background:#6366f1;color:#fff;border:0}.o{background:transparent;color:#6366f1;border:2px solid #6366f1}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;button class=&quot;f&quot;&gt;ممتلئ&lt;/button&gt;&lt;button class=&quot;o&quot;&gt;محدّد&lt;/button&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:160px"></iframe></div><h3 id="sec-2">المعاملات المنطقية</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@if</span> $<span class="tok-sel">a</span> <span class="tok-sel">and</span> $<span class="tok-sel">b</span> <span class="tok-punct">{</span> … <span class="tok-punct">}</span>
+<span class="tok-keyword">@if</span> $<span class="tok-sel">a</span> <span class="tok-sel">or</span> $<span class="tok-sel">b</span>  <span class="tok-punct">{</span> … <span class="tok-punct">}</span>
+<span class="tok-keyword">@if</span> <span class="tok-sel">not</span> $<span class="tok-sel">a</span>    <span class="tok-punct">{</span> … <span class="tok-punct">}</span>
+<span class="tok-keyword">@if</span> $<span class="tok-sel">x</span> == <span class="tok-sel">10</span>  <span class="tok-punct">{</span> … <span class="tok-punct">}</span>
+<span class="tok-keyword">@if</span> $<span class="tok-sel">x</span> != <span class="tok-sel">10</span>  <span class="tok-punct">{</span> … <span class="tok-punct">}</span>
+<span class="tok-keyword">@if</span> $<span class="tok-sel">x</span> <span class="tok-punct">&gt;</span> <span class="tok-sel">10</span>   <span class="tok-punct">{</span> … <span class="tok-punct">}</span>
+
+// دالة <span class="tok-sel">if</span>() المختصرة — تعمل داخل التعابير
+$<span class="tok-sel">padding</span>: <span class="tok-sel">if</span>($<span class="tok-sel">compact</span><span class="tok-punct">,</span> <span class="tok-sel">8px</span><span class="tok-punct">,</span> <span class="tok-sel">16px</span>);
+$<span class="tok-sel">color</span>: <span class="tok-sel">if</span>($<span class="tok-sel">dark</span><span class="tok-punct">,</span> <span class="tok-sel">#fff</span><span class="tok-punct">,</span> <span class="tok-sel">#000</span>);</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> القيم الكاذبة</div><p>في Sass كل شيء صادق <strong>عدا</strong> <code>false</code> و <code>null</code> فقط. انتبه: الصفر <code>0</code> والنص الفارغ <code>&quot;&quot;</code> والقائمة الفارغة <code>()</code> كلها <strong>صادقة</strong>، خلافاً لجافاسكربت.</p></div><h2 id="sec-3"><code>@for</code> — التكرار العددي</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// <span class="tok-sel">through</span>: تشمل النهاية (<span class="tok-sel">1</span> إلى <span class="tok-sel">5</span>)
+<span class="tok-keyword">@for</span> $<span class="tok-sel">i</span> <span class="tok-sel">from</span> <span class="tok-sel">1</span> <span class="tok-sel">through</span> <span class="tok-sel">5</span> <span class="tok-punct">{</span>
+  .mt-#<span class="tok-punct">{</span>$i<span class="tok-punct">}</span> <span class="tok-punct">{</span> <span class="tok-prop">margin-top</span><span class="tok-punct">:</span> $i * <span class="tok-number">8px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+// <span class="tok-sel">to</span>: لا تشمل النهاية (<span class="tok-sel">1</span> إلى <span class="tok-sel">4</span>)
+<span class="tok-keyword">@for</span> $<span class="tok-sel">i</span> <span class="tok-sel">from</span> <span class="tok-sel">1</span> <span class="tok-sel">to</span> <span class="tok-sel">5</span> <span class="tok-punct">{</span>
+  .p-#<span class="tok-punct">{</span>$i<span class="tok-punct">}</span> <span class="tok-punct">{</span> <span class="tok-prop">padding</span><span class="tok-punct">:</span> $i * <span class="tok-number">4px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">ناتج الحلقة الأولى</span><span class="code-lang">css</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-sel">.mt-1</span> <span class="tok-punct">{</span> <span class="tok-prop">margin-top</span><span class="tok-punct">:</span> <span class="tok-number">8px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.mt-2</span> <span class="tok-punct">{</span> <span class="tok-prop">margin-top</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.mt-3</span> <span class="tok-punct">{</span> <span class="tok-prop">margin-top</span><span class="tok-punct">:</span> <span class="tok-number">24px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.mt-4</span> <span class="tok-punct">{</span> <span class="tok-prop">margin-top</span><span class="tok-punct">:</span> <span class="tok-number">32px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.mt-5</span> <span class="tok-punct">{</span> <span class="tok-prop">margin-top</span><span class="tok-punct">:</span> <span class="tok-number">40px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span></code></pre></div><h3 id="sec-4">نظام شبكة كامل بحلقة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:math&#39;</span>;
+
+$<span class="tok-sel">columns</span>: <span class="tok-sel">12</span>;
+
+<span class="tok-sel">.row</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">display</span><span class="tok-punct">:</span> flex<span class="tok-punct">;</span>
+  <span class="tok-prop">flex-wrap</span><span class="tok-punct">:</span> wrap<span class="tok-punct">;</span>
+  <span class="tok-prop">margin-inline</span><span class="tok-punct">:</span> <span class="tok-number">-8px</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">@for</span> $<span class="tok-sel">i</span> <span class="tok-sel">from</span> <span class="tok-sel">1</span> <span class="tok-sel">through</span> $<span class="tok-sel">columns</span> <span class="tok-punct">{</span>
+  .col-#<span class="tok-punct">{</span>$i<span class="tok-punct">}</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">flex</span><span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-number">0</span> math.<span class="tok-func">percentage</span><span class="tok-punct">(</span>math.<span class="tok-func">div</span><span class="tok-punct">(</span>$i<span class="tok-punct">,</span> $columns<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-prop">max-width</span><span class="tok-punct">:</span> math.<span class="tok-func">percentage</span><span class="tok-punct">(</span>math.<span class="tok-func">div</span><span class="tok-punct">(</span>$i<span class="tok-punct">,</span> $columns<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-prop">padding-inline</span><span class="tok-punct">:</span> <span class="tok-number">8px</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> شبكة 12 عموداً</div><iframe title="شبكة 12 عموداً" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}.row{display:flex;flex-wrap:wrap;margin:0 -4px 8px}.row&gt;div{padding:0 4px}.row&gt;div&gt;span{display:block;background:#a5b4fc;color:#1e1b4b;border-radius:6px;padding:8px;text-align:center;font-size:.8em;font-weight:700}.c12{flex:0 0 100%}.c6{flex:0 0 50%}.c4{flex:0 0 33.333%}.c3{flex:0 0 25%}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;row&quot;&gt;&lt;div class=&quot;c12&quot;&gt;&lt;span&gt;col-12&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;div class=&quot;c6&quot;&gt;&lt;span&gt;col-6&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;c6&quot;&gt;&lt;span&gt;col-6&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;div class=&quot;c4&quot;&gt;&lt;span&gt;col-4&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;c4&quot;&gt;&lt;span&gt;col-4&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;c4&quot;&gt;&lt;span&gt;col-4&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;div class=&quot;c3&quot;&gt;&lt;span&gt;col-3&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;c3&quot;&gt;&lt;span&gt;col-3&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;c3&quot;&gt;&lt;span&gt;col-3&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;c3&quot;&gt;&lt;span&gt;col-3&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><p>ثمانية أسطر ولّدت اثنتي عشرة قاعدة. تخيّل كتابتها يدوياً مع الكسور العشرية — ثم تخيّل تغيير عدد الأعمدة إلى 16.</p><h2 id="sec-5"><code>@each</code> — المرور على القوائم والخرائط</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">على قائمة</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">sides</span>: <span class="tok-sel">top</span><span class="tok-punct">,</span> <span class="tok-sel">right</span><span class="tok-punct">,</span> <span class="tok-sel">bottom</span><span class="tok-punct">,</span> <span class="tok-sel">left</span>;
+
+<span class="tok-keyword">@each</span> $<span class="tok-sel">side</span> <span class="tok-sel">in</span> $<span class="tok-sel">sides</span> <span class="tok-punct">{</span>
+  .m-#<span class="tok-punct">{</span>$side<span class="tok-punct">}</span> <span class="tok-punct">{</span> margin-#<span class="tok-punct">{</span>$side<span class="tok-punct">}</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  .p-#<span class="tok-punct">{</span>$side<span class="tok-punct">}</span> <span class="tok-punct">{</span> padding-#<span class="tok-punct">{</span>$side<span class="tok-punct">}</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">على خريطة — الأكثر فائدة</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">colors</span>: (
+  <span class="tok-string">&#39;primary&#39;</span>: <span class="tok-sel">#6366f1</span><span class="tok-punct">,</span>
+  <span class="tok-string">&#39;success&#39;</span>: <span class="tok-sel">#10b981</span><span class="tok-punct">,</span>
+  <span class="tok-string">&#39;warning&#39;</span>: <span class="tok-sel">#f59e0b</span><span class="tok-punct">,</span>
+  <span class="tok-string">&#39;danger&#39;</span>:  <span class="tok-sel">#ef4444</span>
+);
+
+<span class="tok-keyword">@each</span> $<span class="tok-sel">name</span><span class="tok-punct">,</span> $<span class="tok-sel">color</span> <span class="tok-sel">in</span> $<span class="tok-sel">colors</span> <span class="tok-punct">{</span>
+  .text-#<span class="tok-punct">{</span>$name<span class="tok-punct">}</span> <span class="tok-punct">{</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  .bg-#<span class="tok-punct">{</span>$name<span class="tok-punct">}</span>   <span class="tok-punct">{</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  .border-#<span class="tok-punct">{</span>$name<span class="tok-punct">}</span> <span class="tok-punct">{</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+  .btn-#<span class="tok-punct">{</span>$name<span class="tok-punct">}</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">background</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#fff</span><span class="tok-punct">;</span>
+
+    &amp;<span class="tok-punct">:</span>hover <span class="tok-punct">{</span> <span class="tok-prop">filter</span><span class="tok-punct">:</span> <span class="tok-func">brightness</span><span class="tok-punct">(</span>.<span class="tok-number">9</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">مقتطف من الناتج</span><span class="code-lang">css</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-sel">.text-primary</span> <span class="tok-punct">{</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.bg-primary</span> <span class="tok-punct">{</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.border-primary</span> <span class="tok-punct">{</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.btn-primary</span> <span class="tok-punct">{</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#fff</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.btn-primary</span><span class="tok-sel">:hover</span> <span class="tok-punct">{</span> <span class="tok-prop">filter</span><span class="tok-punct">:</span> <span class="tok-func">brightness</span><span class="tok-punct">(</span>.<span class="tok-number">9</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+<span class="tok-sel">.text-success</span> <span class="tok-punct">{</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#10b981</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-comment">/* … وهكذا لكل لون */</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> أزرار مولّدة من خريطة</div><iframe title="أزرار مولّدة من خريطة" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}button{padding:10px 20px;border:0;border-radius:8px;color:#fff;font-family:inherit;font-weight:700;margin:4px;cursor:pointer}.p{background:#6366f1}.s{background:#10b981}.w{background:#f59e0b}.d{background:#ef4444}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;button class=&quot;p&quot;&gt;primary&lt;/button&gt;&lt;button class=&quot;s&quot;&gt;success&lt;/button&gt;&lt;button class=&quot;w&quot;&gt;warning&lt;/button&gt;&lt;button class=&quot;d&quot;&gt;danger&lt;/button&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:170px"></iframe></div><h3 id="sec-6">تفكيك قوائم متعدّدة القيم</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">buttons</span>: (
+  (<span class="tok-string">&#39;primary&#39;</span><span class="tok-punct">,</span> <span class="tok-sel">#6366f1</span><span class="tok-punct">,</span> <span class="tok-sel">#fff</span>)<span class="tok-punct">,</span>
+  (<span class="tok-string">&#39;ghost&#39;</span><span class="tok-punct">,</span>   <span class="tok-sel">transparent</span><span class="tok-punct">,</span> <span class="tok-sel">#6366f1</span>)<span class="tok-punct">,</span>
+  (<span class="tok-string">&#39;danger&#39;</span><span class="tok-punct">,</span>  <span class="tok-sel">#ef4444</span><span class="tok-punct">,</span> <span class="tok-sel">#fff</span>)
+);
+
+<span class="tok-keyword">@each</span> $<span class="tok-sel">name</span><span class="tok-punct">,</span> $<span class="tok-sel">bg</span><span class="tok-punct">,</span> $<span class="tok-sel">fg</span> <span class="tok-sel">in</span> $<span class="tok-sel">buttons</span> <span class="tok-punct">{</span>
+  .btn-#<span class="tok-punct">{</span>$name<span class="tok-punct">}</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">background</span><span class="tok-punct">:</span> $bg<span class="tok-punct">;</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> $fg<span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><h3 id="sec-7">خرائط متداخلة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:map&#39;</span>;
+
+$<span class="tok-sel">themes</span>: (
+  <span class="tok-string">&#39;light&#39;</span>: (<span class="tok-sel">bg</span>: <span class="tok-sel">#ffffff</span><span class="tok-punct">,</span> <span class="tok-sel">text</span>: <span class="tok-sel">#0f172a</span><span class="tok-punct">,</span> <span class="tok-sel">border</span>: <span class="tok-sel">#e2e8f0</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;dark&#39;</span>:  (<span class="tok-sel">bg</span>: <span class="tok-sel">#0f172a</span><span class="tok-punct">,</span> <span class="tok-sel">text</span>: <span class="tok-sel">#e8edf9</span><span class="tok-punct">,</span> <span class="tok-sel">border</span>: <span class="tok-sel">#22304f</span>)
+);
+
+<span class="tok-keyword">@each</span> $<span class="tok-sel">name</span><span class="tok-punct">,</span> $<span class="tok-sel">theme</span> <span class="tok-sel">in</span> $<span class="tok-sel">themes</span> <span class="tok-punct">{</span>
+  [data-theme=<span class="tok-string">&#39;#{$name}&#39;</span>] <span class="tok-punct">{</span>
+    <span class="tok-prop">--color-bg</span><span class="tok-punct">:</span>     #<span class="tok-punct">{</span>map.<span class="tok-func">get</span><span class="tok-punct">(</span>$theme<span class="tok-punct">,</span> bg<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-prop">--color-text</span><span class="tok-punct">:</span>   #<span class="tok-punct">{</span>map.<span class="tok-func">get</span><span class="tok-punct">(</span>$theme<span class="tok-punct">,</span> text<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-prop">--color-border</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>map.<span class="tok-func">get</span><span class="tok-punct">(</span>$theme<span class="tok-punct">,</span> border<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>هذا النمط قوي جداً: تعرّف كل ثيماتك في خريطة واحدة، وتُولَّد كل متغيّرات CSS تلقائياً. إضافة ثيم جديد = إضافة سطر واحد.</p></div><h2 id="sec-8"><code>@while</code> — الحلقة الشرطية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">size</span>: <span class="tok-sel">64px</span>;
+$<span class="tok-sel">i</span>: <span class="tok-sel">1</span>;
+
+<span class="tok-keyword">@while</span> $<span class="tok-sel">size</span> <span class="tok-punct">&gt;</span> <span class="tok-sel">8px</span> <span class="tok-punct">{</span>
+  .icon-#<span class="tok-punct">{</span>$i<span class="tok-punct">}</span> <span class="tok-punct">{</span> <span class="tok-prop">width</span><span class="tok-punct">:</span> $size<span class="tok-punct">;</span> <span class="tok-prop">height</span><span class="tok-punct">:</span> $size<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  $<span class="tok-prop">size</span><span class="tok-punct">:</span> $size * <span class="tok-number">0.5</span><span class="tok-punct">;</span>
+  $<span class="tok-prop">i</span><span class="tok-punct">:</span> $i + <span class="tok-number">1</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه</div><p>نادرة الاستخدام و<strong>خطرة</strong>: نسيان تحديث متغيّر الشرط يعني حلقة لا نهائية تُجمّد المترجم. استخدم <code>@for</code> أو <code>@each</code> كلّما أمكن.</p></div><h2 id="sec-9">توليد نظام أدوات كامل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">مثال متكامل</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:map&#39;</span>;
+
+$<span class="tok-sel">spacers</span>: (<span class="tok-sel">0</span>: <span class="tok-sel">0</span><span class="tok-punct">,</span> <span class="tok-sel">1</span>: <span class="tok-sel">4px</span><span class="tok-punct">,</span> <span class="tok-sel">2</span>: <span class="tok-sel">8px</span><span class="tok-punct">,</span> <span class="tok-sel">3</span>: <span class="tok-sel">16px</span><span class="tok-punct">,</span> <span class="tok-sel">4</span>: <span class="tok-sel">24px</span><span class="tok-punct">,</span> <span class="tok-sel">5</span>: <span class="tok-sel">32px</span><span class="tok-punct">,</span> <span class="tok-sel">6</span>: <span class="tok-sel">48px</span>);
+
+$<span class="tok-sel">sides</span>: (
+  <span class="tok-string">&#39;&#39;</span>:  (<span class="tok-string">&#39;top&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;right&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;bottom&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;left&#39;</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;t&#39;</span>: (<span class="tok-string">&#39;top&#39;</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;e&#39;</span>: (<span class="tok-string">&#39;inline-end&#39;</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;b&#39;</span>: (<span class="tok-string">&#39;bottom&#39;</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;s&#39;</span>: (<span class="tok-string">&#39;inline-start&#39;</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;x&#39;</span>: (<span class="tok-string">&#39;inline-start&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;inline-end&#39;</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;y&#39;</span>: (<span class="tok-string">&#39;top&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;bottom&#39;</span>)
+);
+
+$<span class="tok-sel">props</span>: (<span class="tok-string">&#39;m&#39;</span>: <span class="tok-string">&#39;margin&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;p&#39;</span>: <span class="tok-string">&#39;padding&#39;</span>);
+
+<span class="tok-keyword">@each</span> $<span class="tok-sel">prop-key</span><span class="tok-punct">,</span> $<span class="tok-sel">prop</span> <span class="tok-sel">in</span> $<span class="tok-sel">props</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@each</span> $side-key<span class="tok-punct">,</span> $side-list in $sides <span class="tok-punct">{</span>
+    <span class="tok-keyword">@each</span> $size-key<span class="tok-punct">,</span> $size in $spacers <span class="tok-punct">{</span>
+      .#<span class="tok-punct">{</span>$prop-key<span class="tok-punct">}</span>#<span class="tok-punct">{</span>$side-key<span class="tok-punct">}</span>-#<span class="tok-punct">{</span>$size-key<span class="tok-punct">}</span> <span class="tok-punct">{</span>
+        <span class="tok-keyword">@each</span> $side in $side-list <span class="tok-punct">{</span>
+          #<span class="tok-punct">{</span>$prop<span class="tok-punct">}</span>-#<span class="tok-punct">{</span>$side<span class="tok-punct">}</span><span class="tok-punct">:</span> $size<span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+      <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><p>ثلاث حلقات متداخلة تولّد نحو <strong>98 صنفاً</strong> مساعداً: <code>.m-3</code> و <code>.px-4</code> و <code>.mt-0</code> وهكذا. هذا بالضبط ما تفعله أطر مثل Bootstrap و Tailwind خلف الكواليس.</p><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> عيّنة من الأصناف المولَّدة</div><iframe title="عيّنة من الأصناف المولَّدة" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}code{display:block;background:#0f1729;color:#e2e8f0;padding:12px;border-radius:10px;direction:ltr;text-align:left;font-family:monospace;font-size:.82em;line-height:1.9;overflow-x:auto}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;code&gt;.m-0 { margin-top:0; margin-right:0; margin-bottom:0; margin-left:0 }
+.m-3 { margin-top:16px; margin-right:16px; … }
+.mt-2 { margin-top:8px }
+.px-4 { padding-inline-start:24px; padding-inline-end:24px }
+.py-1 { padding-top:4px; padding-bottom:4px }
+.ms-5 { margin-inline-start:32px }
+/* … 98 صنفاً */&lt;/code&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:240px"></iframe></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> حذار من الانتفاخ</div><p>التوليد الآلي مغرٍ لكنه سيف ذو حدّين. توليد 500 صنف تستخدم منها 20 يعني ملف CSS ضخم يُحمَّل عند كل زيارة. ولّد ما تحتاجه فعلاً، أو استخدم أداة تنقية (PurgeCSS) تحذف غير المستخدم.</p></div><h2 id="sec-10">حلقات لتوليد الحركات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// تأخير متدرّج لعناصر تظهر تباعاً
+<span class="tok-keyword">@for</span> $<span class="tok-sel">i</span> <span class="tok-sel">from</span> <span class="tok-sel">1</span> <span class="tok-sel">through</span> <span class="tok-sel">10</span> <span class="tok-punct">{</span>
+  .<span class="tok-prop">fade-in</span><span class="tok-punct">:</span><span class="tok-func">nth-child</span><span class="tok-punct">(</span>#<span class="tok-punct">{</span>$i<span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">animation-delay</span><span class="tok-punct">:</span> $i * <span class="tok-number">0.08s</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+// إطارات مفتاحية مولّدة
+<span class="tok-keyword">@keyframes</span> <span class="tok-sel">pulse-ring</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@for</span> $i from <span class="tok-number">0</span> through <span class="tok-number">4</span> <span class="tok-punct">{</span>
+    #<span class="tok-punct">{</span>$i * <span class="tok-number">25</span><span class="tok-punct">}</span>% <span class="tok-punct">{</span>
+      <span class="tok-prop">transform</span><span class="tok-punct">:</span> <span class="tok-func">scale</span><span class="tok-punct">(</span><span class="tok-number">1</span> + $i * <span class="tok-number">0.1</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-prop">opacity</span><span class="tok-punct">:</span> <span class="tok-number">1</span> - $i * <span class="tok-number">0.2</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><section class="exercise" id="sec-11"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: توليد نظام أدوات مصغّر</h3></header><div class="exercise-body"><p>استخدم الحلقات لتوليد نظام أصناف مساعدة عملي.</p><p><strong>المطلوب:</strong></p><ul><li>خريطة <code>$colors</code> بخمسة ألوان، تولّد منها: <code>.text-<em></code> و <code>.bg-</em></code> و <code>.border-*</code>.</li><li>خريطة <code>$spacers</code> بستّ قيم، تولّد <code>.m-<em></code> و <code>.p-</em></code> مع الاتجاهات <code>t/b/s/e/x/y</code>.</li><li>حلقة <code>@for</code> تولّد <code>.col-1</code> حتى <code>.col-12</code> بنسب مئوية صحيحة.</li><li>خريطة <code>$breakpoints</code>، وحلقة تولّد نسخاً متجاوبة: <code>.md\:col-6</code> مثلاً.</li><li>خريطة ثيمات متداخلة تولّد متغيّرات CSS لكل ثيم.</li><li>حلقة تولّد <code>.delay-1</code> حتى <code>.delay-8</code> بتأخير 80 مللي ثانية لكل خطوة.</li><li>mixin <code>button($color, $outline: false)</code> يستخدم <code>@if</code>، وحلقة تولّد زراً لكل لون.</li><li>أضف <code>@error</code> في مكان مناسب للتحقّق من صحّة المدخلات.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 لهروب النقطتين في اسم الصنف استخدم <code>\\:</code> داخل الإقحام.</li><li>💡 <code>math.percentage(math.div($i, 12))</code> لحساب نسبة العمود.</li><li>💡 الخرائط المتداخلة تُقرأ بـ <code>map.get</code> مرتين أو بمتغيّر وسيط.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:map&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:math&#39;</span>;
+
+<span class="tok-comment">/* ===== البيانات ===== */</span>
+$<span class="tok-sel">colors</span>: (
+  <span class="tok-string">&#39;primary&#39;</span>: <span class="tok-sel">#6366f1</span><span class="tok-punct">,</span>
+  <span class="tok-string">&#39;success&#39;</span>: <span class="tok-sel">#10b981</span><span class="tok-punct">,</span>
+  <span class="tok-string">&#39;warning&#39;</span>: <span class="tok-sel">#f59e0b</span><span class="tok-punct">,</span>
+  <span class="tok-string">&#39;danger&#39;</span>:  <span class="tok-sel">#ef4444</span><span class="tok-punct">,</span>
+  <span class="tok-string">&#39;muted&#39;</span>:   <span class="tok-sel">#64748b</span>
+);
+
+$<span class="tok-sel">spacers</span>: (<span class="tok-sel">0</span>: <span class="tok-sel">0</span><span class="tok-punct">,</span> <span class="tok-sel">1</span>: <span class="tok-sel">4px</span><span class="tok-punct">,</span> <span class="tok-sel">2</span>: <span class="tok-sel">8px</span><span class="tok-punct">,</span> <span class="tok-sel">3</span>: <span class="tok-sel">16px</span><span class="tok-punct">,</span> <span class="tok-sel">4</span>: <span class="tok-sel">24px</span><span class="tok-punct">,</span> <span class="tok-sel">5</span>: <span class="tok-sel">32px</span>);
+
+$<span class="tok-sel">sides</span>: (
+  <span class="tok-string">&#39;&#39;</span>:  (<span class="tok-sel">top</span><span class="tok-punct">,</span> <span class="tok-sel">right</span><span class="tok-punct">,</span> <span class="tok-sel">bottom</span><span class="tok-punct">,</span> <span class="tok-sel">left</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;t&#39;</span>: (<span class="tok-sel">top</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;b&#39;</span>: (<span class="tok-sel">bottom</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;s&#39;</span>: (<span class="tok-sel">inline-start</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;e&#39;</span>: (<span class="tok-sel">inline-end</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;x&#39;</span>: (<span class="tok-sel">inline-start</span><span class="tok-punct">,</span> <span class="tok-sel">inline-end</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;y&#39;</span>: (<span class="tok-sel">top</span><span class="tok-punct">,</span> <span class="tok-sel">bottom</span>)
+);
+
+$<span class="tok-sel">breakpoints</span>: (<span class="tok-string">&#39;sm&#39;</span>: <span class="tok-sel">576px</span><span class="tok-punct">,</span> <span class="tok-string">&#39;md&#39;</span>: <span class="tok-sel">768px</span><span class="tok-punct">,</span> <span class="tok-string">&#39;lg&#39;</span>: <span class="tok-sel">992px</span>);
+
+$<span class="tok-sel">themes</span>: (
+  <span class="tok-string">&#39;light&#39;</span>: (<span class="tok-sel">bg</span>: <span class="tok-sel">#ffffff</span><span class="tok-punct">,</span> <span class="tok-sel">text</span>: <span class="tok-sel">#0f172a</span><span class="tok-punct">,</span> <span class="tok-sel">border</span>: <span class="tok-sel">#e2e8f0</span>)<span class="tok-punct">,</span>
+  <span class="tok-string">&#39;dark&#39;</span>:  (<span class="tok-sel">bg</span>: <span class="tok-sel">#0f172a</span><span class="tok-punct">,</span> <span class="tok-sel">text</span>: <span class="tok-sel">#e8edf9</span><span class="tok-punct">,</span> <span class="tok-sel">border</span>: <span class="tok-sel">#22304f</span>)
+);
+
+<span class="tok-comment">/* ===== أصناف الألوان ===== */</span>
+<span class="tok-keyword">@each</span> $<span class="tok-sel">name</span><span class="tok-punct">,</span> $<span class="tok-sel">color</span> <span class="tok-sel">in</span> $<span class="tok-sel">colors</span> <span class="tok-punct">{</span>
+  .text-#<span class="tok-punct">{</span>$name<span class="tok-punct">}</span>   <span class="tok-punct">{</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  .bg-#<span class="tok-punct">{</span>$name<span class="tok-punct">}</span>     <span class="tok-punct">{</span> <span class="tok-prop">background-color</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  .border-#<span class="tok-punct">{</span>$name<span class="tok-punct">}</span> <span class="tok-punct">{</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== أصناف المسافات ===== */</span>
+<span class="tok-keyword">@each</span> $<span class="tok-sel">prop-key</span><span class="tok-punct">,</span> $<span class="tok-sel">prop</span> <span class="tok-sel">in</span> (<span class="tok-string">&#39;m&#39;</span>: <span class="tok-sel">margin</span><span class="tok-punct">,</span> <span class="tok-string">&#39;p&#39;</span>: <span class="tok-sel">padding</span>) <span class="tok-punct">{</span>
+  <span class="tok-keyword">@each</span> $side-key<span class="tok-punct">,</span> $side-list in $sides <span class="tok-punct">{</span>
+    <span class="tok-keyword">@each</span> $size-key<span class="tok-punct">,</span> $size in $spacers <span class="tok-punct">{</span>
+      .#<span class="tok-punct">{</span>$prop-key<span class="tok-punct">}</span>#<span class="tok-punct">{</span>$side-key<span class="tok-punct">}</span>-#<span class="tok-punct">{</span>$size-key<span class="tok-punct">}</span> <span class="tok-punct">{</span>
+        <span class="tok-keyword">@each</span> $side in $side-list <span class="tok-punct">{</span>
+          #<span class="tok-punct">{</span>$prop<span class="tok-punct">}</span>-#<span class="tok-punct">{</span>$side<span class="tok-punct">}</span><span class="tok-punct">:</span> $size<span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+      <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== الشبكة ===== */</span>
+$<span class="tok-sel">columns</span>: <span class="tok-sel">12</span>;
+
+<span class="tok-keyword">@for</span> $<span class="tok-sel">i</span> <span class="tok-sel">from</span> <span class="tok-sel">1</span> <span class="tok-sel">through</span> $<span class="tok-sel">columns</span> <span class="tok-punct">{</span>
+  .col-#<span class="tok-punct">{</span>$i<span class="tok-punct">}</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">flex</span><span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-number">0</span> math.<span class="tok-func">percentage</span><span class="tok-punct">(</span>math.<span class="tok-func">div</span><span class="tok-punct">(</span>$i<span class="tok-punct">,</span> $columns<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-prop">max-width</span><span class="tok-punct">:</span> math.<span class="tok-func">percentage</span><span class="tok-punct">(</span>math.<span class="tok-func">div</span><span class="tok-punct">(</span>$i<span class="tok-punct">,</span> $columns<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== الشبكة المتجاوبة ===== */</span>
+<span class="tok-keyword">@each</span> $<span class="tok-sel">bp-name</span><span class="tok-punct">,</span> $<span class="tok-sel">bp-value</span> <span class="tok-sel">in</span> $<span class="tok-sel">breakpoints</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@media</span> <span class="tok-punct">(</span><span class="tok-prop">min-width</span><span class="tok-punct">:</span> $bp-value<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">@for</span> $i from <span class="tok-number">1</span> through $columns <span class="tok-punct">{</span>
+      .#<span class="tok-punct">{</span>$bp-name<span class="tok-punct">}</span>\<span class="tok-punct">:</span>col-#<span class="tok-punct">{</span>$i<span class="tok-punct">}</span> <span class="tok-punct">{</span>
+        <span class="tok-prop">flex</span><span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-number">0</span> math.<span class="tok-func">percentage</span><span class="tok-punct">(</span>math.<span class="tok-func">div</span><span class="tok-punct">(</span>$i<span class="tok-punct">,</span> $columns<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+        <span class="tok-prop">max-width</span><span class="tok-punct">:</span> math.<span class="tok-func">percentage</span><span class="tok-punct">(</span>math.<span class="tok-func">div</span><span class="tok-punct">(</span>$i<span class="tok-punct">,</span> $columns<span class="tok-punct">)</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+      <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== الثيمات ===== */</span>
+<span class="tok-keyword">@each</span> $<span class="tok-sel">name</span><span class="tok-punct">,</span> $<span class="tok-sel">theme</span> <span class="tok-sel">in</span> $<span class="tok-sel">themes</span> <span class="tok-punct">{</span>
+  [data-theme=<span class="tok-string">&#39;#{$name}&#39;</span>] <span class="tok-punct">{</span>
+    <span class="tok-prop">--color-bg</span><span class="tok-punct">:</span>     #<span class="tok-punct">{</span>map.<span class="tok-func">get</span><span class="tok-punct">(</span>$theme<span class="tok-punct">,</span> bg<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-prop">--color-text</span><span class="tok-punct">:</span>   #<span class="tok-punct">{</span>map.<span class="tok-func">get</span><span class="tok-punct">(</span>$theme<span class="tok-punct">,</span> text<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-punct">;</span>
+    <span class="tok-prop">--color-border</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>map.<span class="tok-func">get</span><span class="tok-punct">(</span>$theme<span class="tok-punct">,</span> border<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== تأخيرات الحركة ===== */</span>
+<span class="tok-keyword">@for</span> $<span class="tok-sel">i</span> <span class="tok-sel">from</span> <span class="tok-sel">1</span> <span class="tok-sel">through</span> <span class="tok-sel">8</span> <span class="tok-punct">{</span>
+  .delay-#<span class="tok-punct">{</span>$i<span class="tok-punct">}</span> <span class="tok-punct">{</span> <span class="tok-prop">animation-delay</span><span class="tok-punct">:</span> $i * <span class="tok-number">80ms</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== الأزرار ===== */</span>
+<span class="tok-keyword">@mixin</span> <span class="tok-sel">button</span>($<span class="tok-sel">color</span><span class="tok-punct">,</span> $<span class="tok-sel">outline</span>: <span class="tok-sel">false</span>) <span class="tok-punct">{</span>
+  <span class="tok-keyword">@if</span> <span class="tok-func">type-of</span><span class="tok-punct">(</span>$color<span class="tok-punct">)</span> != color <span class="tok-punct">{</span>
+    <span class="tok-keyword">@error</span> <span class="tok-string">&quot;المعامل الأول يجب أن يكون لوناً، وصل: #{$color}&quot;</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-prop">display</span><span class="tok-punct">:</span> inline-flex<span class="tok-punct">;</span>
+  <span class="tok-prop">align-items</span><span class="tok-punct">:</span> center<span class="tok-punct">;</span>
+  <span class="tok-prop">gap</span><span class="tok-punct">:</span> <span class="tok-number">8px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">12px</span> <span class="tok-number">24px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">10px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">font-weight</span><span class="tok-punct">:</span> <span class="tok-number">700</span><span class="tok-punct">;</span>
+  <span class="tok-prop">cursor</span><span class="tok-punct">:</span> pointer<span class="tok-punct">;</span>
+  <span class="tok-prop">transition</span><span class="tok-punct">:</span> .<span class="tok-number">2s</span><span class="tok-punct">;</span>
+
+  <span class="tok-keyword">@if</span> $outline <span class="tok-punct">{</span>
+    <span class="tok-prop">background</span><span class="tok-punct">:</span> transparent<span class="tok-punct">;</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span>
+    <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">2px</span> solid $color<span class="tok-punct">;</span>
+
+    &amp;<span class="tok-punct">:</span>hover <span class="tok-punct">{</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#fff</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span> <span class="tok-keyword">@else</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">background</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#fff</span><span class="tok-punct">;</span>
+    <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+
+    &amp;<span class="tok-punct">:</span>hover <span class="tok-punct">{</span> <span class="tok-prop">filter</span><span class="tok-punct">:</span> <span class="tok-func">brightness</span><span class="tok-punct">(</span>.<span class="tok-number">9</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">@each</span> $<span class="tok-sel">name</span><span class="tok-punct">,</span> $<span class="tok-sel">color</span> <span class="tok-sel">in</span> $<span class="tok-sel">colors</span> <span class="tok-punct">{</span>
+  .btn-#<span class="tok-punct">{</span>$name<span class="tok-punct">}</span>         <span class="tok-punct">{</span> <span class="tok-keyword">@include</span> <span class="tok-func">button</span><span class="tok-punct">(</span>$color<span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+  .btn-#<span class="tok-punct">{</span>$name<span class="tok-punct">}</span>-outline <span class="tok-punct">{</span> <span class="tok-keyword">@include</span> <span class="tok-func">button</span><span class="tok-punct">(</span>$color<span class="tok-punct">,</span> $<span class="tok-prop">outline</span><span class="tok-punct">:</span> true<span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div></details></div></section><section class="quiz"><h2 id="sec-12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الفرق بين <code>through</code> و <code>to</code> في <code>@for</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span><code>through</code> تشمل الرقم الأخير و<code>to</code> لا تشمله</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span><code>to</code> أسرع</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>1 through 5</code> تعطي 1..5، و<code>1 to 5</code> تعطي 1..4.</div></div><div class="q-item"><p class="q-text">2. كيف تمرّ على خريطة بمفاتيحها وقيمها؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>@for $k in $map</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span><code>@each $key, $value in $map</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>@while $map</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>@map</code></span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>@each</code> تفكّك أزواج الخريطة إلى متغيّرين.</div></div><div class="q-item"><p class="q-text">3. أي القيم كاذبة في Sass؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span><code>0</code> و <code>&quot;&quot;</code></span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span><code>false</code> و <code>null</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span><code>()</code> و <code>0</code></span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>كلها</span></label></div><div class="q-explain"><strong>الشرح:</strong> خلافاً لجافاسكربت، الصفر والنص الفارغ صادقان في Sass.</div></div><div class="q-item"><p class="q-text">4. ما خطر <code>@while</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>بطيئة</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>نسيان تحديث متغيّر الشرط يسبّب حلقة لا نهائية</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>غير مدعومة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا تقبل شروطاً</span></label></div><div class="q-explain"><strong>الشرح:</strong> المترجم سيتجمّد؛ استخدم <code>@for</code> أو <code>@each</code> كلّما أمكن.</div></div><div class="q-item"><p class="q-text">5. ما خطر الإفراط في توليد الأصناف آلياً؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>بطء الترجمة فقط</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>ملف CSS ضخم فيه مئات الأصناف غير المستخدمة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>أخطاء صياغة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا خطر</span></label></div><div class="q-explain"><strong>الشرح:</strong> الحجم المنقول يزيد؛ ولّد ما تحتاج أو استخدم أداة تنقية.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sass/07-control" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="06-functions.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>الدوال والعمليات</b></span></a>
+  <a class="next" href="08-extend.html"><span><small>الدرس التالي</small><b>الوراثة @extend والعناصر النائبة</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Sass</h3>
+        <div class="ring-wrap" data-ring data-track="sass" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">@if — الشروط</a></li><li class="sub"><a href="#sec-2">المعاملات المنطقية</a></li><li><a href="#sec-3">@for — التكرار العددي</a></li><li class="sub"><a href="#sec-4">نظام شبكة كامل بحلقة</a></li><li><a href="#sec-5">@each — المرور على القوائم والخرائط</a></li><li class="sub"><a href="#sec-6">تفكيك قوائم متعدّدة القيم</a></li><li class="sub"><a href="#sec-7">خرائط متداخلة</a></li><li><a href="#sec-8">@while — الحلقة الشرطية</a></li><li><a href="#sec-9">توليد نظام أدوات كامل</a></li><li><a href="#sec-10">حلقات لتوليد الحركات</a></li><li><a href="#sec-11">تمرين: توليد نظام أدوات مصغّر</a></li><li><a href="#sec-12">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>@if cond { } @else { }</code><small>شرط</small></div><div class="ref-item"><code>@for $i from 1 through 5</code><small>حلقة شاملة النهاية</small></div><div class="ref-item"><code>@for $i from 1 to 5</code><small>حلقة غير شاملة</small></div><div class="ref-item"><code>@each $x in $list</code><small>مرور على قائمة</small></div><div class="ref-item"><code>@each $k, $v in $map</code><small>مرور على خريطة</small></div><div class="ref-item"><code>@while cond</code><small>حلقة شرطية</small></div><div class="ref-item"><code>if(cond, a, b)</code><small>شرط في تعبير واحد</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="08-extend.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الوراثة @extend والعناصر النائبة<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

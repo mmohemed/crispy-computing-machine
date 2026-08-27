@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sass">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التقسيم والوحدات: @use و @forward — مسار Sass | CodeWay Web</title>
+<meta name="description" content="تقسيم أنماطك إلى ملفات صغيرة، ونظام الوحدات الحديث الذي حلّ محلّ @import المهمل.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="التقسيم والوحدات: @use و @forward — مسار Sass | CodeWay Web">
+<meta property="og:description" content="تقسيم أنماطك إلى ملفات صغيرة، ونظام الوحدات الحديث الذي حلّ محلّ @import المهمل.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Sass</a></li>
+      <li aria-current="page">التقسيم والوحدات: @use و @forward</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 4 من 10</span>
+      <span class="badge level-متوسط">متوسط</span>
+      <span class="badge">التنظيم</span><span class="badge">الوحدات</span>
+    </div>
+    <h1>التقسيم والوحدات: @use و @forward</h1>
+    <p class="summary">تقسيم أنماطك إلى ملفات صغيرة، ونظام الوحدات الحديث الذي حلّ محلّ @import المهمل.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 40 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Sass</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تقسّم مشروعك إلى ملفات جزئية.</li><li>تستورد الملفات بـ <code>@use</code> مع أسماء مستعارة.</li><li>تعيد تصدير الوحدات بـ <code>@forward</code>.</li><li>تخصّص متغيّرات وحدة بـ <code>with</code>.</li><li>تعرف لماذا هُجر <code>@import</code>.</li></ul></div>
+      <h2 id="sec-1">لماذا نقسّم؟</h2><p>ملف CSS من 3000 سطر كابوس: تبحث عن قاعدة فتضيع، وتخشى التعديل خشية كسر شيء بعيد، ويستحيل على فريق العمل عليه معاً بلا تعارضات.</p><p>الحل: ملفات صغيرة كل منها مسؤول عن شيء واحد، تُدمَج عند الترجمة في ملف CSS واحد — فتحصل على تنظيم التطوير وأداء الإنتاج معاً.</p><h2 id="sec-2">الملفات الجزئية</h2><p>الملف الذي يبدأ اسمه بشرطة سفلية <code>_</code> يُسمّى <strong>جزئياً</strong>: لا يُترجَم إلى ملف CSS مستقل، بل يُستورد داخل غيره.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>scss/
+├── abstracts/
+│   ├── _variables.scss
+│   ├── _mixins.scss
+│   └── _functions.scss
+├── base/
+│   ├── _reset.scss
+│   └── _typography.scss
+├── components/
+│   ├── _button.scss
+│   └── _card.scss
+└── main.scss           ← الوحيد بلا شرطة، وهو ما يُترجَم</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># يُترجَم main.scss فقط، والجزئيات تُدمَج بداخله</span>
+<span class="tok-keyword">npx</span> sass scss/main.scss dist/style.css</code></pre></div><h2 id="sec-3"><code>@use</code> — الاستيراد الحديث</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">_variables.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">color-brand</span>: <span class="tok-sel">#6366f1</span>;
+$<span class="tok-sel">color-text</span>: <span class="tok-sel">#0f172a</span>;
+$<span class="tok-sel">space-4</span>: <span class="tok-sel">16px</span>;
+$<span class="tok-sel">radius</span>: <span class="tok-sel">12px</span>;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">_button.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;variables&#39;</span>;
+
+<span class="tok-sel">.btn</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> variables.$color-brand<span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> variables.$space-4<span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> variables.$radius<span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> البادئة إلزامية</div><p>مع <code>@use</code> لا يكفي كتابة <code>$color-brand</code> — يجب <code>variables.$color-brand</code>. البادئة هي <strong>اسم الملف</strong> بلا الشرطة والامتداد. هذا يمنع تعارض الأسماء بين الملفات ويوضّح مصدر كل قيمة.</p></div><h3 id="sec-4">الأسماء المستعارة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// بادئة أقصر
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;abstracts/variables&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">v</span>;
+
+<span class="tok-sel">.btn</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> v.$color-brand<span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> v.$space-4<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+// بلا بادئة إطلاقاً
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;abstracts/variables&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">*</span>;
+
+<span class="tok-sel">.btn</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> $color-brand<span class="tok-punct">;</span>   // تعمل مباشرة
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> حذار من `as *`</div><p>تلغي الحماية الأساسية التي جاء <code>@use</code> من أجلها: إن عرّف ملفان متغيّراً بالاسم نفسه ستحصل على تعارض غامض. استخدمها فقط لملف متغيّرات واحد مركزي تعرفه جيداً.</p></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>الاصطلاح الشائع: <code>as v</code> للمتغيّرات و <code>as m</code> للـ mixins و <code>as f</code> للدوال. قصير وواضح.</p></div><h3 id="sec-5">التخصيص بـ <code>with</code></h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">_theme.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">brand</span>: <span class="tok-sel">#6366f1</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">radius</span>: <span class="tok-sel">12px</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">font-size</span>: <span class="tok-sel">16px</span> !<span class="tok-sel">default</span>;
+
+<span class="tok-sel">.btn</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> $brand<span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> $radius<span class="tok-punct">;</span>
+  <span class="tok-prop">font-size</span><span class="tok-punct">:</span> $font-size<span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">main.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;theme&#39;</span> <span class="tok-sel">with</span> (
+  $<span class="tok-sel">brand</span>: <span class="tok-sel">#dd0031</span><span class="tok-punct">,</span>
+  $<span class="tok-sel">radius</span>: <span class="tok-sel">4px</span>
+);
+// $<span class="tok-sel">font-size</span> بقي <span class="tok-sel">16px</span></code></pre></div><ul><li>المتغيّرات القابلة للتخصيص <strong>يجب</strong> أن تحمل <code>!default</code> في الوحدة.</li><li><code>with</code> تُستخدم <strong>مرة واحدة فقط</strong> لكل وحدة في المشروع كله.</li><li>إن استوردت الوحدة نفسها في ملفين، فالتخصيص يكون في أول استيراد.</li></ul><h2 id="sec-6">الأعضاء الخاصة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// المتغيّر أو الـ <span class="tok-sel">mixin</span> الذي يبدأ بـ <span class="tok-sel">-</span> أو <span class="tok-sel">_</span> خاص بالوحدة
+$<span class="tok-sel">-internal-cache</span>: ();
+<span class="tok-keyword">@mixin</span> <span class="tok-sel">_helper</span>() <span class="tok-punct">{</span> … <span class="tok-punct">}</span>
+
+// عام
+$<span class="tok-sel">color-brand</span>: <span class="tok-sel">#6366f1</span>;
+<span class="tok-keyword">@mixin</span> <span class="tok-sel">button</span>() <span class="tok-punct">{</span> … <span class="tok-punct">}</span></code></pre></div><p>الأعضاء الخاصة لا تظهر للملفات المستوردة. مفيدة لتفاصيل التنفيذ التي لا تريد أن يعتمد عليها أحد.</p><h2 id="sec-7"><code>@forward</code> — إعادة التصدير</h2><p>تخيّل عشرة ملفات في <code>abstracts/</code>. هل يستورد كل مكوّن العشرة؟ الحل: ملف فهرس واحد يعيد تصديرها كلها.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">abstracts/_index.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@forward</span> <span class="tok-string">&#39;variables&#39;</span>;
+<span class="tok-keyword">@forward</span> <span class="tok-string">&#39;mixins&#39;</span>;
+<span class="tok-keyword">@forward</span> <span class="tok-string">&#39;functions&#39;</span>;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">components/_card.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// استيراد واحد يكفي — <span class="tok-sel">Sass</span> يجد <span class="tok-sel">_index</span><span class="tok-sel">.scss</span> تلقائياً
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;../abstracts&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">a</span>;
+
+<span class="tok-sel">.card</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> a.$space-4<span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> a.$radius<span class="tok-punct">;</span>
+  <span class="tok-keyword">@include</span> a.flex-center<span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> ملف الفهرس</div><p>إن كان في المجلد ملف اسمه <code>_index.scss</code> فيكفي كتابة اسم المجلد: <code>@use &quot;../abstracts&quot;</code>. اصطلاح مريح يقلّل الضجيج.</p></div><h3 id="sec-8">خيارات <code>@forward</code></h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// إعادة تصدير أعضاء محدّدة فقط
+<span class="tok-keyword">@forward</span> <span class="tok-string">&#39;variables&#39;</span> <span class="tok-sel">show</span> $<span class="tok-sel">color-brand</span><span class="tok-punct">,</span> $<span class="tok-sel">space-4</span>;
+
+// إخفاء أعضاء
+<span class="tok-keyword">@forward</span> <span class="tok-string">&#39;mixins&#39;</span> <span class="tok-sel">hide</span> <span class="tok-sel">_internal-helper</span>;
+
+// إضافة بادئة لكل الأعضاء
+<span class="tok-keyword">@forward</span> <span class="tok-string">&#39;buttons&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">btn-</span><span class="tok-sel">*</span>;
+// فيصبح $<span class="tok-sel">primary</span> باسم $<span class="tok-sel">btn-primary</span>
+
+// تمرير التخصيص للأعلى
+<span class="tok-keyword">@forward</span> <span class="tok-string">&#39;theme&#39;</span> <span class="tok-sel">with</span> ($<span class="tok-sel">brand</span>: <span class="tok-sel">#dd0031</span> !<span class="tok-sel">default</span>);</code></pre></div><h2 id="sec-9">الوحدات المدمجة</h2><div class="table-wrap"><table class="data"><thead><tr><th>الوحدة</th><th>محتواها</th><th>أمثلة</th></tr></thead><tbody><tr><td><code>sass:math</code></td><td>عمليات رياضية</td><td><code>math.div</code>, <code>math.round</code>, <code>math.abs</code></td></tr><tr><td><code>sass:color</code></td><td>معالجة الألوان</td><td><code>color.adjust</code>, <code>color.mix</code>, <code>color.scale</code></td></tr><tr><td><code>sass:string</code></td><td>النصوص</td><td><code>string.length</code>, <code>string.slice</code>, <code>string.index</code></td></tr><tr><td><code>sass:list</code></td><td>القوائم</td><td><code>list.length</code>, <code>list.nth</code>, <code>list.append</code></td></tr><tr><td><code>sass:map</code></td><td>الخرائط</td><td><code>map.get</code>, <code>map.has-key</code>, <code>map.merge</code></td></tr><tr><td><code>sass:meta</code></td><td>أدوات لغوية</td><td><code>meta.type-of</code>, <code>meta.inspect</code></td></tr><tr><td><code>sass:selector</code></td><td>المحدّدات</td><td><code>selector.nest</code>, <code>selector.append</code></td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:math&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:color&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:map&#39;</span>;
+
+$<span class="tok-sel">base</span>: <span class="tok-sel">16px</span>;
+$<span class="tok-sel">brand</span>: <span class="tok-sel">#6366f1</span>;
+$<span class="tok-sel">sizes</span>: (<span class="tok-sel">sm</span>: <span class="tok-sel">4px</span><span class="tok-punct">,</span> <span class="tok-sel">md</span>: <span class="tok-sel">8px</span><span class="tok-punct">,</span> <span class="tok-sel">lg</span>: <span class="tok-sel">16px</span>);
+
+<span class="tok-sel">.el</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">line-height</span><span class="tok-punct">:</span> math.<span class="tok-func">div</span><span class="tok-punct">(</span><span class="tok-number">24px</span><span class="tok-punct">,</span> $base<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> color.<span class="tok-func">adjust</span><span class="tok-punct">(</span>$brand<span class="tok-punct">,</span> $<span class="tok-prop">lightness</span><span class="tok-punct">:</span> <span class="tok-number">-10</span>%<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> map.<span class="tok-func">get</span><span class="tok-punct">(</span>$sizes<span class="tok-punct">,</span> md<span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><h2 id="sec-10">لماذا هُجر <code>@import</code>؟</h2><div class="table-wrap"><table class="data"><thead><tr><th>المشكلة</th><th>مع <code>@import</code></th><th>مع <code>@use</code></th></tr></thead><tbody><tr><td>النطاق</td><td>كل شيء عالمي — تعارضات صامتة</td><td>نطاق لكل وحدة ببادئة واضحة</td></tr><tr><td>التكرار</td><td>استيراد الملف مرتين يكرّر أنماطه</td><td>يُحمَّل مرة واحدة مهما تكرّر</td></tr><tr><td>المصدر</td><td>لا تعرف من أين جاء المتغيّر</td><td>البادئة تخبرك فوراً</td></tr><tr><td>الترتيب</td><td>حسّاس جداً وهشّ</td><td>مستقرّ</td></tr><tr><td>الأداء</td><td>أبطأ في المشاريع الكبيرة</td><td>أسرع</td></tr></tbody></table></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> مهمل رسمياً</div><p><code>@import</code> مهمل وسيُحذف من Sass. لا تستخدمه في أي مشروع جديد. ستجده كثيراً في مشاريع قائمة — والانتقال منه إلى <code>@use</code> عملية تدريجية ممكنة.</p></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>انتبه: <code>@import</code> في <strong>CSS الأصلية</strong> شيء مختلف تماماً ولا يزال صالحاً. ما هُجر هو <code>@import</code> الخاص بـ Sass.</p></div><h2 id="sec-11">معمارية 7-1</h2><p>أشهر تنظيم لمشاريع Sass الكبيرة: سبعة مجلدات وملف واحد رئيسي.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>scss/
+├── abstracts/     أدوات لا تُنتج CSS: متغيّرات، mixins، دوال
+├── base/          إعادة الضبط، الطباعة، القواعد العامة
+├── components/    الأزرار، البطاقات، النماذج، التنبيهات
+├── layout/        الترويسة، الفوتر، الشبكة، الشريط الجانبي
+├── pages/         أنماط خاصة بصفحة بعينها
+├── themes/        الوضع الليلي، ثيمات بديلة
+├── vendors/       أنماط مكتبات خارجية
+└── main.scss</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">main.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// <span class="tok-sel">1</span>) الأدوات أولاً — لا تنتج <span class="tok-sel">CSS</span>
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;abstracts&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">*</span>;
+
+// <span class="tok-sel">2</span>) الأساس
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;base/reset&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;base/typography&#39;</span>;
+
+// <span class="tok-sel">3</span>) التخطيط
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;layout/header&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;layout/footer&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;layout/grid&#39;</span>;
+
+// <span class="tok-sel">4</span>) المكوّنات
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;components/button&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;components/card&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;components/form&#39;</span>;
+
+// <span class="tok-sel">5</span>) الصفحات
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;pages/home&#39;</span>;
+
+// <span class="tok-sel">6</span>) الثيمات
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;themes/dark&#39;</span>;</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ترتيب مهم</div><p>الترتيب يحدّد ترتيب القواعد في ملف CSS الناتج، وبالتالي أي قاعدة تفوز عند تساوي الخصوصية. ضع العام أولاً والخاص أخيراً: reset ← layout ← components ← pages ← themes.</p></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>مشروع صغير؟ لا تحتاج سبعة مجلدات. ابدأ بثلاثة: <code>abstracts</code> و <code>base</code> و <code>components</code>، وأضف الباقي عند الحاجة الفعلية.</p></div><section class="exercise" id="sec-12"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: إعادة هيكلة مشروع</h3></header><div class="exercise-body"><p>خذ ملف SCSS واحداً كبيراً وقسّمه إلى معمارية منظّمة.</p><p><strong>المطلوب:</strong></p><ul><li>أنشئ البنية: <code>abstracts/</code>، <code>base/</code>، <code>components/</code>، <code>layout/</code>، و<code>main.scss</code>.</li><li>في <code>abstracts/</code>: <code>_variables.scss</code> و <code>_mixins.scss</code> و <code>_index.scss</code> يعيد تصديرهما.</li><li><code>_variables.scss</code> فيه 5 متغيّرات على الأقل بـ <code>!default</code>.</li><li><code>_mixins.scss</code> فيه mixin واحد بسيط (توسيط بـ flexbox مثلاً).</li><li>في <code>base/</code>: <code>_reset.scss</code> و <code>_typography.scss</code>.</li><li>في <code>components/</code>: <code>_button.scss</code> و <code>_card.scss</code> يستوردان <code>abstracts</code> باسم مستعار.</li><li>في <code>layout/</code>: <code>_header.scss</code>.</li><li><code>main.scss</code> يستورد كل شيء بالترتيب الصحيح، ويخصّص متغيّراً واحداً بـ <code>with</code>.</li><li>استخدم <code>sass:math</code> مرة واحدة على الأقل.</li><li>تأكّد أن الترجمة تنتج ملف CSS واحداً بلا أخطاء.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 ملف <code>_index.scss</code> داخل المجلد يتيح <code>@use &quot;../abstracts&quot;</code> باسم المجلد فقط.</li><li>💡 التخصيص بـ <code>with</code> يجب أن يكون في <strong>أول</strong> استيراد للوحدة.</li><li>💡 رتّب: abstracts ← base ← layout ← components.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">/* ===== abstracts/_variables.scss ===== */</span>
+$<span class="tok-sel">color-brand</span>:  <span class="tok-sel">#6366f1</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">color-text</span>:   <span class="tok-sel">#0f172a</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">color-border</span>: <span class="tok-sel">#e2e8f0</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">space-4</span>: <span class="tok-sel">16px</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">radius</span>:  <span class="tok-sel">12px</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">bp-md</span>:   <span class="tok-sel">768px</span> !<span class="tok-sel">default</span>;
+
+<span class="tok-comment">/* ===== abstracts/_mixins.scss ===== */</span>
+<span class="tok-keyword">@mixin</span> <span class="tok-sel">flex-center</span>($<span class="tok-sel">gap</span>: <span class="tok-sel">0</span>) <span class="tok-punct">{</span>
+  <span class="tok-prop">display</span><span class="tok-punct">:</span> flex<span class="tok-punct">;</span>
+  <span class="tok-prop">align-items</span><span class="tok-punct">:</span> center<span class="tok-punct">;</span>
+  <span class="tok-prop">justify-content</span><span class="tok-punct">:</span> center<span class="tok-punct">;</span>
+  <span class="tok-prop">gap</span><span class="tok-punct">:</span> $gap<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">@mixin</span> <span class="tok-sel">respond-to</span>($<span class="tok-sel">bp</span>) <span class="tok-punct">{</span>
+  <span class="tok-keyword">@media</span> <span class="tok-punct">(</span><span class="tok-prop">min-width</span><span class="tok-punct">:</span> $bp<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-keyword">@content</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== abstracts/_index.scss ===== */</span>
+<span class="tok-keyword">@forward</span> <span class="tok-string">&#39;variables&#39;</span>;
+<span class="tok-keyword">@forward</span> <span class="tok-string">&#39;mixins&#39;</span>;
+
+<span class="tok-comment">/* ===== base/_reset.scss ===== */</span>
+<span class="tok-sel">*</span><span class="tok-punct">,</span> <span class="tok-sel">*</span><span class="tok-sel">::before</span><span class="tok-punct">,</span> <span class="tok-sel">*</span><span class="tok-sel">::after</span> <span class="tok-punct">{</span> <span class="tok-prop">box-sizing</span><span class="tok-punct">:</span> border-box<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">*</span> <span class="tok-punct">{</span> <span class="tok-prop">margin</span><span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">;</span> <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== base/_typography.scss ===== */</span>
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;../abstracts&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">a</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:math&#39;</span>;
+
+<span class="tok-sel">body</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">font-family</span><span class="tok-punct">:</span> <span class="tok-string">&#39;Cairo&#39;</span><span class="tok-punct">,</span> sans-serif<span class="tok-punct">;</span>
+  <span class="tok-prop">color</span><span class="tok-punct">:</span> a.$color-text<span class="tok-punct">;</span>
+  <span class="tok-prop">line-height</span><span class="tok-punct">:</span> math.<span class="tok-func">div</span><span class="tok-punct">(</span><span class="tok-number">29px</span><span class="tok-punct">,</span> <span class="tok-number">16px</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== components/_button.scss ===== */</span>
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;../abstracts&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">a</span>;
+
+<span class="tok-sel">.btn</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@include</span> a.<span class="tok-func">flex-center</span><span class="tok-punct">(</span><span class="tok-number">8px</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> math.<span class="tok-func">div</span><span class="tok-punct">(</span>a.$space-4<span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">)</span> a.$space-4<span class="tok-punct">;</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> a.$color-brand<span class="tok-punct">;</span>
+  <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#fff</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> a.$radius<span class="tok-punct">;</span>
+  <span class="tok-prop">cursor</span><span class="tok-punct">:</span> pointer<span class="tok-punct">;</span>
+
+  &amp;<span class="tok-punct">:</span>hover <span class="tok-punct">{</span> <span class="tok-prop">filter</span><span class="tok-punct">:</span> <span class="tok-func">brightness</span><span class="tok-punct">(</span>.<span class="tok-number">92</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== components/_card.scss ===== */</span>
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;../abstracts&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">a</span>;
+
+<span class="tok-sel">.card</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid a.$color-border<span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> a.$radius<span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> a.$space-4<span class="tok-punct">;</span>
+
+  <span class="tok-keyword">@include</span> a.<span class="tok-func">respond-to</span><span class="tok-punct">(</span>a.$bp-md<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">padding</span><span class="tok-punct">:</span> a.$space-4 * <span class="tok-number">1.5</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== layout/_header.scss ===== */</span>
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;../abstracts&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">a</span>;
+
+<span class="tok-sel">.site-header</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@include</span> a.<span class="tok-func">flex-center</span><span class="tok-punct">(</span>a.$space-4<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-prop">justify-content</span><span class="tok-punct">:</span> space-between<span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> a.$space-4<span class="tok-punct">;</span>
+  <span class="tok-prop">border-bottom</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid a.$color-border<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ===== main.scss ===== */</span>
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;abstracts&#39;</span> <span class="tok-sel">with</span> ($<span class="tok-sel">color-brand</span>: <span class="tok-sel">#dd0031</span>);
+
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;base/reset&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;base/typography&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;layout/header&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;components/button&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;components/card&#39;</span>;</code></pre></div><div class="code-caption" style="background:var(--surface-2);color:var(--text-muted)">التخصيص <code>with</code> في <code>main.scss</code> يؤثّر في كل الملفات لأن الوحدة تُحمَّل مرة واحدة فقط.</div></details></div></section><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما دلالة الشرطة السفلية في اسم الملف؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>ملف مخفي</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>ملف جزئي يُستورد ولا يُترجَم إلى CSS مستقل</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>ملف قديم</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>ملف خاص</span></label></div><div class="q-explain"><strong>الشرح:</strong> الجزئيات تمنع توليد ملفات CSS لا حاجة لها.</div></div><div class="q-item"><p class="q-text">2. كيف تصل إلى <code>$brand</code> بعد <code>@use &quot;variables&quot;</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>$brand</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span><code>variables.$brand</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>@brand</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>--brand</code></span></label></div><div class="q-explain"><strong>الشرح:</strong> البادئة إلزامية مع <code>@use</code>، وهي اسم الملف بلا شرطة ولا امتداد.</div></div><div class="q-item"><p class="q-text">3. ما الفرق بين <code>@use</code> و <code>@forward</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span><code>@use</code> للاستخدام في الملف الحالي و<code>@forward</code> لإعادة التصدير لمن يستورد</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span><code>@forward</code> أقدم</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>@forward</code> لا يتيح لك استخدام الأعضاء، بل يمرّرها لمن يستورد ملفك.</div></div><div class="q-item"><p class="q-text">4. لماذا هُجر <code>@import</code> في Sass؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>بطيء فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>لأنه يجعل كل شيء عالمياً ويكرّر الملفات ويصعّب تتبّع المصدر</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>غير مدعوم</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا يقبل جزئيات</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>@use</code> يوفّر نطاقاً واضحاً وتحميلاً مرة واحدة وتتبّعاً سهلاً.</div></div><div class="q-item"><p class="q-text">5. متى تُستخدم <code>with</code> لتخصيص وحدة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>في كل استيراد</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>مرة واحدة فقط في المشروع لكل وحدة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع الدوال فقط</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>أبداً</span></label></div><div class="q-explain"><strong>الشرح:</strong> الوحدة تُحمَّل مرة واحدة؛ التخصيص يكون عند أول استيراد.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sass/04-modules" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="03-nesting.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>التداخل والمحدّد الأب</b></span></a>
+  <a class="next" href="05-mixins.html"><span><small>الدرس التالي</small><b>الـ Mixins وإعادة الاستخدام</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Sass</h3>
+        <div class="ring-wrap" data-ring data-track="sass" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">لماذا نقسّم؟</a></li><li><a href="#sec-2">الملفات الجزئية</a></li><li><a href="#sec-3">@use — الاستيراد الحديث</a></li><li class="sub"><a href="#sec-4">الأسماء المستعارة</a></li><li class="sub"><a href="#sec-5">التخصيص بـ with</a></li><li><a href="#sec-6">الأعضاء الخاصة</a></li><li><a href="#sec-7">@forward — إعادة التصدير</a></li><li class="sub"><a href="#sec-8">خيارات @forward</a></li><li><a href="#sec-9">الوحدات المدمجة</a></li><li><a href="#sec-10">لماذا هُجر @import؟</a></li><li><a href="#sec-11">معمارية 7-1</a></li><li><a href="#sec-12">تمرين: إعادة هيكلة مشروع</a></li><li><a href="#sec-13">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>_partial.scss</code><small>ملف جزئي لا يُترجَم وحده</small></div><div class="ref-item"><code>@use &quot;path&quot;</code><small>استيراد وحدة</small></div><div class="ref-item"><code>@use &quot;path&quot; as v</code><small>اسم مستعار</small></div><div class="ref-item"><code>@use &quot;path&quot; as *</code><small>بلا بادئة (بحذر)</small></div><div class="ref-item"><code>@use &quot;path&quot; with ($x: 1)</code><small>تخصيص المتغيّرات</small></div><div class="ref-item"><code>@forward &quot;path&quot;</code><small>إعادة تصدير</small></div><div class="ref-item"><code>@use &quot;sass:math&quot;</code><small>وحدة مدمجة</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="05-mixins.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الـ Mixins وإعادة الاستخدام<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

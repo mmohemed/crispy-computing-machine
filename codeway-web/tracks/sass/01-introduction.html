@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sass">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مقدمة في Sass والإعداد — مسار Sass | CodeWay Web</title>
+<meta name="description" content="ما هو معالج CSS ولماذا تحتاجه، والفرق بين SCSS و Sass، وكيف تشغّله في مشروعك.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="مقدمة في Sass والإعداد — مسار Sass | CodeWay Web">
+<meta property="og:description" content="ما هو معالج CSS ولماذا تحتاجه، والفرق بين SCSS و Sass، وكيف تشغّله في مشروعك.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Sass</a></li>
+      <li aria-current="page">مقدمة في Sass والإعداد</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 1 من 10</span>
+      <span class="badge level-مبتدئ">مبتدئ</span>
+      <span class="badge">مقدمة</span><span class="badge">الإعداد</span>
+    </div>
+    <h1>مقدمة في Sass والإعداد</h1>
+    <p class="summary">ما هو معالج CSS ولماذا تحتاجه، والفرق بين SCSS و Sass، وكيف تشغّله في مشروعك.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 35 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Sass</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تشرح ما هو معالج CSS ولماذا وُجد.</li><li>تفرّق بين صيغتَي SCSS و Sass.</li><li>تثبّت Sass وتشغّل المترجم.</li><li>تفهم علاقة ملف المصدر بملف الناتج.</li><li>تربط الناتج بصفحتك بشكل صحيح.</li></ul></div>
+      <h2 id="sec-1">ما المشكلة؟</h2><p>CSS لغة ممتازة لكنها صُمّمت للبساطة. في مشروع من عشرة آلاف سطر تظهر آلامها بوضوح:</p><ul><li><strong>تكرار القيم</strong>: تكتب <code>#6366f1</code> في أربعين مكاناً، ثم يطلب العميل تغيير اللون.</li><li><strong>تكرار المحدّدات</strong>: <code>.card .header .title</code> و <code>.card .header .subtitle</code> و…</li><li><strong>لا دوال</strong>: تحسب الظلال والتدرّجات يدوياً في كل مرة.</li><li><strong>ملف واحد ضخم</strong>: أو ملفات كثيرة تعني طلبات كثيرة.</li><li><strong>لا منطق</strong>: توليد 12 صنف شبكة يعني كتابة 12 قاعدة يدوياً.</li></ul><p><strong>Sass</strong> يحلّ هذا: لغة فوق CSS تضيف المتغيّرات والدوال والتداخل والمنطق، ثم <strong>تُترجَم</strong> إلى CSS عادية يفهمها كل متصفح.</p><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> من Sass إلى CSS</div><iframe title="من Sass إلى CSS" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}.g{display:grid;gap:10px}.b{border:1px solid #e2e8f0;border-radius:10px;overflow:hidden}.h{padding:8px 12px;font-weight:700;font-size:.85em}.s{background:#fce7f3;color:#be185d}.c{background:#dbeafe;color:#1e40af}pre{margin:0;padding:12px;background:#0f1729;color:#e2e8f0;direction:ltr;text-align:left;font-family:monospace;font-size:.82em;line-height:1.8;overflow-x:auto}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;g&quot;&gt;&lt;div class=&quot;b&quot;&gt;&lt;div class=&quot;h s&quot;&gt;style.scss — ما تكتبه&lt;/div&gt;&lt;pre&gt;$brand: #6366f1;
+
+.card {
+  border: 1px solid $brand;
+  .title { color: $brand; }
+}&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;b&quot;&gt;&lt;div class=&quot;h c&quot;&gt;style.css — ما يُولَّد&lt;/div&gt;&lt;pre&gt;.card {
+  border: 1px solid #6366f1;
+}
+.card .title {
+  color: #6366f1;
+}&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:300px"></iframe></div><h2 id="sec-2">ما الذي يضيفه Sass؟</h2><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div><h4>المتغيّرات</h4><p>خزّن الألوان والمسافات والخطوط في أسماء واضحة وغيّرها من مكان واحد.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><h4>التداخل</h4><p>اكتب المحدّدات متداخلة كما تتداخل عناصر HTML — أوضح وأقصر.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div><h4>الـ Mixins</h4><p>كتل قابلة لإعادة الاستخدام تقبل معاملات، مثل الدوال.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h4>التقسيم</h4><p>قسّم أنماطك إلى ملفات صغيرة تُدمَج في ملف واحد عند الترجمة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div><h4>المنطق</h4><p>شروط وحلقات لتوليد الأنماط المتكرّرة آلياً.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h4>الدوال</h4><p>دوال جاهزة للألوان والرياضيات والنصوص والقوائم.</p></div></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> ماذا عن متغيّرات CSS الأصلية؟</div><p>CSS الحديثة فيها متغيّرات (<code>--color</code>) وهي رائعة لأنها تعمل <strong>وقت التشغيل</strong> فتصلح للثيمات. لكن Sass يعمل <strong>وقت البناء</strong> ويقدّم ما لا تقدّمه CSS: الحلقات والشروط والدوال والتقسيم. الاثنان يكمّلان بعضهما، ولا يلغي أحدهما الآخر.</p></div><h2 id="sec-3">SCSS أم Sass؟</h2><p>للغة صيغتان مختلفتان في الشكل ومتطابقتان في القدرات:</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">صيغة SCSS (امتداد .scss)</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">brand</span>: <span class="tok-sel">#6366f1</span>;
+
+<span class="tok-sel">.card</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">20px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid $brand<span class="tok-punct">;</span>
+
+  .title <span class="tok-punct">{</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> $brand<span class="tok-punct">;</span>
+    <span class="tok-prop">font-weight</span><span class="tok-punct">:</span> <span class="tok-number">700</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">صيغة Sass المسافات (امتداد .sass)</span><span class="code-lang">text</span></div><pre><code>$brand: #6366f1
+
+.card
+  padding: 20px
+  border: 1px solid $brand
+
+  .title
+    color: $brand
+    font-weight: 700</code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th>SCSS</th><th>Sass</th></tr></thead><tbody><tr><td>الامتداد</td><td><code>.scss</code></td><td><code>.sass</code></td></tr><tr><td>الأقواس والفواصل</td><td>موجودة</td><td>محذوفة — المسافات البادئة تحدّد البنية</td></tr><tr><td>توافق مع CSS</td><td><strong>كل ملف CSS صالح هو SCSS صالح</strong></td><td>لا</td></tr><tr><td>الانتشار</td><td>الأغلبية الساحقة</td><td>قليل</td></tr><tr><td>الأنسب للمبتدئ</td><td><strong>نعم</strong></td><td>لا</td></tr></tbody></table></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استخدم <strong>SCSS</strong>. ميزته الحاسمة أنك تستطيع نسخ أي كود CSS ولصقه كما هو فيعمل مباشرة — فالانتقال تدريجي بلا ألم. هذا المسار كله يستخدم SCSS.</p></div><h2 id="sec-4">التثبيت والتشغيل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">داخل مشروعك</span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># 1) تهيئة المشروع إن لم يكن مهيّأً</span>
+<span class="tok-keyword">npm</span> init <span class="tok-attr">-y</span>
+
+<span class="tok-comment"># 2) تثبيت Sass كاعتمادية تطوير</span>
+<span class="tok-keyword">npm</span> install <span class="tok-attr">--save-dev</span> sass
+
+<span class="tok-comment"># 3) ترجمة مرة واحدة</span>
+<span class="tok-keyword">npx</span> sass src/scss/main.scss dist/css/style.css
+
+<span class="tok-comment"># 4) المراقبة: يعيد الترجمة عند كل حفظ</span>
+<span class="tok-keyword">npx</span> sass <span class="tok-attr">--watch</span> src/scss:dist/css
+
+<span class="tok-comment"># 5) نسخة مضغوطة للإنتاج</span>
+<span class="tok-keyword">npx</span> sass src/scss/main.scss dist/css/style.min.css <span class="tok-attr">--style</span>=compressed <span class="tok-attr">--no-source-map</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">package.json — اختصر الأوامر</span><span class="code-lang">json</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-punct">{</span>
+  <span class="tok-prop">&quot;scripts&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">&quot;css&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;sass src/scss:dist/css&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-prop">&quot;css:watch&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;sass --watch src/scss:dist/css&quot;</span><span class="tok-punct">,</span>
+    <span class="tok-prop">&quot;css:build&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;sass src/scss/main.scss dist/css/style.css --style=compressed --no-source-map&quot;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><p>ثم تشغّلها بـ <code>npm run css:watch</code> أثناء التطوير و <code>npm run css:build</code> قبل النشر.</p><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>أدوات البناء الحديثة (<strong>Vite</strong> و <strong>Next.js</strong> و <strong>Angular CLI</strong>) تدعم Sass تلقائياً: يكفي تثبيت الحزمة واستيراد ملف <code>.scss</code>، وتتكفّل الأداة بالترجمة.</p></div><h2 id="sec-5">الربط بالصفحة</h2><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> اربط الناتج لا المصدر</div><p>المتصفح <strong>لا يفهم</strong> <code>.scss</code> إطلاقاً. الرابط يجب أن يشير دائماً إلى ملف <code>.css</code> المولَّد.</p></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span></div><pre><code><span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span><span class="tok-punct">=</span><span class="tok-string">&quot;stylesheet&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;src/scss/main.scss&quot;</span><span class="tok-tag">&gt;</span></code></pre></div><div class="why">المتصفح سيحمّل ملفاً نصياً لا يفهمه، فلن يُطبَّق أي تنسيق.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span></div><pre><code><span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span><span class="tok-punct">=</span><span class="tok-string">&quot;stylesheet&quot;</span> <span class="tok-attr">href</span><span class="tok-punct">=</span><span class="tok-string">&quot;dist/css/style.css&quot;</span><span class="tok-tag">&gt;</span></code></pre></div><div class="why">الملف المترجَم هو ما يفهمه المتصفح.</div></div></div><h2 id="sec-6">بنية مشروع نموذجية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span></div><pre><code>my-project/
+├── index.html
+├── package.json
+├── src/
+│   └── scss/
+│       ├── abstracts/
+│       │   ├── _variables.scss
+│       │   ├── _mixins.scss
+│       │   └── _functions.scss
+│       ├── base/
+│       │   ├── _reset.scss
+│       │   └── _typography.scss
+│       ├── components/
+│       │   ├── _button.scss
+│       │   └── _card.scss
+│       ├── layout/
+│       │   ├── _header.scss
+│       │   └── _grid.scss
+│       └── main.scss          ← الملف الوحيد الذي يُترجَم
+└── dist/
+    └── css/
+        └── style.css          ← الناتج</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ما معنى الشرطة السفلية؟</div><p>الملف الذي يبدأ اسمه بـ <code>_</code> يُسمّى <strong>جزئياً</strong> (Partial): لا يُترجَم إلى ملف CSS مستقل، بل يُستورد داخل ملف آخر. هذا يمنع توليد عشرات الملفات غير المرغوبة.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">main.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;abstracts/variables&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;abstracts/mixins&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;base/reset&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;base/typography&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;layout/header&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;components/button&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;components/card&#39;</span>;</code></pre></div><p>لاحظ: لا تكتب الشرطة السفلية ولا الامتداد عند الاستيراد. Sass يعرفهما.</p><h2 id="sec-7">التعليقات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// تعليق سطر واحد — لا يظهر في ملف <span class="tok-sel">CSS</span> الناتج
+
+<span class="tok-comment">/* تعليق CSS عادي — يظهر في الناتج */</span>
+
+<span class="tok-comment">/*! تعليق محفوظ — يبقى حتى في النسخة المضغوطة */</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استخدم <code>//</code> لملاحظاتك التطويرية (فلا تثقل الملف النهائي)، و<code>/<em> </em>/</code> للمعلومات التي تريد بقاءها كحقوق المكتبة.</p></div><h2 id="sec-8">خرائط المصدر (Source Maps)</h2><p>حين تفحص عنصراً في أدوات المطوّر ستجد الأنماط في ملف <code>.css</code> المولَّد — وهذا لا يفيدك. خريطة المصدر تربط كل قاعدة بموضعها الأصلي في ملف <code>.scss</code>، فتظهر لك أدوات المطوّر «هذه القاعدة من <code>_button.scss</code> السطر 24».</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># خرائط المصدر مفعّلة افتراضياً في التطوير</span>
+<span class="tok-keyword">npx</span> sass <span class="tok-attr">--watch</span> src/scss:dist/css
+
+<span class="tok-comment"># عطّلها في الإنتاج لتقليل الحجم</span>
+<span class="tok-keyword">npx</span> sass src/scss/main.scss dist/css/style.css <span class="tok-attr">--no-source-map</span> <span class="tok-attr">--style</span>=compressed</code></pre></div><section class="exercise" id="sec-9"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: أول مشروع Sass</h3></header><div class="exercise-body"><p>جهّز مشروعاً وشغّل المترجم وتأكّد من أن التغييرات تنعكس فوراً.</p><p><strong>المطلوب:</strong></p><ul><li>أنشئ مجلداً جديداً وهيّئ <code>package.json</code> وثبّت <code>sass</code> كاعتمادية تطوير.</li><li>أنشئ <code>src/scss/main.scss</code> و <code>index.html</code> و مجلد <code>dist/css</code>.</li><li>أضف أوامر <code>css:watch</code> و <code>css:build</code> في <code>package.json</code>.</li><li>في <code>main.scss</code> عرّف متغيّراً واحداً للون واستخدمه في قاعدتين مختلفتين.</li><li>شغّل المراقبة وغيّر قيمة المتغيّر ولاحظ تحديث ملف CSS تلقائياً.</li><li>اربط ملف CSS المولَّد بصفحة HTML وتأكّد من ظهور التنسيق.</li><li>أنشئ ملفاً جزئياً <code>_variables.scss</code> وانقل إليه المتغيّر واستورده بـ <code>@use</code>.</li><li>شغّل أمر البناء المضغوط وقارن حجم الملفين.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 الملف الجزئي يبدأ بـ <code>_</code> ولا تكتب الشرطة ولا الامتداد عند الاستيراد.</li><li>💡 <code>@use</code> يجب أن تكون في أعلى الملف قبل أي قاعدة.</li><li>💡 إن لم يعمل التنسيق تحقّق من مسار <code>href</code> — يجب أن يشير إلى <code>.css</code>.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">src/scss/main.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;variables&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">v</span>;
+
+<span class="tok-sel">body</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">font-family</span><span class="tok-punct">:</span> <span class="tok-string">&#39;Cairo&#39;</span><span class="tok-punct">,</span> sans-serif<span class="tok-punct">;</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#f6f7fb</span><span class="tok-punct">;</span>
+  <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#0f172a</span><span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">40px</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.btn</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">display</span><span class="tok-punct">:</span> inline-block<span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">12px</span> <span class="tok-number">28px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">99px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> v.$brand<span class="tok-punct">;</span>
+  <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#fff</span><span class="tok-punct">;</span>
+  <span class="tok-prop">text-decoration</span><span class="tok-punct">:</span> none<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.title</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">color</span><span class="tok-punct">:</span> v.$brand<span class="tok-punct">;</span>
+  <span class="tok-prop">font-size</span><span class="tok-punct">:</span> <span class="tok-number">2rem</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-caption" style="background:var(--surface-2);color:var(--text-muted)">محتوى <code>_variables.scss</code>: <code>$brand: #6366f1;</code> — وأمر التشغيل: <code>npm run css:watch</code>.</div></details></div></section><section class="quiz"><h2 id="sec-10"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ماذا يفعل Sass بالضبط؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يعمل في المتصفح مباشرة</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>يُترجَم إلى CSS عادية قبل الوصول للمتصفح</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يستبدل CSS</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يضغط الصور</span></label></div><div class="q-explain"><strong>الشرح:</strong> معالج يعمل وقت البناء؛ المتصفح لا يرى إلا CSS النهائية.</div></div><div class="q-item"><p class="q-text">2. لماذا يُنصح المبتدئ بصيغة SCSS؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>لأن أي كود CSS صالح هو SCSS صالح، فالانتقال تدريجي</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أقصر</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أحدث</span></label></div><div class="q-explain"><strong>الشرح:</strong> التوافق الكامل مع CSS يجعل التعلّم متدرّجاً بلا إعادة كتابة.</div></div><div class="q-item"><p class="q-text">3. ما دلالة الشرطة السفلية في <code>_variables.scss</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>ملف مخفي</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>ملف جزئي لا يُترجَم إلى CSS مستقل بل يُستورد</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>ملف قديم</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>ملف اختبار</span></label></div><div class="q-explain"><strong>الشرح:</strong> الجزئيات تمنع توليد ملفات CSS لا حاجة لها.</div></div><div class="q-item"><p class="q-text">4. ماذا تربط في <code>&lt;link&gt;</code> في صفحة HTML؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>ملف .scss</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>ملف .css المولَّد</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>كليهما</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا شيء</span></label></div><div class="q-explain"><strong>الشرح:</strong> المتصفح لا يفهم SCSS؛ يجب ربط الناتج المترجَم.</div></div><div class="q-item"><p class="q-text">5. ما الفرق بين <code>//</code> و <code>/<em> </em>/</code> في Sass؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span><code>//</code> لا تظهر في CSS الناتجة و<code>/<em> </em>/</code> تظهر</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span><code>//</code> غير مدعومة</span></label></div><div class="q-explain"><strong>الشرح:</strong> تعليقات السطر تُحذف عند الترجمة، وتعليقات CSS تبقى.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sass/01-introduction" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="index.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>العودة إلى</small><b>صفحة المسار</b></span></a>
+  <a class="next" href="02-variables.html"><span><small>الدرس التالي</small><b>المتغيّرات وأنواع البيانات</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Sass</h3>
+        <div class="ring-wrap" data-ring data-track="sass" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">ما المشكلة؟</a></li><li><a href="#sec-2">ما الذي يضيفه Sass؟</a></li><li><a href="#sec-3">SCSS أم Sass؟</a></li><li><a href="#sec-4">التثبيت والتشغيل</a></li><li><a href="#sec-5">الربط بالصفحة</a></li><li><a href="#sec-6">بنية مشروع نموذجية</a></li><li><a href="#sec-7">التعليقات</a></li><li><a href="#sec-8">خرائط المصدر (Source Maps)</a></li><li><a href="#sec-9">تمرين: أول مشروع Sass</a></li><li><a href="#sec-10">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>npm i -D sass</code><small>تثبيت المترجم</small></div><div class="ref-item"><code>npx sass in.scss out.css</code><small>ترجمة مرة واحدة</small></div><div class="ref-item"><code>npx sass --watch src:dist</code><small>مراقبة التغييرات</small></div><div class="ref-item"><code>.scss</code><small>الصيغة الشائعة (أقواس وفواصل)</small></div><div class="ref-item"><code>.sass</code><small>الصيغة القديمة (مسافات بادئة)</small></div><div class="ref-item"><code>// تعليق</code><small>تعليق لا يظهر في الناتج</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="02-variables.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>المتغيّرات وأنواع البيانات<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

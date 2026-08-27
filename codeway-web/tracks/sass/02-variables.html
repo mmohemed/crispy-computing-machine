@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sass">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المتغيّرات وأنواع البيانات — مسار Sass | CodeWay Web</title>
+<meta name="description" content="تخزين القيم المتكرّرة، أنواع البيانات في Sass، النطاق، والعلاقة بمتغيّرات CSS الأصلية.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="المتغيّرات وأنواع البيانات — مسار Sass | CodeWay Web">
+<meta property="og:description" content="تخزين القيم المتكرّرة، أنواع البيانات في Sass، النطاق، والعلاقة بمتغيّرات CSS الأصلية.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Sass</a></li>
+      <li aria-current="page">المتغيّرات وأنواع البيانات</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 2 من 10</span>
+      <span class="badge level-مبتدئ">مبتدئ</span>
+      <span class="badge">المتغيّرات</span><span class="badge">الأساسيات</span>
+    </div>
+    <h1>المتغيّرات وأنواع البيانات</h1>
+    <p class="summary">تخزين القيم المتكرّرة، أنواع البيانات في Sass، النطاق، والعلاقة بمتغيّرات CSS الأصلية.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 40 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Sass</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تعرّف متغيّرات وتستخدمها في أنماطك.</li><li>تعرف أنواع البيانات السبعة في Sass.</li><li>تفهم نطاق المتغيّر عالمياً ومحلياً.</li><li>تفرّق بين متغيّرات Sass ومتغيّرات CSS.</li><li>تنظّم متغيّراتك في نظام تصميم مبدئي.</li></ul></div>
+      <h2 id="sec-1">لماذا المتغيّرات؟</h2><p>اللون <code>#6366f1</code> مكرّر في 40 موضعاً. جاء العميل وقال: «اجعله أزرق». الآن أمامك خياران: بحث واستبدال في كل الملفات (مع خطر تغيير قيمة لا تقصدها)، أو سطر واحد.</p><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span></div><pre><code><span class="tok-sel">.btn</span> <span class="tok-punct">{</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.link</span> <span class="tok-punct">{</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.badge</span> <span class="tok-punct">{</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.title</span><span class="tok-sel">::after</span> <span class="tok-punct">{</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span> <span class="tok-punct">}</span></code></pre></div><div class="why">أي تغيير يعني تعديل كل موضع، وأي خطأ مطبعي يمرّ بلا ملاحظة.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span></div><pre><code>$<span class="tok-sel">color-brand</span>: <span class="tok-sel">#6366f1</span>;
+
+<span class="tok-sel">.btn</span> <span class="tok-punct">{</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> $color-brand<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.link</span> <span class="tok-punct">{</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> $color-brand<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.badge</span> <span class="tok-punct">{</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> $color-brand<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.title</span><span class="tok-sel">::after</span> <span class="tok-punct">{</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> $color-brand<span class="tok-punct">;</span> <span class="tok-punct">}</span></code></pre></div><div class="why">سطر واحد يغيّر كل شيء، والاسم يوثّق النية.</div></div></div><h2 id="sec-2">التعريف والاستخدام</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// التعريف: علامة الدولار ثم الاسم ثم القيمة
+$<span class="tok-sel">color-brand</span>: <span class="tok-sel">#6366f1</span>;
+$<span class="tok-sel">spacing-md</span>: <span class="tok-sel">16px</span>;
+$<span class="tok-sel">font-heading</span>: <span class="tok-string">&#39;Cairo&#39;</span><span class="tok-punct">,</span> <span class="tok-sel">sans-serif</span>;
+$<span class="tok-sel">radius</span>: <span class="tok-sel">12px</span>;
+
+// الاستخدام
+<span class="tok-sel">.card</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> $spacing-md<span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> $radius<span class="tok-punct">;</span>
+  <span class="tok-prop">font-family</span><span class="tok-punct">:</span> $font-heading<span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid $color-brand<span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> اصطلاح التسمية</div><p>استخدم الشرطات لا الشرطة السفلية: <code>$color-brand</code> لا <code>$color_brand</code>. ورتّب الاسم من العام إلى الخاص: <code>$color-text-muted</code> أوضح من <code>$muted-text-color</code> عند الفرز الأبجدي.</p></div><h2 id="sec-3">أنواع البيانات</h2><div class="table-wrap"><table class="data"><thead><tr><th>النوع</th><th>أمثلة</th><th>ملاحظة</th></tr></thead><tbody><tr><td><strong>رقم</strong></td><td><code>12</code>, <code>1.5rem</code>, <code>50%</code>, <code>2px</code></td><td>يحمل وحدته معه</td></tr><tr><td><strong>نص</strong></td><td><code>&quot;Cairo&quot;</code>, <code>bold</code>, <code>solid</code></td><td>الاقتباس اختياري غالباً</td></tr><tr><td><strong>لون</strong></td><td><code>#6366f1</code>, <code>rgb(…)</code>, <code>red</code></td><td>يدعم دوال معالجة الألوان</td></tr><tr><td><strong>منطقي</strong></td><td><code>true</code>, <code>false</code></td><td>للشروط</td></tr><tr><td><strong>قائمة</strong></td><td><code>10px 20px</code>, <code>Cairo, sans-serif</code></td><td>مفصولة بمسافة أو فاصلة</td></tr><tr><td><strong>خريطة</strong></td><td><code>(sm: 4px, md: 8px)</code></td><td>أزواج مفتاح وقيمة</td></tr><tr><td><strong>فارغ</strong></td><td><code>null</code></td><td>يحذف الخاصية كلياً</td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">size</span>: <span class="tok-sel">16px</span>;              // رقم بوحدة
+$<span class="tok-sel">ratio</span>: <span class="tok-sel">1</span><span class="tok-sel">.5</span>;              // رقم بلا وحدة
+$<span class="tok-sel">name</span>: <span class="tok-string">&#39;CodeWay&#39;</span>;         // نص
+$<span class="tok-sel">brand</span>: <span class="tok-sel">#6366f1</span>;          // لون
+$<span class="tok-sel">is-dark</span>: <span class="tok-sel">false</span>;          // منطقي
+$<span class="tok-sel">font-stack</span>: <span class="tok-string">&#39;Cairo&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;Segoe UI&#39;</span><span class="tok-punct">,</span> <span class="tok-sel">sans-serif</span>;   // قائمة
+$<span class="tok-sel">spacing</span>: (<span class="tok-sel">sm</span>: <span class="tok-sel">8px</span><span class="tok-punct">,</span> <span class="tok-sel">md</span>: <span class="tok-sel">16px</span><span class="tok-punct">,</span> <span class="tok-sel">lg</span>: <span class="tok-sel">24px</span>);        // خريطة
+$<span class="tok-sel">border</span>: <span class="tok-sel">null</span>;            // فارغ</code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>قيمة <code>null</code> مفيدة جداً: <code>border: $border;</code> تُحذف كلياً من الناتج إن كان <code>$border</code> فارغاً — فتستطيع جعل خاصية اختيارية داخل mixin.</p></div><h2 id="sec-4">العمليات الحسابية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">base</span>: <span class="tok-sel">16px</span>;
+
+<span class="tok-sel">.el</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">font-size</span><span class="tok-punct">:</span> $base<span class="tok-punct">;</span>              // <span class="tok-number">16px</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> $base * <span class="tok-number">1.5</span><span class="tok-punct">;</span>          // <span class="tok-number">24px</span>
+  <span class="tok-prop">margin-bottom</span><span class="tok-punct">:</span> $base + <span class="tok-number">8px</span><span class="tok-punct">;</span>    // <span class="tok-number">24px</span>
+  <span class="tok-prop">line-height</span><span class="tok-punct">:</span> <span class="tok-number">24px</span> / <span class="tok-number">16px</span><span class="tok-punct">;</span>      // تجنّبها — انظر التحذير
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> القسمة تغيّرت</div><p>المعامل <code>/</code> أصبح <strong>مهملاً</strong> في Sass الحديثة لأنه يتعارض مع صياغة CSS المختصرة (<code>font: 16px/1.5</code>). استخدم <code>math.div()</code> من الوحدة الرياضية بدلاً منه.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الطريقة الصحيحة للقسمة</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:math&#39;</span>;
+
+$<span class="tok-sel">base</span>: <span class="tok-sel">16px</span>;
+
+<span class="tok-sel">.el</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">line-height</span><span class="tok-punct">:</span> math.<span class="tok-func">div</span><span class="tok-punct">(</span><span class="tok-number">24px</span><span class="tok-punct">,</span> $base<span class="tok-punct">)</span><span class="tok-punct">;</span>   // <span class="tok-number">1.5</span>
+  <span class="tok-prop">width</span><span class="tok-punct">:</span> math.<span class="tok-func">div</span><span class="tok-punct">(</span><span class="tok-number">100</span>%<span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">)</span><span class="tok-punct">;</span>             // <span class="tok-number">33.3333</span>%
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه</div><p>لا يمكن جمع قيم بوحدات متعارضة: <code>10px + 2em</code> خطأ. لكن <code>10px + 5</code> يعطي <code>15px</code> لأن العدد المجرّد يأخذ وحدة الطرف الآخر.</p></div><h2 id="sec-5">الإقحام <code>#{}</code></h2><p>المتغيّر لا يعمل مباشرة داخل النصوص أو أسماء المحدّدات أو الخصائص. الإقحام يحلّ ذلك.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">side</span>: <span class="tok-string">&#39;right&#39;</span>;
+$<span class="tok-sel">breakpoint</span>: <span class="tok-sel">768px</span>;
+$<span class="tok-sel">prefix</span>: <span class="tok-string">&#39;app&#39;</span>;
+
+<span class="tok-sel">.box</span> <span class="tok-punct">{</span>
+  // في اسم الخاصية
+  margin-#<span class="tok-punct">{</span>$side<span class="tok-punct">}</span><span class="tok-punct">:</span> <span class="tok-number">20px</span><span class="tok-punct">;</span>          // <span class="tok-prop">margin-right</span><span class="tok-punct">:</span> <span class="tok-number">20px</span>
+
+  // في قيمة نصية
+  <span class="tok-prop">content</span><span class="tok-punct">:</span> <span class="tok-string">&#39;الاتجاه: #{$side}&#39;</span><span class="tok-punct">;</span>
+
+  // في استعلام الوسائط
+  <span class="tok-keyword">@media</span> <span class="tok-punct">(</span><span class="tok-prop">min-width</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>$breakpoint<span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span> … <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+// في اسم المحدّد
+.#<span class="tok-punct">{</span>$prefix<span class="tok-punct">}</span><span class="tok-sel">-card</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>                                  // <span class="tok-sel">.app-card</span> <span class="tok-punct">{</span> … <span class="tok-punct">}</span>
+
+// في مسار الصورة
+<span class="tok-sel">.hero</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">background-image</span><span class="tok-punct">:</span> <span class="tok-func">url</span><span class="tok-punct">(</span><span class="tok-string">&#39;/img/#{$name}.jpg&#39;</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ناتج الإقحام</div><iframe title="ناتج الإقحام" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}pre{margin:0;padding:12px;background:#0f1729;color:#e2e8f0;direction:ltr;text-align:left;font-family:monospace;font-size:.84em;line-height:1.9;border-radius:10px;overflow-x:auto}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;pre&gt;/* المصدر */
+$side: right;
+.box { margin-#{$side}: 20px; }
+
+/* الناتج */
+.box { margin-right: 20px; }&lt;/pre&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:220px"></iframe></div><h2 id="sec-6">النطاق (Scope)</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">color</span>: <span class="tok-sel">blue</span>;          // عالمي
+
+<span class="tok-sel">.card</span> <span class="tok-punct">{</span>
+  $<span class="tok-prop">color</span><span class="tok-punct">:</span> red<span class="tok-punct">;</span>         // محلي — يظلّل العالمي داخل هذه الكتلة فقط
+  <span class="tok-prop">border-color</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span> // red
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.other</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">color</span><span class="tok-punct">:</span> $color<span class="tok-punct">;</span>       // blue — العالمي لم يتأثّر
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">التعديل العالمي</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">theme</span>: <span class="tok-sel">light</span>;
+
+<span class="tok-sel">.dark-mode</span> <span class="tok-punct">{</span>
+  $<span class="tok-prop">theme</span><span class="tok-punct">:</span> dark !global<span class="tok-punct">;</span>   // يغيّر المتغيّر العالمي نفسه
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه</div><p><code>!global</code> مصدر شائع للأخطاء الغامضة: قيمة تتغيّر من مكان بعيد فتتساءل لماذا. تجنّبها إلا لضرورة حقيقية.</p></div><h2 id="sec-7"><code>!default</code> — القيم القابلة للتخصيص</h2><p>حين تبني مكتبة أو نظام تصميم، تريد أن تعطي قيماً افتراضية يستطيع المستخدم تجاوزها. علامة <code>!default</code> تعني: «استخدم هذه القيمة <strong>إن لم تكن</strong> محدّدة مسبقاً».</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">_theme.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>$<span class="tok-sel">color-brand</span>: <span class="tok-sel">#6366f1</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">radius</span>: <span class="tok-sel">12px</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">font-base</span>: <span class="tok-sel">16px</span> !<span class="tok-sel">default</span>;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">main.scss — تخصيص المكتبة</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;theme&#39;</span> <span class="tok-sel">with</span> (
+  $<span class="tok-sel">color-brand</span>: <span class="tok-sel">#dd0031</span><span class="tok-punct">,</span>
+  $<span class="tok-sel">radius</span>: <span class="tok-sel">4px</span>
+);
+// $<span class="tok-sel">font-base</span> بقي <span class="tok-sel">16px</span> لأننا لم نمرّره</code></pre></div><p>هذه الآلية هي ما يجعل مكتبات مثل Bootstrap قابلة للتخصيص الكامل دون تعديل ملفاتها الأصلية.</p><h2 id="sec-8">Sass مقابل متغيّرات CSS</h2><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th>متغيّر Sass <code>$x</code></th><th>متغيّر CSS <code>--x</code></th></tr></thead><tbody><tr><td>وقت المعالجة</td><td>وقت البناء</td><td>وقت التشغيل في المتصفح</td></tr><tr><td>يظهر في الناتج</td><td>لا — يُستبدَل بقيمته</td><td>نعم</td></tr><tr><td>التغيير بجافاسكربت</td><td>مستحيل</td><td><strong>ممكن</strong></td></tr><tr><td>التغيير بـ media query</td><td>لا</td><td><strong>نعم</strong></td></tr><tr><td>الوراثة في الشجرة</td><td>لا — نطاق ملف</td><td><strong>نعم</strong></td></tr><tr><td>يعمل داخل الحلقات والشروط</td><td><strong>نعم</strong></td><td>لا</td></tr><tr><td>الأنسب لـ</td><td>قيم ثابتة، منطق البناء</td><td>الثيمات والقيم الديناميكية</td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الجمع بينهما — أفضل الممارسات</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:color&#39;</span>;
+
+// قيم <span class="tok-sel">Sass</span> للبناء والحسابات
+$<span class="tok-sel">brand</span>: <span class="tok-sel">#6366f1</span>;
+$<span class="tok-sel">radius-base</span>: <span class="tok-sel">12px</span>;
+
+// تصديرها كمتغيّرات <span class="tok-sel">CSS</span> للثيمات
+<span class="tok-sel">:root</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">--color-brand</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>$brand<span class="tok-punct">}</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-brand-dark</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>color.<span class="tok-func">adjust</span><span class="tok-punct">(</span>$brand<span class="tok-punct">,</span> $<span class="tok-prop">lightness</span><span class="tok-punct">:</span> <span class="tok-number">-12</span>%<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--radius</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>$radius-base<span class="tok-punct">}</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+[<span class="tok-sel">data-theme</span>=<span class="tok-string">&#39;dark&#39;</span>] <span class="tok-punct">{</span>
+  <span class="tok-prop">--color-brand</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>color.<span class="tok-func">adjust</span><span class="tok-punct">(</span>$brand<span class="tok-punct">,</span> $<span class="tok-prop">lightness</span><span class="tok-punct">:</span> <span class="tok-number">15</span>%<span class="tok-punct">)</span><span class="tok-punct">}</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+// الاستخدام: متغيّر <span class="tok-sel">CSS</span> ليتبدّل مع الثيم
+<span class="tok-sel">.btn</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-func">var</span><span class="tok-punct">(</span>--color-brand<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-func">var</span><span class="tok-punct">(</span>--radius<span class="tok-punct">)</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>القاعدة العملية: <strong>Sass للحساب والتوليد، وCSS للثيمات</strong>. احسب القيم بـ Sass ثم صدّرها إلى <code>:root</code> كمتغيّرات CSS.</p></div><h2 id="sec-9">بناء نظام متغيّرات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">_variables.scss</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// ===== الألوان =====
+$<span class="tok-sel">color-brand</span>:       <span class="tok-sel">#6366f1</span>;
+$<span class="tok-sel">color-brand-dark</span>:  <span class="tok-sel">#4f46e5</span>;
+$<span class="tok-sel">color-brand-light</span>: <span class="tok-sel">#a5b4fc</span>;
+
+$<span class="tok-sel">color-success</span>: <span class="tok-sel">#10b981</span>;
+$<span class="tok-sel">color-warning</span>: <span class="tok-sel">#f59e0b</span>;
+$<span class="tok-sel">color-danger</span>:  <span class="tok-sel">#ef4444</span>;
+
+$<span class="tok-sel">color-text</span>:        <span class="tok-sel">#0f172a</span>;
+$<span class="tok-sel">color-text-muted</span>:  <span class="tok-sel">#64748b</span>;
+$<span class="tok-sel">color-border</span>:      <span class="tok-sel">#e2e8f0</span>;
+$<span class="tok-sel">color-bg</span>:          <span class="tok-sel">#f6f7fb</span>;
+$<span class="tok-sel">color-surface</span>:     <span class="tok-sel">#ffffff</span>;
+
+// ===== الطباعة =====
+$<span class="tok-sel">font-base</span>: <span class="tok-string">&#39;Cairo&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;Segoe UI&#39;</span><span class="tok-punct">,</span> <span class="tok-sel">sans-serif</span>;
+$<span class="tok-sel">font-mono</span>: <span class="tok-string">&#39;JetBrains Mono&#39;</span><span class="tok-punct">,</span> <span class="tok-sel">monospace</span>;
+
+$<span class="tok-sel">fs-xs</span>: <span class="tok-sel">0</span><span class="tok-sel">.75rem</span>;
+$<span class="tok-sel">fs-sm</span>: <span class="tok-sel">0</span><span class="tok-sel">.875rem</span>;
+$<span class="tok-sel">fs-md</span>: <span class="tok-sel">1rem</span>;
+$<span class="tok-sel">fs-lg</span>: <span class="tok-sel">1</span><span class="tok-sel">.25rem</span>;
+$<span class="tok-sel">fs-xl</span>: <span class="tok-sel">1</span><span class="tok-sel">.5rem</span>;
+$<span class="tok-sel">fs-2xl</span>: <span class="tok-sel">2rem</span>;
+
+$<span class="tok-sel">fw-normal</span>: <span class="tok-sel">400</span>;
+$<span class="tok-sel">fw-bold</span>: <span class="tok-sel">700</span>;
+$<span class="tok-sel">fw-black</span>: <span class="tok-sel">800</span>;
+
+$<span class="tok-sel">lh-tight</span>: <span class="tok-sel">1</span><span class="tok-sel">.3</span>;
+$<span class="tok-sel">lh-base</span>: <span class="tok-sel">1</span><span class="tok-sel">.8</span>;
+
+// ===== المسافات =====
+$<span class="tok-sel">space-1</span>: <span class="tok-sel">4px</span>;
+$<span class="tok-sel">space-2</span>: <span class="tok-sel">8px</span>;
+$<span class="tok-sel">space-3</span>: <span class="tok-sel">12px</span>;
+$<span class="tok-sel">space-4</span>: <span class="tok-sel">16px</span>;
+$<span class="tok-sel">space-5</span>: <span class="tok-sel">24px</span>;
+$<span class="tok-sel">space-6</span>: <span class="tok-sel">32px</span>;
+$<span class="tok-sel">space-7</span>: <span class="tok-sel">48px</span>;
+
+// ===== الحواف والظلال =====
+$<span class="tok-sel">radius-sm</span>: <span class="tok-sel">6px</span>;
+$<span class="tok-sel">radius-md</span>: <span class="tok-sel">12px</span>;
+$<span class="tok-sel">radius-lg</span>: <span class="tok-sel">20px</span>;
+$<span class="tok-sel">radius-full</span>: <span class="tok-sel">999px</span>;
+
+$<span class="tok-sel">shadow-sm</span>: <span class="tok-sel">0</span> <span class="tok-sel">2px</span> <span class="tok-sel">6px</span> <span class="tok-sel">rgba</span>(<span class="tok-sel">15</span><span class="tok-punct">,</span> <span class="tok-sel">23</span><span class="tok-punct">,</span> <span class="tok-sel">42</span><span class="tok-punct">,</span> <span class="tok-sel">.07</span>);
+$<span class="tok-sel">shadow-md</span>: <span class="tok-sel">0</span> <span class="tok-sel">8px</span> <span class="tok-sel">24px</span> <span class="tok-sel">rgba</span>(<span class="tok-sel">15</span><span class="tok-punct">,</span> <span class="tok-sel">23</span><span class="tok-punct">,</span> <span class="tok-sel">42</span><span class="tok-punct">,</span> <span class="tok-sel">.09</span>);
+$<span class="tok-sel">shadow-lg</span>: <span class="tok-sel">0</span> <span class="tok-sel">18px</span> <span class="tok-sel">48px</span> <span class="tok-sel">rgba</span>(<span class="tok-sel">15</span><span class="tok-punct">,</span> <span class="tok-sel">23</span><span class="tok-punct">,</span> <span class="tok-sel">42</span><span class="tok-punct">,</span> <span class="tok-sel">.13</span>);
+
+// ===== نقاط التوقف =====
+$<span class="tok-sel">bp-sm</span>: <span class="tok-sel">576px</span>;
+$<span class="tok-sel">bp-md</span>: <span class="tok-sel">768px</span>;
+$<span class="tok-sel">bp-lg</span>: <span class="tok-sel">992px</span>;
+$<span class="tok-sel">bp-xl</span>: <span class="tok-sel">1200px</span>;
+
+// ===== الانتقالات =====
+$<span class="tok-sel">transition</span>: <span class="tok-sel">.25s</span> <span class="tok-sel">cubic-bezier</span>(<span class="tok-sel">.4</span><span class="tok-punct">,</span> <span class="tok-sel">0</span><span class="tok-punct">,</span> <span class="tok-sel">.2</span><span class="tok-punct">,</span> <span class="tok-sel">1</span>);</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>لاحظ استخدام <strong>مقياس</strong> لا قيم عشوائية: المسافات مضاعفات 4، وأحجام الخط بنسب متتالية. هذا ما يجعل التصميم يبدو متّسقاً حتى لو لم يعرف الناظر السبب.</p></div><section class="exercise" id="sec-10"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: نظام متغيّرات لمشروعك</h3></header><div class="exercise-body"><p>ابنِ ملف متغيّرات كاملاً واستخدمه في تنسيق بطاقة.</p><p><strong>المطلوب:</strong></p><ul><li>أنشئ <code>_variables.scss</code> يحوي: 5 ألوان، مقياس مسافات من 5 قيم، 4 أحجام خطوط، 3 أنصاف أقطار، وظلّين.</li><li>كل المتغيّرات بعلامة <code>!default</code>.</li><li>في <code>main.scss</code> استوردها بـ <code>@use ... with (...)</code> وغيّر لوناً واحداً.</li><li>صدّر ثلاثة من المتغيّرات إلى <code>:root</code> كمتغيّرات CSS بالإقحام.</li><li>نسّق بطاقة <code>.card</code> تستخدم متغيّرات Sass للمسافات ومتغيّر CSS للون.</li><li>استخدم <code>math.div</code> مرة واحدة لحساب <code>line-height</code>.</li><li>استخدم الإقحام <code>#{}</code> في اسم خاصية أو في استعلام وسائط.</li><li>أضف كتلة <code>[data-theme=&quot;dark&quot;]</code> تغيّر متغيّرات CSS فقط ولاحظ تبدّل الشكل.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>@use &quot;sass:math&quot;;</code> يجب أن تكون في أعلى الملف.</li><li>💡 الإقحام ضروري داخل <code>:root</code>: <code>--x: #{$x};</code>.</li><li>💡 تجاوز القيم الافتراضية يتم في <code>@use ... with (...)</code> لا بإعادة التعريف.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">/* ===== _variables.scss ===== */</span>
+$<span class="tok-sel">color-brand</span>:  <span class="tok-sel">#6366f1</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">color-text</span>:   <span class="tok-sel">#0f172a</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">color-muted</span>:  <span class="tok-sel">#64748b</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">color-border</span>: <span class="tok-sel">#e2e8f0</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">color-surface</span>:<span class="tok-sel">#ffffff</span> !<span class="tok-sel">default</span>;
+
+$<span class="tok-sel">space-1</span>: <span class="tok-sel">4px</span>  !<span class="tok-sel">default</span>;
+$<span class="tok-sel">space-2</span>: <span class="tok-sel">8px</span>  !<span class="tok-sel">default</span>;
+$<span class="tok-sel">space-3</span>: <span class="tok-sel">12px</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">space-4</span>: <span class="tok-sel">16px</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">space-5</span>: <span class="tok-sel">24px</span> !<span class="tok-sel">default</span>;
+
+$<span class="tok-sel">fs-sm</span>: <span class="tok-sel">0</span><span class="tok-sel">.875rem</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">fs-md</span>: <span class="tok-sel">1rem</span>     !<span class="tok-sel">default</span>;
+$<span class="tok-sel">fs-lg</span>: <span class="tok-sel">1</span><span class="tok-sel">.25rem</span>  !<span class="tok-sel">default</span>;
+$<span class="tok-sel">fs-xl</span>: <span class="tok-sel">1</span><span class="tok-sel">.5rem</span>   !<span class="tok-sel">default</span>;
+
+$<span class="tok-sel">radius-sm</span>: <span class="tok-sel">6px</span>  !<span class="tok-sel">default</span>;
+$<span class="tok-sel">radius-md</span>: <span class="tok-sel">12px</span> !<span class="tok-sel">default</span>;
+$<span class="tok-sel">radius-lg</span>: <span class="tok-sel">20px</span> !<span class="tok-sel">default</span>;
+
+$<span class="tok-sel">shadow-sm</span>: <span class="tok-sel">0</span> <span class="tok-sel">2px</span> <span class="tok-sel">6px</span> <span class="tok-sel">rgba</span>(<span class="tok-sel">15</span><span class="tok-punct">,</span><span class="tok-sel">23</span><span class="tok-punct">,</span><span class="tok-sel">42</span><span class="tok-punct">,</span><span class="tok-sel">.07</span>)  !<span class="tok-sel">default</span>;
+$<span class="tok-sel">shadow-md</span>: <span class="tok-sel">0</span> <span class="tok-sel">8px</span> <span class="tok-sel">24px</span> <span class="tok-sel">rgba</span>(<span class="tok-sel">15</span><span class="tok-punct">,</span><span class="tok-sel">23</span><span class="tok-punct">,</span><span class="tok-sel">42</span><span class="tok-punct">,</span><span class="tok-sel">.09</span>) !<span class="tok-sel">default</span>;
+
+$<span class="tok-sel">bp-md</span>: <span class="tok-sel">768px</span> !<span class="tok-sel">default</span>;
+
+<span class="tok-comment">/* ===== main.scss ===== */</span>
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;sass:math&#39;</span>;
+<span class="tok-keyword">@use</span> <span class="tok-string">&#39;variables&#39;</span> <span class="tok-sel">as</span> <span class="tok-sel">v</span> <span class="tok-sel">with</span> (
+  $<span class="tok-sel">color-brand</span>: <span class="tok-sel">#dd0031</span>
+);
+
+<span class="tok-sel">:root</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">--color-brand</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>v.$color-brand<span class="tok-punct">}</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-surface</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>v.$color-surface<span class="tok-punct">}</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--radius</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>v.$radius-md<span class="tok-punct">}</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+[<span class="tok-sel">data-theme</span>=<span class="tok-string">&#39;dark&#39;</span>] <span class="tok-punct">{</span>
+  <span class="tok-prop">--color-brand</span><span class="tok-punct">:</span> <span class="tok-number">#f472b6</span><span class="tok-punct">;</span>
+  <span class="tok-prop">--color-surface</span><span class="tok-punct">:</span> <span class="tok-number">#111a2e</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.card</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-func">var</span><span class="tok-punct">(</span>--color-surface<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid v.$color-border<span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-func">var</span><span class="tok-punct">(</span>--radius<span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> v.$space-5<span class="tok-punct">;</span>
+  <span class="tok-prop">box-shadow</span><span class="tok-punct">:</span> v.$shadow-md<span class="tok-punct">;</span>
+
+  // القسمة الصحيحة
+  <span class="tok-prop">line-height</span><span class="tok-punct">:</span> math.<span class="tok-func">div</span><span class="tok-punct">(</span><span class="tok-number">28px</span><span class="tok-punct">,</span> <span class="tok-number">16px</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  // الإقحام في اسم خاصية
+  $<span class="tok-prop">side</span><span class="tok-punct">:</span> <span class="tok-string">&#39;inline-start&#39;</span><span class="tok-punct">;</span>
+  border-#<span class="tok-punct">{</span>$side<span class="tok-punct">}</span><span class="tok-punct">:</span> <span class="tok-number">4px</span> solid <span class="tok-func">var</span><span class="tok-punct">(</span>--color-brand<span class="tok-punct">)</span><span class="tok-punct">;</span>
+
+  .card__title <span class="tok-punct">{</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-func">var</span><span class="tok-punct">(</span>--color-brand<span class="tok-punct">)</span><span class="tok-punct">;</span>
+    <span class="tok-prop">font-size</span><span class="tok-punct">:</span> v.$fs-lg<span class="tok-punct">;</span>
+    <span class="tok-prop">margin-bottom</span><span class="tok-punct">:</span> v.$space-2<span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  .card__text <span class="tok-punct">{</span>
+    <span class="tok-prop">color</span><span class="tok-punct">:</span> v.$color-muted<span class="tok-punct">;</span>
+    <span class="tok-prop">font-size</span><span class="tok-punct">:</span> v.$fs-md<span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  // الإقحام في استعلام وسائط
+  <span class="tok-keyword">@media</span> <span class="tok-punct">(</span><span class="tok-prop">min-width</span><span class="tok-punct">:</span> #<span class="tok-punct">{</span>v.$bp-md<span class="tok-punct">}</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">padding</span><span class="tok-punct">:</span> v.$space-5 * <span class="tok-number">1.5</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div></details></div></section><section class="quiz"><h2 id="sec-11"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الفرق الجوهري بين <code>$x</code> و <code>--x</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span><code>$x</code> يُستبدَل وقت البناء و<code>--x</code> يبقى ويعمل وقت التشغيل</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span><code>--x</code> أسرع</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span><code>$x</code> أحدث</span></label></div><div class="q-explain"><strong>الشرح:</strong> متغيّر Sass يختفي في الناتج؛ متغيّر CSS يبقى ويمكن تغييره بجافاسكربت أو بالثيم.</div></div><div class="q-item"><p class="q-text">2. ما البديل الصحيح لمعامل القسمة <code>/</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>\</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span><code>math.div(a, b)</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>divide()</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span><code>%</code></span></label></div><div class="q-explain"><strong>الشرح:</strong> المعامل <code>/</code> مهمل لتعارضه مع صياغة CSS المختصرة.</div></div><div class="q-item"><p class="q-text">3. ماذا تعني <code>!default</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>قيمة إلزامية</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>استخدم هذه القيمة إن لم تُحدَّد مسبقاً — تتيح التخصيص</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>قيمة عالمية</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>قيمة ثابتة</span></label></div><div class="q-explain"><strong>الشرح:</strong> أساس تخصيص المكتبات: المستخدم يمرّر قيمه عبر <code>@use ... with (...)</code>.</div></div><div class="q-item"><p class="q-text">4. متى تحتاج الإقحام <code>#{}</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>دائماً</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>حين تضع المتغيّر داخل نص أو اسم محدّد أو اسم خاصية</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>مع الأرقام</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>مع الألوان</span></label></div><div class="q-explain"><strong>الشرح:</strong> المتغيّر لا يُقيَّم تلقائياً في هذه المواضع، فيلزم الإقحام.</div></div><div class="q-item"><p class="q-text">5. ما فائدة قيمة <code>null</code> لخاصية؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>تعطي صفراً</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>تحذف الخاصية كلياً من الناتج</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>تسبّب خطأ</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>تعطي قيمة افتراضية</span></label></div><div class="q-explain"><strong>الشرح:</strong> مفيدة لجعل خاصية اختيارية داخل mixin دون كتابة شرط.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sass/02-variables" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="01-introduction.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>مقدمة في Sass والإعداد</b></span></a>
+  <a class="next" href="03-nesting.html"><span><small>الدرس التالي</small><b>التداخل والمحدّد الأب</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Sass</h3>
+        <div class="ring-wrap" data-ring data-track="sass" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">لماذا المتغيّرات؟</a></li><li><a href="#sec-2">التعريف والاستخدام</a></li><li><a href="#sec-3">أنواع البيانات</a></li><li><a href="#sec-4">العمليات الحسابية</a></li><li><a href="#sec-5">الإقحام #{}</a></li><li><a href="#sec-6">النطاق (Scope)</a></li><li><a href="#sec-7">!default — القيم القابلة للتخصيص</a></li><li><a href="#sec-8">Sass مقابل متغيّرات CSS</a></li><li><a href="#sec-9">بناء نظام متغيّرات</a></li><li><a href="#sec-10">تمرين: نظام متغيّرات لمشروعك</a></li><li><a href="#sec-11">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>$name: value;</code><small>تعريف متغيّر</small></div><div class="ref-item"><code>$name: value !default;</code><small>قيمة افتراضية قابلة للتجاوز</small></div><div class="ref-item"><code>$name: value !global;</code><small>تعديل متغيّر عالمي من داخل كتلة</small></div><div class="ref-item"><code>#{$name}</code><small>إقحام المتغيّر في نص</small></div><div class="ref-item"><code>--css-var: #{$sass-var};</code><small>تمرير قيمة Sass إلى متغيّر CSS</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="03-nesting.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>التداخل والمحدّد الأب<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

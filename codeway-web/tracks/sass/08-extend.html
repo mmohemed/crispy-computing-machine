@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="sass">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الوراثة @extend والعناصر النائبة — مسار Sass | CodeWay Web</title>
+<meta name="description" content="مشاركة الأنماط بدمج المحدّدات، والفرق الحاسم بينها وبين mixin، ولماذا تُستخدم بحذر.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="الوراثة @extend والعناصر النائبة — مسار Sass | CodeWay Web">
+<meta property="og:description" content="مشاركة الأنماط بدمج المحدّدات، والفرق الحاسم بينها وبين mixin، ولماذا تُستخدم بحذر.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Sass</a></li>
+      <li aria-current="page">الوراثة @extend والعناصر النائبة</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 8 من 10</span>
+      <span class="badge level-متوسط">متوسط</span>
+      <span class="badge">extend</span><span class="badge">الوراثة</span>
+    </div>
+    <h1>الوراثة @extend والعناصر النائبة</h1>
+    <p class="summary">مشاركة الأنماط بدمج المحدّدات، والفرق الحاسم بينها وبين mixin، ولماذا تُستخدم بحذر.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 35 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Sass</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 5 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تستخدم <code>@extend</code> لمشاركة الأنماط.</li><li>تعرّف عناصر نائبة بـ <code>%</code>.</li><li>تفرّق بين <code>@extend</code> و mixin في الناتج.</li><li>تدرك المشكلات التي يسبّبها <code>@extend</code>.</li><li>تختار الأداة المناسبة لكل حالة.</li></ul></div>
+      <h2 id="sec-1">الفكرة</h2><p>بدل نسخ الأنماط كما يفعل mixin، يدمج <code>@extend</code> <strong>المحدّدات</strong> في قاعدة واحدة مشتركة. الناتج أقلّ تكراراً.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-sel">.message</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">10px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.message-success</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@extend</span> .message<span class="tok-punct">;</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#ecfdf5</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#10b981</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.message-error</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@extend</span> .message<span class="tok-punct">;</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#fef2f2</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#ef4444</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الناتج</span><span class="code-lang">css</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-sel">.message</span><span class="tok-punct">,</span>
+<span class="tok-sel">.message-success</span><span class="tok-punct">,</span>
+<span class="tok-sel">.message-error</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">10px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.message-success</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#ecfdf5</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#10b981</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.message-error</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#fef2f2</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#ef4444</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><p>لاحظ: الأنماط المشتركة كُتبت <strong>مرة واحدة</strong> وأُضيفت المحدّدات إليها. هذا هو الفرق الجوهري عن mixin.</p><h2 id="sec-2">العناصر النائبة <code>%</code></h2><p>مشكلة المثال السابق: صنف <code>.message</code> يظهر في الناتج حتى لو لم تستخدمه في HTML إطلاقاً. العنصر النائب يحلّ ذلك: يُعرَّف بـ <code>%</code> و<strong>لا يُطبَع أبداً</strong> إلا حين يرثه أحد.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>%<span class="tok-sel">message-base</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">10px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid<span class="tok-punct">;</span>
+  <span class="tok-prop">font-weight</span><span class="tok-punct">:</span> <span class="tok-number">600</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.message-success</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@extend</span> %message-base<span class="tok-punct">;</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#ecfdf5</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#10b981</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.message-error</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@extend</span> %message-base<span class="tok-punct">;</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#fef2f2</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#ef4444</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الناتج — لا أثر لـ %message-base</span><span class="code-lang">css</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-sel">.message-success</span><span class="tok-punct">,</span>
+<span class="tok-sel">.message-error</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">10px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid<span class="tok-punct">;</span>
+  <span class="tok-prop">font-weight</span><span class="tok-punct">:</span> <span class="tok-number">600</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.message-success</span> <span class="tok-punct">{</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#ecfdf5</span><span class="tok-punct">;</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#10b981</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.message-error</span>   <span class="tok-punct">{</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#fef2f2</span><span class="tok-punct">;</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#ef4444</span><span class="tok-punct">;</span> <span class="tok-punct">}</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> رسائل ترث قاعدة واحدة</div><iframe title="رسائل ترث قاعدة واحدة" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}.m{padding:14px 18px;border-radius:10px;border:1px solid;font-weight:600;margin-bottom:8px}.s{background:#ecfdf5;border-color:#10b981;color:#047857}.e{background:#fef2f2;border-color:#ef4444;color:#b91c1c}.w{background:#fffbeb;border-color:#f59e0b;color:#b45309}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;m s&quot;&gt;تم الحفظ بنجاح.&lt;/div&gt;&lt;div class=&quot;m e&quot;&gt;فشل الاتصال بالخادم.&lt;/div&gt;&lt;div class=&quot;m w&quot;&gt;انتبه: البيانات غير محفوظة.&lt;/div&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:200px"></iframe></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>إن استخدمت <code>@extend</code> أصلاً، فاستخدمه مع العناصر النائبة دائماً — لا مع الأصناف العادية. هذا يمنع تسرّب أصناف لا تستخدمها إلى ملفك النهائي.</p></div><h2 id="sec-3"><code>@extend</code> مقابل mixin</h2><div class="table-wrap"><table class="data"><thead><tr><th>الوجه</th><th><code>@extend</code></th><th>mixin</th></tr></thead><tbody><tr><td>الناتج</td><td>يدمج المحدّدات</td><td>ينسخ الإعلانات</td></tr><tr><td>حجم CSS قبل الضغط</td><td>أصغر</td><td>أكبر</td></tr><tr><td>حجم CSS بعد gzip</td><td>متقارب جداً</td><td>متقارب جداً</td></tr><tr><td>المعاملات</td><td><strong>لا يدعمها</strong></td><td>يدعمها</td></tr><tr><td>داخل استعلام وسائط</td><td><strong>لا يعمل عبر الحدود</strong></td><td>يعمل دائماً</td></tr><tr><td>ترتيب المصدر</td><td>قد يتغيّر بشكل مفاجئ</td><td>متوقّع تماماً</td></tr><tr><td>قابلية التنبّؤ</td><td>منخفضة</td><td><strong>عالية</strong></td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">نفس الغرض بالطريقتين</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>// بـ <span class="tok-sel">mixin</span>
+<span class="tok-keyword">@mixin</span> <span class="tok-sel">message-base</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">10px</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+<span class="tok-sel">.msg-a</span> <span class="tok-punct">{</span> <span class="tok-keyword">@include</span> message-base<span class="tok-punct">;</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#eee</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.msg-b</span> <span class="tok-punct">{</span> <span class="tok-keyword">@include</span> message-base<span class="tok-punct">;</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#ddd</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+// النتيجة: تكرار الإعلانات في القاعدتين
+
+// بـ <span class="tok-sel">extend</span>
+%<span class="tok-sel">message-base</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">10px</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+<span class="tok-sel">.msg-a</span> <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %message-base<span class="tok-punct">;</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#eee</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.msg-b</span> <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %message-base<span class="tok-punct">;</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#ddd</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+// النتيجة: قاعدة واحدة بمحدّدَين</code></pre></div><h2 id="sec-4">مشكلات <code>@extend</code></h2><h3 id="sec-5">1. لا يعمل عبر استعلامات الوسائط</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>%<span class="tok-sel">base</span> <span class="tok-punct">{</span> <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">16px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+<span class="tok-keyword">@media</span> (<span class="tok-sel">min-width</span>: <span class="tok-sel">768px</span>) <span class="tok-punct">{</span>
+  .card <span class="tok-punct">{</span>
+    <span class="tok-keyword">@extend</span> %base<span class="tok-punct">;</span>   // ❌ خطأ ترجمة
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> خطأ شائع</div><p>رسالة الخطأ: <code>You may not @extend selectors across media queries</code>. السبب أن الدمج يحدث على مستوى المحدّدات، والمحدّد داخل استعلام وسائط في سياق مختلف. الحل الوحيد: استخدم mixin.</p></div><h3 id="sec-6">2. انفجار المحدّدات</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-sel">.a</span> <span class="tok-sel">.b</span> <span class="tok-sel">.c</span> <span class="tok-punct">{</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> red<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.x</span> <span class="tok-sel">.y</span> <span class="tok-sel">.z</span> <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> .c<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+// الناتج: كل التوافيق الممكنة
+// <span class="tok-sel">.a</span> <span class="tok-sel">.b</span> <span class="tok-sel">.c</span><span class="tok-punct">,</span> <span class="tok-sel">.a</span> <span class="tok-sel">.b</span> <span class="tok-sel">.x</span> <span class="tok-sel">.y</span> <span class="tok-sel">.z</span><span class="tok-punct">,</span> <span class="tok-sel">.x</span> <span class="tok-sel">.y</span> <span class="tok-sel">.a</span> <span class="tok-sel">.b</span> <span class="tok-sel">.z</span><span class="tok-punct">,</span> …</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه</div><p>مع محدّدات متداخلة، قد يولّد <code>@extend</code> عشرات المحدّدات المركّبة التي لا تحتاجها — فينتفخ الملف بدل أن يصغر، وهو عكس الهدف.</p></div><h3 id="sec-7">3. تغيّر ترتيب المصدر</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-sel">.btn</span> <span class="tok-punct">{</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> blue<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+<span class="tok-sel">.card</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">color</span><span class="tok-punct">:</span> green<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.special</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@extend</span> .btn<span class="tok-punct">;</span>   // ينتقل مع .btn إلى موضعها في الملف
+<span class="tok-punct">}</span></code></pre></div><p>المحدّد ينتقل إلى موضع القاعدة الموروثة في الملف، لا حيث كتبته. هذا يغيّر ترتيب التتالي وقد يجعل قاعدة كنت تتوقّع فوزها تخسر.</p><h3 id="sec-8">4. <code>!optional</code></h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-sel">.card</span> <span class="tok-punct">{</span>
+  <span class="tok-keyword">@extend</span> %maybe-missing !optional<span class="tok-punct">;</span>   // لا يفشل إن لم يوجد
+<span class="tok-punct">}</span></code></pre></div><p>بدونها تفشل الترجمة إن كان المحدّد المورَّث غير موجود. مفيدة في المكتبات التي قد لا تُحمَّل كل أجزائها.</p><h2 id="sec-9">متى تستخدم كلاً منهما؟</h2><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div><h4>استخدم %placeholder</h4><p>أنماط متطابقة تماماً بلا معاملات، بين عناصر متقاربة دلالياً، في نفس السياق.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div><h4>استخدم mixin</h4><p>تحتاج معاملات، أو تعمل داخل استعلام وسائط، أو تريد نتيجة متوقّعة تماماً.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div><h4>لا تستخدم @extend</h4><p>مع أصناف عادية، أو عبر ملفات متباعدة، أو داخل محدّدات متداخلة عميقة.</p></div></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> رأي شائع في المجتمع</div><p>كثير من الفرق <strong>تمنع <code>@extend</code> كلياً</strong> وتكتفي بالـ mixins. السبب: مع ضغط gzip يكاد الفرق في الحجم يختفي، بينما مشكلات التنبّؤ تبقى. إن كنت متردّداً، اختر mixin — لن تندم.</p></div><h2 id="sec-10">حالة استخدام جيدة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">عناصر متقاربة في نفس الملف</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>%<span class="tok-sel">input-base</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">width</span><span class="tok-punct">:</span> <span class="tok-number">100</span>%<span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">10px</span> <span class="tok-number">14px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid <span class="tok-number">#cbd5e1</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">8px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">font-family</span><span class="tok-punct">:</span> inherit<span class="tok-punct">;</span>
+  <span class="tok-prop">font-size</span><span class="tok-punct">:</span> <span class="tok-number">1rem</span><span class="tok-punct">;</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#fff</span><span class="tok-punct">;</span>
+
+  &amp;<span class="tok-punct">:</span>focus-visible <span class="tok-punct">{</span>
+    <span class="tok-prop">outline</span><span class="tok-punct">:</span> <span class="tok-number">3px</span> solid <span class="tok-number">#a5b4fc</span><span class="tok-punct">;</span>
+    <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+
+  &amp;<span class="tok-punct">:</span>disabled <span class="tok-punct">{</span>
+    <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#f1f5f9</span><span class="tok-punct">;</span>
+    <span class="tok-prop">cursor</span><span class="tok-punct">:</span> not-allowed<span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.input</span>    <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %input-base<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.textarea</span> <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %input-base<span class="tok-punct">;</span> <span class="tok-prop">min-height</span><span class="tok-punct">:</span> <span class="tok-number">120px</span><span class="tok-punct">;</span> <span class="tok-prop">resize</span><span class="tok-punct">:</span> vertical<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.select</span>   <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %input-base<span class="tok-punct">;</span> <span class="tok-prop">appearance</span><span class="tok-punct">:</span> none<span class="tok-punct">;</span> <span class="tok-punct">}</span></code></pre></div><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> حقول ترث قاعدة واحدة</div><iframe title="حقول ترث قاعدة واحدة" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}input,textarea,select{width:100%;max-width:320px;padding:10px 14px;border:1px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:1rem;background:#fff;margin-bottom:10px;display:block}textarea{min-height:80px;resize:vertical}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;input type=&quot;text&quot; placeholder=&quot;حقل نصي&quot;&gt;&lt;textarea placeholder=&quot;منطقة نص&quot;&gt;&lt;/textarea&gt;&lt;select&gt;&lt;option&gt;قائمة اختيار&lt;/option&gt;&lt;/select&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:260px"></iframe></div><p>هذه حالة مثالية: ثلاثة عناصر متقاربة دلالياً، في نفس الملف، بأنماط متطابقة بلا معاملات، خارج أي استعلام وسائط.</p><section class="exercise" id="sec-11"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تمرين: نظام تنبيهات وحقول</h3></header><div class="exercise-body"><p>ابنِ نظام تنبيهات بعناصر نائبة، ثم أعد بناءه بـ mixins وقارن الناتجين.</p><p><strong>المطلوب:</strong></p><ul><li>عنصر نائب <code>%alert-base</code> فيه الأنماط المشتركة.</li><li>أربعة أصناف تنبيه ترثه: نجاح، خطأ، تحذير، معلومة.</li><li>عنصر نائب <code>%visually-hidden</code> واستخدمه في صنفين.</li><li>عنصر نائب <code>%input-base</code> وثلاثة عناصر ترثه.</li><li>اكتب النسخة نفسها بـ mixins في ملف منفصل.</li><li>ترجم الملفين وقارن حجميهما وعدد القواعد.</li><li>حاول استخدام <code>@extend</code> داخل استعلام وسائط ووثّق رسالة الخطأ في تعليق.</li><li>اكتب في تعليق أي النهجين تفضّل ولماذا.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 العنصر النائب لا يظهر في الناتج إلا إن ورثه أحد.</li><li>💡 قارن الحجم قبل وبعد الضغط: <code>gzip -c style.css | wc -c</code>.</li><li>💡 الخطأ المتوقّع: <code>You may not @extend selectors across media queries</code>.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">scss</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment">/* ===== النهج الأول: عناصر نائبة ===== */</span>
+
+%<span class="tok-sel">alert-base</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">display</span><span class="tok-punct">:</span> flex<span class="tok-punct">;</span>
+  <span class="tok-prop">align-items</span><span class="tok-punct">:</span> center<span class="tok-punct">;</span>
+  <span class="tok-prop">gap</span><span class="tok-punct">:</span> <span class="tok-number">12px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">14px</span> <span class="tok-number">18px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">10px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid<span class="tok-punct">;</span>
+  <span class="tok-prop">font-weight</span><span class="tok-punct">:</span> <span class="tok-number">600</span><span class="tok-punct">;</span>
+  <span class="tok-prop">margin-bottom</span><span class="tok-punct">:</span> <span class="tok-number">12px</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.alert-success</span> <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %alert-base<span class="tok-punct">;</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#ecfdf5</span><span class="tok-punct">;</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#10b981</span><span class="tok-punct">;</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#047857</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.alert-error</span>   <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %alert-base<span class="tok-punct">;</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#fef2f2</span><span class="tok-punct">;</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#ef4444</span><span class="tok-punct">;</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#b91c1c</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.alert-warning</span> <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %alert-base<span class="tok-punct">;</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#fffbeb</span><span class="tok-punct">;</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#f59e0b</span><span class="tok-punct">;</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#b45309</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.alert-info</span>    <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %alert-base<span class="tok-punct">;</span> <span class="tok-prop">background</span><span class="tok-punct">:</span> <span class="tok-number">#f0f9ff</span><span class="tok-punct">;</span> <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#0ea5e9</span><span class="tok-punct">;</span> <span class="tok-prop">color</span><span class="tok-punct">:</span> <span class="tok-number">#0369a1</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+%<span class="tok-sel">visually-hidden</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">position</span><span class="tok-punct">:</span> absolute<span class="tok-punct">;</span>
+  <span class="tok-prop">width</span><span class="tok-punct">:</span> <span class="tok-number">1px</span><span class="tok-punct">;</span> <span class="tok-prop">height</span><span class="tok-punct">:</span> <span class="tok-number">1px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">;</span> <span class="tok-prop">margin</span><span class="tok-punct">:</span> <span class="tok-number">-1px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">overflow</span><span class="tok-punct">:</span> hidden<span class="tok-punct">;</span>
+  <span class="tok-prop">clip</span><span class="tok-punct">:</span> <span class="tok-func">rect</span><span class="tok-punct">(</span><span class="tok-number">0</span> <span class="tok-number">0</span> <span class="tok-number">0</span> <span class="tok-number">0</span><span class="tok-punct">)</span><span class="tok-punct">;</span>
+  <span class="tok-prop">white-space</span><span class="tok-punct">:</span> nowrap<span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.sr-only</span>    <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %visually-hidden<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.skip-label</span> <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %visually-hidden<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+%<span class="tok-sel">input-base</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">width</span><span class="tok-punct">:</span> <span class="tok-number">100</span>%<span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">10px</span> <span class="tok-number">14px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid <span class="tok-number">#cbd5e1</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">8px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">font-family</span><span class="tok-punct">:</span> inherit<span class="tok-punct">;</span>
+  <span class="tok-prop">font-size</span><span class="tok-punct">:</span> <span class="tok-number">1rem</span><span class="tok-punct">;</span>
+
+  &amp;<span class="tok-punct">:</span>focus-visible <span class="tok-punct">{</span>
+    <span class="tok-prop">outline</span><span class="tok-punct">:</span> <span class="tok-number">3px</span> solid <span class="tok-number">#a5b4fc</span><span class="tok-punct">;</span>
+    <span class="tok-prop">border-color</span><span class="tok-punct">:</span> <span class="tok-number">#6366f1</span><span class="tok-punct">;</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.input</span>    <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %input-base<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.textarea</span> <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %input-base<span class="tok-punct">;</span> <span class="tok-prop">min-height</span><span class="tok-punct">:</span> <span class="tok-number">120px</span><span class="tok-punct">;</span> <span class="tok-prop">resize</span><span class="tok-punct">:</span> vertical<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.select</span>   <span class="tok-punct">{</span> <span class="tok-keyword">@extend</span> %input-base<span class="tok-punct">;</span> <span class="tok-prop">appearance</span><span class="tok-punct">:</span> none<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+<span class="tok-comment">/*
+  محاولة فاشلة عمداً — رسالة الخطأ:
+  &quot;You may not @extend selectors across media queries.&quot;
+
+  @media (min-width: 768px) {
+    .alert-lg { @extend %alert-base; }
+  }
+
+  الحل: استخدم mixin بدلاً منه.
+*/</span>
+
+<span class="tok-comment">/* ===== النهج الثاني: mixins ===== */</span>
+
+<span class="tok-keyword">@mixin</span> <span class="tok-sel">alert-base</span> <span class="tok-punct">{</span>
+  <span class="tok-prop">display</span><span class="tok-punct">:</span> flex<span class="tok-punct">;</span>
+  <span class="tok-prop">align-items</span><span class="tok-punct">:</span> center<span class="tok-punct">;</span>
+  <span class="tok-prop">gap</span><span class="tok-punct">:</span> <span class="tok-number">12px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">14px</span> <span class="tok-number">18px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border-radius</span><span class="tok-punct">:</span> <span class="tok-number">10px</span><span class="tok-punct">;</span>
+  <span class="tok-prop">border</span><span class="tok-punct">:</span> <span class="tok-number">1px</span> solid<span class="tok-punct">;</span>
+  <span class="tok-prop">font-weight</span><span class="tok-punct">:</span> <span class="tok-number">600</span><span class="tok-punct">;</span>
+  <span class="tok-prop">margin-bottom</span><span class="tok-punct">:</span> <span class="tok-number">12px</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">@mixin</span> <span class="tok-sel">alert</span>($<span class="tok-sel">bg</span><span class="tok-punct">,</span> $<span class="tok-sel">border</span><span class="tok-punct">,</span> $<span class="tok-sel">text</span>) <span class="tok-punct">{</span>
+  <span class="tok-keyword">@include</span> alert-base<span class="tok-punct">;</span>
+  <span class="tok-prop">background</span><span class="tok-punct">:</span> $bg<span class="tok-punct">;</span>
+  <span class="tok-prop">border-color</span><span class="tok-punct">:</span> $border<span class="tok-punct">;</span>
+  <span class="tok-prop">color</span><span class="tok-punct">:</span> $text<span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-sel">.m-alert-success</span> <span class="tok-punct">{</span> <span class="tok-keyword">@include</span> <span class="tok-func">alert</span><span class="tok-punct">(</span><span class="tok-number">#ecfdf5</span><span class="tok-punct">,</span> <span class="tok-number">#10b981</span><span class="tok-punct">,</span> <span class="tok-number">#047857</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-sel">.m-alert-error</span>   <span class="tok-punct">{</span> <span class="tok-keyword">@include</span> <span class="tok-func">alert</span><span class="tok-punct">(</span><span class="tok-number">#fef2f2</span><span class="tok-punct">,</span> <span class="tok-number">#ef4444</span><span class="tok-punct">,</span> <span class="tok-number">#b91c1c</span><span class="tok-punct">)</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+
+// هذه تعمل بلا مشكلة داخل استعلام وسائط
+<span class="tok-keyword">@media</span> (<span class="tok-sel">min-width</span>: <span class="tok-sel">768px</span>) <span class="tok-punct">{</span>
+  .m-alert-lg <span class="tok-punct">{</span> <span class="tok-keyword">@include</span> alert-base<span class="tok-punct">;</span> <span class="tok-prop">padding</span><span class="tok-punct">:</span> <span class="tok-number">20px</span> <span class="tok-number">28px</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/*
+  الخلاصة:
+  النهج الأول أصغر في الناتج الخام، لكن النهج الثاني
+  أكثر مرونة (يقبل معاملات) ويعمل داخل استعلامات الوسائط،
+  والفرق في الحجم بعد gzip ضئيل جداً.
+  التفضيل: mixins للمرونة والتنبّؤ، مع %placeholder
+  في الحالات المتطابقة تماماً داخل الملف الواحد.
+*/</span></code></pre></div></details></div></section><section class="quiz"><h2 id="sec-12"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الفرق الجوهري بين <code>@extend</code> و mixin في الناتج؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span><code>@extend</code> يدمج المحدّدات وmixin ينسخ الإعلانات</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span><code>@extend</code> أبطأ</span></label></div><div class="q-explain"><strong>الشرح:</strong> الدمج يعطي قاعدة واحدة بعدة محدّدات؛ النسخ يكرّر الإعلانات.</div></div><div class="q-item"><p class="q-text">2. لماذا نستخدم <code>%placeholder</code> بدل صنف عادي مع <code>@extend</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>لأنه لا يظهر في الناتج إلا إن ورثه أحد</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أوضح فقط</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>لا فرق</span></label></div><div class="q-explain"><strong>الشرح:</strong> الصنف العادي يُطبَع حتى لو لم تستخدمه في HTML.</div></div><div class="q-item"><p class="q-text">3. ماذا يحدث عند <code>@extend</code> داخل استعلام وسائط؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يعمل عادياً</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>خطأ ترجمة — لا يمكن الوراثة عبر حدود الوسائط</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يُتجاهل</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>ينسخ الأنماط</span></label></div><div class="q-explain"><strong>الشرح:</strong> القيد بنيوي في آلية دمج المحدّدات؛ البديل mixin.</div></div><div class="q-item"><p class="q-text">4. ما خطر <code>@extend</code> مع المحدّدات المتداخلة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>بطء</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>توليد عشرات المحدّدات المركّبة غير المطلوبة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>خطأ صياغة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا خطر</span></label></div><div class="q-explain"><strong>الشرح:</strong> انفجار التوافيق قد ينتفخ بالملف بدل تصغيره.</div></div><div class="q-item"><p class="q-text">5. متى تكون mixin الخيار الأصوب؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>دائماً تقريباً وخصوصاً مع المعاملات أو داخل الوسائط</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>أبداً</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مع الألوان فقط</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>في المشاريع الصغيرة</span></label></div><div class="q-explain"><strong>الشرح:</strong> المرونة وقابلية التنبّؤ تجعلانها الخيار الافتراضي الآمن.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="sass/08-extend" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="07-control.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>التوجيهات التحكّمية: الشروط والحلقات</b></span></a>
+  <a class="next" href="09-maps-design-system.html"><span><small>الدرس التالي</small><b>الخرائط وبناء نظام تصميم</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Sass</h3>
+        <div class="ring-wrap" data-ring data-track="sass" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">الفكرة</a></li><li><a href="#sec-2">العناصر النائبة %</a></li><li><a href="#sec-3">@extend مقابل mixin</a></li><li><a href="#sec-4">مشكلات @extend</a></li><li class="sub"><a href="#sec-5">1. لا يعمل عبر استعلامات الوسائط</a></li><li class="sub"><a href="#sec-6">2. انفجار المحدّدات</a></li><li class="sub"><a href="#sec-7">3. تغيّر ترتيب المصدر</a></li><li class="sub"><a href="#sec-8">4. !optional</a></li><li><a href="#sec-9">متى تستخدم كلاً منهما؟</a></li><li><a href="#sec-10">حالة استخدام جيدة</a></li><li><a href="#sec-11">تمرين: نظام تنبيهات وحقول</a></li><li><a href="#sec-12">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>@extend .class</code><small>وراثة أنماط صنف</small></div><div class="ref-item"><code>%placeholder</code><small>عنصر نائب لا يُطبَع</small></div><div class="ref-item"><code>@extend %name</code><small>وراثة عنصر نائب</small></div><div class="ref-item"><code>@extend .x !optional</code><small>لا يفشل إن لم يوجد</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="09-maps-design-system.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الخرائط وبناء نظام تصميم<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>
