@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="ruby">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الشروط والتكرار — مسار Ruby | CodeWay Web</title>
+<meta name="description" content="if و unless و case/in، والحلقات بأسلوب Ruby: times و each و loop، ومتى تتخلّى عن for نهائياً.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="الشروط والتكرار — مسار Ruby | CodeWay Web">
+<meta property="og:description" content="if و unless و case/in، والحلقات بأسلوب Ruby: times و each و loop، ومتى تتخلّى عن for نهائياً.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Ruby</a></li>
+      <li aria-current="page">الشروط والتكرار</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 3 من 10</span>
+      <span class="badge level-مبتدئ">مبتدئ</span>
+      <span class="badge">شروط</span><span class="badge">حلقات</span><span class="badge">case</span>
+    </div>
+    <h1>الشروط والتكرار</h1>
+    <p class="summary">if و unless و case/in، والحلقات بأسلوب Ruby: times و each و loop، ومتى تتخلّى عن for نهائياً.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 50 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Ruby</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 7 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تكتب شروطاً بصيغة Ruby الاصطلاحية بما فيها صيغة اللاحقة.</li><li>تستخدم <code>unless</code> في موضعه الصحيح وتتجنّب إساءة استخدامه.</li><li>تتقن <code>case</code> بكل أشكاله بما فيها مطابقة الأنماط <code>case/in</code>.</li><li>تختار الحلقة المناسبة وتفهم لماذا لا يستخدم أحد <code>for</code> في Ruby.</li><li>تتحكّم بمسار الحلقة عبر <code>next</code> و <code>break</code> و <code>redo</code>.</li><li>تستخدم عوامل <code>&amp;&amp;=</code> و <code>||=</code> و العامل الثلاثي بوعي.</li></ul></div>
+      <h2 id="sec-1">الشرط تعبير له قيمة</h2><p>في Ruby <code>if</code> ليس جملة بل <strong>تعبير يُرجع قيمة</strong>. هذا يغيّر أسلوب الكتابة كثيراً.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>score <span class="tok-punct">=</span> <span class="tok-number">85</span>
+
+<span class="tok-comment"># الأسلوب المألوف</span>
+<span class="tok-keyword">if</span> score <span class="tok-punct">&gt;=</span> <span class="tok-number">90</span>
+  grade <span class="tok-punct">=</span> <span class="tok-string">&quot;ممتاز&quot;</span>
+<span class="tok-keyword">elsif</span> score <span class="tok-punct">&gt;=</span> <span class="tok-number">80</span>
+  grade <span class="tok-punct">=</span> <span class="tok-string">&quot;جيد جداً&quot;</span>
+<span class="tok-keyword">elsif</span> score <span class="tok-punct">&gt;=</span> <span class="tok-number">60</span>
+  grade <span class="tok-punct">=</span> <span class="tok-string">&quot;مقبول&quot;</span>
+<span class="tok-keyword">else</span>
+  grade <span class="tok-punct">=</span> <span class="tok-string">&quot;راسب&quot;</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># أسلوب Ruby — الشرط نفسه يُرجع القيمة</span>
+grade <span class="tok-punct">=</span>
+  <span class="tok-keyword">if</span>    score <span class="tok-punct">&gt;=</span> <span class="tok-number">90</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;ممتاز&quot;</span>
+  <span class="tok-keyword">elsif</span> score <span class="tok-punct">&gt;=</span> <span class="tok-number">80</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;جيد جداً&quot;</span>
+  <span class="tok-keyword">elsif</span> score <span class="tok-punct">&gt;=</span> <span class="tok-number">60</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;مقبول&quot;</span>
+  <span class="tok-keyword">else</span>                   <span class="tok-string">&quot;راسب&quot;</span>
+  <span class="tok-keyword">end</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>لاحظ أن الاسم <code>grade</code> كُتب مرة واحدة بدل أربع. هذا ليس تجميلاً فقط: نسيان أحد الفروع في الأسلوب الأول يترك <code>grade</code> مساوياً لـ <code>nil</code> بصمت، بينما الأسلوب الثاني يجعل النقص واضحاً.</p></div><h2 id="sec-2">صيغة اللاحقة (Modifier)</h2><p>لو كان الجسم سطراً واحداً، اكتب الشرط بعده. تُقرأ كجملة إنجليزية.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">puts</span> <span class="tok-string">&quot;مرحباً&quot;</span> <span class="tok-keyword">if</span> logged_in?
+<span class="tok-keyword">raise</span> <span class="tok-string">&quot;مبلغ غير صالح&quot;</span> <span class="tok-keyword">unless</span> amount<span class="tok-punct">.</span>positive?
+<span class="tok-keyword">return</span> <span class="tok-punct">[]</span> <span class="tok-keyword">if</span> items<span class="tok-punct">.</span>empty?
+
+<span class="tok-comment"># مثالية لـ «الحرّاس» في بداية الدالة</span>
+<span class="tok-keyword">def</span> <span class="tok-func">process</span><span class="tok-punct">(</span>order<span class="tok-punct">)</span>
+  <span class="tok-keyword">return</span> <span class="tok-bool">:empty</span>    <span class="tok-keyword">if</span> order<span class="tok-punct">.</span>items<span class="tok-punct">.</span>empty?
+  <span class="tok-keyword">return</span> <span class="tok-bool">:unpaid</span>   <span class="tok-keyword">unless</span> order<span class="tok-punct">.</span>paid?
+  <span class="tok-keyword">return</span> <span class="tok-bool">:expired</span>  <span class="tok-keyword">if</span> order<span class="tok-punct">.</span>expired?
+
+  <span class="tok-comment"># المنطق الفعلي هنا، بلا تداخل</span>
+  <span class="tok-func">ship</span><span class="tok-punct">(</span>order<span class="tok-punct">)</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span></div><pre><code><span class="tok-keyword">def</span> <span class="tok-func">process</span><span class="tok-punct">(</span>order<span class="tok-punct">)</span>
+  <span class="tok-keyword">if</span> <span class="tok-punct">!</span>order<span class="tok-punct">.</span>items<span class="tok-punct">.</span>empty?
+    <span class="tok-keyword">if</span> order<span class="tok-punct">.</span>paid?
+      <span class="tok-keyword">if</span> <span class="tok-punct">!</span>order<span class="tok-punct">.</span>expired?
+        <span class="tok-func">ship</span><span class="tok-punct">(</span>order<span class="tok-punct">)</span>
+      <span class="tok-keyword">else</span>
+        <span class="tok-bool">:expired</span>
+      <span class="tok-keyword">end</span>
+    <span class="tok-keyword">else</span>
+      <span class="tok-bool">:unpaid</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">else</span>
+    <span class="tok-bool">:empty</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="why">تداخل بأربعة مستويات — يُسمّى «هرم الهلاك». المنطق الفعلي مدفون في العمق.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span></div><pre><code><span class="tok-keyword">def</span> <span class="tok-func">process</span><span class="tok-punct">(</span>order<span class="tok-punct">)</span>
+  <span class="tok-keyword">return</span> <span class="tok-bool">:empty</span>   <span class="tok-keyword">if</span> order<span class="tok-punct">.</span>items<span class="tok-punct">.</span>empty?
+  <span class="tok-keyword">return</span> <span class="tok-bool">:unpaid</span>  <span class="tok-keyword">unless</span> order<span class="tok-punct">.</span>paid?
+  <span class="tok-keyword">return</span> <span class="tok-bool">:expired</span> <span class="tok-keyword">if</span> order<span class="tok-punct">.</span>expired?
+
+  <span class="tok-func">ship</span><span class="tok-punct">(</span>order<span class="tok-punct">)</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="why">الحرّاس يخرجون مبكّراً، فيبقى المسار الطبيعي في المستوى الأول واضحاً.</div></div></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> حدّ الاستخدام</div><p>صيغة اللاحقة للأسطر <strong>القصيرة</strong> فقط. إن تجاوز السطر ~80 حرفاً أو احتاج الجسم أكثر من عبارة، عد للصيغة الكاملة.</p></div><h2 id="sec-3">unless</h2><p><code>unless x</code> تعني <code>if !x</code>. تستخدمها حين يكون النفي هو <strong>الحالة الطبيعية</strong> في الجملة.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">unless</span> user<span class="tok-punct">.</span>admin?
+  redirect_to root_path
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># أوضح بصيغة اللاحقة</span>
+redirect_to root_path <span class="tok-keyword">unless</span> user<span class="tok-punct">.</span>admin?</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> ثلاث حالات لا تستخدم فيها unless</div><p><strong>(1)</strong> مع <code>else</code> — <code>unless … else</code> لغز ذهني. <strong>(2)</strong> مع شرط منفيّ — <code>unless !x</code> نفي مزدوج. <strong>(3)</strong> مع شرط مركّب — <code>unless a &amp;&amp; b</code> يصعب فكّه ذهنياً. في هذه الحالات الثلاث استخدم <code>if</code>.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># ✗ سيئ</span>
+<span class="tok-keyword">unless</span> <span class="tok-punct">!</span>list<span class="tok-punct">.</span>empty?      <span class="tok-keyword">then</span> <span class="tok-keyword">puts</span> <span class="tok-string">&quot;فارغة&quot;</span> <span class="tok-keyword">end</span>
+<span class="tok-keyword">unless</span> user<span class="tok-punct">.</span>admin? <span class="tok-punct">&amp;&amp;</span> user<span class="tok-punct">.</span>active? <span class="tok-keyword">then</span> deny <span class="tok-keyword">end</span>
+<span class="tok-keyword">unless</span> ok <span class="tok-keyword">then</span> a <span class="tok-keyword">else</span> b <span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ✓ جيد</span>
+<span class="tok-keyword">if</span> list<span class="tok-punct">.</span>empty?           <span class="tok-keyword">then</span> <span class="tok-keyword">puts</span> <span class="tok-string">&quot;فارغة&quot;</span> <span class="tok-keyword">end</span>
+<span class="tok-keyword">if</span> <span class="tok-punct">!(</span>user<span class="tok-punct">.</span>admin? <span class="tok-punct">&amp;&amp;</span> user<span class="tok-punct">.</span>active?<span class="tok-punct">)</span> <span class="tok-keyword">then</span> deny <span class="tok-keyword">end</span>
+<span class="tok-keyword">if</span> ok <span class="tok-keyword">then</span> b <span class="tok-keyword">else</span> a <span class="tok-keyword">end</span></code></pre></div><h2 id="sec-4">العوامل المنطقية والمقارنة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-number">5</span> <span class="tok-punct">==</span> <span class="tok-number">5</span>      <span class="tok-comment"># =&gt; true    مساواة قيمة</span>
+<span class="tok-number">5</span> <span class="tok-punct">!=</span> <span class="tok-number">3</span>      <span class="tok-comment"># =&gt; true</span>
+<span class="tok-number">5</span> <span class="tok-punct">&lt;=&gt;</span> <span class="tok-number">3</span>     <span class="tok-comment"># =&gt; 1       عامل «المركبة الفضائية»: -1 / 0 / 1</span>
+<span class="tok-number">5</span><span class="tok-punct">.</span><span class="tok-func">eql?</span><span class="tok-punct">(</span><span class="tok-number">5.0</span><span class="tok-punct">)</span> <span class="tok-comment"># =&gt; false   يقارن النوع أيضاً</span>
+<span class="tok-number">5</span><span class="tok-punct">.</span><span class="tok-func">equal?</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">)</span> <span class="tok-comment"># =&gt; true    نفس الكائن بالضبط</span>
+
+a <span class="tok-punct">&amp;&amp;</span> b      <span class="tok-comment"># و</span>
+a <span class="tok-punct">||</span> b      <span class="tok-comment"># أو</span>
+<span class="tok-punct">!</span>a          <span class="tok-comment"># ليس</span>
+
+<span class="tok-comment"># and / or لهما أولوية أدنى — للتحكّم بالتدفّق لا للشروط</span>
+do_something or <span class="tok-keyword">raise</span> <span class="tok-string">&quot;فشل&quot;</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استخدم <code>&amp;&amp;</code> و <code>||</code> في الشروط دائماً، واحفظ <code>and</code> و <code>or</code> لسطور التحكّم مثل <code>x = compute or raise</code>. الخلط بينهما بسبب اختلاف الأولوية مصدر أخطاء خفية.</p></div><h3 id="sec-5">الإسناد الشرطي</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>name <span class="tok-punct">||=</span> <span class="tok-string">&quot;زائر&quot;</span>      <span class="tok-comment"># أسند إن كانت nil أو false</span>
+count <span class="tok-punct">&amp;&amp;=</span> count <span class="tok-punct">+</span> <span class="tok-number">1</span>  <span class="tok-comment"># زد فقط إن لم تكن nil</span>
+
+<span class="tok-comment"># مفيد جداً للتخزين المؤقّت</span>
+<span class="tok-keyword">def</span> expensive_result
+  <span class="tok-attr">@result</span> <span class="tok-punct">||=</span> perform_heavy_calculation
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># العامل الثلاثي — لتعبير قصير فقط</span>
+status <span class="tok-punct">=</span> age <span class="tok-punct">&gt;=</span> <span class="tok-number">18</span> <span class="tok-punct">?</span> <span class="tok-string">&quot;بالغ&quot;</span> <span class="tok-punct">:</span> <span class="tok-string">&quot;قاصر&quot;</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه لـ `||=` مع القيم الكاذبة</div><p><code>x ||= true</code> لن يعمل كما تتوقّع إن كانت <code>x</code> تساوي <code>false</code> — سيُعاد إسنادها. حين تكون <code>false</code> قيمة مشروعة استخدم <code>x = true if x.nil?</code>.</p></div><h2 id="sec-6">case — التفريع الذكي</h2><p><code>case</code> في Ruby أقوى بكثير من <code>switch</code> في اللغات الأخرى، لأنه يستخدم العامل <code>===</code> الذي يعني «هل ينطبق عليه» لا «هل يساويه».</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">def</span> <span class="tok-func">describe</span><span class="tok-punct">(</span>x<span class="tok-punct">)</span>
+  <span class="tok-keyword">case</span> x
+  <span class="tok-keyword">when</span> <span class="tok-prop">Integer</span>      <span class="tok-keyword">then</span> <span class="tok-string">&quot;عدد صحيح&quot;</span>           <span class="tok-comment"># فحص نوع</span>
+  <span class="tok-keyword">when</span> <span class="tok-number">1</span><span class="tok-punct">..</span><span class="tok-number">10</span>        <span class="tok-keyword">then</span> <span class="tok-string">&quot;في المدى 1–10&quot;</span>       <span class="tok-comment"># فحص مدى</span>
+  <span class="tok-keyword">when</span> <span class="tok-punct">/^</span>\d<span class="tok-punct">+</span>$<span class="tok-punct">/</span>      <span class="tok-keyword">then</span> <span class="tok-string">&quot;نصّ رقمي&quot;</span>            <span class="tok-comment"># تعبير نمطي</span>
+  <span class="tok-keyword">when</span> <span class="tok-string">&quot;نعم&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;أجل&quot;</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;موافقة&quot;</span>              <span class="tok-comment"># قيم متعدّدة</span>
+  <span class="tok-keyword">when</span> <span class="tok-punct">-&gt;(</span>v<span class="tok-punct">)</span> <span class="tok-punct">{</span> v<span class="tok-punct">.</span><span class="tok-func">respond_to?</span><span class="tok-punct">(:</span>each<span class="tok-punct">)</span> <span class="tok-punct">}</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;قابل للتكرار&quot;</span>  <span class="tok-comment"># دالة مجهولة</span>
+  <span class="tok-keyword">when</span> <span class="tok-bool">nil</span>          <span class="tok-keyword">then</span> <span class="tok-string">&quot;لا شيء&quot;</span>
+  <span class="tok-keyword">else</span>                   <span class="tok-string">&quot;غير معروف&quot;</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># case بلا موضوع — بديل أنيق لـ if/elsif الطويل</span>
+grade <span class="tok-punct">=</span>
+  <span class="tok-keyword">case</span>
+  <span class="tok-keyword">when</span> score <span class="tok-punct">&gt;=</span> <span class="tok-number">90</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;ممتاز&quot;</span>
+  <span class="tok-keyword">when</span> score <span class="tok-punct">&gt;=</span> <span class="tok-number">80</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;جيد جداً&quot;</span>
+  <span class="tok-keyword">when</span> score <span class="tok-punct">&gt;=</span> <span class="tok-number">60</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;مقبول&quot;</span>
+  <span class="tok-keyword">else</span>                  <span class="tok-string">&quot;راسب&quot;</span>
+  <span class="tok-keyword">end</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>خلافاً لـ C و Java، لا حاجة لـ <code>break</code> في Ruby — لا يوجد «تسرّب» بين الفروع.</p></div><h2 id="sec-7">مطابقة الأنماط — case/in</h2><p>أُضيفت في Ruby 3.0 وهي من أقوى مزايا اللغة الحديثة: تفكّك البنى المعقّدة وتربط قيمها بمتغيّرات في خطوة واحدة.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>response <span class="tok-punct">=</span> <span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-number">200</span><span class="tok-punct">,</span> body<span class="tok-punct">:</span> <span class="tok-punct">{</span> user<span class="tok-punct">:</span> <span class="tok-punct">{</span> name<span class="tok-punct">:</span> <span class="tok-string">&quot;سارة&quot;</span><span class="tok-punct">,</span> role<span class="tok-punct">:</span> <span class="tok-string">&quot;admin&quot;</span> <span class="tok-punct">}</span> <span class="tok-punct">}</span> <span class="tok-punct">}</span>
+
+<span class="tok-keyword">case</span> response
+<span class="tok-keyword">in</span> <span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-number">200</span><span class="tok-punct">,</span> body<span class="tok-punct">:</span> <span class="tok-punct">{</span> user<span class="tok-punct">:</span> <span class="tok-punct">{</span> name<span class="tok-punct">:</span> <span class="tok-prop">String</span> <span class="tok-punct">=&gt;</span> name<span class="tok-punct">,</span> role<span class="tok-punct">:</span> <span class="tok-string">&quot;admin&quot;</span> <span class="tok-punct">}</span> <span class="tok-punct">}</span> <span class="tok-punct">}</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;أهلاً بالمشرفة #{name}&quot;</span>
+
+<span class="tok-keyword">in</span> <span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-number">200</span><span class="tok-punct">,</span> body<span class="tok-punct">:</span> <span class="tok-punct">{</span> user<span class="tok-punct">:</span> <span class="tok-punct">{</span> name<span class="tok-punct">:</span> <span class="tok-prop">String</span> <span class="tok-punct">=&gt;</span> name <span class="tok-punct">}</span> <span class="tok-punct">}</span> <span class="tok-punct">}</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;أهلاً #{name}&quot;</span>
+
+<span class="tok-keyword">in</span> <span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-number">404</span> <span class="tok-punct">}</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;غير موجود&quot;</span>
+
+<span class="tok-keyword">in</span> <span class="tok-punct">{</span> status<span class="tok-punct">:</span> <span class="tok-prop">Integer</span> <span class="tok-punct">=&gt;</span> code <span class="tok-punct">}</span> <span class="tok-keyword">if</span> code <span class="tok-punct">&gt;=</span> <span class="tok-number">500</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;خطأ خادم #{code}&quot;</span>
+
+<span class="tok-keyword">else</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;استجابة غير متوقّعة&quot;</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># مع المصفوفات</span>
+<span class="tok-keyword">case</span> <span class="tok-punct">[</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">,</span> <span class="tok-number">4</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">]</span>
+<span class="tok-keyword">in</span> <span class="tok-punct">[</span>first<span class="tok-punct">,</span> <span class="tok-punct">*</span>rest<span class="tok-punct">]</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;الأول #{first}، والباقي #{rest.size} عنصراً&quot;</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># مع القيم المرجعية</span>
+expected <span class="tok-punct">=</span> <span class="tok-number">200</span>
+<span class="tok-keyword">case</span> status
+<span class="tok-keyword">in</span> <span class="tok-punct">^</span>expected <span class="tok-keyword">then</span> <span class="tok-keyword">puts</span> <span class="tok-string">&quot;كما توقّعنا&quot;</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>مطابقة الأنماط ممتازة لتحليل استجابات JSON من واجهات برمجية. بدل عشرات الاختبارات المتداخلة، تصف الشكل المتوقّع مرة واحدة.</p></div><h2 id="sec-8">الحلقات بأسلوب Ruby</h2><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> لا تستخدم `for` في Ruby</div><p>موجودة في اللغة لكن <strong>لا أحد يستخدمها</strong>، ولها عيب حقيقي: متغيّر العدّاد يتسرّب خارج الحلقة. استخدم <code>each</code> دائماً.</p></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span></div><pre><code><span class="tok-keyword">for</span> i <span class="tok-keyword">in</span> <span class="tok-number">1</span><span class="tok-punct">..</span><span class="tok-number">5</span>
+  <span class="tok-keyword">puts</span> i
+<span class="tok-keyword">end</span>
+<span class="tok-keyword">puts</span> i    <span class="tok-comment"># =&gt; 5  ← تسرّب! المتغيّر ما زال موجوداً</span>
+
+<span class="tok-keyword">for</span> item <span class="tok-keyword">in</span> items
+  <span class="tok-keyword">puts</span> item
+<span class="tok-keyword">end</span></code></pre></div><div class="why"><code>for</code> لا تنشئ نطاقاً جديداً، فيتسرّب <code>i</code> ويصطدم بمتغيّرات أخرى.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span></div><pre><code><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">..</span><span class="tok-number">5</span><span class="tok-punct">).</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span>i<span class="tok-punct">|</span> <span class="tok-keyword">puts</span> i <span class="tok-punct">}</span>
+<span class="tok-keyword">puts</span> i    <span class="tok-comment"># ✗ NameError  ← لا تسرّب، وهذا مطلوب</span>
+
+items<span class="tok-punct">.</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span>item<span class="tok-punct">|</span> <span class="tok-keyword">puts</span> item <span class="tok-punct">}</span></code></pre></div><div class="why">الكتلة تنشئ نطاقاً خاصاً بها، وهذا أسلوب Ruby المتّبع في كل الشيفرة الحقيقية.</div></div></div><h3 id="sec-9">أشكال التكرار</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># عدد ثابت من المرات</span>
+<span class="tok-number">3</span><span class="tok-punct">.</span>times <span class="tok-punct">{</span> <span class="tok-keyword">puts</span> <span class="tok-string">&quot;مرحباً&quot;</span> <span class="tok-punct">}</span>
+<span class="tok-number">3</span><span class="tok-punct">.</span>times <span class="tok-punct">{</span> <span class="tok-punct">|</span>i<span class="tok-punct">|</span> <span class="tok-keyword">puts</span> <span class="tok-string">&quot;التكرار #{i}&quot;</span> <span class="tok-punct">}</span>      <span class="tok-comment"># 0, 1, 2</span>
+
+<span class="tok-comment"># مدى</span>
+<span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">..</span><span class="tok-number">5</span><span class="tok-punct">).</span>each   <span class="tok-punct">{</span> <span class="tok-punct">|</span>n<span class="tok-punct">|</span> <span class="tok-keyword">print</span> n <span class="tok-punct">}</span>            <span class="tok-comment"># 12345</span>
+<span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">...</span><span class="tok-number">5</span><span class="tok-punct">).</span>each  <span class="tok-punct">{</span> <span class="tok-punct">|</span>n<span class="tok-punct">|</span> <span class="tok-keyword">print</span> n <span class="tok-punct">}</span>            <span class="tok-comment"># 1234   ← حصري</span>
+<span class="tok-number">1</span><span class="tok-punct">.</span><span class="tok-func">upto</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">)</span>     <span class="tok-punct">{</span> <span class="tok-punct">|</span>n<span class="tok-punct">|</span> <span class="tok-keyword">print</span> n <span class="tok-punct">}</span>            <span class="tok-comment"># 12345</span>
+<span class="tok-number">5</span><span class="tok-punct">.</span><span class="tok-func">downto</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span>   <span class="tok-punct">{</span> <span class="tok-punct">|</span>n<span class="tok-punct">|</span> <span class="tok-keyword">print</span> n <span class="tok-punct">}</span>            <span class="tok-comment"># 54321</span>
+<span class="tok-number">1</span><span class="tok-punct">.</span><span class="tok-func">step</span><span class="tok-punct">(</span><span class="tok-number">10</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-punct">|</span>n<span class="tok-punct">|</span> <span class="tok-keyword">print</span> n<span class="tok-punct">,</span> <span class="tok-string">&quot; &quot;</span> <span class="tok-punct">}</span>       <span class="tok-comment"># 1 4 7 10</span>
+
+<span class="tok-comment"># مجموعة</span>
+<span class="tok-string">%w[أحمد سارة خالد]</span><span class="tok-punct">.</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span>name<span class="tok-punct">|</span> <span class="tok-keyword">puts</span> name <span class="tok-punct">}</span>
+<span class="tok-punct">{</span> a<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">,</span> b<span class="tok-punct">:</span> <span class="tok-number">2</span> <span class="tok-punct">}.</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span>key<span class="tok-punct">,</span> value<span class="tok-punct">|</span> <span class="tok-keyword">puts</span> <span class="tok-string">&quot;#{key}=#{value}&quot;</span> <span class="tok-punct">}</span>
+
+<span class="tok-comment"># مع الفهرس</span>
+<span class="tok-string">%w[أ ب ج]</span><span class="tok-punct">.</span>each_with_index <span class="tok-punct">{</span> <span class="tok-punct">|</span>ch<span class="tok-punct">,</span> i<span class="tok-punct">|</span> <span class="tok-keyword">puts</span> <span class="tok-string">&quot;#{i}: #{ch}&quot;</span> <span class="tok-punct">}</span>
+
+<span class="tok-comment"># شرطية</span>
+i <span class="tok-punct">=</span> <span class="tok-number">0</span>
+<span class="tok-keyword">while</span> i <span class="tok-punct">&lt;</span> <span class="tok-number">5</span>
+  i <span class="tok-punct">+=</span> <span class="tok-number">1</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">until</span> queue<span class="tok-punct">.</span>empty?
+  <span class="tok-func">process</span><span class="tok-punct">(</span>queue<span class="tok-punct">.</span>shift<span class="tok-punct">)</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># لانهائية مع خروج صريح</span>
+<span class="tok-keyword">loop</span> <span class="tok-keyword">do</span>
+  input <span class="tok-punct">=</span> gets<span class="tok-punct">.</span>chomp
+  <span class="tok-keyword">break</span> <span class="tok-keyword">if</span> input <span class="tok-punct">==</span> <span class="tok-string">&quot;خروج&quot;</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;أدخلت: #{input}&quot;</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>تريد أن…</th><th>استخدم</th></tr></thead><tbody><tr><td>تكرّر عدداً معروفاً من المرات</td><td><code>n.times</code></td></tr><tr><td>تمرّ على عناصر مجموعة</td><td><code>each</code></td></tr><tr><td>تبني مجموعة جديدة من القديمة</td><td><code>map</code> (الدرس الخامس)</td></tr><tr><td>تكرّر حتى يتحقّق شرط</td><td><code>while</code> / <code>until</code></td></tr><tr><td>تكرّر بلا حدّ معروف</td><td><code>loop do … break</code></td></tr><tr><td>تعدّ تنازلياً</td><td><code>n.downto(m)</code></td></tr><tr><td>تقفز بخطوة</td><td><code>start.step(stop, by)</code></td></tr></tbody></table></div><h2 id="sec-10">التحكّم بمسار الحلقة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">..</span><span class="tok-number">10</span><span class="tok-punct">).</span>each <span class="tok-keyword">do</span> <span class="tok-punct">|</span>n<span class="tok-punct">|</span>
+  <span class="tok-keyword">next</span> <span class="tok-keyword">if</span> n<span class="tok-punct">.</span>odd?        <span class="tok-comment"># تخطّى هذا التكرار وأكمل</span>
+  <span class="tok-keyword">break</span> <span class="tok-keyword">if</span> n <span class="tok-punct">&gt;</span> <span class="tok-number">8</span>        <span class="tok-comment"># اخرج من الحلقة كلياً</span>
+  <span class="tok-keyword">puts</span> n                <span class="tok-comment"># 2, 4, 6, 8</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># break تستطيع إرجاع قيمة</span>
+found <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-number">3</span><span class="tok-punct">,</span> <span class="tok-number">7</span><span class="tok-punct">,</span> <span class="tok-number">12</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">].</span>each <span class="tok-keyword">do</span> <span class="tok-punct">|</span>n<span class="tok-punct">|</span>
+  <span class="tok-keyword">break</span> n <span class="tok-keyword">if</span> n <span class="tok-punct">&gt;</span> <span class="tok-number">10</span>
+<span class="tok-keyword">end</span>
+found   <span class="tok-comment"># =&gt; 12</span>
+
+<span class="tok-comment"># التداخل: break تخرج من الحلقة الداخلية فقط</span>
+<span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">..</span><span class="tok-number">3</span><span class="tok-punct">).</span>each <span class="tok-keyword">do</span> <span class="tok-punct">|</span>i<span class="tok-punct">|</span>
+  <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">..</span><span class="tok-number">3</span><span class="tok-punct">).</span>each <span class="tok-keyword">do</span> <span class="tok-punct">|</span>j<span class="tok-punct">|</span>
+    <span class="tok-keyword">break</span> <span class="tok-keyword">if</span> j <span class="tok-punct">==</span> <span class="tok-number">2</span>
+    <span class="tok-keyword">print</span> <span class="tok-string">&quot;#{i}#{j} &quot;</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+<span class="tok-comment"># 11 21 31</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>للخروج من حلقات متداخلة دفعة واحدة، استخدم <code>throw</code>/<code>catch</code> أو — أفضل — انقل الحلقة الداخلية إلى دالة مستقلة تستخدم <code>return</code>.</p></div><h2 id="sec-11">الحلقة اللانهائية بأمان</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-prop">MAX_ATTEMPTS</span> <span class="tok-punct">=</span> <span class="tok-number">5</span>
+attempts <span class="tok-punct">=</span> <span class="tok-number">0</span>
+
+<span class="tok-keyword">loop</span> <span class="tok-keyword">do</span>
+  attempts <span class="tok-punct">+=</span> <span class="tok-number">1</span>
+  result <span class="tok-punct">=</span> try_connect
+
+  <span class="tok-keyword">break</span> result <span class="tok-keyword">if</span> result
+  <span class="tok-keyword">raise</span> <span class="tok-string">&quot;فشل الاتصال بعد #{MAX_ATTEMPTS} محاولات&quot;</span> <span class="tok-keyword">if</span> attempts <span class="tok-punct">&gt;=</span> <span class="tok-prop">MAX_ATTEMPTS</span>
+
+  <span class="tok-func">sleep</span><span class="tok-punct">(</span><span class="tok-number">2</span> <span class="tok-punct">**</span> attempts<span class="tok-punct">)</span>   <span class="tok-comment"># تراجع أُسّي</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> كل حلقة لانهائية تحتاج مخرجين</div><p>مخرج النجاح ومخرج الفشل. لو نسيت الثاني فسيعلق برنامجك للأبد عند أول حالة غير متوقّعة.</p></div><h2 id="sec-12">تمرين</h2><section class="exercise" id="sec-13"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>لعبة تخمين الرقم</h3></header><div class="exercise-body"><p>اكتب لعبة كاملة تجمع كل ما تعلّمته في هذا الدرس.</p><p><strong>المطلوب:</strong></p><ul><li>يختار البرنامج رقماً عشوائياً بين 1 و 100.</li><li>يطلب من اللاعب التخمين ويخبره «أكبر» أو «أصغر».</li><li>يحدّ المحاولات بعشر محاولات، ويعرض المتبقّي بعد كل تخمين.</li><li>يقبل الأمر <code>تلميح</code> فيخبر اللاعب إن كان الرقم زوجياً أو فردياً (يستهلك محاولة).</li><li>يقبل الأمر <code>خروج</code> لإنهاء اللعبة فوراً.</li><li>يتجاهل المدخلات غير الرقمية دون استهلاك محاولة، ودون أن ينهار.</li><li>عند الفوز يعرض رتبة حسب عدد المحاولات باستخدام <code>case</code>.</li><li>يسأل في النهاية عن إعادة اللعب، ويكرّر إن وافق اللاعب.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>rand(1..100)</code> يولّد رقماً عشوائياً ضمن المدى.</li><li>💡 استخدم <code>loop do</code> مع <code>break</code> للحلقة الرئيسية.</li><li>💡 <code>next</code> تتخطّى التكرار دون احتساب محاولة.</li><li>💡 استخدم <code>case</code> بلا موضوع لتحديد الرتبة.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># frozen_string_literal: true</span>
+<span class="tok-comment"># guess.rb — لعبة تخمين الرقم</span>
+
+<span class="tok-prop">MAX_ATTEMPTS</span> <span class="tok-punct">=</span> <span class="tok-number">10</span>
+<span class="tok-prop">RANGE</span>        <span class="tok-punct">=</span> <span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">..</span><span class="tok-number">100</span><span class="tok-punct">)</span>
+
+<span class="tok-keyword">def</span> <span class="tok-func">rank_for</span><span class="tok-punct">(</span>attempts<span class="tok-punct">)</span>
+  <span class="tok-keyword">case</span>
+  <span class="tok-keyword">when</span> attempts <span class="tok-punct">&lt;=</span> <span class="tok-number">3</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;🏆 أسطوري&quot;</span>
+  <span class="tok-keyword">when</span> attempts <span class="tok-punct">&lt;=</span> <span class="tok-number">5</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;🥇 ممتاز&quot;</span>
+  <span class="tok-keyword">when</span> attempts <span class="tok-punct">&lt;=</span> <span class="tok-number">7</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;🥈 جيد&quot;</span>
+  <span class="tok-keyword">else</span>                    <span class="tok-string">&quot;🥉 نجحت بالكاد&quot;</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">def</span> play_round
+  secret   <span class="tok-punct">=</span> <span class="tok-func">rand</span><span class="tok-punct">(</span><span class="tok-prop">RANGE</span><span class="tok-punct">)</span>
+  attempts <span class="tok-punct">=</span> <span class="tok-number">0</span>
+
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;\n🎯 خمّن رقماً بين #{RANGE.first} و #{RANGE.last} — لديك #{MAX_ATTEMPTS} محاولات.&quot;</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;   اكتب «تلميح» لتلميح (يستهلك محاولة) أو «خروج» للإنهاء.\n\n&quot;</span>
+
+  <span class="tok-keyword">loop</span> <span class="tok-keyword">do</span>
+    remaining <span class="tok-punct">=</span> <span class="tok-prop">MAX_ATTEMPTS</span> <span class="tok-punct">-</span> attempts
+
+    <span class="tok-keyword">if</span> remaining<span class="tok-punct">.</span>zero?
+      <span class="tok-keyword">puts</span> <span class="tok-string">&quot;💀 انتهت المحاولات! الرقم كان #{secret}.&quot;</span>
+      <span class="tok-keyword">return</span> <span class="tok-bool">false</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">print</span> <span class="tok-string">&quot;المحاولة #{attempts + 1}/#{MAX_ATTEMPTS} (متبقٍّ #{remaining}) ← &quot;</span>
+    input <span class="tok-punct">=</span> gets<span class="tok-punct">.</span>chomp<span class="tok-punct">.</span>strip
+
+    <span class="tok-keyword">case</span> input
+    <span class="tok-keyword">when</span> <span class="tok-string">&quot;خروج&quot;</span>
+      <span class="tok-keyword">puts</span> <span class="tok-string">&quot;👋 إلى اللقاء! الرقم كان #{secret}.&quot;</span>
+      exit
+    <span class="tok-keyword">when</span> <span class="tok-string">&quot;تلميح&quot;</span>
+      attempts <span class="tok-punct">+=</span> <span class="tok-number">1</span>
+      <span class="tok-keyword">puts</span> <span class="tok-string">&quot;  💡 الرقم #{secret.even? ? &#39;زوجي&#39; : &#39;فردي&#39;}.&quot;</span>
+      <span class="tok-keyword">next</span>
+    <span class="tok-keyword">end</span>
+
+    guess <span class="tok-punct">=</span>
+      <span class="tok-keyword">begin</span>
+        <span class="tok-prop">Integer</span><span class="tok-punct">(</span>input<span class="tok-punct">)</span>
+      <span class="tok-keyword">rescue</span> <span class="tok-prop">ArgumentError</span>
+        <span class="tok-keyword">puts</span> <span class="tok-string">&quot;  ⚠️  اكتب رقماً صحيحاً — لم تُحتسب محاولة.&quot;</span>
+        <span class="tok-keyword">next</span>
+      <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">unless</span> <span class="tok-prop">RANGE</span><span class="tok-punct">.</span><span class="tok-func">cover?</span><span class="tok-punct">(</span>guess<span class="tok-punct">)</span>
+      <span class="tok-keyword">puts</span> <span class="tok-string">&quot;  ⚠️  خارج المدى — لم تُحتسب محاولة.&quot;</span>
+      <span class="tok-keyword">next</span>
+    <span class="tok-keyword">end</span>
+
+    attempts <span class="tok-punct">+=</span> <span class="tok-number">1</span>
+
+    <span class="tok-keyword">case</span> guess <span class="tok-punct">&lt;=&gt;</span> secret
+    <span class="tok-keyword">when</span> <span class="tok-punct">-</span><span class="tok-number">1</span> <span class="tok-keyword">then</span> <span class="tok-keyword">puts</span> <span class="tok-string">&quot;  ⬆️  أكبر من ذلك.&quot;</span>
+    <span class="tok-keyword">when</span>  <span class="tok-number">1</span> <span class="tok-keyword">then</span> <span class="tok-keyword">puts</span> <span class="tok-string">&quot;  ⬇️  أصغر من ذلك.&quot;</span>
+    <span class="tok-keyword">when</span>  <span class="tok-number">0</span>
+      <span class="tok-keyword">puts</span> <span class="tok-string">&quot;\n🎉 أحسنت! الرقم هو #{secret}.&quot;</span>
+      <span class="tok-keyword">puts</span> <span class="tok-string">&quot;   عدد المحاولات: #{attempts} — رتبتك: #{rank_for(attempts)}&quot;</span>
+      <span class="tok-keyword">return</span> <span class="tok-bool">true</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== الحلقة الرئيسية =====</span>
+wins <span class="tok-punct">=</span> <span class="tok-number">0</span>
+games <span class="tok-punct">=</span> <span class="tok-number">0</span>
+
+<span class="tok-keyword">loop</span> <span class="tok-keyword">do</span>
+  games <span class="tok-punct">+=</span> <span class="tok-number">1</span>
+  wins <span class="tok-punct">+=</span> <span class="tok-number">1</span> <span class="tok-keyword">if</span> play_round
+
+  <span class="tok-keyword">print</span> <span class="tok-string">&quot;\nهل تريد اللعب مجدداً؟ (نعم/لا) &quot;</span>
+  answer <span class="tok-punct">=</span> gets<span class="tok-punct">.</span>chomp<span class="tok-punct">.</span>strip
+  <span class="tok-keyword">break</span> <span class="tok-keyword">unless</span> <span class="tok-string">%w[نعم ن y yes]</span><span class="tok-punct">.</span><span class="tok-keyword">include</span><span class="tok-punct">?(</span>answer<span class="tok-punct">.</span>downcase<span class="tok-punct">)</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;\n📊 لعبت #{games} جولة وفزت بـ #{wins} منها. شكراً للعب!&quot;</span></code></pre></div></details></div></section><h2 id="sec-14">اختبر نفسك</h2><section class="quiz"><h2 id="sec-15"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. لماذا يتجنّب مبرمجو Ruby حلقة <code>for</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>بطيئة</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>لأنها لا تنشئ نطاقاً جديداً فيتسرّب متغيّر العدّاد خارجها</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>محذوفة من اللغة</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا تعمل مع المصفوفات</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>each</code> تستخدم كتلة لها نطاقها الخاص، وهي الأسلوب المتّبع في كل شيفرة Ruby حقيقية.</div></div><div class="q-item"><p class="q-text">2. متى لا يجب استخدام <code>unless</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أبداً</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>مع <code>else</code>، أو مع شرط منفيّ، أو مع شرط مركّب</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>مع الأعداد</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>في الحلقات</span></label></div><div class="q-explain"><strong>الشرح:</strong> في هذه الحالات الثلاث يصبح النفي المزدوج أو المركّب لغزاً ذهنياً — استخدم <code>if</code>.</div></div><div class="q-item"><p class="q-text">3. ما الذي يميّز <code>case</code> في Ruby عن <code>switch</code> في لغات أخرى؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>يستخدم <code>===</code> فيقارن بالأنواع والمدايات والتعابير النمطية لا بالمساواة فقط</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يحتاج break</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يقبل عدداً واحداً</span></label></div><div class="q-explain"><strong>الشرح:</strong> ولهذا يمكنك كتابة <code>when Integer</code> أو <code>when 1..10</code> أو <code>when /regex/</code>.</div></div><div class="q-item"><p class="q-text">4. ما فائدة <code>case/in</code> (مطابقة الأنماط)؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>أسرع من case</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>تطابق بنية معقّدة وتربط قيمها بمتغيّرات في خطوة واحدة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>تعمل مع الأعداد فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>بديل عن الحلقات</span></label></div><div class="q-explain"><strong>الشرح:</strong> أُضيفت في Ruby 3.0 وهي مثالية لتحليل استجابات JSON المتداخلة.</div></div><div class="q-item"><p class="q-text">5. ماذا تفعل <code>next</code> داخل حلقة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>تخرج من الحلقة</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>تتخطّى بقيّة التكرار الحالي وتنتقل للتالي</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>تعيد التكرار نفسه</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>ترمي خطأ</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>break</code> هي التي تخرج من الحلقة كلياً، و<code>next</code> تتخطّى تكراراً واحداً.</div></div><div class="q-item"><p class="q-text">6. ما معنى <code>name ||= &quot;زائر&quot;</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>أسند دائماً</span></label><label class="q-option"><input type="radio" name="q1_5" value="correct"><span>أسند القيمة فقط إن كانت <code>name</code> تساوي nil أو false</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>قارن</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>احذف</span></label></div><div class="q-explain"><strong>الشرح:</strong> اختصار شائع للقيم الافتراضية والتخزين المؤقّت <code>@cache ||= compute</code>.</div></div><div class="q-item"><p class="q-text">7. لماذا نستخدم الحرّاس (<code>return … if</code>) في بداية الدالة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_6" value="correct"><span>لتجنّب التداخل العميق وإبقاء المنطق الأساسي في المستوى الأول</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>إلزامي</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>لتقليل الذاكرة</span></label></div><div class="q-explain"><strong>الشرح:</strong> يُسمّى النمط المضادّ الذي يعالجه «هرم الهلاك» — تداخل شروط بعدة مستويات.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="ruby/03-control-flow" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="02-variables.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>المتغيّرات وأنواع البيانات</b></span></a>
+  <a class="next" href="04-methods-blocks.html"><span><small>الدرس التالي</small><b>الدوال والكتل</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Ruby</h3>
+        <div class="ring-wrap" data-ring data-track="ruby" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">الشرط تعبير له قيمة</a></li><li><a href="#sec-2">صيغة اللاحقة (Modifier)</a></li><li><a href="#sec-3">unless</a></li><li><a href="#sec-4">العوامل المنطقية والمقارنة</a></li><li class="sub"><a href="#sec-5">الإسناد الشرطي</a></li><li><a href="#sec-6">case — التفريع الذكي</a></li><li><a href="#sec-7">مطابقة الأنماط — case/in</a></li><li><a href="#sec-8">الحلقات بأسلوب Ruby</a></li><li class="sub"><a href="#sec-9">أشكال التكرار</a></li><li><a href="#sec-10">التحكّم بمسار الحلقة</a></li><li><a href="#sec-11">الحلقة اللانهائية بأمان</a></li><li><a href="#sec-12">تمرين</a></li><li><a href="#sec-13">لعبة تخمين الرقم</a></li><li><a href="#sec-14">اختبر نفسك</a></li><li><a href="#sec-15">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>if / elsif / else / end</code><small>شرط كامل</small></div><div class="ref-item"><code>puts x if cond</code><small>صيغة اللاحقة</small></div><div class="ref-item"><code>unless cond</code><small>إن لم</small></div><div class="ref-item"><code>case x when …</code><small>تفريع</small></div><div class="ref-item"><code>case x in …</code><small>مطابقة أنماط</small></div><div class="ref-item"><code>5.times { }</code><small>كرّر 5 مرات</small></div><div class="ref-item"><code>(1..10).each { }</code><small>مرّ على مدى</small></div><div class="ref-item"><code>next / break</code><small>تخطّى / اخرج</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="04-methods-blocks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الدوال والكتل<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

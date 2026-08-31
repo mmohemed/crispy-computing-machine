@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="ruby">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مقدمة في Ruby وتهيئة البيئة — مسار Ruby | CodeWay Web</title>
+<meta name="description" content="فلسفة اللغة، تثبيتها على كل نظام، تشغيل أول برنامج، واستكشاف اللغة تفاعلياً عبر IRB.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="مقدمة في Ruby وتهيئة البيئة — مسار Ruby | CodeWay Web">
+<meta property="og:description" content="فلسفة اللغة، تثبيتها على كل نظام، تشغيل أول برنامج، واستكشاف اللغة تفاعلياً عبر IRB.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Ruby</a></li>
+      <li aria-current="page">مقدمة في Ruby وتهيئة البيئة</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 1 من 10</span>
+      <span class="badge level-مبتدئ">مبتدئ</span>
+      <span class="badge">مقدمة</span><span class="badge">تهيئة</span><span class="badge">IRB</span>
+    </div>
+    <h1>مقدمة في Ruby وتهيئة البيئة</h1>
+    <p class="summary">فلسفة اللغة، تثبيتها على كل نظام، تشغيل أول برنامج، واستكشاف اللغة تفاعلياً عبر IRB.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 40 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Ruby</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 6 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تعرف ما الذي يميّز Ruby عن غيرها ومتى تختارها.</li><li>تثبّت Ruby بأحدث إصدار على ويندوز أو ماك أو لينكس.</li><li>تشغّل أول برنامج من الطرفية.</li><li>تستكشف اللغة تفاعلياً باستخدام IRB.</li><li>تفهم أن <strong>كل شيء في Ruby كائن</strong> ولماذا يهمّ ذلك.</li></ul></div>
+      <h2 id="sec-1">ما هي Ruby؟</h2><p>لغة برمجة <strong>مفسَّرة</strong>، <strong>ديناميكية</strong>، و<strong>كائنية بالكامل</strong>، أنشأها الياباني يوكيهيرو ماتسوموتو (المعروف بـ Matz) عام 1995. كان هدفه المعلَن غريباً في عالم اللغات: أن تجعل <strong>المبرمج سعيداً</strong>، لا أن تُرضي المترجِم.</p><p>يقول Matz: «أريد أن تكون Ruby طبيعية، لا بسيطة». الفرق دقيق ومهم: الشيفرة تُقرأ كجملة إنجليزية، والأشياء المتوقّعة تعمل كما تتوقّع دون أن تبحث في التوثيق.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># اقرأ هذا السطر بصوت عالٍ — إنه جملة مفهومة</span>
+<span class="tok-number">5</span><span class="tok-punct">.</span>times <span class="tok-punct">{</span> <span class="tok-keyword">puts</span> <span class="tok-string">&quot;مرحباً&quot;</span> <span class="tok-punct">}</span>
+
+<span class="tok-comment"># وهذا أيضاً</span>
+<span class="tok-punct">[</span><span class="tok-number">3</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">].</span>sort<span class="tok-punct">.</span>reverse<span class="tok-punct">.</span>first   <span class="tok-comment"># =&gt; 3</span>
+
+<span class="tok-comment"># وحتى هذا</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;متأخر&quot;</span> <span class="tok-keyword">if</span> <span class="tok-prop">Time</span><span class="tok-punct">.</span>now<span class="tok-punct">.</span>hour <span class="tok-punct">&gt;</span> <span class="tok-number">22</span></code></pre></div><h2 id="sec-2">كل شيء كائن — حرفياً</h2><p>في معظم اللغات هناك «أنواع بدائية» (أعداد، منطقيات) وكائنات. في Ruby لا يوجد هذا الفصل: <strong>الرقم كائن، والنصّ كائن، وحتى <code>nil</code> كائن</strong>. كل شيء يستجيب لرسائل (تُستدعى عليه دوال).</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-number">5</span><span class="tok-punct">.</span><span class="tok-keyword">class</span>          <span class="tok-comment"># =&gt; Integer</span>
+<span class="tok-number">5</span><span class="tok-punct">.</span>even?          <span class="tok-comment"># =&gt; false</span>
+<span class="tok-punct">-</span><span class="tok-number">7</span><span class="tok-punct">.</span>abs           <span class="tok-comment"># =&gt; 7</span>
+<span class="tok-number">3.14</span><span class="tok-punct">.</span>round       <span class="tok-comment"># =&gt; 3</span>
+<span class="tok-string">&quot;مرحبا&quot;</span><span class="tok-punct">.</span>length   <span class="tok-comment"># =&gt; 5</span>
+<span class="tok-bool">nil</span><span class="tok-punct">.</span>to_a         <span class="tok-comment"># =&gt; []</span>
+<span class="tok-bool">true</span><span class="tok-punct">.</span><span class="tok-keyword">class</span>       <span class="tok-comment"># =&gt; TrueClass</span>
+<span class="tok-prop">Integer</span><span class="tok-punct">.</span><span class="tok-keyword">class</span>    <span class="tok-comment"># =&gt; Class   ← حتى الصنف نفسه كائن!</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>هذه ليست تفصيلة أكاديمية. لأن كل شيء كائن، تختفي الحالات الخاصة من اللغة: لا تحتاج دالة <code>abs(x)</code> منفصلة، بل <code>x.abs</code>. القاعدة واحدة في كل مكان، فتقلّ الأشياء التي عليك حفظها.</p></div><h2 id="sec-3">متى تختار Ruby؟</h2><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h4>تطبيقات الويب</h4><p>إطار Rails يبني تطبيقاً كاملاً بجزء من الشيفرة التي تحتاجها لغات أخرى.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div><h4>الأتمتة والسكربتات</h4><p>معالجة ملفات، تحويل بيانات، مهام DevOps — أوضح من Bash وأقصر من Python.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h4>أدوات المطوّرين</h4><p>Homebrew وVagrant وJekyll وMetasploit كلها مكتوبة بـ Ruby.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91 0z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div><h4>النماذج السريعة</h4><p>من الفكرة إلى منتج قابل للعرض في أيام لا أشهر.</p></div></div><div class="table-wrap"><table class="data"><thead><tr><th>المعيار</th><th>Ruby</th><th>ملاحظة</th></tr></thead><tbody><tr><td><strong>سرعة التطوير</strong></td><td>ممتازة</td><td>أقصر شيفرة لأداء المهمة</td></tr><tr><td><strong>سرعة التنفيذ</strong></td><td>متوسطة</td><td>أبطأ من Go/Java، وكافية لأغلب تطبيقات الويب</td></tr><tr><td><strong>منحنى التعلّم</strong></td><td>سهل</td><td>الصياغة قريبة من اللغة الطبيعية</td></tr><tr><td><strong>المكتبات</strong></td><td>ناضجة</td><td>أكثر من 180 ألف gem</td></tr><tr><td><strong>الأنسب لـ</strong></td><td>الويب والأتمتة</td><td>ليست خياراً للأنظمة المدمجة أو الحوسبة الثقيلة</td></tr></tbody></table></div><h2 id="sec-4">التثبيت</h2><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> لا تستخدم Ruby المرفقة مع النظام</div><p>ماك ولينكس يأتيان بإصدار قديم من Ruby يستخدمه النظام نفسه. تعديله أو التثبيت عليه قد يعطب أدوات النظام. ثبّت دائماً إصداراً خاصاً بك عبر مدير إصدارات.</p></div><h3 id="sec-5">ماك ولينكس — عبر rbenv</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># ماك (يتطلّب Homebrew)</span>
+brew install rbenv ruby-build
+
+<span class="tok-comment"># أوبنتو / ديبيان</span>
+<span class="tok-keyword">sudo</span> apt update <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> <span class="tok-keyword">sudo</span> apt install rbenv
+
+<span class="tok-comment"># أضف السطر التالي لملف الصدفة (~/.zshrc أو ~/.bashrc)</span>
+eval <span class="tok-string">&quot;$(rbenv init - zsh)&quot;</span>
+
+<span class="tok-comment"># ثم أعد فتح الطرفية وثبّت أحدث إصدار</span>
+rbenv install <span class="tok-number">3</span>.<span class="tok-number">3</span>.<span class="tok-number">6</span>
+rbenv global <span class="tok-number">3</span>.<span class="tok-number">3</span>.<span class="tok-number">6</span>
+ruby <span class="tok-attr">-v</span>          <span class="tok-comment"># ruby 3.3.6</span></code></pre></div><h3 id="sec-6">ويندوز — عبر RubyInstaller</h3><ol class="steps"><li>حمّل <strong>RubyInstaller with DevKit</strong> من <code>rubyinstaller.org</code> (اختر أحدث إصدار Ruby+Devkit x64).</li><li>شغّل المثبّت واترك خيار <strong>Add Ruby executables to your PATH</strong> مفعّلاً.</li><li>في نهاية التثبيت ستُسأل عن تشغيل <code>ridk install</code> — وافق واختر الخيار <strong>3</strong> لتثبيت أدوات البناء.</li><li>افتح موجّه الأوامر واكتب <code>ruby -v</code> للتأكّد.</li></ol><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>إن أردت التجربة قبل التثبيت، استخدم <code>replit.com</code> أو <code>try.ruby-lang.org</code> — تكتب Ruby في المتصفّح مباشرة.</p></div><h2 id="sec-7">أول برنامج</h2><p>أنشئ ملفاً باسم <code>hello.rb</code>:</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># hello.rb — أول برنامج بـ Ruby</span>
+name <span class="tok-punct">=</span> <span class="tok-string">&quot;زائر&quot;</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;مرحباً يا #{name}!&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;أهلاً بك في عالم Ruby.&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;اليوم: #{Time.now.strftime(&#39;%Y-%m-%d&#39;)}&quot;</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>ruby hello.rb
+<span class="tok-comment"># مرحباً يا زائر!</span>
+<span class="tok-comment"># أهلاً بك في عالم Ruby.</span>
+<span class="tok-comment"># اليوم: 2026-08-27</span></code></pre></div><p>لاحظ <code>#{...}</code> — تُسمّى <strong>الاستيفاء</strong> (Interpolation): تُنفَّذ الشيفرة داخل الأقواس وتُدرج نتيجتها في النصّ. تعمل داخل علامات التنصيص المزدوجة فقط.</p><h2 id="sec-8">طرق الطباعة الثلاث</h2><div class="table-wrap"><table class="data"><thead><tr><th>الدالة</th><th>ماذا تفعل</th><th>متى تستخدمها</th></tr></thead><tbody><tr><td><code>puts</code></td><td>تطبع وتضيف سطراً جديداً، وتفكّ المصفوفات سطراً سطراً</td><td>المخرجات للمستخدم</td></tr><tr><td><code>print</code></td><td>تطبع بلا سطر جديد</td><td>بناء سطر على مراحل</td></tr><tr><td><code>p</code></td><td>تطبع التمثيل البرمجي (<code>inspect</code>) وتُرجع الكائن</td><td>التنقيح والاستكشاف</td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">puts</span> <span class="tok-string">&quot;نصّ&quot;</span>     <span class="tok-comment"># نصّ</span>
+<span class="tok-keyword">print</span> <span class="tok-string">&quot;نصّ&quot;</span>    <span class="tok-comment"># نصّ  (بلا سطر جديد)</span>
+<span class="tok-keyword">p</span> <span class="tok-string">&quot;نصّ&quot;</span>        <span class="tok-comment"># &quot;نصّ&quot;  ← لاحظ علامات التنصيص</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-punct">[</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">]</span>  <span class="tok-comment"># يطبع كل عنصر في سطر</span>
+<span class="tok-keyword">p</span>    <span class="tok-punct">[</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">]</span>  <span class="tok-comment"># [1, 2, 3]</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-bool">nil</span>        <span class="tok-comment"># سطر فارغ</span>
+<span class="tok-keyword">p</span>    <span class="tok-bool">nil</span>        <span class="tok-comment"># nil    ← أوضح بكثير عند التنقيح</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>عند مطاردة خطأ استخدم <code>p</code> لا <code>puts</code>: <code>p</code> يفرّق بين <code>nil</code> والنصّ الفارغ وبين <code>1</code> و <code>&quot;1&quot;</code>، وهذا غالباً هو الفرق الذي تبحث عنه.</p></div><h2 id="sec-9">IRB — مختبرك التفاعلي</h2><p>اكتب <code>irb</code> في الطرفية لتفتح صدفة تنفّذ Ruby سطراً سطراً وتعرض نتيجة كل تعبير. إنها أسرع طريقة للإجابة على سؤال «ماذا يفعل هذا؟».</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-punct">$</span> irb
+irb<span class="tok-punct">(</span>main<span class="tok-punct">)</span>:<span class="tok-number">001</span><span class="tok-punct">&gt;</span> <span class="tok-number">2</span> + <span class="tok-number">3</span>
+=<span class="tok-punct">&gt;</span> <span class="tok-number">5</span>
+irb<span class="tok-punct">(</span>main<span class="tok-punct">)</span>:<span class="tok-number">002</span><span class="tok-punct">&gt;</span> <span class="tok-string">&quot;ruby&quot;</span>.upcase
+=<span class="tok-punct">&gt;</span> <span class="tok-string">&quot;RUBY&quot;</span>
+irb<span class="tok-punct">(</span>main<span class="tok-punct">)</span>:<span class="tok-number">003</span><span class="tok-punct">&gt;</span> [<span class="tok-number">1</span>,<span class="tok-number">2</span>,<span class="tok-number">3</span>].sum
+=<span class="tok-punct">&gt;</span> <span class="tok-number">6</span>
+irb<span class="tok-punct">(</span>main<span class="tok-punct">)</span>:<span class="tok-number">004</span><span class="tok-punct">&gt;</span> <span class="tok-string">&quot;نصّ&quot;</span>.methods.size
+=<span class="tok-punct">&gt;</span> <span class="tok-number">190</span>
+irb<span class="tok-punct">(</span>main<span class="tok-punct">)</span>:<span class="tok-number">005</span><span class="tok-punct">&gt;</span> exit</code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>جرّب <code>5.methods.sort</code> في IRB لترى كل ما يستطيع الرقم فعله. هذه عادة ممتازة: بدل البحث في جوجل، اسأل الكائن نفسه.</p></div><h2 id="sec-10">التعليقات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># تعليق سطر واحد</span>
+
+<span class="tok-comment">=begin
+تعليق متعدّد الأسطر.
+قليل الاستخدام عملياً؛ أغلب المبرمجين
+يكرّرون علامة # في كل سطر.
+=end</span>
+
+x <span class="tok-punct">=</span> <span class="tok-number">10</span>   <span class="tok-comment"># تعليق في نهاية السطر</span></code></pre></div><h2 id="sec-11">اصطلاحات التسمية</h2><p>مجتمع Ruby ملتزم باصطلاحاته بدرجة عالية، وبعضها <strong>إلزامي</strong> لا اختياري:</p><div class="table-wrap"><table class="data"><thead><tr><th>العنصر</th><th>الاصطلاح</th><th>مثال</th></tr></thead><tbody><tr><td>متغيّر ودالة</td><td><code>snake_case</code></td><td><code>user_name</code>, <code>calculate_total</code></td></tr><tr><td>صنف ووحدة</td><td><code>PascalCase</code></td><td><code>ShoppingCart</code>, <code>Comparable</code></td></tr><tr><td>ثابت</td><td><code>SCREAMING_SNAKE</code></td><td><code>MAX_RETRIES</code>, <code>PI</code></td></tr><tr><td>دالة تُرجع منطقياً</td><td>تنتهي بـ <code>?</code></td><td><code>empty?</code>, <code>valid?</code></td></tr><tr><td>دالة تُعدّل الكائن أو تخاطر</td><td>تنتهي بـ <code>!</code></td><td><code>sort!</code>, <code>save!</code></td></tr><tr><td>متغيّر مثيل</td><td>يبدأ بـ <code>@</code></td><td><code>@name</code></td></tr><tr><td>ملف</td><td><code>snake_case.rb</code></td><td><code>shopping_cart.rb</code></td></tr></tbody></table></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> الحرف الأول ليس اختيارياً</div><p>المعرّف الذي يبدأ بحرف <strong>كبير</strong> يعامله Ruby كـ <strong>ثابت</strong> لا كمتغيّر. <code>Name = 5</code> ثابت، و<code>name = 5</code> متغيّر. إعادة إسناد الثابت تُنتج تحذيراً.</p></div><h2 id="sec-12">الفراغات والنهايات</h2><p>Ruby لا يحتاج فاصلة منقوطة في نهاية السطر، ولا أقواساً معقوفة للكتل — يستخدم كلمة <code>end</code>. المسافة البادئة بمقدار <strong>مسافتين</strong> (لا أربع ولا Tab) هي العُرف المتّبع.</p><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span></div><pre><code><span class="tok-keyword">def</span> <span class="tok-func">greet</span><span class="tok-punct">(</span>name<span class="tok-punct">);</span>
+    <span class="tok-keyword">if</span> name<span class="tok-punct">.</span>empty?<span class="tok-punct">;</span>
+        <span class="tok-keyword">return</span> <span class="tok-string">&quot;مرحباً يا زائر&quot;</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">end</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">return</span> <span class="tok-string">&quot;مرحباً يا &quot;</span> <span class="tok-punct">+</span> name<span class="tok-punct">;</span>
+<span class="tok-keyword">end</span><span class="tok-punct">;</span></code></pre></div><div class="why">فواصل منقوطة لا لزوم لها، مسافة بادئة رباعية، و<code>return</code> صريحة حيث لا تلزم — كلها ضدّ العُرف.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span></div><pre><code><span class="tok-keyword">def</span> <span class="tok-func">greet</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span>
+  <span class="tok-keyword">return</span> <span class="tok-string">&quot;مرحباً يا زائر&quot;</span> <span class="tok-keyword">if</span> name<span class="tok-punct">.</span>empty?
+
+  <span class="tok-string">&quot;مرحباً يا #{name}&quot;</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="why">مسافتان، حارس بصيغة اللاحقة، واستيفاء بدل الجمع. آخر تعبير في الدالة هو قيمتها المُرجَعة تلقائياً.</div></div></div><h2 id="sec-13">القيمة المُرجَعة الضمنية</h2><p>كل شيء في Ruby <strong>تعبير له قيمة</strong>، والدالة تُرجع قيمة آخر تعبير فيها دون حاجة لكلمة <code>return</code>. هذه من أوضح سمات اللغة.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">def</span> <span class="tok-func">double</span><span class="tok-punct">(</span>x<span class="tok-punct">)</span>
+  x <span class="tok-punct">*</span> <span class="tok-number">2</span>        <span class="tok-comment"># لا حاجة لـ return</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-func">double</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">)</span>      <span class="tok-comment"># =&gt; 10</span>
+
+<span class="tok-comment"># حتى الشرط تعبير له قيمة</span>
+status <span class="tok-punct">=</span> <span class="tok-keyword">if</span> <span class="tok-number">85</span> <span class="tok-punct">&gt;=</span> <span class="tok-number">60</span> <span class="tok-keyword">then</span> <span class="tok-string">&quot;ناجح&quot;</span> <span class="tok-keyword">else</span> <span class="tok-string">&quot;راسب&quot;</span> <span class="tok-keyword">end</span>
+status         <span class="tok-comment"># =&gt; &quot;ناجح&quot;</span>
+
+<span class="tok-comment"># وحتى الإسناد نفسه تعبير</span>
+<span class="tok-keyword">puts</span> <span class="tok-punct">(</span>x <span class="tok-punct">=</span> <span class="tok-number">3</span><span class="tok-punct">)</span>   <span class="tok-comment"># =&gt; 3</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استخدم <code>return</code> فقط للخروج <strong>المبكّر</strong> من الدالة (كالحرّاس في بدايتها). في نهاية الدالة اتركها — وجودها هناك يُعدّ ضجيجاً في عرف Ruby.</p></div><h2 id="sec-14">محرّر مناسب</h2><ol class="steps"><li>ثبّت <strong>VS Code</strong> من <code>code.visualstudio.com</code>.</li><li>ثبّت إضافة <strong>Ruby LSP</strong> من Shopify — تعطيك إكمالاً تلقائياً وانتقالاً للتعريف وتشخيصاً للأخطاء.</li><li>ثبّت إضافة <strong>endwise</strong> — تكتب <code>end</code> تلقائياً عند كتابة <code>def</code> أو <code>class</code>.</li><li>فعّل <code>&quot;editor.formatOnSave&quot;: true</code> مع <code>rubocop</code> لتوحيد التنسيق.</li></ol><h2 id="sec-15">تمرين</h2><section class="exercise" id="sec-16"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>بطاقة تعريف تفاعلية</h3></header><div class="exercise-body"><p>اكتب سكربتاً يسأل المستخدم عن بياناته ثم يعرض بطاقة تعريف منسّقة.</p><p><strong>المطلوب:</strong></p><ul><li>اسأل عن الاسم وسنة الميلاد والمدينة واللغة المفضّلة باستخدام <code>gets.chomp</code>.</li><li>احسب العمر التقريبي من سنة الميلاد.</li><li>اعرض بطاقة داخل إطار مرسوم بالرموز، بعرض ثابت.</li><li>استخدم الاستيفاء <code>#{}</code> في كل السطور، ولا تستخدم <code>+</code> لجمع النصوص.</li><li>أضف سطراً يعرض تاريخ اليوم بصيغة عربية مقروءة.</li><li>إن ترك المستخدم الاسم فارغاً، استخدم &quot;زائر&quot; بدلاً منه.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>gets</code> تُرجع النصّ مع سطر جديد في نهايته، و<code>chomp</code> تزيله.</li><li>💡 <code>gets.chomp.to_i</code> تحوّل المدخل إلى عدد صحيح.</li><li>💡 <code>&quot;─&quot; * 40</code> تكرّر الرمز أربعين مرة.</li><li>💡 <code>str.center(40)</code> توسّط النصّ داخل عرض محدّد.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># card.rb — بطاقة تعريف تفاعلية</span>
+<span class="tok-prop">WIDTH</span> <span class="tok-punct">=</span> <span class="tok-number">44</span>
+
+<span class="tok-keyword">print</span> <span class="tok-string">&quot;ما اسمك؟ &quot;</span>
+name <span class="tok-punct">=</span> gets<span class="tok-punct">.</span>chomp
+name <span class="tok-punct">=</span> <span class="tok-string">&quot;زائر&quot;</span> <span class="tok-keyword">if</span> name<span class="tok-punct">.</span>empty?
+
+<span class="tok-keyword">print</span> <span class="tok-string">&quot;سنة ميلادك؟ &quot;</span>
+birth_year <span class="tok-punct">=</span> gets<span class="tok-punct">.</span>chomp<span class="tok-punct">.</span>to_i
+
+<span class="tok-keyword">print</span> <span class="tok-string">&quot;مدينتك؟ &quot;</span>
+city <span class="tok-punct">=</span> gets<span class="tok-punct">.</span>chomp
+
+<span class="tok-keyword">print</span> <span class="tok-string">&quot;لغتك البرمجية المفضّلة؟ &quot;</span>
+language <span class="tok-punct">=</span> gets<span class="tok-punct">.</span>chomp
+
+age <span class="tok-punct">=</span> <span class="tok-prop">Time</span><span class="tok-punct">.</span>now<span class="tok-punct">.</span>year <span class="tok-punct">-</span> birth_year
+
+line <span class="tok-punct">=</span> <span class="tok-string">&quot;─&quot;</span> <span class="tok-punct">*</span> <span class="tok-prop">WIDTH</span>
+
+<span class="tok-keyword">puts</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;┌#{line}┐&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;│#{&#39;بطاقة تعريف&#39;.center(WIDTH)}│&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;├#{line}┤&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;│ الاسم:    #{name.ljust(WIDTH - 11)}│&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;│ العمر:    #{&quot;</span><span class="tok-comment">#{age} سنة&quot;.ljust(WIDTH - 11)}│&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;│ المدينة:  #{city.ljust(WIDTH - 11)}│&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;│ اللغة:    #{language.ljust(WIDTH - 11)}│&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;├#{line}┤&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;│ التاريخ:  #{Time.now.strftime(&#39;%Y/%m/%d&#39;).ljust(WIDTH - 11)}│&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;└#{line}┘&quot;</span>
+<span class="tok-keyword">puts</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;أهلاً بك يا #{name} في رحلة تعلّم Ruby!&quot;</span></code></pre></div></details></div></section><h2 id="sec-17">اختبر نفسك</h2><section class="quiz"><h2 id="sec-18"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الهدف المعلَن الذي بُنيت عليه Ruby؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>أقصى سرعة تنفيذ</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>سعادة المبرمج وطبيعية الصياغة</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>أقل استهلاك للذاكرة</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>التوافق مع Java</span></label></div><div class="q-explain"><strong>الشرح:</strong> صرّح Matz بأن هدفه جعل المبرمج سعيداً، وهذا يفسّر كثيراً من قرارات تصميم اللغة.</div></div><div class="q-item"><p class="q-text">2. أيّ العبارات صحيحة عن الأنواع في Ruby؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>الأعداد أنواع بدائية لا كائنات</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>كل شيء كائن حتى الأعداد و nil والأصناف نفسها</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>النصوص فقط كائنات</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>لا يوجد نظام أنواع</span></label></div><div class="q-explain"><strong>الشرح:</strong> لا يوجد فصل بين البدائي والكائن؛ <code>5.class</code> يُرجع <code>Integer</code> و<code>Integer.class</code> يُرجع <code>Class</code>.</div></div><div class="q-item"><p class="q-text">3. ما الفرق بين <code>puts</code> و <code>p</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span><code>p</code> تطبع التمثيل البرمجي (inspect) وتُرجع الكائن، وهي أنسب للتنقيح</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span><code>p</code> أسرع</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span><code>puts</code> للأعداد فقط</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>p &quot;5&quot;</code> يطبع <code>&quot;5&quot;</code> بينما <code>puts &quot;5&quot;</code> يطبع <code>5</code> — الفرق حاسم عند مطاردة خطأ.</div></div><div class="q-item"><p class="q-text">4. لماذا لا نستخدم Ruby المرفقة مع نظام التشغيل؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>بطيئة</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>قديمة، ويستخدمها النظام نفسه فقد يعطبه تعديلها</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>غير مجانية</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>ناقصة المكتبات</span></label></div><div class="q-explain"><strong>الشرح:</strong> استخدم مدير إصدارات مثل rbenv لتثبيت نسخة مستقلة تحت تحكّمك.</div></div><div class="q-item"><p class="q-text">5. ماذا تُرجع دالة لا تحوي <code>return</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>nil دائماً</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>قيمة آخر تعبير نُفِّذ فيها</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>خطأ</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>صفر</span></label></div><div class="q-explain"><strong>الشرح:</strong> القيمة المُرجَعة الضمنية سمة أساسية في Ruby، ووجود <code>return</code> في النهاية يُعدّ ضجيجاً.</div></div><div class="q-item"><p class="q-text">6. ما دلالة <code>?</code> في نهاية اسم دالة مثل <code>empty?</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>صياغة إلزامية</span></label><label class="q-option"><input type="radio" name="q1_5" value="correct"><span>اصطلاح يدلّ على أنها تُرجع قيمة منطقية</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>تعني أنها قد تفشل</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>لا معنى لها</span></label></div><div class="q-explain"><strong>الشرح:</strong> اصطلاح لا يفرضه المفسّر لكن المجتمع ملتزم به تماماً، ومثله <code>!</code> للدوال المُعدِّلة أو الخطرة.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="ruby/01-introduction" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="index.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>العودة إلى</small><b>صفحة المسار</b></span></a>
+  <a class="next" href="02-variables.html"><span><small>الدرس التالي</small><b>المتغيّرات وأنواع البيانات</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Ruby</h3>
+        <div class="ring-wrap" data-ring data-track="ruby" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">ما هي Ruby؟</a></li><li><a href="#sec-2">كل شيء كائن — حرفياً</a></li><li><a href="#sec-3">متى تختار Ruby؟</a></li><li><a href="#sec-4">التثبيت</a></li><li class="sub"><a href="#sec-5">ماك ولينكس — عبر rbenv</a></li><li class="sub"><a href="#sec-6">ويندوز — عبر RubyInstaller</a></li><li><a href="#sec-7">أول برنامج</a></li><li><a href="#sec-8">طرق الطباعة الثلاث</a></li><li><a href="#sec-9">IRB — مختبرك التفاعلي</a></li><li><a href="#sec-10">التعليقات</a></li><li><a href="#sec-11">اصطلاحات التسمية</a></li><li><a href="#sec-12">الفراغات والنهايات</a></li><li><a href="#sec-13">القيمة المُرجَعة الضمنية</a></li><li><a href="#sec-14">محرّر مناسب</a></li><li><a href="#sec-15">تمرين</a></li><li><a href="#sec-16">بطاقة تعريف تفاعلية</a></li><li><a href="#sec-17">اختبر نفسك</a></li><li><a href="#sec-18">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>ruby -v</code><small>إصدار Ruby المثبّت</small></div><div class="ref-item"><code>ruby file.rb</code><small>تشغيل ملف</small></div><div class="ref-item"><code>irb</code><small>صدفة تفاعلية</small></div><div class="ref-item"><code>puts &quot;نص&quot;</code><small>طباعة مع سطر جديد</small></div><div class="ref-item"><code>5.class</code><small>نوع الكائن</small></div><div class="ref-item"><code># تعليق</code><small>تعليق سطر واحد</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="02-variables.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>المتغيّرات وأنواع البيانات<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

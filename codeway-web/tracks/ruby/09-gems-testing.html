@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="ruby">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأدوات: Gems و Bundler و RSpec — مسار Ruby | CodeWay Web</title>
+<meta name="description" content="إدارة الاعتماديات بـ Bundler، بناء gem خاص بك، واختبار شيفرتك بـ RSpec و Minitest.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="الأدوات: Gems و Bundler و RSpec — مسار Ruby | CodeWay Web">
+<meta property="og:description" content="إدارة الاعتماديات بـ Bundler، بناء gem خاص بك، واختبار شيفرتك بـ RSpec و Minitest.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Ruby</a></li>
+      <li aria-current="page">الأدوات: Gems و Bundler و RSpec</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 9 من 10</span>
+      <span class="badge level-متقدم">متقدم</span>
+      <span class="badge">Gems</span><span class="badge">Bundler</span><span class="badge">RSpec</span><span class="badge">اختبارات</span>
+    </div>
+    <h1>الأدوات: Gems و Bundler و RSpec</h1>
+    <p class="summary">إدارة الاعتماديات بـ Bundler، بناء gem خاص بك، واختبار شيفرتك بـ RSpec و Minitest.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 55 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Ruby</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 7 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تثبّت الـ gems وتديرها بـ Bundler بشكل قابل لإعادة الإنتاج.</li><li>تفهم دور <code>Gemfile</code> و <code>Gemfile.lock</code> والفرق بينهما.</li><li>تنشئ gem خاصاً بك بالبنية القياسية.</li><li>تكتب اختبارات بـ RSpec: <code>describe</code> و <code>context</code> و <code>it</code> والتوقّعات.</li><li>تستخدم <code>let</code> و <code>subject</code> والمضاعفات (doubles).</li><li>تضبط RuboCop لتوحيد أسلوب الشيفرة.</li></ul></div>
+      <h2 id="sec-1">ما الـ gem؟</h2><p>حزمة شيفرة Ruby جاهزة للاستخدام، منشورة على <code>rubygems.org</code>. النظام البيئي ضخم: أكثر من 180 ألف gem.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>gem install rspec              <span class="tok-comment"># تثبيت</span>
+gem install rails <span class="tok-attr">-v</span> <span class="tok-number">7</span>.<span class="tok-number">1</span>.<span class="tok-number">0</span>     <span class="tok-comment"># إصدار محدّد</span>
+gem list                       <span class="tok-comment"># المثبّت لديك</span>
+gem which json                 <span class="tok-comment"># مسار gem</span>
+gem update <span class="tok-attr">--system</span>            <span class="tok-comment"># تحديث RubyGems نفسه</span>
+gem uninstall rspec</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> لا تثبّت عالمياً في المشاريع</div><p><code>gem install</code> يثبّت للنظام كله، فيتعارض مشروعان يحتاجان إصدارين مختلفين. استخدم Bundler دائماً في أي مشروع حقيقي.</p></div><h2 id="sec-2">Bundler</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>gem install bundler
+bundle init                    <span class="tok-comment"># ينشئ Gemfile</span>
+bundle add sinatra             <span class="tok-comment"># يضيف ويثبّت</span>
+bundle install                 <span class="tok-comment"># يثبّت كل شيء</span>
+bundle update rspec            <span class="tok-comment"># يحدّث gem واحداً</span>
+bundle outdated                <span class="tok-comment"># ما الذي له إصدار أحدث؟</span>
+bundle exec rspec              <span class="tok-comment"># تشغيل بإصدارات المشروع بالضبط</span></code></pre></div><h3 id="sec-3">Gemfile</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>source <span class="tok-string">&quot;https://rubygems.org&quot;</span>
+ruby <span class="tok-string">&quot;3.3.6&quot;</span>
+
+gem <span class="tok-string">&quot;sinatra&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;~&gt; 4.0&quot;</span>        <span class="tok-comment"># &gt;= 4.0 و &lt; 5.0</span>
+gem <span class="tok-string">&quot;puma&quot;</span><span class="tok-punct">,</span>    <span class="tok-string">&quot;&gt;= 6.4&quot;</span>
+gem <span class="tok-string">&quot;sequel&quot;</span><span class="tok-punct">,</span>  <span class="tok-string">&quot;5.75.0&quot;</span>        <span class="tok-comment"># إصدار مثبّت تماماً</span>
+gem <span class="tok-string">&quot;dotenv&quot;</span>
+
+group <span class="tok-bool">:development</span><span class="tok-punct">,</span> <span class="tok-bool">:test</span> <span class="tok-keyword">do</span>
+  gem <span class="tok-string">&quot;rspec&quot;</span><span class="tok-punct">,</span>   <span class="tok-string">&quot;~&gt; 3.13&quot;</span>
+  gem <span class="tok-string">&quot;rubocop&quot;</span><span class="tok-punct">,</span> <span class="tok-keyword">require</span><span class="tok-punct">:</span> <span class="tok-bool">false</span>
+  gem <span class="tok-string">&quot;pry&quot;</span>
+<span class="tok-keyword">end</span>
+
+group <span class="tok-bool">:test</span> <span class="tok-keyword">do</span>
+  gem <span class="tok-string">&quot;simplecov&quot;</span><span class="tok-punct">,</span>  <span class="tok-keyword">require</span><span class="tok-punct">:</span> <span class="tok-bool">false</span>
+  gem <span class="tok-string">&quot;webmock&quot;</span>
+<span class="tok-keyword">end</span>
+
+gem <span class="tok-string">&quot;internal_tool&quot;</span><span class="tok-punct">,</span> git<span class="tok-punct">:</span> <span class="tok-string">&quot;https://github.com/org/tool.git&quot;</span><span class="tok-punct">,</span> branch<span class="tok-punct">:</span> <span class="tok-string">&quot;main&quot;</span>
+gem <span class="tok-string">&quot;local_gem&quot;</span><span class="tok-punct">,</span>     path<span class="tok-punct">:</span> <span class="tok-string">&quot;../local_gem&quot;</span></code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>المحدّد</th><th>المعنى</th><th>مثال يقبل</th></tr></thead><tbody><tr><td><code>&quot;1.2.3&quot;</code></td><td>هذا الإصدار بالضبط</td><td>1.2.3 فقط</td></tr><tr><td><code>&quot;&gt;= 1.2&quot;</code></td><td>هذا أو أحدث</td><td>1.2, 2.0, 9.9</td></tr><tr><td><code>&quot;~&gt; 1.2&quot;</code></td><td>يسمح بتغيير آخر رقم</td><td>1.2 … 1.9، <strong>لا</strong> 2.0</td></tr><tr><td><code>&quot;~&gt; 1.2.3&quot;</code></td><td>يسمح بتغيير التصحيحات فقط</td><td>1.2.3 … 1.2.9، <strong>لا</strong> 1.3.0</td></tr></tbody></table></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استخدم <code>~&gt;</code> (يُسمّى «العامل المتفائل») افتراضياً: يمنحك تصحيحات الأمان والأخطاء تلقائياً دون المخاطرة بتغييرات كاسرة في الإصدار الرئيسي.</p></div><h3 id="sec-4">Gemfile.lock</h3><p>يُولَّد تلقائياً ويسجّل <strong>الإصدار الدقيق</strong> لكل gem بما فيها الاعتماديات غير المباشرة. هذا ما يضمن أن ما يعمل على جهازك يعمل على الخادم بالضبط.</p><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> التزم `Gemfile.lock` في Git</div><p>للتطبيقات: <strong>نعم دائماً</strong> — بدونه قد يثبّت الخادم إصدارات مختلفة عمّا اختبرت. للمكتبات (gems): <strong>لا</strong> — أضفه لـ <code>.gitignore</code> لأن المكتبة يجب أن تعمل مع مدى واسع من الإصدارات.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># في الإنتاج والـ CI — يفشل إن اختلف Gemfile.lock بدل تعديله</span>
+bundle install <span class="tok-attr">--deployment</span>
+bundle config set frozen true <span class="tok-punct">&amp;</span><span class="tok-punct">&amp;</span> bundle install</code></pre></div><h2 id="sec-5">أشهر الـ gems</h2><div class="table-wrap"><table class="data"><thead><tr><th>الحاجة</th><th>الـ gem</th></tr></thead><tbody><tr><td>إطار ويب كامل</td><td><code>rails</code></td></tr><tr><td>إطار ويب خفيف</td><td><code>sinatra</code>, <code>roda</code></td></tr><tr><td>خادم تطبيقات</td><td><code>puma</code></td></tr><tr><td>طلبات HTTP</td><td><code>faraday</code>, <code>http</code></td></tr><tr><td>قواعد بيانات</td><td><code>sequel</code>, <code>activerecord</code>, <code>pg</code></td></tr><tr><td>اختبارات</td><td><code>rspec</code>, <code>minitest</code></td></tr><tr><td>بيانات وهمية للاختبار</td><td><code>faker</code>, <code>factory_bot</code></td></tr><tr><td>تنقيح</td><td><code>pry</code>, <code>debug</code></td></tr><tr><td>أسلوب الشيفرة</td><td><code>rubocop</code></td></tr><tr><td>مهام خلفية</td><td><code>sidekiq</code></td></tr><tr><td>متغيّرات البيئة</td><td><code>dotenv</code></td></tr><tr><td>تغطية الاختبارات</td><td><code>simplecov</code></td></tr><tr><td>سطر أوامر</td><td><code>thor</code>, <code>tty-prompt</code></td></tr></tbody></table></div><h2 id="sec-6">بناء gem خاص بك</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>bundle gem text_utils <span class="tok-attr">--test</span>=rspec <span class="tok-attr">--ci</span>=github <span class="tok-attr">--linter</span>=rubocop
+<span class="tok-keyword">cd</span> text_utils</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>text_utils/
+├── lib/
+│   ├── text_utils.rb            ← نقطة الدخول
+│   └── text_utils/
+│       ├── version.rb
+│       └── slugger.rb
+├── spec/
+│   ├── spec_helper.rb
+│   └── text_utils_spec.rb
+├── text_utils.gemspec           ← البيانات الوصفية
+├── Gemfile
+├── Rakefile
+└── README.md</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># text_utils.gemspec</span>
+<span class="tok-keyword">require_relative</span> <span class="tok-string">&quot;lib/text_utils/version&quot;</span>
+
+<span class="tok-prop">Gem</span><span class="tok-punct">::</span><span class="tok-prop">Specification</span><span class="tok-punct">.</span><span class="tok-keyword">new</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>spec<span class="tok-punct">|</span>
+  spec<span class="tok-punct">.</span>name        <span class="tok-punct">=</span> <span class="tok-string">&quot;text_utils&quot;</span>
+  spec<span class="tok-punct">.</span>version     <span class="tok-punct">=</span> <span class="tok-prop">TextUtils</span><span class="tok-punct">::</span><span class="tok-prop">VERSION</span>
+  spec<span class="tok-punct">.</span>authors     <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&quot;اسمك&quot;</span><span class="tok-punct">]</span>
+  spec<span class="tok-punct">.</span>summary     <span class="tok-punct">=</span> <span class="tok-string">&quot;أدوات معالجة نصوص عربية&quot;</span>
+  spec<span class="tok-punct">.</span>description <span class="tok-punct">=</span> <span class="tok-string">&quot;مجموعة أدوات لتنظيف النصوص العربية وتحويلها&quot;</span>
+  spec<span class="tok-punct">.</span>homepage    <span class="tok-punct">=</span> <span class="tok-string">&quot;https://github.com/you/text_utils&quot;</span>
+  spec<span class="tok-punct">.</span>license     <span class="tok-punct">=</span> <span class="tok-string">&quot;MIT&quot;</span>
+  spec<span class="tok-punct">.</span>required_ruby_version <span class="tok-punct">=</span> <span class="tok-string">&quot;&gt;= 3.1.0&quot;</span>
+
+  spec<span class="tok-punct">.</span>files <span class="tok-punct">=</span> <span class="tok-prop">Dir</span><span class="tok-punct">[</span><span class="tok-string">&quot;lib/**/*.rb&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;README.md&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;LICENSE.txt&quot;</span><span class="tok-punct">]</span>
+  spec<span class="tok-punct">.</span>require_paths <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&quot;lib&quot;</span><span class="tok-punct">]</span>
+
+  spec<span class="tok-punct">.</span>add_dependency <span class="tok-string">&quot;zeitwerk&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;~&gt; 2.6&quot;</span>
+  spec<span class="tok-punct">.</span>add_development_dependency <span class="tok-string">&quot;rspec&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;~&gt; 3.13&quot;</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>rake build                      <span class="tok-comment"># يبني pkg/text_utils-0.1.0.gem</span>
+gem install pkg/text_utils-<span class="tok-number">0</span>.<span class="tok-number">1</span>.<span class="tok-number">0</span>.gem   <span class="tok-comment"># اختبره محلياً</span>
+rake release                    <span class="tok-comment"># وسم Git + نشر على rubygems.org</span></code></pre></div><h2 id="sec-7">RSpec — الاختبارات</h2><p>إطار الاختبار الأشهر في Ruby، ولغته قريبة من اللغة الطبيعية بحيث يُقرأ ملف الاختبار كوصف للسلوك.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>bundle add rspec <span class="tok-attr">--group</span> development,test
+bundle exec rspec <span class="tok-attr">--init</span>        <span class="tok-comment"># ينشئ .rspec و spec/spec_helper.rb</span>
+bundle exec rspec               <span class="tok-comment"># تشغيل الكل</span>
+bundle exec rspec spec/cart_spec.rb:<span class="tok-number">42</span>   <span class="tok-comment"># اختبار واحد بسطره</span>
+bundle exec rspec <span class="tok-attr">--format</span> doc  <span class="tok-comment"># مخرجات وصفية</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># spec/shopping_cart_spec.rb</span>
+<span class="tok-keyword">require</span> <span class="tok-string">&quot;shopping_cart&quot;</span>
+
+<span class="tok-prop">RSpec</span><span class="tok-punct">.</span>describe <span class="tok-prop">ShoppingCart</span> <span class="tok-keyword">do</span>
+  <span class="tok-comment"># let كسول: يُنفَّذ عند أول استخدام في كل اختبار، وينسى بعده</span>
+  <span class="tok-func">let</span><span class="tok-punct">(:</span>cart<span class="tok-punct">)</span>   <span class="tok-punct">{</span> described_class<span class="tok-punct">.</span><span class="tok-keyword">new</span> <span class="tok-punct">}</span>
+  <span class="tok-func">let</span><span class="tok-punct">(:</span>laptop<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-prop">Product</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;لابتوب&quot;</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">4500</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  <span class="tok-func">let</span><span class="tok-punct">(:</span>mouse<span class="tok-punct">)</span>  <span class="tok-punct">{</span> <span class="tok-prop">Product</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;ماوس&quot;</span><span class="tok-punct">,</span>   price<span class="tok-punct">:</span> <span class="tok-number">120</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+
+  describe <span class="tok-string">&quot;#add&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يضيف منتجاً للسلّة&quot;</span> <span class="tok-keyword">do</span>
+      cart<span class="tok-punct">.</span><span class="tok-func">add</span><span class="tok-punct">(</span>laptop<span class="tok-punct">)</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>cart<span class="tok-punct">.</span>items<span class="tok-punct">.</span>size<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يزيد الكمية عند إضافة نفس المنتج&quot;</span> <span class="tok-keyword">do</span>
+      cart<span class="tok-punct">.</span><span class="tok-func">add</span><span class="tok-punct">(</span>laptop<span class="tok-punct">)</span>
+      cart<span class="tok-punct">.</span><span class="tok-func">add</span><span class="tok-punct">(</span>laptop<span class="tok-punct">)</span>
+
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>cart<span class="tok-punct">.</span>items<span class="tok-punct">.</span>size<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>cart<span class="tok-punct">.</span><span class="tok-func">quantity_of</span><span class="tok-punct">(</span>laptop<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يُرجع السلّة للتسلسل&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>cart<span class="tok-punct">.</span><span class="tok-func">add</span><span class="tok-punct">(</span>laptop<span class="tok-punct">)).</span>to <span class="tok-func">be</span><span class="tok-punct">(</span>cart<span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    context <span class="tok-string">&quot;عند كمية غير صالحة&quot;</span> <span class="tok-keyword">do</span>
+      it <span class="tok-string">&quot;يرمي ArgumentError&quot;</span> <span class="tok-keyword">do</span>
+        expect <span class="tok-punct">{</span> cart<span class="tok-punct">.</span><span class="tok-func">add</span><span class="tok-punct">(</span>laptop<span class="tok-punct">,</span> quantity<span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+          <span class="tok-punct">.</span>to <span class="tok-func">raise_error</span><span class="tok-punct">(</span><span class="tok-prop">ArgumentError</span><span class="tok-punct">,</span> <span class="tok-punct">/</span>الكمية<span class="tok-punct">/)</span>
+      <span class="tok-keyword">end</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;#total&quot;</span> <span class="tok-keyword">do</span>
+    context <span class="tok-string">&quot;عندما تكون السلّة فارغة&quot;</span> <span class="tok-keyword">do</span>
+      it <span class="tok-string">&quot;يُرجع صفراً&quot;</span> <span class="tok-keyword">do</span>
+        <span class="tok-func">expect</span><span class="tok-punct">(</span>cart<span class="tok-punct">.</span>total<span class="tok-punct">).</span>to be_zero
+      <span class="tok-keyword">end</span>
+    <span class="tok-keyword">end</span>
+
+    context <span class="tok-string">&quot;مع منتجات&quot;</span> <span class="tok-keyword">do</span>
+      before <span class="tok-punct">{</span> cart<span class="tok-punct">.</span><span class="tok-func">add</span><span class="tok-punct">(</span>laptop<span class="tok-punct">).</span><span class="tok-func">add</span><span class="tok-punct">(</span>mouse<span class="tok-punct">,</span> quantity<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+
+      it <span class="tok-string">&quot;يجمع أسعار كل المنتجات مضروبة بكمياتها&quot;</span> <span class="tok-keyword">do</span>
+        <span class="tok-func">expect</span><span class="tok-punct">(</span>cart<span class="tok-punct">.</span>total<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">4500</span> <span class="tok-punct">+</span> <span class="tok-number">240</span><span class="tok-punct">)</span>
+      <span class="tok-keyword">end</span>
+
+      it <span class="tok-string">&quot;يطبّق الخصم عند تجاوز الحدّ&quot;</span> <span class="tok-keyword">do</span>
+        <span class="tok-func">expect</span><span class="tok-punct">(</span>cart<span class="tok-punct">.</span><span class="tok-func">total</span><span class="tok-punct">(</span>discount<span class="tok-punct">:</span> <span class="tok-number">0.1</span><span class="tok-punct">)).</span>to <span class="tok-func">be_within</span><span class="tok-punct">(</span><span class="tok-number">0.01</span><span class="tok-punct">).</span><span class="tok-func">of</span><span class="tok-punct">(</span><span class="tok-number">4266.0</span><span class="tok-punct">)</span>
+      <span class="tok-keyword">end</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;#empty?&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-punct">{</span> <span class="tok-func">expect</span><span class="tok-punct">(</span>cart<span class="tok-punct">).</span>to be_empty <span class="tok-punct">}</span>
+
+    it <span class="tok-string">&quot;يصبح false بعد الإضافة&quot;</span> <span class="tok-keyword">do</span>
+      cart<span class="tok-punct">.</span><span class="tok-func">add</span><span class="tok-punct">(</span>laptop<span class="tok-punct">)</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>cart<span class="tok-punct">).</span>not_to be_empty
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span></code></pre></div><h3 id="sec-8">أهم المطابقات (Matchers)</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-func">expect</span><span class="tok-punct">(</span>x<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">)</span>                    <span class="tok-comment"># == مساواة قيمة</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>x<span class="tok-punct">).</span>to <span class="tok-func">eql</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">)</span>                   <span class="tok-comment"># مساواة مع النوع</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>x<span class="tok-punct">).</span>to <span class="tok-func">be</span><span class="tok-punct">(</span>obj<span class="tok-punct">)</span>                  <span class="tok-comment"># نفس الكائن</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>x<span class="tok-punct">).</span>to be_nil
+<span class="tok-func">expect</span><span class="tok-punct">(</span>x<span class="tok-punct">).</span>to be_truthy <span class="tok-punct">/</span> be_falsey
+<span class="tok-func">expect</span><span class="tok-punct">(</span>x<span class="tok-punct">).</span>to be <span class="tok-punct">&gt;</span> <span class="tok-number">5</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>x<span class="tok-punct">).</span>to <span class="tok-func">be_within</span><span class="tok-punct">(</span><span class="tok-number">0.01</span><span class="tok-punct">).</span><span class="tok-func">of</span><span class="tok-punct">(</span><span class="tok-number">3.14</span><span class="tok-punct">)</span>
+
+<span class="tok-func">expect</span><span class="tok-punct">(</span>list<span class="tok-punct">).</span>to <span class="tok-keyword">include</span><span class="tok-punct">(</span><span class="tok-number">3</span><span class="tok-punct">)</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>list<span class="tok-punct">).</span>to <span class="tok-func">match_array</span><span class="tok-punct">([</span><span class="tok-number">3</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">])</span>   <span class="tok-comment"># نفس العناصر بأي ترتيب</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>list<span class="tok-punct">).</span>to <span class="tok-func">all</span><span class="tok-punct">(</span>be_positive<span class="tok-punct">)</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>list<span class="tok-punct">).</span>to be_empty
+<span class="tok-func">expect</span><span class="tok-punct">(</span>list<span class="tok-punct">.</span>size<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">3</span><span class="tok-punct">)</span>
+
+<span class="tok-func">expect</span><span class="tok-punct">(</span>str<span class="tok-punct">).</span>to <span class="tok-func">match</span><span class="tok-punct">(/</span>ruby<span class="tok-punct">/</span>i<span class="tok-punct">)</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>str<span class="tok-punct">).</span>to <span class="tok-func">start_with</span><span class="tok-punct">(</span><span class="tok-string">&quot;مرحبا&quot;</span><span class="tok-punct">)</span>
+
+<span class="tok-func">expect</span><span class="tok-punct">(</span>hash<span class="tok-punct">).</span>to <span class="tok-keyword">include</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;سارة&quot;</span><span class="tok-punct">)</span>
+
+<span class="tok-func">expect</span><span class="tok-punct">(</span>obj<span class="tok-punct">).</span>to <span class="tok-func">be_a</span><span class="tok-punct">(</span><span class="tok-prop">User</span><span class="tok-punct">)</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>obj<span class="tok-punct">).</span>to <span class="tok-func">respond_to</span><span class="tok-punct">(:</span>save<span class="tok-punct">)</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>obj<span class="tok-punct">).</span>to be_valid                <span class="tok-comment"># يستدعي valid?</span>
+<span class="tok-func">expect</span><span class="tok-punct">(</span>obj<span class="tok-punct">).</span>to <span class="tok-func">have_attributes</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;سارة&quot;</span><span class="tok-punct">,</span> age<span class="tok-punct">:</span> <span class="tok-number">30</span><span class="tok-punct">)</span>
+
+expect <span class="tok-punct">{</span> code <span class="tok-punct">}.</span>to <span class="tok-func">raise_error</span><span class="tok-punct">(</span><span class="tok-prop">ArgumentError</span><span class="tok-punct">)</span>
+expect <span class="tok-punct">{</span> code <span class="tok-punct">}.</span>to change <span class="tok-punct">{</span> cart<span class="tok-punct">.</span>total <span class="tok-punct">}.</span><span class="tok-func">by</span><span class="tok-punct">(</span><span class="tok-number">100</span><span class="tok-punct">)</span>
+expect <span class="tok-punct">{</span> code <span class="tok-punct">}.</span>to change <span class="tok-punct">{</span> <span class="tok-prop">User</span><span class="tok-punct">.</span>count <span class="tok-punct">}.</span><span class="tok-func">from</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span>
+expect <span class="tok-punct">{</span> code <span class="tok-punct">}.</span>not_to change <span class="tok-punct">{</span> list<span class="tok-punct">.</span>size <span class="tok-punct">}</span>
+expect <span class="tok-punct">{</span> code <span class="tok-punct">}.</span>to <span class="tok-func">output</span><span class="tok-punct">(</span><span class="tok-string">&quot;مرحبا\n&quot;</span><span class="tok-punct">).</span>to_stdout</code></pre></div><h3 id="sec-9">المضاعفات (Doubles) والتخيّل (Mocks)</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># double — كائن وهمي بسيط</span>
+<span class="tok-func">let</span><span class="tok-punct">(:</span>gateway<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-func">double</span><span class="tok-punct">(</span><span class="tok-string">&quot;PaymentGateway&quot;</span><span class="tok-punct">,</span> charge<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+
+<span class="tok-comment"># instance_double — يتحقّق أن الدوال موجودة فعلاً في الصنف الحقيقي ✅</span>
+<span class="tok-func">let</span><span class="tok-punct">(:</span>gateway<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-func">instance_double</span><span class="tok-punct">(</span><span class="tok-prop">PaymentGateway</span><span class="tok-punct">,</span> charge<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+
+it <span class="tok-string">&quot;يستدعي البوّابة بالمبلغ الصحيح&quot;</span> <span class="tok-keyword">do</span>
+  <span class="tok-func">expect</span><span class="tok-punct">(</span>gateway<span class="tok-punct">).</span>to <span class="tok-func">receive</span><span class="tok-punct">(:</span>charge<span class="tok-punct">).</span><span class="tok-func">with</span><span class="tok-punct">(</span><span class="tok-number">4500</span><span class="tok-punct">).</span><span class="tok-func">and_return</span><span class="tok-punct">(</span><span class="tok-bool">true</span><span class="tok-punct">)</span>
+  checkout<span class="tok-punct">.</span><span class="tok-func">pay</span><span class="tok-punct">(</span>gateway<span class="tok-punct">)</span>
+<span class="tok-keyword">end</span>
+
+it <span class="tok-string">&quot;يعالج فشل الدفع&quot;</span> <span class="tok-keyword">do</span>
+  <span class="tok-func">allow</span><span class="tok-punct">(</span>gateway<span class="tok-punct">).</span>to <span class="tok-func">receive</span><span class="tok-punct">(:</span>charge<span class="tok-punct">).</span><span class="tok-func">and_raise</span><span class="tok-punct">(</span><span class="tok-prop">PaymentError</span><span class="tok-punct">)</span>
+  <span class="tok-func">expect</span><span class="tok-punct">(</span>checkout<span class="tok-punct">.</span><span class="tok-func">pay</span><span class="tok-punct">(</span>gateway<span class="tok-punct">)).</span>to be_falsey
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># تثبيت الوقت</span>
+it <span class="tok-string">&quot;يسجّل وقت الإنشاء&quot;</span> <span class="tok-keyword">do</span>
+  <span class="tok-func">allow</span><span class="tok-punct">(</span><span class="tok-prop">Time</span><span class="tok-punct">).</span>to <span class="tok-func">receive</span><span class="tok-punct">(:</span>now<span class="tok-punct">).</span><span class="tok-func">and_return</span><span class="tok-punct">(</span><span class="tok-prop">Time</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-number">2026</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">))</span>
+  <span class="tok-func">expect</span><span class="tok-punct">(</span><span class="tok-prop">Order</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">.</span>created_at<span class="tok-punct">.</span>year<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">2026</span><span class="tok-punct">)</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>فضّل <code>instance_double</code> على <code>double</code> دائماً: إن حذفت أو أعدت تسمية دالة في الصنف الحقيقي، يفشل الاختبار فوراً بدل أن يبقى أخضر كذباً.</p></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> لا تفرط في المضاعفات</div><p>اختبار مليء بالـ mocks يختبر <strong>تنفيذك</strong> لا <strong>سلوكك</strong>، فيكسر عند كل إعادة هيكلة. استخدمها للحدود الخارجية فقط: الشبكة، قاعدة البيانات، الوقت، نظام الملفات.</p></div><h2 id="sec-10">Minitest — البديل الأخفّ</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">require</span> <span class="tok-string">&quot;minitest/autorun&quot;</span>
+<span class="tok-keyword">require</span> <span class="tok-string">&quot;shopping_cart&quot;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">ShoppingCartTest</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">Minitest</span><span class="tok-punct">::</span><span class="tok-prop">Test</span>
+  <span class="tok-keyword">def</span> setup
+    <span class="tok-attr">@cart</span>   <span class="tok-punct">=</span> <span class="tok-prop">ShoppingCart</span><span class="tok-punct">.</span><span class="tok-keyword">new</span>
+    <span class="tok-attr">@laptop</span> <span class="tok-punct">=</span> <span class="tok-prop">Product</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;لابتوب&quot;</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">4500</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> test_adds_product
+    <span class="tok-attr">@cart</span><span class="tok-punct">.</span><span class="tok-func">add</span><span class="tok-punct">(</span><span class="tok-attr">@laptop</span><span class="tok-punct">)</span>
+    assert_equal <span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-attr">@cart</span><span class="tok-punct">.</span>items<span class="tok-punct">.</span>size
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> test_raises_on_invalid_quantity
+    <span class="tok-func">assert_raises</span><span class="tok-punct">(</span><span class="tok-prop">ArgumentError</span><span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-attr">@cart</span><span class="tok-punct">.</span><span class="tok-func">add</span><span class="tok-punct">(</span><span class="tok-attr">@laptop</span><span class="tok-punct">,</span> quantity<span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> test_total
+    <span class="tok-attr">@cart</span><span class="tok-punct">.</span><span class="tok-func">add</span><span class="tok-punct">(</span><span class="tok-attr">@laptop</span><span class="tok-punct">)</span>
+    assert_in_delta <span class="tok-number">4500</span><span class="tok-punct">,</span> <span class="tok-attr">@cart</span><span class="tok-punct">.</span>total<span class="tok-punct">,</span> <span class="tok-number">0.01</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>Minitest جزء من مكتبة Ruby القياسية، أسرع وأبسط. RSpec أغنى بالمطابقات وأكثر تعبيراً. المشاريع الجديدة تختار غالباً RSpec، وRails يأتي بـ Minitest افتراضياً — كلاهما خيار صحيح.</p></div><h2 id="sec-11">RuboCop</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>bundle add rubocop <span class="tok-attr">--group</span> development
+bundle exec rubocop              <span class="tok-comment"># فحص</span>
+bundle exec rubocop <span class="tok-attr">-a</span>           <span class="tok-comment"># إصلاح الآمن تلقائياً</span>
+bundle exec rubocop <span class="tok-attr">-A</span>           <span class="tok-comment"># إصلاح الكل (راجع النتيجة!)</span>
+bundle exec rubocop <span class="tok-attr">--auto-gen-config</span>   <span class="tok-comment"># يتجاهل المخالفات القائمة</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code># .rubocop.yml
+AllCops:
+  TargetRubyVersion: 3.3
+  NewCops: enable
+  Exclude:
+    - &quot;db/**/*&quot;
+    - &quot;vendor/**/*&quot;
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/BlockLength:
+  Exclude:
+    - &quot;spec/**/*&quot;
+
+Layout/LineLength:
+  Max: 120</code></pre></div><h2 id="sec-12">تغطية الاختبارات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># spec/spec_helper.rb — يجب أن يكون في أول الملف</span>
+<span class="tok-keyword">require</span> <span class="tok-string">&quot;simplecov&quot;</span>
+<span class="tok-prop">SimpleCov</span><span class="tok-punct">.</span>start <span class="tok-keyword">do</span>
+  add_filter <span class="tok-string">&quot;/spec/&quot;</span>
+  add_group <span class="tok-string">&quot;Models&quot;</span><span class="tok-punct">,</span>   <span class="tok-string">&quot;lib/models&quot;</span>
+  add_group <span class="tok-string">&quot;Services&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;lib/services&quot;</span>
+  minimum_coverage <span class="tok-number">85</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> التغطية مؤشّر لا هدف</div><p>تغطية 100٪ لا تعني شيفرة صحيحة — تعني فقط أن كل سطر نُفِّذ مرة. ركّز على تغطية <strong>الحالات الحدّية والمسارات الفاشلة</strong>، لا على الرقم.</p></div><h2 id="sec-13">مبادئ الاختبار الجيّد</h2><ol class="steps"><li><strong>اختبر السلوك لا التنفيذ</strong>: «تحسب الإجمالي مع الضريبة» لا «تستدعي calculate_tax».</li><li><strong>اختبار واحد = تأكيد واحد</strong> قدر الإمكان — فشله يخبرك بالمشكلة فوراً.</li><li><strong>اسم وصفي</strong>: عند الفشل يجب أن يكفي الاسم لفهم ما انكسر.</li><li><strong>رتّب بنمط AAA</strong>: تهيئة (Arrange)، تنفيذ (Act)، تأكيد (Assert).</li><li><strong>اختبر الحالات الحدّية</strong>: صفر، فارغ، <code>nil</code>، سالب، أقصى حدّ.</li><li><strong>اختبر المسارات الفاشلة</strong> لا الناجحة فقط — هنا تختبئ الأخطاء.</li><li><strong>اجعلها مستقلّة</strong>: ترتيب التشغيل يجب ألا يؤثّر على النتيجة.</li><li><strong>اجعلها سريعة</strong>: مجموعة بطيئة لن تُشغَّل، ومجموعة لا تُشغَّل عديمة الفائدة.</li></ol><h2 id="sec-14">تمرين</h2><section class="exercise" id="sec-15"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>gem مع مجموعة اختبارات كاملة</h3></header><div class="exercise-body"><p>ابنِ gem لتحويل الوحدات مع اختبارات RSpec شاملة وإعداد CI.</p><p><strong>المطلوب:</strong></p><ul><li>أنشئ gem باسم <code>unit_convert</code> بـ <code>bundle gem</code>.</li><li>وحدة تحويل للأطوال والأوزان ودرجات الحرارة والعملات.</li><li>واجهة قابلة للتسلسل: <code>UnitConvert.value(100).from(:cm).to(:m)</code>.</li><li>ارمِ <code>UnitConvert::UnknownUnitError</code> لوحدة غير معروفة، و <code>IncompatibleUnitsError</code> عند خلط الفئات.</li><li>اكتب اختبارات RSpec تغطّي: كل تحويل، الحالات الحدّية (صفر، سالب، أعداد ضخمة)، والأخطاء.</li><li>استخدم <code>let</code> و <code>described_class</code> و <code>context</code> بشكل صحيح.</li><li>استخدم <code>instance_double</code> لمزوّد أسعار العملات، ولا تلمس الشبكة في الاختبارات.</li><li>اضبط SimpleCov بحدّ أدنى 90٪ للتغطية.</li><li>اضبط RuboCop واجعله يمرّ بلا مخالفات.</li><li>أضف ملف GitHub Actions يشغّل الاختبارات و RuboCop على ثلاثة إصدارات من Ruby.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 خزّن معاملات التحويل في Hash مجمّد: <code>{ length: { m: 1.0, cm: 0.01, km: 1000.0 } }</code>.</li><li>💡 حوّل دائماً إلى وحدة أساسية ثم إلى الهدف — يقلّل عدد المعاملات من N² إلى N.</li><li>💡 درجات الحرارة تحتاج معالجة خاصة (إزاحة لا ضرب فقط).</li><li>💡 <code>be_within(0.001).of(expected)</code> للمقارنات العشرية.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># lib/unit_convert.rb</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># frozen_string_literal: true</span>
+
+<span class="tok-keyword">require_relative</span> <span class="tok-string">&quot;unit_convert/version&quot;</span>
+<span class="tok-keyword">require_relative</span> <span class="tok-string">&quot;unit_convert/errors&quot;</span>
+<span class="tok-keyword">require_relative</span> <span class="tok-string">&quot;unit_convert/conversion&quot;</span>
+
+<span class="tok-keyword">module</span> <span class="tok-prop">UnitConvert</span>
+  <span class="tok-prop">FACTORS</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+    length<span class="tok-punct">:</span> <span class="tok-punct">{</span> m<span class="tok-punct">:</span> <span class="tok-number">1.0</span><span class="tok-punct">,</span> cm<span class="tok-punct">:</span> <span class="tok-number">0.01</span><span class="tok-punct">,</span> mm<span class="tok-punct">:</span> <span class="tok-number">0.001</span><span class="tok-punct">,</span> km<span class="tok-punct">:</span> <span class="tok-number">1000.0</span><span class="tok-punct">,</span> mi<span class="tok-punct">:</span> <span class="tok-number">1609.344</span><span class="tok-punct">,</span> ft<span class="tok-punct">:</span> <span class="tok-number">0.3048</span><span class="tok-punct">,</span> <span class="tok-keyword">in</span><span class="tok-punct">:</span> <span class="tok-number">0.0254</span> <span class="tok-punct">},</span>
+    mass<span class="tok-punct">:</span>   <span class="tok-punct">{</span> kg<span class="tok-punct">:</span> <span class="tok-number">1.0</span><span class="tok-punct">,</span> g<span class="tok-punct">:</span> <span class="tok-number">0.001</span><span class="tok-punct">,</span> mg<span class="tok-punct">:</span> <span class="tok-number">0.000001</span><span class="tok-punct">,</span> t<span class="tok-punct">:</span> <span class="tok-number">1000.0</span><span class="tok-punct">,</span> lb<span class="tok-punct">:</span> <span class="tok-number">0.45359237</span><span class="tok-punct">,</span> oz<span class="tok-punct">:</span> <span class="tok-number">0.028349523</span> <span class="tok-punct">}</span>
+  <span class="tok-punct">}.</span><span class="tok-keyword">freeze</span>
+
+  <span class="tok-prop">TEMPERATURE_UNITS</span> <span class="tok-punct">=</span> <span class="tok-string">%i[c f k]</span><span class="tok-punct">.</span><span class="tok-keyword">freeze</span>
+
+  module_function
+
+  <span class="tok-keyword">def</span> <span class="tok-func">value</span><span class="tok-punct">(</span>number<span class="tok-punct">)</span> <span class="tok-punct">=</span> <span class="tok-prop">Conversion</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>number<span class="tok-punct">)</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">category_of</span><span class="tok-punct">(</span>unit<span class="tok-punct">)</span>
+    <span class="tok-keyword">return</span> <span class="tok-bool">:temperature</span> <span class="tok-keyword">if</span> <span class="tok-prop">TEMPERATURE_UNITS</span><span class="tok-punct">.</span><span class="tok-keyword">include</span><span class="tok-punct">?(</span>unit<span class="tok-punct">)</span>
+
+    <span class="tok-prop">FACTORS</span><span class="tok-punct">.</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span>category<span class="tok-punct">,</span> units<span class="tok-punct">|</span> <span class="tok-keyword">return</span> category <span class="tok-keyword">if</span> units<span class="tok-punct">.</span><span class="tok-func">key?</span><span class="tok-punct">(</span>unit<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+    <span class="tok-keyword">raise</span> <span class="tok-prop">UnknownUnitError</span><span class="tok-punct">,</span> unit
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> units <span class="tok-punct">=</span> <span class="tok-prop">FACTORS</span><span class="tok-punct">.</span>values<span class="tok-punct">.</span><span class="tok-func">flat_map</span><span class="tok-punct">(&amp;:</span>keys<span class="tok-punct">)</span> <span class="tok-punct">+</span> <span class="tok-prop">TEMPERATURE_UNITS</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># lib/unit_convert/errors.rb</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># frozen_string_literal: true</span>
+
+<span class="tok-keyword">module</span> <span class="tok-prop">UnitConvert</span>
+  <span class="tok-keyword">class</span> <span class="tok-prop">Error</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">StandardError</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">class</span> <span class="tok-prop">UnknownUnitError</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">Error</span>
+    <span class="tok-keyword">attr_reader</span> <span class="tok-bool">:unit</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>unit<span class="tok-punct">)</span>
+      <span class="tok-attr">@unit</span> <span class="tok-punct">=</span> unit
+      <span class="tok-keyword">super</span><span class="tok-punct">(</span><span class="tok-string">&quot;وحدة غير معروفة: #{unit.inspect}&quot;</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">class</span> <span class="tok-prop">IncompatibleUnitsError</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">Error</span>
+    <span class="tok-keyword">attr_reader</span> <span class="tok-bool">:from</span><span class="tok-punct">,</span> <span class="tok-bool">:to</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>from<span class="tok-punct">,</span> to<span class="tok-punct">)</span>
+      <span class="tok-attr">@from</span> <span class="tok-punct">=</span> from
+      <span class="tok-attr">@to</span>   <span class="tok-punct">=</span> to
+      <span class="tok-keyword">super</span><span class="tok-punct">(</span><span class="tok-string">&quot;لا يمكن التحويل من #{from} إلى #{to} — فئتان مختلفتان&quot;</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">class</span> <span class="tok-prop">MissingSourceError</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">Error</span>
+    <span class="tok-keyword">def</span> initialize <span class="tok-punct">=</span> <span class="tok-keyword">super</span><span class="tok-punct">(</span><span class="tok-string">&quot;استدعِ from قبل to&quot;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># lib/unit_convert/conversion.rb</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># frozen_string_literal: true</span>
+
+<span class="tok-keyword">module</span> <span class="tok-prop">UnitConvert</span>
+  <span class="tok-keyword">class</span> <span class="tok-prop">Conversion</span>
+    <span class="tok-keyword">attr_reader</span> <span class="tok-bool">:number</span><span class="tok-punct">,</span> <span class="tok-bool">:source</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>number<span class="tok-punct">)</span>
+      <span class="tok-keyword">raise</span> <span class="tok-prop">ArgumentError</span><span class="tok-punct">,</span> <span class="tok-string">&quot;القيمة يجب أن تكون رقماً&quot;</span> <span class="tok-keyword">unless</span> number<span class="tok-punct">.</span><span class="tok-func">is_a?</span><span class="tok-punct">(</span><span class="tok-prop">Numeric</span><span class="tok-punct">)</span>
+
+      <span class="tok-attr">@number</span> <span class="tok-punct">=</span> number<span class="tok-punct">.</span>to_f
+      <span class="tok-attr">@source</span> <span class="tok-punct">=</span> <span class="tok-bool">nil</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">from</span><span class="tok-punct">(</span>unit<span class="tok-punct">)</span>
+      <span class="tok-prop">UnitConvert</span><span class="tok-punct">.</span><span class="tok-func">category_of</span><span class="tok-punct">(</span>unit<span class="tok-punct">)</span>   <span class="tok-comment"># يرمي إن كانت مجهولة</span>
+      <span class="tok-attr">@source</span> <span class="tok-punct">=</span> unit
+      <span class="tok-keyword">self</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">to</span><span class="tok-punct">(</span>unit<span class="tok-punct">,</span> precision<span class="tok-punct">:</span> <span class="tok-number">6</span><span class="tok-punct">)</span>
+      <span class="tok-keyword">raise</span> <span class="tok-prop">MissingSourceError</span> <span class="tok-keyword">unless</span> source
+
+      source_category <span class="tok-punct">=</span> <span class="tok-prop">UnitConvert</span><span class="tok-punct">.</span><span class="tok-func">category_of</span><span class="tok-punct">(</span>source<span class="tok-punct">)</span>
+      target_category <span class="tok-punct">=</span> <span class="tok-prop">UnitConvert</span><span class="tok-punct">.</span><span class="tok-func">category_of</span><span class="tok-punct">(</span>unit<span class="tok-punct">)</span>
+      <span class="tok-keyword">raise</span> <span class="tok-prop">IncompatibleUnitsError</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>source<span class="tok-punct">,</span> unit<span class="tok-punct">)</span> <span class="tok-keyword">if</span> source_category <span class="tok-punct">!=</span> target_category
+
+      result <span class="tok-punct">=</span>
+        <span class="tok-keyword">if</span> source_category <span class="tok-punct">==</span> <span class="tok-bool">:temperature</span>
+          <span class="tok-func">convert_temperature</span><span class="tok-punct">(</span>unit<span class="tok-punct">)</span>
+        <span class="tok-keyword">else</span>
+          <span class="tok-func">convert_linear</span><span class="tok-punct">(</span>source_category<span class="tok-punct">,</span> unit<span class="tok-punct">)</span>
+        <span class="tok-keyword">end</span>
+
+      result<span class="tok-punct">.</span><span class="tok-func">round</span><span class="tok-punct">(</span>precision<span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">private</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">convert_linear</span><span class="tok-punct">(</span>category<span class="tok-punct">,</span> target<span class="tok-punct">)</span>
+      factors <span class="tok-punct">=</span> <span class="tok-prop">UnitConvert</span><span class="tok-punct">::</span><span class="tok-prop">FACTORS</span><span class="tok-punct">.</span><span class="tok-func">fetch</span><span class="tok-punct">(</span>category<span class="tok-punct">)</span>
+      base    <span class="tok-punct">=</span> number <span class="tok-punct">*</span> factors<span class="tok-punct">.</span><span class="tok-func">fetch</span><span class="tok-punct">(</span>source<span class="tok-punct">)</span>
+      base <span class="tok-punct">/</span> factors<span class="tok-punct">.</span><span class="tok-func">fetch</span><span class="tok-punct">(</span>target<span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">convert_temperature</span><span class="tok-punct">(</span>target<span class="tok-punct">)</span>
+      celsius <span class="tok-punct">=</span>
+        <span class="tok-keyword">case</span> source
+        <span class="tok-keyword">when</span> <span class="tok-bool">:c</span> <span class="tok-keyword">then</span> number
+        <span class="tok-keyword">when</span> <span class="tok-bool">:f</span> <span class="tok-keyword">then</span> <span class="tok-punct">(</span>number <span class="tok-punct">-</span> <span class="tok-number">32</span><span class="tok-punct">)</span> <span class="tok-punct">*</span> <span class="tok-number">5.0</span> <span class="tok-punct">/</span> <span class="tok-number">9</span>
+        <span class="tok-keyword">when</span> <span class="tok-bool">:k</span> <span class="tok-keyword">then</span> number <span class="tok-punct">-</span> <span class="tok-number">273.15</span>
+        <span class="tok-keyword">end</span>
+
+      <span class="tok-keyword">case</span> target
+      <span class="tok-keyword">when</span> <span class="tok-bool">:c</span> <span class="tok-keyword">then</span> celsius
+      <span class="tok-keyword">when</span> <span class="tok-bool">:f</span> <span class="tok-keyword">then</span> celsius <span class="tok-punct">*</span> <span class="tok-number">9.0</span> <span class="tok-punct">/</span> <span class="tok-number">5</span> <span class="tok-punct">+</span> <span class="tok-number">32</span>
+      <span class="tok-keyword">when</span> <span class="tok-bool">:k</span> <span class="tok-keyword">then</span> celsius <span class="tok-punct">+</span> <span class="tok-number">273.15</span>
+      <span class="tok-keyword">end</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># spec/spec_helper.rb</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># frozen_string_literal: true</span>
+
+<span class="tok-keyword">require</span> <span class="tok-string">&quot;simplecov&quot;</span>
+<span class="tok-prop">SimpleCov</span><span class="tok-punct">.</span>start <span class="tok-keyword">do</span>
+  add_filter <span class="tok-string">&quot;/spec/&quot;</span>
+  minimum_coverage <span class="tok-number">90</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">require</span> <span class="tok-string">&quot;unit_convert&quot;</span>
+
+<span class="tok-prop">RSpec</span><span class="tok-punct">.</span>configure <span class="tok-keyword">do</span> <span class="tok-punct">|</span>config<span class="tok-punct">|</span>
+  config<span class="tok-punct">.</span><span class="tok-func">expect_with</span><span class="tok-punct">(:</span>rspec<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-punct">|</span>c<span class="tok-punct">|</span> c<span class="tok-punct">.</span>syntax <span class="tok-punct">=</span> <span class="tok-bool">:expect</span> <span class="tok-punct">}</span>
+  config<span class="tok-punct">.</span>disable_monkey_patching!
+  config<span class="tok-punct">.</span>order <span class="tok-punct">=</span> <span class="tok-bool">:random</span>
+  <span class="tok-prop">Kernel</span><span class="tok-punct">.</span>srand config<span class="tok-punct">.</span>seed
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># spec/unit_convert_spec.rb</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># frozen_string_literal: true</span>
+
+<span class="tok-prop">RSpec</span><span class="tok-punct">.</span>describe <span class="tok-prop">UnitConvert</span> <span class="tok-keyword">do</span>
+  describe <span class="tok-string">&quot;.value&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يُرجع كائن تحويل&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>described_class<span class="tok-punct">.</span><span class="tok-func">value</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)).</span>to <span class="tok-func">be_a</span><span class="tok-punct">(</span><span class="tok-prop">UnitConvert</span><span class="tok-punct">::</span><span class="tok-prop">Conversion</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يرفض القيم غير الرقمية&quot;</span> <span class="tok-keyword">do</span>
+      expect <span class="tok-punct">{</span> described_class<span class="tok-punct">.</span><span class="tok-func">value</span><span class="tok-punct">(</span><span class="tok-string">&quot;نصّ&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+        <span class="tok-punct">.</span>to <span class="tok-func">raise_error</span><span class="tok-punct">(</span><span class="tok-prop">ArgumentError</span><span class="tok-punct">,</span> <span class="tok-punct">/</span>رقماً<span class="tok-punct">/)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;.category_of&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-punct">{</span> <span class="tok-func">expect</span><span class="tok-punct">(</span>described_class<span class="tok-punct">.</span><span class="tok-func">category_of</span><span class="tok-punct">(:</span>m<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(:</span>length<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+    it <span class="tok-punct">{</span> <span class="tok-func">expect</span><span class="tok-punct">(</span>described_class<span class="tok-punct">.</span><span class="tok-func">category_of</span><span class="tok-punct">(:</span>kg<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(:</span>mass<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+    it <span class="tok-punct">{</span> <span class="tok-func">expect</span><span class="tok-punct">(</span>described_class<span class="tok-punct">.</span><span class="tok-func">category_of</span><span class="tok-punct">(:</span>c<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(:</span>temperature<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+
+    it <span class="tok-string">&quot;يرمي للوحدة المجهولة&quot;</span> <span class="tok-keyword">do</span>
+      expect <span class="tok-punct">{</span> described_class<span class="tok-punct">.</span><span class="tok-func">category_of</span><span class="tok-punct">(:</span>parsec<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+        <span class="tok-punct">.</span>to <span class="tok-func">raise_error</span><span class="tok-punct">(</span><span class="tok-prop">UnitConvert</span><span class="tok-punct">::</span><span class="tok-prop">UnknownUnitError</span><span class="tok-punct">,</span> <span class="tok-punct">/</span>parsec<span class="tok-punct">/)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># spec/unit_convert/conversion_spec.rb</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># frozen_string_literal: true</span>
+
+<span class="tok-prop">RSpec</span><span class="tok-punct">.</span>describe <span class="tok-prop">UnitConvert</span><span class="tok-punct">::</span><span class="tok-prop">Conversion</span> <span class="tok-keyword">do</span>
+  <span class="tok-func">subject</span><span class="tok-punct">(:</span>convert<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-prop">UnitConvert</span><span class="tok-punct">.</span><span class="tok-func">method</span><span class="tok-punct">(:</span>value<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+
+  describe <span class="tok-string">&quot;الأطوال&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يحوّل السنتيمتر إلى متر&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">100</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>cm<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>m<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">1.0</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يحوّل الكيلومتر إلى ميل&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>km<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>mi<span class="tok-punct">)).</span>to <span class="tok-func">be_within</span><span class="tok-punct">(</span><span class="tok-number">0.0001</span><span class="tok-punct">).</span><span class="tok-func">of</span><span class="tok-punct">(</span><span class="tok-number">0.6214</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يحوّل القدم إلى بوصة&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>ft<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span><span class="tok-keyword">in</span><span class="tok-punct">)).</span>to <span class="tok-func">be_within</span><span class="tok-punct">(</span><span class="tok-number">0.0001</span><span class="tok-punct">).</span><span class="tok-func">of</span><span class="tok-punct">(</span><span class="tok-number">12.0</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يُرجع القيمة نفسها لنفس الوحدة&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">42.5</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>m<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>m<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">42.5</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;الأوزان&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يحوّل الغرام إلى كيلوغرام&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">2500</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>g<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>kg<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">2.5</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يحوّل الرطل إلى كيلوغرام&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">10</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>lb<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>kg<span class="tok-punct">)).</span>to <span class="tok-func">be_within</span><span class="tok-punct">(</span><span class="tok-number">0.001</span><span class="tok-punct">).</span><span class="tok-func">of</span><span class="tok-punct">(</span><span class="tok-number">4.536</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;درجات الحرارة&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يحوّل المئوية إلى فهرنهايت&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">100</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>c<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>f<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">212.0</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يحوّل الفهرنهايت إلى مئوية&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">98.6</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>f<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>c<span class="tok-punct">)).</span>to <span class="tok-func">be_within</span><span class="tok-punct">(</span><span class="tok-number">0.01</span><span class="tok-punct">).</span><span class="tok-func">of</span><span class="tok-punct">(</span><span class="tok-number">37.0</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يحوّل المئوية إلى كلفن&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>c<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>k<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">273.15</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يتعامل مع الصفر المطلق&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>k<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>c<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(-</span><span class="tok-number">273.15</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;الحالات الحدّية&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يتعامل مع الصفر&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>km<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>m<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">0.0</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يتعامل مع القيم السالبة&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(-</span><span class="tok-number">40</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>c<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>f<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(-</span><span class="tok-number">40.0</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يتعامل مع الأعداد الضخمة&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">1_000_000</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>mm<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>km<span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">1.0</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يحترم دقّة التقريب المطلوبة&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>m<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>ft<span class="tok-punct">,</span> precision<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">)).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">3.28</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;الأخطاء&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يرمي عند خلط الفئات&quot;</span> <span class="tok-keyword">do</span>
+      expect <span class="tok-punct">{</span> convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>m<span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>kg<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+        <span class="tok-punct">.</span>to <span class="tok-func">raise_error</span><span class="tok-punct">(</span><span class="tok-prop">UnitConvert</span><span class="tok-punct">::</span><span class="tok-prop">IncompatibleUnitsError</span><span class="tok-punct">,</span> <span class="tok-punct">/</span>فئتان<span class="tok-punct">/)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يرمي عند وحدة مصدر مجهولة&quot;</span> <span class="tok-keyword">do</span>
+      expect <span class="tok-punct">{</span> convert<span class="tok-punct">.</span><span class="tok-func">call</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">).</span><span class="tok-func">from</span><span class="tok-punct">(:</span>xyz<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+        <span class="tok-punct">.</span>to <span class="tok-func">raise_error</span><span class="tok-punct">(</span><span class="tok-prop">UnitConvert</span><span class="tok-punct">::</span><span class="tok-prop">UnknownUnitError</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يرمي عند استدعاء to قبل from&quot;</span> <span class="tok-keyword">do</span>
+      expect <span class="tok-punct">{</span> described_class<span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">).</span><span class="tok-func">to</span><span class="tok-punct">(:</span>m<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+        <span class="tok-punct">.</span>to <span class="tok-func">raise_error</span><span class="tok-punct">(</span><span class="tok-prop">UnitConvert</span><span class="tok-punct">::</span><span class="tok-prop">MissingSourceError</span><span class="tok-punct">,</span> <span class="tok-punct">/</span>from<span class="tok-punct">/)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;التسلسل&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يُرجع self من from&quot;</span> <span class="tok-keyword">do</span>
+      conversion <span class="tok-punct">=</span> described_class<span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>conversion<span class="tok-punct">.</span><span class="tok-func">from</span><span class="tok-punct">(:</span>m<span class="tok-punct">)).</span>to <span class="tok-func">be</span><span class="tok-punct">(</span>conversion<span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># .github/workflows/ci.yml</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># name: CI</span>
+<span class="tok-comment">#</span>
+<span class="tok-comment"># on: [push, pull_request]</span>
+<span class="tok-comment">#</span>
+<span class="tok-comment"># jobs:</span>
+<span class="tok-comment">#   test:</span>
+<span class="tok-comment">#     runs-on: ubuntu-latest</span>
+<span class="tok-comment">#     strategy:</span>
+<span class="tok-comment">#       matrix:</span>
+<span class="tok-comment">#         ruby: [&quot;3.1&quot;, &quot;3.2&quot;, &quot;3.3&quot;]</span>
+<span class="tok-comment">#     steps:</span>
+<span class="tok-comment">#       - uses: actions/checkout@v4</span>
+<span class="tok-comment">#       - uses: ruby/setup-ruby@v1</span>
+<span class="tok-comment">#         with:</span>
+<span class="tok-comment">#           ruby-version: ${{ matrix.ruby }}</span>
+<span class="tok-comment">#           bundler-cache: true</span>
+<span class="tok-comment">#       - run: bundle exec rspec</span>
+<span class="tok-comment">#       - run: bundle exec rubocop</span></code></pre></div></details></div></section><h2 id="sec-16">اختبر نفسك</h2><section class="quiz"><h2 id="sec-17"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الفرق بين <code>Gemfile</code> و <code>Gemfile.lock</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>الأول يصف المدايات المقبولة والثاني يسجّل الإصدارات الدقيقة المثبّتة فعلاً</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>الثاني احتياطي</span></label></div><div class="q-explain"><strong>الشرح:</strong> الـ lock هو ما يضمن أن ما يعمل على جهازك يعمل على الخادم بالضبط.</div></div><div class="q-item"><p class="q-text">2. هل تلتزم <code>Gemfile.lock</code> في Git؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>دائماً</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>نعم للتطبيقات، ولا للمكتبات (gems)</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أبداً</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>في الإنتاج فقط</span></label></div><div class="q-explain"><strong>الشرح:</strong> المكتبة يجب أن تعمل مع مدى واسع من إصدارات اعتمادياتها، فتثبيتها يضرّ مستخدميها.</div></div><div class="q-item"><p class="q-text">3. ماذا يعني <code>~&gt; 1.2</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>1.2 بالضبط</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>&gt;= 1.2 و &lt; 2.0 — يسمح بتغيير آخر رقم</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أي إصدار</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>&lt; 1.2</span></label></div><div class="q-explain"><strong>الشرح:</strong> ويُسمّى العامل المتفائل؛ <code>~&gt; 1.2.3</code> أضيق ويسمح بالتصحيحات فقط.</div></div><div class="q-item"><p class="q-text">4. لماذا <code>bundle exec rspec</code> بدل <code>rspec</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>يضمن التشغيل بإصدارات المشروع المحدّدة في Gemfile.lock</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>أقصر</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>لا فرق</span></label></div><div class="q-explain"><strong>الشرح:</strong> بدونه قد تُستخدم نسخة عالمية مختلفة تماماً عمّا يتوقّعه المشروع.</div></div><div class="q-item"><p class="q-text">5. ما ميزة <code>instance_double</code> على <code>double</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>يتحقّق أن الدوال موجودة فعلاً في الصنف الحقيقي فيكسر الاختبار عند إعادة التسمية</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>أقصر</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>يقبل أي دالة</span></label></div><div class="q-explain"><strong>الشرح:</strong> الـ <code>double</code> العادي يقبل أي دالة تخترعها فيبقى أخضر كذباً بعد إعادة الهيكلة.</div></div><div class="q-item"><p class="q-text">6. ما الفرق بين <code>let</code> و <code>before</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_5" value="correct"><span><code>let</code> كسول يُنفَّذ عند أول استخدام، و<code>before</code> يُنفَّذ قبل كل اختبار دائماً</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span><code>let</code> أسرع</span></label></div><div class="q-explain"><strong>الشرح:</strong> ولهذا <code>let</code> أنسب للبيانات و<code>before</code> للتهيئة ذات الأثر الجانبي.</div></div><div class="q-item"><p class="q-text">7. هل تغطية 100٪ تعني شيفرة صحيحة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>نعم</span></label><label class="q-option"><input type="radio" name="q1_6" value="correct"><span>لا — تعني فقط أن كل سطر نُفِّذ مرة، لا أن الحالات الحدّية مُختبَرة</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>أحياناً</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>تعني خلوّها من الأخطاء</span></label></div><div class="q-explain"><strong>الشرح:</strong> ركّز على المسارات الفاشلة والحالات الحدّية لا على الرقم.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="ruby/09-gems-testing" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="08-errors-files.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>معالجة الأخطاء والملفات</b></span></a>
+  <a class="next" href="10-rails-project.html"><span><small>الدرس التالي</small><b>مقدمة Ruby on Rails ومشروع متكامل</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Ruby</h3>
+        <div class="ring-wrap" data-ring data-track="ruby" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">ما الـ gem؟</a></li><li><a href="#sec-2">Bundler</a></li><li class="sub"><a href="#sec-3">Gemfile</a></li><li class="sub"><a href="#sec-4">Gemfile.lock</a></li><li><a href="#sec-5">أشهر الـ gems</a></li><li><a href="#sec-6">بناء gem خاص بك</a></li><li><a href="#sec-7">RSpec — الاختبارات</a></li><li class="sub"><a href="#sec-8">أهم المطابقات (Matchers)</a></li><li class="sub"><a href="#sec-9">المضاعفات (Doubles) والتخيّل (Mocks)</a></li><li><a href="#sec-10">Minitest — البديل الأخفّ</a></li><li><a href="#sec-11">RuboCop</a></li><li><a href="#sec-12">تغطية الاختبارات</a></li><li><a href="#sec-13">مبادئ الاختبار الجيّد</a></li><li><a href="#sec-14">تمرين</a></li><li><a href="#sec-15">gem مع مجموعة اختبارات كاملة</a></li><li><a href="#sec-16">اختبر نفسك</a></li><li><a href="#sec-17">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>gem install x</code><small>تثبيت مباشر</small></div><div class="ref-item"><code>bundle install</code><small>تثبيت من Gemfile</small></div><div class="ref-item"><code>bundle exec cmd</code><small>تشغيل بإصدارات المشروع</small></div><div class="ref-item"><code>bundle add x</code><small>إضافة gem</small></div><div class="ref-item"><code>rspec</code><small>تشغيل الاختبارات</small></div><div class="ref-item"><code>expect(x).to eq(y)</code><small>توقّع</small></div><div class="ref-item"><code>let(:x) { … }</code><small>قيمة كسولة</small></div><div class="ref-item"><code>rubocop -a</code><small>إصلاح الأسلوب</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="10-rails-project.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>مقدمة Ruby on Rails ومشروع متكامل<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

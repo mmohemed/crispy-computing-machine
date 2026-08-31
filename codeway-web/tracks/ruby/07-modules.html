@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="ruby">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الوحدات والـ Mixins — مسار Ruby | CodeWay Web</title>
+<meta name="description" content="الوحدات كفضاءات أسماء وكسلوك مشترك، وسلسلة البحث عن الدوال، ولمحة عن البرمجة الوصفية.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="الوحدات والـ Mixins — مسار Ruby | CodeWay Web">
+<meta property="og:description" content="الوحدات كفضاءات أسماء وكسلوك مشترك، وسلسلة البحث عن الدوال، ولمحة عن البرمجة الوصفية.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Ruby</a></li>
+      <li aria-current="page">الوحدات والـ Mixins</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 7 من 10</span>
+      <span class="badge level-متقدم">متقدم</span>
+      <span class="badge">Modules</span><span class="badge">Mixins</span><span class="badge">Metaprogramming</span>
+    </div>
+    <h1>الوحدات والـ Mixins</h1>
+    <p class="summary">الوحدات كفضاءات أسماء وكسلوك مشترك، وسلسلة البحث عن الدوال، ولمحة عن البرمجة الوصفية.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 55 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Ruby</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 7 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تستخدم الوحدة كفضاء أسماء لتنظيم الشيفرة.</li><li>تشارك السلوك عبر <code>include</code> و <code>extend</code> و <code>prepend</code>.</li><li>تفهم سلسلة البحث عن الدوال (<code>ancestors</code>) وترتيبها.</li><li>تعرف الفرق العملي بين طرق الإدماج الثلاث.</li><li>تستخدم <code>Comparable</code> و <code>Enumerable</code> في أصنافك.</li><li>تلمّ بأساسيات البرمجة الوصفية وحدود استخدامها.</li></ul></div>
+      <h2 id="sec-1">ما الوحدة؟</h2><p>الوحدة كالصنف تماماً، بفارقين: <strong>لا تُنشَأ منها مثيلات</strong> و<strong>لا تُورَّث</strong>. لها استخدامان رئيسيان: فضاء أسماء، وحاوية سلوك مشترك.</p><h2 id="sec-2">1) الوحدة كفضاء أسماء</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">module</span> <span class="tok-prop">Payments</span>
+  <span class="tok-prop">DEFAULT_CURRENCY</span> <span class="tok-punct">=</span> <span class="tok-string">&quot;SAR&quot;</span>
+
+  <span class="tok-keyword">class</span> <span class="tok-prop">Gateway</span>
+    <span class="tok-keyword">def</span> <span class="tok-func">charge</span><span class="tok-punct">(</span>amount<span class="tok-punct">)</span> <span class="tok-punct">=</span> <span class="tok-string">&quot;شُحِن #{amount}&quot;</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">class</span> <span class="tok-prop">Refund</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">module</span> <span class="tok-prop">Providers</span>
+    <span class="tok-keyword">class</span> <span class="tok-prop">Stripe</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+    <span class="tok-keyword">class</span> <span class="tok-prop">Tap</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-prop">Payments</span><span class="tok-punct">::</span><span class="tok-prop">Gateway</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">.</span><span class="tok-func">charge</span><span class="tok-punct">(</span><span class="tok-number">100</span><span class="tok-punct">)</span>
+<span class="tok-prop">Payments</span><span class="tok-punct">::</span><span class="tok-prop">Providers</span><span class="tok-punct">::</span><span class="tok-prop">Stripe</span><span class="tok-punct">.</span><span class="tok-keyword">new</span>
+<span class="tok-prop">Payments</span><span class="tok-punct">::</span><span class="tok-prop">DEFAULT_CURRENCY</span></code></pre></div><p>الفائدة: منع تصادم الأسماء. <code>Payments::Gateway</code> و <code>Shipping::Gateway</code> صنفان مختلفان تماماً يتعايشان بلا مشكلة.</p><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>في المشاريع الحقيقية يقابل التداخل بنية المجلّدات: <code>app/payments/providers/stripe.rb</code> يعرّف <code>Payments::Providers::Stripe</code>. هذا اصطلاح يعتمد عليه المحمّل التلقائي في Rails.</p></div><h3 id="sec-3">دوال الوحدة المستقلّة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">module</span> <span class="tok-prop">MathUtils</span>
+  module_function            <span class="tok-comment"># كل ما بعدها دالة وحدة</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">square</span><span class="tok-punct">(</span>x<span class="tok-punct">)</span> <span class="tok-punct">=</span> x <span class="tok-punct">*</span> x
+  <span class="tok-keyword">def</span> <span class="tok-func">cube</span><span class="tok-punct">(</span>x<span class="tok-punct">)</span>   <span class="tok-punct">=</span> x <span class="tok-punct">**</span> <span class="tok-number">3</span>
+  <span class="tok-keyword">def</span> <span class="tok-func">average</span><span class="tok-punct">(</span>nums<span class="tok-punct">)</span> <span class="tok-punct">=</span> nums<span class="tok-punct">.</span>sum<span class="tok-punct">.</span><span class="tok-func">fdiv</span><span class="tok-punct">(</span>nums<span class="tok-punct">.</span>size<span class="tok-punct">)</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-prop">MathUtils</span><span class="tok-punct">.</span><span class="tok-func">square</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">)</span>      <span class="tok-comment"># =&gt; 25</span>
+<span class="tok-prop">MathUtils</span><span class="tok-punct">.</span><span class="tok-func">average</span><span class="tok-punct">([</span><span class="tok-number">1</span><span class="tok-punct">,</span><span class="tok-number">2</span><span class="tok-punct">,</span><span class="tok-number">3</span><span class="tok-punct">])</span>
+
+<span class="tok-comment"># صيغة بديلة</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">StringUtils</span>
+  <span class="tok-keyword">def</span> <span class="tok-keyword">self</span><span class="tok-punct">.</span><span class="tok-func">slugify</span><span class="tok-punct">(</span>text<span class="tok-punct">)</span>
+    text<span class="tok-punct">.</span>strip<span class="tok-punct">.</span>downcase<span class="tok-punct">.</span><span class="tok-func">gsub</span><span class="tok-punct">(/[^</span>\w\s<span class="tok-punct">-]/,</span> <span class="tok-string">&quot;&quot;</span><span class="tok-punct">).</span><span class="tok-func">gsub</span><span class="tok-punct">(/</span>\s<span class="tok-punct">+/,</span> <span class="tok-string">&quot;-&quot;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استخدم <code>module_function</code> للأدوات عديمة الحالة (تحويلات، حسابات، تنسيق). لا معنى لإنشاء كائن من <code>MathUtils</code> — فامنع ذلك بجعلها وحدة.</p></div><h2 id="sec-4">2) الوحدة كسلوك مشترك (Mixin)</h2><p>هنا القوة الحقيقية. Ruby لا يدعم الوراثة المتعدّدة، لكن الوحدات تحلّ المشكلة بأناقة: صنف واحد يستطيع دمج عدد غير محدود من الوحدات.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">module</span> <span class="tok-prop">Trackable</span>
+  <span class="tok-keyword">def</span> <span class="tok-func">track</span><span class="tok-punct">(</span>event<span class="tok-punct">)</span>
+    <span class="tok-attr">@events</span> <span class="tok-punct">||=</span> <span class="tok-punct">[]</span>
+    <span class="tok-attr">@events</span> <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">{</span> event<span class="tok-punct">:,</span> at<span class="tok-punct">:</span> <span class="tok-prop">Time</span><span class="tok-punct">.</span>now <span class="tok-punct">}</span>
+    <span class="tok-keyword">self</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> history <span class="tok-punct">=</span> <span class="tok-attr">@events</span> <span class="tok-punct">||</span> <span class="tok-punct">[]</span>
+  <span class="tok-keyword">def</span> last_event <span class="tok-punct">=</span> history<span class="tok-punct">.</span>last
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">module</span> <span class="tok-prop">Serializable</span>
+  <span class="tok-keyword">def</span> to_h
+    instance_variables<span class="tok-punct">.</span><span class="tok-func">each_with_object</span><span class="tok-punct">({})</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>var<span class="tok-punct">,</span> hash<span class="tok-punct">|</span>
+      hash<span class="tok-punct">[</span>var<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span><span class="tok-func">delete</span><span class="tok-punct">(</span><span class="tok-string">&quot;@&quot;</span><span class="tok-punct">).</span>to_sym<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-func">instance_variable_get</span><span class="tok-punct">(</span>var<span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> to_json_string <span class="tok-punct">=</span> to_h<span class="tok-punct">.</span>to_s
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Order</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Trackable</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Serializable</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span> <span class="tok-punct">=</span> <span class="tok-attr">@id</span> <span class="tok-punct">=</span> id
+<span class="tok-keyword">end</span>
+
+order <span class="tok-punct">=</span> <span class="tok-prop">Order</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span>
+order<span class="tok-punct">.</span><span class="tok-func">track</span><span class="tok-punct">(:</span>created<span class="tok-punct">).</span><span class="tok-func">track</span><span class="tok-punct">(:</span>paid<span class="tok-punct">)</span>
+order<span class="tok-punct">.</span>last_event      <span class="tok-comment"># =&gt; { event: :paid, at: ... }</span>
+order<span class="tok-punct">.</span>to_h            <span class="tok-comment"># =&gt; { id: 1, events: [...] }</span></code></pre></div><h2 id="sec-5">include vs extend vs prepend</h2><div class="table-wrap"><table class="data"><thead><tr><th>الطريقة</th><th>الدوال تصبح</th><th>موضعها في السلسلة</th></tr></thead><tbody><tr><td><code>include M</code></td><td>دوال <strong>مثيل</strong></td><td><strong>بعد</strong> الصنف</td></tr><tr><td><code>extend M</code></td><td>دوال <strong>صنف</strong></td><td>في الصنف المفرد</td></tr><tr><td><code>prepend M</code></td><td>دوال <strong>مثيل</strong></td><td><strong>قبل</strong> الصنف</td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">module</span> <span class="tok-prop">Greeting</span>
+  <span class="tok-keyword">def</span> hello <span class="tok-punct">=</span> <span class="tok-string">&quot;مرحباً من #{self}&quot;</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">A</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Greeting</span>     <span class="tok-comment"># دوال مثيل</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">B</span>
+  <span class="tok-keyword">extend</span> <span class="tok-prop">Greeting</span>      <span class="tok-comment"># دوال صنف</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-prop">A</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">.</span>hello     <span class="tok-comment"># ✅</span>
+<span class="tok-prop">A</span><span class="tok-punct">.</span>hello         <span class="tok-comment"># ✗ NoMethodError</span>
+
+<span class="tok-prop">B</span><span class="tok-punct">.</span>hello         <span class="tok-comment"># ✅</span>
+<span class="tok-prop">B</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">.</span>hello     <span class="tok-comment"># ✗ NoMethodError</span>
+
+<span class="tok-comment"># للحصول على الاثنين</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">C</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Greeting</span>
+  <span class="tok-keyword">extend</span>  <span class="tok-prop">Greeting</span>
+<span class="tok-keyword">end</span></code></pre></div><h3 id="sec-6">prepend — تغليف الدوال القائمة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">module</span> <span class="tok-prop">Logging</span>
+  <span class="tok-keyword">def</span> save
+    <span class="tok-keyword">puts</span> <span class="tok-string">&quot;⏳ جارٍ الحفظ…&quot;</span>
+    result <span class="tok-punct">=</span> <span class="tok-keyword">super</span>            <span class="tok-comment"># يستدعي save الأصلية في الصنف</span>
+    <span class="tok-keyword">puts</span> <span class="tok-string">&quot;✅ تمّ الحفظ&quot;</span>
+    result
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Document</span>
+  <span class="tok-keyword">prepend</span> <span class="tok-prop">Logging</span>             <span class="tok-comment"># قبل الصنف في السلسلة</span>
+
+  <span class="tok-keyword">def</span> save <span class="tok-punct">=</span> <span class="tok-string">&quot;المستند محفوظ&quot;</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-prop">Document</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">.</span>save
+<span class="tok-comment"># ⏳ جارٍ الحفظ…</span>
+<span class="tok-comment"># ✅ تمّ الحفظ</span>
+<span class="tok-comment"># =&gt; &quot;المستند محفوظ&quot;</span>
+
+<span class="tok-prop">Document</span><span class="tok-punct">.</span>ancestors
+<span class="tok-comment"># =&gt; [Logging, Document, Object, ...]   ← Logging قبل Document</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>لو استخدمنا <code>include</code> هنا لما عمل شيء: <code>Document#save</code> ستكون <strong>قبل</strong> <code>Logging#save</code> في السلسلة فتحجبها. <code>prepend</code> هو ما يجعل التغليف ممكناً — وهو أساس <code>ActiveSupport::Concern</code> وكثير من مكتبات Ruby.</p></div><h2 id="sec-7">سلسلة البحث عن الدوال</h2><p>حين تستدعي <code>obj.method</code>، يبحث Ruby في ترتيب محدّد تماماً. اعرفه وستفهم كل سلوك غامض.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">module</span> <span class="tok-prop">M1</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">M2</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">M3</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Parent</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">M1</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Child</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">Parent</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">M2</span>
+  <span class="tok-keyword">prepend</span> <span class="tok-prop">M3</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-prop">Child</span><span class="tok-punct">.</span>ancestors
+<span class="tok-comment"># =&gt; [M3, Child, M2, Parent, M1, Object, Kernel, BasicObject]</span>
+<span class="tok-comment">#     ↑    ↑      ↑    ↑       ↑</span>
+<span class="tok-comment">#     |    |      |    |       └── وحدات الأب</span>
+<span class="tok-comment">#     |    |      |    └────────── الأب</span>
+<span class="tok-comment">#     |    |      └─────────────── الوحدات المُدمَجة (آخر مُدمَج أولاً)</span>
+<span class="tok-comment">#     |    └────────────────────── الصنف نفسه</span>
+<span class="tok-comment">#     └─────────────────────────── الوحدات المُقدَّمة</span></code></pre></div><ol class="steps"><li>الوحدات المُقدَّمة بـ <code>prepend</code> (آخر ما أُضيف أولاً).</li><li>الصنف <strong>نفسه</strong>.</li><li>الوحدات المُدمَجة بـ <code>include</code> (آخر ما أُضيف أولاً).</li><li>صنف الأب — ثم تتكرّر الخطوات 1–3 عليه.</li><li>وهكذا صعوداً حتى <code>BasicObject</code>.</li><li>إن لم تُوجد الدالة، يُستدعى <code>method_missing</code>، ثم يُرمى <code>NoMethodError</code>.</li></ol><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>حين تحتار «من أين جاءت هذه الدالة؟» اكتب <code>obj.method(:name).owner</code> في IRB — يخبرك بالصنف أو الوحدة التي عرّفتها بالضبط.</p></div><h2 id="sec-8">وحدات المكتبة القياسية</h2><h3 id="sec-9">Comparable — من دالة واحدة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">class</span> <span class="tok-prop">Version</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Comparable</span>
+
+  <span class="tok-keyword">attr_reader</span> <span class="tok-bool">:major</span><span class="tok-punct">,</span> <span class="tok-bool">:minor</span><span class="tok-punct">,</span> <span class="tok-bool">:patch</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>string<span class="tok-punct">)</span>
+    <span class="tok-attr">@major</span><span class="tok-punct">,</span> <span class="tok-attr">@minor</span><span class="tok-punct">,</span> <span class="tok-attr">@patch</span> <span class="tok-punct">=</span> string<span class="tok-punct">.</span><span class="tok-func">split</span><span class="tok-punct">(</span><span class="tok-string">&quot;.&quot;</span><span class="tok-punct">).</span><span class="tok-func">map</span><span class="tok-punct">(&amp;:</span>to_i<span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-punct">&lt;=&gt;(</span>other<span class="tok-punct">)</span>
+    <span class="tok-punct">[</span>major<span class="tok-punct">,</span> minor<span class="tok-punct">,</span> patch<span class="tok-punct">]</span> <span class="tok-punct">&lt;=&gt;</span> <span class="tok-punct">[</span>other<span class="tok-punct">.</span>major<span class="tok-punct">,</span> other<span class="tok-punct">.</span>minor<span class="tok-punct">,</span> other<span class="tok-punct">.</span>patch<span class="tok-punct">]</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> to_s <span class="tok-punct">=</span> <span class="tok-string">&quot;#{major}.#{minor}.#{patch}&quot;</span>
+<span class="tok-keyword">end</span>
+
+v1 <span class="tok-punct">=</span> <span class="tok-prop">Version</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-string">&quot;1.2.3&quot;</span><span class="tok-punct">)</span>
+v2 <span class="tok-punct">=</span> <span class="tok-prop">Version</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-string">&quot;1.10.0&quot;</span><span class="tok-punct">)</span>
+
+v1 <span class="tok-punct">&lt;</span> v2                       <span class="tok-comment"># =&gt; true</span>
+<span class="tok-punct">[</span>v2<span class="tok-punct">,</span> v1<span class="tok-punct">].</span>sort<span class="tok-punct">.</span><span class="tok-func">map</span><span class="tok-punct">(&amp;:</span>to_s<span class="tok-punct">)</span>     <span class="tok-comment"># =&gt; [&quot;1.2.3&quot;, &quot;1.10.0&quot;]</span>
+v1<span class="tok-punct">.</span><span class="tok-func">between?</span><span class="tok-punct">(</span><span class="tok-prop">Version</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-string">&quot;1.0.0&quot;</span><span class="tok-punct">),</span> v2<span class="tok-punct">)</span>   <span class="tok-comment"># =&gt; true</span>
+v1<span class="tok-punct">.</span><span class="tok-func">clamp</span><span class="tok-punct">(</span><span class="tok-prop">Version</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-string">&quot;1.5.0&quot;</span><span class="tok-punct">),</span> v2<span class="tok-punct">)</span>      <span class="tok-comment"># =&gt; 1.5.0</span></code></pre></div><h3 id="sec-10">Enumerable — من دالة واحدة أيضاً</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">class</span> <span class="tok-prop">Playlist</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Enumerable</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>songs <span class="tok-punct">=</span> <span class="tok-punct">[])</span> <span class="tok-punct">=</span> <span class="tok-attr">@songs</span> <span class="tok-punct">=</span> songs
+
+  <span class="tok-keyword">def</span> <span class="tok-func">each</span><span class="tok-punct">(&amp;</span>block<span class="tok-punct">)</span>            <span class="tok-comment"># هذا كل ما تحتاجه!</span>
+    <span class="tok-attr">@songs</span><span class="tok-punct">.</span><span class="tok-func">each</span><span class="tok-punct">(&amp;</span>block<span class="tok-punct">)</span>
+    <span class="tok-keyword">self</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-punct">&lt;&lt;(</span>song<span class="tok-punct">)</span>
+    <span class="tok-attr">@songs</span> <span class="tok-punct">&lt;&lt;</span> song
+    <span class="tok-keyword">self</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+list <span class="tok-punct">=</span> <span class="tok-prop">Playlist</span><span class="tok-punct">.</span><span class="tok-keyword">new</span>
+list <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">{</span> title<span class="tok-punct">:</span> <span class="tok-string">&quot;أغنية أ&quot;</span><span class="tok-punct">,</span> duration<span class="tok-punct">:</span> <span class="tok-number">210</span><span class="tok-punct">,</span> artist<span class="tok-punct">:</span> <span class="tok-string">&quot;فنان 1&quot;</span> <span class="tok-punct">}</span>
+list <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">{</span> title<span class="tok-punct">:</span> <span class="tok-string">&quot;أغنية ب&quot;</span><span class="tok-punct">,</span> duration<span class="tok-punct">:</span> <span class="tok-number">185</span><span class="tok-punct">,</span> artist<span class="tok-punct">:</span> <span class="tok-string">&quot;فنان 2&quot;</span> <span class="tok-punct">}</span>
+list <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">{</span> title<span class="tok-punct">:</span> <span class="tok-string">&quot;أغنية ج&quot;</span><span class="tok-punct">,</span> duration<span class="tok-punct">:</span> <span class="tok-number">240</span><span class="tok-punct">,</span> artist<span class="tok-punct">:</span> <span class="tok-string">&quot;فنان 1&quot;</span> <span class="tok-punct">}</span>
+
+<span class="tok-comment"># كل هذا مجاني الآن</span>
+list<span class="tok-punct">.</span>map <span class="tok-punct">{</span> <span class="tok-punct">|</span>s<span class="tok-punct">|</span> s<span class="tok-punct">[:</span>title<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+list<span class="tok-punct">.</span>select <span class="tok-punct">{</span> <span class="tok-punct">|</span>s<span class="tok-punct">|</span> s<span class="tok-punct">[:</span>duration<span class="tok-punct">]</span> <span class="tok-punct">&gt;</span> <span class="tok-number">200</span> <span class="tok-punct">}</span>
+list<span class="tok-punct">.</span>sort_by <span class="tok-punct">{</span> <span class="tok-punct">|</span>s<span class="tok-punct">|</span> s<span class="tok-punct">[:</span>duration<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+list<span class="tok-punct">.</span>group_by <span class="tok-punct">{</span> <span class="tok-punct">|</span>s<span class="tok-punct">|</span> s<span class="tok-punct">[:</span>artist<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+list<span class="tok-punct">.</span>sum <span class="tok-punct">{</span> <span class="tok-punct">|</span>s<span class="tok-punct">|</span> s<span class="tok-punct">[:</span>duration<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+list<span class="tok-punct">.</span>max_by <span class="tok-punct">{</span> <span class="tok-punct">|</span>s<span class="tok-punct">|</span> s<span class="tok-punct">[:</span>duration<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+list<span class="tok-punct">.</span><span class="tok-func">each_slice</span><span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">).</span>to_a
+list<span class="tok-punct">.</span>count
+list<span class="tok-punct">.</span><span class="tok-func">first</span><span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">)</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>تعريف <code>each</code> وحده يمنحك أكثر من <strong>خمسين دالة</strong>. هذا أوضح مثال على مبدأ «الواجهة الصغيرة، القدرة الكبيرة» في تصميم Ruby.</p></div><h2 id="sec-11">خطّافات الوحدات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">module</span> <span class="tok-prop">Trackable</span>
+  <span class="tok-comment"># يُستدعى تلقائياً عند include</span>
+  <span class="tok-keyword">def</span> <span class="tok-keyword">self</span><span class="tok-punct">.</span><span class="tok-func">included</span><span class="tok-punct">(</span>base<span class="tok-punct">)</span>
+    base<span class="tok-punct">.</span><span class="tok-keyword">extend</span><span class="tok-punct">(</span><span class="tok-prop">ClassMethods</span><span class="tok-punct">)</span>          <span class="tok-comment"># يضيف دوال صنف أيضاً</span>
+    base<span class="tok-punct">.</span><span class="tok-func">instance_variable_set</span><span class="tok-punct">(:</span><span class="tok-attr">@tracked_events</span><span class="tok-punct">,</span> <span class="tok-punct">[])</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">module</span> <span class="tok-prop">ClassMethods</span>
+    <span class="tok-keyword">def</span> <span class="tok-func">track_event</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span>
+      <span class="tok-attr">@tracked_events</span> <span class="tok-punct">&lt;&lt;</span> name
+      <span class="tok-func">define_method</span><span class="tok-punct">(</span><span class="tok-string">&quot;on_#{name}&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-punct">|</span>data <span class="tok-punct">=</span> <span class="tok-punct">{}|</span> <span class="tok-func">record</span><span class="tok-punct">(</span>name<span class="tok-punct">,</span> data<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">def</span> tracked_events <span class="tok-punct">=</span> <span class="tok-attr">@tracked_events</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">record</span><span class="tok-punct">(</span>event<span class="tok-punct">,</span> data<span class="tok-punct">)</span>
+    <span class="tok-attr">@log</span> <span class="tok-punct">||=</span> <span class="tok-punct">[]</span>
+    <span class="tok-attr">@log</span> <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">{</span> event<span class="tok-punct">:,</span> data<span class="tok-punct">:,</span> at<span class="tok-punct">:</span> <span class="tok-prop">Time</span><span class="tok-punct">.</span>now <span class="tok-punct">}</span>
+    <span class="tok-keyword">self</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> log <span class="tok-punct">=</span> <span class="tok-attr">@log</span> <span class="tok-punct">||</span> <span class="tok-punct">[]</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Order</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Trackable</span>
+
+  track_event <span class="tok-bool">:created</span>
+  track_event <span class="tok-bool">:paid</span>
+  track_event <span class="tok-bool">:shipped</span>
+<span class="tok-keyword">end</span>
+
+order <span class="tok-punct">=</span> <span class="tok-prop">Order</span><span class="tok-punct">.</span><span class="tok-keyword">new</span>
+order<span class="tok-punct">.</span><span class="tok-func">on_created</span><span class="tok-punct">(</span>id<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">)</span>
+order<span class="tok-punct">.</span><span class="tok-func">on_paid</span><span class="tok-punct">(</span>amount<span class="tok-punct">:</span> <span class="tok-number">500</span><span class="tok-punct">)</span>
+
+<span class="tok-prop">Order</span><span class="tok-punct">.</span>tracked_events   <span class="tok-comment"># =&gt; [:created, :paid, :shipped]</span>
+order<span class="tok-punct">.</span>log<span class="tok-punct">.</span>size         <span class="tok-comment"># =&gt; 2</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>هذا النمط — وحدة تضيف دوال مثيل <strong>ودوال صنف</strong> عبر خطّاف <code>included</code> — هو أساس <code>ActiveSupport::Concern</code> في Rails وأغلب مكتبات Ruby الجادّة.</p></div><h2 id="sec-12">لمحة عن البرمجة الوصفية</h2><p>Ruby يسمح لك بكتابة شيفرة <strong>تكتب شيفرة</strong>. أداة قوية جداً — وخطيرة بنفس القدر.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">class</span> <span class="tok-prop">Settings</span>
+  <span class="tok-prop">KEYS</span> <span class="tok-punct">=</span> <span class="tok-string">%i[host port timeout retries]</span><span class="tok-punct">.</span><span class="tok-keyword">freeze</span>
+
+  <span class="tok-prop">KEYS</span><span class="tok-punct">.</span>each <span class="tok-keyword">do</span> <span class="tok-punct">|</span>key<span class="tok-punct">|</span>
+    <span class="tok-func">define_method</span><span class="tok-punct">(</span>key<span class="tok-punct">)</span>        <span class="tok-punct">{</span> <span class="tok-attr">@data</span><span class="tok-punct">[</span>key<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+    <span class="tok-func">define_method</span><span class="tok-punct">(</span><span class="tok-string">&quot;#{key}=&quot;</span><span class="tok-punct">)</span>  <span class="tok-punct">{</span> <span class="tok-punct">|</span>v<span class="tok-punct">|</span> <span class="tok-attr">@data</span><span class="tok-punct">[</span>key<span class="tok-punct">]</span> <span class="tok-punct">=</span> v <span class="tok-punct">}</span>
+    <span class="tok-func">define_method</span><span class="tok-punct">(</span><span class="tok-string">&quot;#{key}?&quot;</span><span class="tok-punct">)</span>  <span class="tok-punct">{</span> <span class="tok-punct">!</span><span class="tok-attr">@data</span><span class="tok-punct">[</span>key<span class="tok-punct">].</span><span class="tok-bool">nil</span><span class="tok-punct">?</span> <span class="tok-punct">}</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>data <span class="tok-punct">=</span> <span class="tok-punct">{})</span> <span class="tok-punct">=</span> <span class="tok-attr">@data</span> <span class="tok-punct">=</span> data
+<span class="tok-keyword">end</span>
+
+s <span class="tok-punct">=</span> <span class="tok-prop">Settings</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>host<span class="tok-punct">:</span> <span class="tok-string">&quot;localhost&quot;</span><span class="tok-punct">)</span>
+s<span class="tok-punct">.</span>host        <span class="tok-comment"># =&gt; &quot;localhost&quot;</span>
+s<span class="tok-punct">.</span>port <span class="tok-punct">=</span> <span class="tok-number">3000</span>
+s<span class="tok-punct">.</span>port?       <span class="tok-comment"># =&gt; true</span>
+s<span class="tok-punct">.</span>timeout?    <span class="tok-comment"># =&gt; false</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># method_missing — التقاط الدوال غير المعرّفة</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">DynamicRecord</span>
+  <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>attrs <span class="tok-punct">=</span> <span class="tok-punct">{})</span> <span class="tok-punct">=</span> <span class="tok-attr">@attrs</span> <span class="tok-punct">=</span> attrs
+
+  <span class="tok-keyword">def</span> <span class="tok-func">method_missing</span><span class="tok-punct">(</span>name<span class="tok-punct">,</span> <span class="tok-punct">*</span>args<span class="tok-punct">)</span>
+    key <span class="tok-punct">=</span> name<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span><span class="tok-func">chomp</span><span class="tok-punct">(</span><span class="tok-string">&quot;=&quot;</span><span class="tok-punct">).</span>to_sym
+
+    <span class="tok-keyword">if</span> name<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span><span class="tok-func">end_with?</span><span class="tok-punct">(</span><span class="tok-string">&quot;=&quot;</span><span class="tok-punct">)</span>
+      <span class="tok-attr">@attrs</span><span class="tok-punct">[</span>key<span class="tok-punct">]</span> <span class="tok-punct">=</span> args<span class="tok-punct">.</span>first
+    <span class="tok-keyword">elsif</span> <span class="tok-attr">@attrs</span><span class="tok-punct">.</span><span class="tok-func">key?</span><span class="tok-punct">(</span>key<span class="tok-punct">)</span>
+      <span class="tok-attr">@attrs</span><span class="tok-punct">[</span>key<span class="tok-punct">]</span>
+    <span class="tok-keyword">else</span>
+      <span class="tok-keyword">super</span>                    <span class="tok-comment"># مهمّ جداً!</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-comment"># لازمة دائماً مع method_missing</span>
+  <span class="tok-keyword">def</span> <span class="tok-func">respond_to_missing?</span><span class="tok-punct">(</span>name<span class="tok-punct">,</span> include_private <span class="tok-punct">=</span> <span class="tok-bool">false</span><span class="tok-punct">)</span>
+    key <span class="tok-punct">=</span> name<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span><span class="tok-func">chomp</span><span class="tok-punct">(</span><span class="tok-string">&quot;=&quot;</span><span class="tok-punct">).</span>to_sym
+    <span class="tok-attr">@attrs</span><span class="tok-punct">.</span><span class="tok-func">key?</span><span class="tok-punct">(</span>key<span class="tok-punct">)</span> <span class="tok-punct">||</span> name<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span><span class="tok-func">end_with?</span><span class="tok-punct">(</span><span class="tok-string">&quot;=&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">||</span> <span class="tok-keyword">super</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+r <span class="tok-punct">=</span> <span class="tok-prop">DynamicRecord</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;سارة&quot;</span><span class="tok-punct">)</span>
+r<span class="tok-punct">.</span>name              <span class="tok-comment"># =&gt; &quot;سارة&quot;</span>
+r<span class="tok-punct">.</span>email <span class="tok-punct">=</span> <span class="tok-string">&quot;s@x.com&quot;</span>
+r<span class="tok-punct">.</span>email             <span class="tok-comment"># =&gt; &quot;s@x.com&quot;</span>
+r<span class="tok-punct">.</span><span class="tok-func">respond_to?</span><span class="tok-punct">(:</span>name<span class="tok-punct">)</span>  <span class="tok-comment"># =&gt; true</span>
+r<span class="tok-punct">.</span>missing_thing     <span class="tok-comment"># ✗ NoMethodError  ← كما يجب</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> ثلاث قواعد للبرمجة الوصفية</div><p><strong>(1)</strong> استدعِ <code>super</code> دائماً في <code>method_missing</code> للأسماء غير المعروفة، وإلا ابتلعت كل أخطائك بصمت. <strong>(2)</strong> عرّف <code>respond_to_missing?</code> معها دائماً وإلا كذب <code>respond_to?</code>. <strong>(3)</strong> فضّل <code>define_method</code> على <code>method_missing</code> — أوضح وأسرع وتظهر دواله في <code>methods</code>.</p></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> متى تستخدمها؟</div><p>حين تكتب <strong>مكتبة</strong> أو <strong>إطار عمل</strong> يحتاج واجهة تصريحية. في شيفرة التطبيق العادية، الشيفرة الصريحة الممّلة تهزم الذكية دائماً — لأن غيرك (وأنت بعد ستة أشهر) يجب أن يفهمها.</p></div><h2 id="sec-13">refinements — بديل آمن لتعديل الأصناف</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># ✗ Monkey patching — يؤثّر على البرنامج كله وقد يصطدم بمكتبة أخرى</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">String</span>
+  <span class="tok-keyword">def</span> shout <span class="tok-punct">=</span> upcase <span class="tok-punct">+</span> <span class="tok-string">&quot;!&quot;</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ✓ refinement — محدود بالنطاق الذي يفعّله</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">StringExtensions</span>
+  refine <span class="tok-prop">String</span> <span class="tok-keyword">do</span>
+    <span class="tok-keyword">def</span> shout <span class="tok-punct">=</span> upcase <span class="tok-punct">+</span> <span class="tok-string">&quot;!&quot;</span>
+    <span class="tok-keyword">def</span> slug  <span class="tok-punct">=</span> strip<span class="tok-punct">.</span>downcase<span class="tok-punct">.</span><span class="tok-func">gsub</span><span class="tok-punct">(/</span>\s<span class="tok-punct">+/,</span> <span class="tok-string">&quot;-&quot;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">module</span> <span class="tok-prop">MyApp</span>
+  using <span class="tok-prop">StringExtensions</span>       <span class="tok-comment"># مفعّل هنا فقط</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-keyword">self</span><span class="tok-punct">.</span>run
+    <span class="tok-keyword">puts</span> <span class="tok-string">&quot;ruby&quot;</span><span class="tok-punct">.</span>shout          <span class="tok-comment"># =&gt; &quot;RUBY!&quot;</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-string">&quot;ruby&quot;</span><span class="tok-punct">.</span>shout   <span class="tok-comment"># ✗ NoMethodError خارج النطاق — وهذا ما نريده</span></code></pre></div><h2 id="sec-14">تمرين</h2><section class="exercise" id="sec-15"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>إطار عمل صغير للنماذج</h3></header><div class="exercise-body"><p>ابنِ وحدات تمنح أي صنف قدرات: خصائص معرّفة تصريحياً، تحقّق، مقارنة، تسلسل، وتتبّع.</p><p><strong>المطلوب:</strong></p><ul><li>وحدة <code>Attributes</code> تضيف <code>attribute :name, type: String, default: nil</code> تعرّف قارئاً وكاتباً يتحقّق من النوع.</li><li>وحدة <code>Validations</code> تضيف <code>validates :name, presence: true, length: 3..50</code> ودالة <code>valid?</code> و <code>errors</code>.</li><li>وحدة <code>Serialization</code> تضيف <code>to_h</code> و <code>from_h</code> (دالة صنف) و <code>to_json_string</code>.</li><li>وحدة <code>Trackable</code> تسجّل كل تغيير في الخصائص مع الوقت والقيمة القديمة والجديدة.</li><li>وحدة <code>Findable</code> تضيف مخزناً في الذاكرة مع <code>all</code> و <code>find</code> و <code>where</code> و <code>create</code>.</li><li>استخدم خطّاف <code>self.included</code> لإضافة دوال الصنف.</li><li>ادمج الوحدات كلها في صنف <code>Product</code> ووضّح عملها.</li><li>اجعل <code>Product</code> يدعم الترتيب بالسعر عبر <code>Comparable</code>.</li><li>اطبع <code>Product.ancestors</code> في النهاية واشرح الترتيب في تعليق.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>define_method(&quot;#{name}=&quot;) { |v| ... }</code> يعرّف كاتباً ديناميكياً.</li><li>💡 <code>base.extend(ClassMethods)</code> داخل <code>self.included</code> هو النمط المعتاد.</li><li>💡 <code>@attributes ||= {}</code> على مستوى الصنف يخزّن التعريفات.</li><li>💡 انتبه للوراثة: استخدم <code>inherited</code> أو <code>superclass.attributes</code> إن أردت دعمها.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># frozen_string_literal: true</span>
+<span class="tok-comment"># mini_model.rb — إطار عمل صغير للنماذج</span>
+
+<span class="tok-comment"># ===== 1) الخصائص =====</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">Attributes</span>
+  <span class="tok-keyword">def</span> <span class="tok-keyword">self</span><span class="tok-punct">.</span><span class="tok-func">included</span><span class="tok-punct">(</span>base<span class="tok-punct">)</span>
+    base<span class="tok-punct">.</span><span class="tok-keyword">extend</span><span class="tok-punct">(</span><span class="tok-prop">ClassMethods</span><span class="tok-punct">)</span>
+    base<span class="tok-punct">.</span><span class="tok-func">instance_variable_set</span><span class="tok-punct">(:</span><span class="tok-attr">@attributes</span><span class="tok-punct">,</span> <span class="tok-punct">{})</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">module</span> <span class="tok-prop">ClassMethods</span>
+    <span class="tok-keyword">def</span> attributes <span class="tok-punct">=</span> <span class="tok-attr">@attributes</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">attribute</span><span class="tok-punct">(</span>name<span class="tok-punct">,</span> type<span class="tok-punct">:</span> <span class="tok-prop">Object</span><span class="tok-punct">,</span> default<span class="tok-punct">:</span> <span class="tok-bool">nil</span><span class="tok-punct">)</span>
+      <span class="tok-attr">@attributes</span><span class="tok-punct">[</span>name<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span> type<span class="tok-punct">:,</span> default<span class="tok-punct">:</span> <span class="tok-punct">}</span>
+
+      <span class="tok-func">define_method</span><span class="tok-punct">(</span>name<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-attr">@data</span><span class="tok-punct">[</span>name<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+
+      <span class="tok-func">define_method</span><span class="tok-punct">(</span><span class="tok-string">&quot;#{name}=&quot;</span><span class="tok-punct">)</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>value<span class="tok-punct">|</span>
+        <span class="tok-keyword">unless</span> value<span class="tok-punct">.</span><span class="tok-bool">nil</span><span class="tok-punct">?</span> <span class="tok-punct">||</span> value<span class="tok-punct">.</span><span class="tok-func">is_a?</span><span class="tok-punct">(</span>type<span class="tok-punct">)</span>
+          <span class="tok-keyword">raise</span> <span class="tok-prop">TypeError</span><span class="tok-punct">,</span> <span class="tok-string">&quot;#{name} يجب أن يكون #{type} لا #{value.class}&quot;</span>
+        <span class="tok-keyword">end</span>
+        old <span class="tok-punct">=</span> <span class="tok-attr">@data</span><span class="tok-punct">[</span>name<span class="tok-punct">]</span>
+        <span class="tok-attr">@data</span><span class="tok-punct">[</span>name<span class="tok-punct">]</span> <span class="tok-punct">=</span> value
+        <span class="tok-func">track_change</span><span class="tok-punct">(</span>name<span class="tok-punct">,</span> old<span class="tok-punct">,</span> value<span class="tok-punct">)</span> <span class="tok-keyword">if</span> <span class="tok-func">respond_to?</span><span class="tok-punct">(:</span>track_change<span class="tok-punct">,</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+        value
+      <span class="tok-keyword">end</span>
+
+      <span class="tok-func">define_method</span><span class="tok-punct">(</span><span class="tok-string">&quot;#{name}?&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-punct">!</span><span class="tok-attr">@data</span><span class="tok-punct">[</span>name<span class="tok-punct">].</span><span class="tok-bool">nil</span><span class="tok-punct">?</span> <span class="tok-punct">}</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>attrs <span class="tok-punct">=</span> <span class="tok-punct">{})</span>
+    <span class="tok-attr">@data</span> <span class="tok-punct">=</span> <span class="tok-punct">{}</span>
+    <span class="tok-keyword">self</span><span class="tok-punct">.</span><span class="tok-keyword">class</span><span class="tok-punct">.</span>attributes<span class="tok-punct">.</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span>name<span class="tok-punct">,</span> meta<span class="tok-punct">|</span> <span class="tok-attr">@data</span><span class="tok-punct">[</span>name<span class="tok-punct">]</span> <span class="tok-punct">=</span> meta<span class="tok-punct">[:</span>default<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+    attrs<span class="tok-punct">.</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span>key<span class="tok-punct">,</span> value<span class="tok-punct">|</span> <span class="tok-func">public_send</span><span class="tok-punct">(</span><span class="tok-string">&quot;#{key}=&quot;</span><span class="tok-punct">,</span> value<span class="tok-punct">)</span> <span class="tok-keyword">if</span> <span class="tok-func">respond_to?</span><span class="tok-punct">(</span><span class="tok-string">&quot;#{key}=&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> data <span class="tok-punct">=</span> <span class="tok-attr">@data</span><span class="tok-punct">.</span>dup
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== 2) التحقّق =====</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">Validations</span>
+  <span class="tok-keyword">def</span> <span class="tok-keyword">self</span><span class="tok-punct">.</span><span class="tok-func">included</span><span class="tok-punct">(</span>base<span class="tok-punct">)</span>
+    base<span class="tok-punct">.</span><span class="tok-keyword">extend</span><span class="tok-punct">(</span><span class="tok-prop">ClassMethods</span><span class="tok-punct">)</span>
+    base<span class="tok-punct">.</span><span class="tok-func">instance_variable_set</span><span class="tok-punct">(:</span><span class="tok-attr">@validations</span><span class="tok-punct">,</span> <span class="tok-punct">[])</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">module</span> <span class="tok-prop">ClassMethods</span>
+    <span class="tok-keyword">def</span> validations <span class="tok-punct">=</span> <span class="tok-attr">@validations</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">validates</span><span class="tok-punct">(</span>field<span class="tok-punct">,</span> presence<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-bool">nil</span><span class="tok-punct">,</span> numericality<span class="tok-punct">:</span> <span class="tok-bool">nil</span><span class="tok-punct">,</span> format<span class="tok-punct">:</span> <span class="tok-bool">nil</span><span class="tok-punct">)</span>
+      <span class="tok-attr">@validations</span> <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">{</span> field<span class="tok-punct">:,</span> presence<span class="tok-punct">:,</span> length<span class="tok-punct">:,</span> numericality<span class="tok-punct">:,</span> format<span class="tok-punct">:</span> <span class="tok-punct">}</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> errors
+    <span class="tok-attr">@errors</span> <span class="tok-punct">||=</span> <span class="tok-punct">[]</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> valid?
+    <span class="tok-attr">@errors</span> <span class="tok-punct">=</span> <span class="tok-punct">[]</span>
+
+    <span class="tok-keyword">self</span><span class="tok-punct">.</span><span class="tok-keyword">class</span><span class="tok-punct">.</span>validations<span class="tok-punct">.</span>each <span class="tok-keyword">do</span> <span class="tok-punct">|</span>rule<span class="tok-punct">|</span>
+      value <span class="tok-punct">=</span> <span class="tok-func">public_send</span><span class="tok-punct">(</span>rule<span class="tok-punct">[:</span>field<span class="tok-punct">])</span>
+      label <span class="tok-punct">=</span> rule<span class="tok-punct">[:</span>field<span class="tok-punct">]</span>
+
+      <span class="tok-keyword">if</span> rule<span class="tok-punct">[:</span>presence<span class="tok-punct">]</span> <span class="tok-punct">&amp;&amp;</span> <span class="tok-punct">(</span>value<span class="tok-punct">.</span><span class="tok-bool">nil</span><span class="tok-punct">?</span> <span class="tok-punct">||</span> value<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span>strip<span class="tok-punct">.</span>empty?<span class="tok-punct">)</span>
+        <span class="tok-attr">@errors</span> <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;#{label} مطلوب&quot;</span>
+        <span class="tok-keyword">next</span>
+      <span class="tok-keyword">end</span>
+
+      <span class="tok-keyword">next</span> <span class="tok-keyword">if</span> value<span class="tok-punct">.</span><span class="tok-bool">nil</span><span class="tok-punct">?</span>
+
+      <span class="tok-keyword">if</span> rule<span class="tok-punct">[:</span>length<span class="tok-punct">]</span> <span class="tok-punct">&amp;&amp;</span> <span class="tok-punct">!</span>rule<span class="tok-punct">[:</span>length<span class="tok-punct">].</span><span class="tok-func">cover?</span><span class="tok-punct">(</span>value<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span>length<span class="tok-punct">)</span>
+        <span class="tok-attr">@errors</span> <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;#{label} يجب أن يكون بين #{rule[:length].first} و #{rule[:length].last} حرفاً&quot;</span>
+      <span class="tok-keyword">end</span>
+
+      <span class="tok-keyword">if</span> rule<span class="tok-punct">[:</span>numericality<span class="tok-punct">]</span> <span class="tok-punct">&amp;&amp;</span> <span class="tok-punct">!</span>rule<span class="tok-punct">[:</span>numericality<span class="tok-punct">].</span><span class="tok-func">cover?</span><span class="tok-punct">(</span>value<span class="tok-punct">)</span>
+        <span class="tok-attr">@errors</span> <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;#{label} يجب أن يكون بين #{rule[:numericality].first} و #{rule[:numericality].last}&quot;</span>
+      <span class="tok-keyword">end</span>
+
+      <span class="tok-keyword">if</span> rule<span class="tok-punct">[:</span>format<span class="tok-punct">]</span> <span class="tok-punct">&amp;&amp;</span> <span class="tok-punct">!(</span>value<span class="tok-punct">.</span>to_s <span class="tok-punct">=~</span> rule<span class="tok-punct">[:</span>format<span class="tok-punct">])</span>
+        <span class="tok-attr">@errors</span> <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;#{label} بصيغة غير صحيحة&quot;</span>
+      <span class="tok-keyword">end</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-attr">@errors</span><span class="tok-punct">.</span>empty?
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== 3) التسلسل =====</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">Serialization</span>
+  <span class="tok-keyword">def</span> <span class="tok-keyword">self</span><span class="tok-punct">.</span><span class="tok-func">included</span><span class="tok-punct">(</span>base<span class="tok-punct">)</span> <span class="tok-punct">=</span> base<span class="tok-punct">.</span><span class="tok-keyword">extend</span><span class="tok-punct">(</span><span class="tok-prop">ClassMethods</span><span class="tok-punct">)</span>
+
+  <span class="tok-keyword">module</span> <span class="tok-prop">ClassMethods</span>
+    <span class="tok-keyword">def</span> <span class="tok-func">from_h</span><span class="tok-punct">(</span>hash<span class="tok-punct">)</span> <span class="tok-punct">=</span> <span class="tok-keyword">new</span><span class="tok-punct">(</span>hash<span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> to_h <span class="tok-punct">=</span> data
+  <span class="tok-keyword">def</span> to_json_string
+    pairs <span class="tok-punct">=</span> to_h<span class="tok-punct">.</span>map <span class="tok-punct">{</span> <span class="tok-punct">|</span>k<span class="tok-punct">,</span> v<span class="tok-punct">|</span> <span class="tok-string">&quot;\&quot;#{k}\&quot;: #{v.is_a?(Numeric) ? v : &quot;</span>\<span class="tok-string">&quot;#{v}\&quot;&quot;</span><span class="tok-punct">}</span><span class="tok-string">&quot; }
+    &quot;</span><span class="tok-punct">{</span><span class="tok-comment">#{pairs.join(&#39;, &#39;)}}&quot;</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== 4) التتبّع =====</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">Trackable</span>
+  <span class="tok-keyword">def</span> changes <span class="tok-punct">=</span> <span class="tok-attr">@changes</span> <span class="tok-punct">||=</span> <span class="tok-punct">[]</span>
+
+  <span class="tok-keyword">def</span> changed? <span class="tok-punct">=</span> changes<span class="tok-punct">.</span>any?
+
+  <span class="tok-keyword">def</span> change_summary
+    changes<span class="tok-punct">.</span>map <span class="tok-punct">{</span> <span class="tok-punct">|</span>c<span class="tok-punct">|</span> <span class="tok-string">&quot;#{c[:field]}: #{c[:from].inspect} → #{c[:to].inspect}&quot;</span> <span class="tok-punct">}</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">private</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">track_change</span><span class="tok-punct">(</span>field<span class="tok-punct">,</span> from<span class="tok-punct">,</span> to<span class="tok-punct">)</span>
+    <span class="tok-keyword">return</span> <span class="tok-keyword">if</span> from <span class="tok-punct">==</span> to
+    changes <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">{</span> field<span class="tok-punct">:,</span> from<span class="tok-punct">:,</span> to<span class="tok-punct">:,</span> at<span class="tok-punct">:</span> <span class="tok-prop">Time</span><span class="tok-punct">.</span>now <span class="tok-punct">}</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== 5) المخزن =====</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">Findable</span>
+  <span class="tok-keyword">def</span> <span class="tok-keyword">self</span><span class="tok-punct">.</span><span class="tok-func">included</span><span class="tok-punct">(</span>base<span class="tok-punct">)</span>
+    base<span class="tok-punct">.</span><span class="tok-keyword">extend</span><span class="tok-punct">(</span><span class="tok-prop">ClassMethods</span><span class="tok-punct">)</span>
+    base<span class="tok-punct">.</span><span class="tok-func">instance_variable_set</span><span class="tok-punct">(:</span><span class="tok-attr">@store</span><span class="tok-punct">,</span> <span class="tok-punct">[])</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">module</span> <span class="tok-prop">ClassMethods</span>
+    <span class="tok-keyword">def</span> all <span class="tok-punct">=</span> <span class="tok-attr">@store</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">create</span><span class="tok-punct">(</span>attrs <span class="tok-punct">=</span> <span class="tok-punct">{})</span>
+      record <span class="tok-punct">=</span> <span class="tok-keyword">new</span><span class="tok-punct">(</span>attrs<span class="tok-punct">)</span>
+      <span class="tok-keyword">raise</span> <span class="tok-prop">ArgumentError</span><span class="tok-punct">,</span> record<span class="tok-punct">.</span>errors<span class="tok-punct">.</span><span class="tok-func">join</span><span class="tok-punct">(</span><span class="tok-string">&quot;، &quot;</span><span class="tok-punct">)</span> <span class="tok-keyword">if</span> record<span class="tok-punct">.</span><span class="tok-func">respond_to?</span><span class="tok-punct">(:</span>valid?<span class="tok-punct">)</span> <span class="tok-punct">&amp;&amp;</span> <span class="tok-punct">!</span>record<span class="tok-punct">.</span>valid?
+
+      <span class="tok-attr">@store</span> <span class="tok-punct">&lt;&lt;</span> record
+      record
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">find</span><span class="tok-punct">(&amp;</span>predicate<span class="tok-punct">)</span> <span class="tok-punct">=</span> <span class="tok-attr">@store</span><span class="tok-punct">.</span><span class="tok-func">find</span><span class="tok-punct">(&amp;</span>predicate<span class="tok-punct">)</span>
+    <span class="tok-keyword">def</span> <span class="tok-func">where</span><span class="tok-punct">(**</span>conditions<span class="tok-punct">)</span>
+      <span class="tok-attr">@store</span><span class="tok-punct">.</span>select <span class="tok-keyword">do</span> <span class="tok-punct">|</span>record<span class="tok-punct">|</span>
+        conditions<span class="tok-punct">.</span>all? <span class="tok-punct">{</span> <span class="tok-punct">|</span>key<span class="tok-punct">,</span> value<span class="tok-punct">|</span> record<span class="tok-punct">.</span><span class="tok-func">public_send</span><span class="tok-punct">(</span>key<span class="tok-punct">)</span> <span class="tok-punct">==</span> value <span class="tok-punct">}</span>
+      <span class="tok-keyword">end</span>
+    <span class="tok-keyword">end</span>
+    <span class="tok-keyword">def</span> count <span class="tok-punct">=</span> <span class="tok-attr">@store</span><span class="tok-punct">.</span>size
+    <span class="tok-keyword">def</span> clear! <span class="tok-punct">=</span> <span class="tok-attr">@store</span><span class="tok-punct">.</span>clear
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== النموذج =====</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">Product</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Attributes</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Validations</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Serialization</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Trackable</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Findable</span>
+  <span class="tok-keyword">include</span> <span class="tok-prop">Comparable</span>
+
+  attribute <span class="tok-bool">:name</span><span class="tok-punct">,</span>     type<span class="tok-punct">:</span> <span class="tok-prop">String</span><span class="tok-punct">,</span>  default<span class="tok-punct">:</span> <span class="tok-string">&quot;&quot;</span>
+  attribute <span class="tok-bool">:price</span><span class="tok-punct">,</span>    type<span class="tok-punct">:</span> <span class="tok-prop">Integer</span><span class="tok-punct">,</span> default<span class="tok-punct">:</span> <span class="tok-number">0</span>
+  attribute <span class="tok-bool">:category</span><span class="tok-punct">,</span> type<span class="tok-punct">:</span> <span class="tok-prop">String</span><span class="tok-punct">,</span>  default<span class="tok-punct">:</span> <span class="tok-string">&quot;عام&quot;</span>
+  attribute <span class="tok-bool">:stock</span><span class="tok-punct">,</span>    type<span class="tok-punct">:</span> <span class="tok-prop">Integer</span><span class="tok-punct">,</span> default<span class="tok-punct">:</span> <span class="tok-number">0</span>
+
+  validates <span class="tok-bool">:name</span><span class="tok-punct">,</span>  presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-number">3</span><span class="tok-punct">..</span><span class="tok-number">60</span>
+  validates <span class="tok-bool">:price</span><span class="tok-punct">,</span> numericality<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">..</span><span class="tok-number">1_000_000</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-punct">&lt;=&gt;(</span>other<span class="tok-punct">)</span> <span class="tok-punct">=</span> price <span class="tok-punct">&lt;=&gt;</span> other<span class="tok-punct">.</span>price
+
+  <span class="tok-keyword">def</span> to_s <span class="tok-punct">=</span> <span class="tok-string">&quot;#{name} — #{price} ر.س (#{category})&quot;</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== التشغيل =====</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;▸ إنشاء منتجات&quot;</span>
+laptop <span class="tok-punct">=</span> <span class="tok-prop">Product</span><span class="tok-punct">.</span><span class="tok-func">create</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;لابتوب احترافي&quot;</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">4500</span><span class="tok-punct">,</span> category<span class="tok-punct">:</span> <span class="tok-string">&quot;أجهزة&quot;</span><span class="tok-punct">,</span> stock<span class="tok-punct">:</span> <span class="tok-number">12</span><span class="tok-punct">)</span>
+mouse  <span class="tok-punct">=</span> <span class="tok-prop">Product</span><span class="tok-punct">.</span><span class="tok-func">create</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;ماوس لاسلكي&quot;</span><span class="tok-punct">,</span>   price<span class="tok-punct">:</span> <span class="tok-number">120</span><span class="tok-punct">,</span>  category<span class="tok-punct">:</span> <span class="tok-string">&quot;ملحقات&quot;</span><span class="tok-punct">,</span> stock<span class="tok-punct">:</span> <span class="tok-number">80</span><span class="tok-punct">)</span>
+screen <span class="tok-punct">=</span> <span class="tok-prop">Product</span><span class="tok-punct">.</span><span class="tok-func">create</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;شاشة 27 بوصة&quot;</span><span class="tok-punct">,</span>  price<span class="tok-punct">:</span> <span class="tok-number">1200</span><span class="tok-punct">,</span> category<span class="tok-punct">:</span> <span class="tok-string">&quot;أجهزة&quot;</span><span class="tok-punct">,</span> stock<span class="tok-punct">:</span> <span class="tok-number">5</span><span class="tok-punct">)</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;  أُنشئ #{Product.count} منتجات&quot;</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;\n▸ التحقّق يمنع البيانات الفاسدة&quot;</span>
+<span class="tok-keyword">begin</span>
+  <span class="tok-prop">Product</span><span class="tok-punct">.</span><span class="tok-func">create</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;أب&quot;</span><span class="tok-punct">,</span> price<span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">)</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">ArgumentError</span> <span class="tok-punct">=&gt;</span> e
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;  ❌ #{e.message}&quot;</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;\n▸ التحقّق من النوع&quot;</span>
+<span class="tok-keyword">begin</span>
+  laptop<span class="tok-punct">.</span>price <span class="tok-punct">=</span> <span class="tok-string">&quot;غالٍ&quot;</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">TypeError</span> <span class="tok-punct">=&gt;</span> e
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;  ❌ #{e.message}&quot;</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;\n▸ التتبّع&quot;</span>
+laptop<span class="tok-punct">.</span>price <span class="tok-punct">=</span> <span class="tok-number">4200</span>
+laptop<span class="tok-punct">.</span>stock <span class="tok-punct">=</span> <span class="tok-number">10</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;  #{laptop.change_summary.join(&#39; | &#39;)}&quot;</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;\n▸ الاستعلام&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;  أجهزة: #{Product.where(category: &#39;أجهزة&#39;).map(&amp;:name).join(&#39;، &#39;)}&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;  الأغلى: #{Product.all.max}&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;  مرتّبة: #{Product.all.sort.map(&amp;:name).join(&#39; &lt; &#39;)}&quot;</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;\n▸ التسلسل&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;  #{mouse.to_json_string}&quot;</span>
+copy <span class="tok-punct">=</span> <span class="tok-prop">Product</span><span class="tok-punct">.</span><span class="tok-func">from_h</span><span class="tok-punct">(</span>mouse<span class="tok-punct">.</span>to_h<span class="tok-punct">)</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;  نسخة: #{copy}&quot;</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;\n▸ سلسلة البحث عن الدوال&quot;</span>
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;  #{Product.ancestors.first(8).join(&#39; → &#39;)}&quot;</span>
+<span class="tok-comment"># الترتيب: الصنف نفسه أولاً، ثم الوحدات المُدمَجة بترتيب معكوس</span>
+<span class="tok-comment"># (آخر include يأتي أولاً)، ثم Object و Kernel و BasicObject.</span></code></pre></div></details></div></section><h2 id="sec-16">اختبر نفسك</h2><section class="quiz"><h2 id="sec-17"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما الفرق بين <code>include</code> و <code>extend</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span><code>include</code> يضيف دوال مثيل و<code>extend</code> يضيف دوال صنف</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span><code>extend</code> أسرع</span></label></div><div class="q-explain"><strong>الشرح:</strong> وللحصول على الاثنين استخدم <code>extend</code> داخل خطّاف <code>self.included</code>.</div></div><div class="q-item"><p class="q-text">2. متى تحتاج <code>prepend</code> بدل <code>include</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أبداً</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>حين تريد تغليف دالة موجودة في الصنف واستدعاءها بـ <code>super</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>مع الثوابت</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>للأداء</span></label></div><div class="q-explain"><strong>الشرح:</strong> مع <code>include</code> تحجب دالة الصنف دالة الوحدة، فلا يعمل التغليف.</div></div><div class="q-item"><p class="q-text">3. ماذا يمنحك <code>include Enumerable</code> مع تعريف <code>each</code> فقط؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span><code>map</code> فقط</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>أكثر من خمسين دالة: map و select و sort_by و group_by وغيرها</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>لا شيء</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>الترتيب فقط</span></label></div><div class="q-explain"><strong>الشرح:</strong> مثال نموذجي على مبدأ «الواجهة الصغيرة، القدرة الكبيرة».</div></div><div class="q-item"><p class="q-text">4. ما ترتيب البحث عن الدالة في Ruby؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>الصنف ثم الأب فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>prepend ← الصنف ← include ← الأب ← وهكذا صعوداً</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>عشوائي</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>الوحدات أولاً دائماً</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>Klass.ancestors</code> تعرض السلسلة كاملة، و<code>obj.method(:x).owner</code> تخبرك بمصدر دالة بعينها.</div></div><div class="q-item"><p class="q-text">5. ما القاعدتان الإلزاميتان مع <code>method_missing</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا قواعد</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>استدعاء <code>super</code> للأسماء غير المعروفة، وتعريف <code>respond_to_missing?</code></span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>التجميد</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>استخدام lambda</span></label></div><div class="q-explain"><strong>الشرح:</strong> بدون <code>super</code> تبتلع كل أخطائك بصمت، وبدون <code>respond_to_missing?</code> يكذب <code>respond_to?</code>.</div></div><div class="q-item"><p class="q-text">6. لماذا <code>refine</code> أفضل من تعديل الأصناف المبنية مباشرة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_5" value="correct"><span>التعديل محدود بالنطاق الذي يفعّله فلا يصطدم بمكتبات أخرى</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>أقصر</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>لا فرق</span></label></div><div class="q-explain"><strong>الشرح:</strong> الـ monkey patching العام قد يكسر مكتبة تعتمد على السلوك الأصلي.</div></div><div class="q-item"><p class="q-text">7. متى تستخدم <code>module_function</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>دائماً</span></label><label class="q-option"><input type="radio" name="q1_6" value="correct"><span>للأدوات عديمة الحالة التي لا معنى لإنشاء كائن منها</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>مع الوراثة</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>للثوابت</span></label></div><div class="q-explain"><strong>الشرح:</strong> مثل دوال التحويل والتنسيق والحساب — تُستدعى على الوحدة مباشرة.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="ruby/07-modules" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="06-oop.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>البرمجة الكائنية: الأصناف والكائنات</b></span></a>
+  <a class="next" href="08-errors-files.html"><span><small>الدرس التالي</small><b>معالجة الأخطاء والملفات</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Ruby</h3>
+        <div class="ring-wrap" data-ring data-track="ruby" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">ما الوحدة؟</a></li><li><a href="#sec-2">1) الوحدة كفضاء أسماء</a></li><li class="sub"><a href="#sec-3">دوال الوحدة المستقلّة</a></li><li><a href="#sec-4">2) الوحدة كسلوك مشترك (Mixin)</a></li><li><a href="#sec-5">include vs extend vs prepend</a></li><li class="sub"><a href="#sec-6">prepend — تغليف الدوال القائمة</a></li><li><a href="#sec-7">سلسلة البحث عن الدوال</a></li><li><a href="#sec-8">وحدات المكتبة القياسية</a></li><li class="sub"><a href="#sec-9">Comparable — من دالة واحدة</a></li><li class="sub"><a href="#sec-10">Enumerable — من دالة واحدة أيضاً</a></li><li><a href="#sec-11">خطّافات الوحدات</a></li><li><a href="#sec-12">لمحة عن البرمجة الوصفية</a></li><li><a href="#sec-13">refinements — بديل آمن لتعديل الأصناف</a></li><li><a href="#sec-14">تمرين</a></li><li><a href="#sec-15">إطار عمل صغير للنماذج</a></li><li><a href="#sec-16">اختبر نفسك</a></li><li><a href="#sec-17">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>module Name</code><small>تعريف وحدة</small></div><div class="ref-item"><code>include M</code><small>دوال مثيل</small></div><div class="ref-item"><code>extend M</code><small>دوال صنف</small></div><div class="ref-item"><code>prepend M</code><small>قبل الصنف في السلسلة</small></div><div class="ref-item"><code>module_function</code><small>دوال وحدة مستقلّة</small></div><div class="ref-item"><code>self.included</code><small>خطّاف عند الإدماج</small></div><div class="ref-item"><code>Klass.ancestors</code><small>سلسلة البحث</small></div><div class="ref-item"><code>define_method</code><small>تعريف ديناميكي</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="08-errors-files.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>معالجة الأخطاء والملفات<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

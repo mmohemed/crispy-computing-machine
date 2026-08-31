@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="ruby">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مقدمة Ruby on Rails ومشروع متكامل — مسار Ruby | CodeWay Web</title>
+<meta name="description" content="فلسفة Rails ونمط MVC، الهجرات و Active Record والتوجيه والعروض، ثم بناء مدوّنة كاملة خطوة بخطوة.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="مقدمة Ruby on Rails ومشروع متكامل — مسار Ruby | CodeWay Web">
+<meta property="og:description" content="فلسفة Rails ونمط MVC، الهجرات و Active Record والتوجيه والعروض، ثم بناء مدوّنة كاملة خطوة بخطوة.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Ruby</a></li>
+      <li aria-current="page">مقدمة Ruby on Rails ومشروع متكامل</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 10 من 10</span>
+      <span class="badge level-احترافي">احترافي</span>
+      <span class="badge">Rails</span><span class="badge">MVC</span><span class="badge">ActiveRecord</span><span class="badge">مشروع</span>
+    </div>
+    <h1>مقدمة Ruby on Rails ومشروع متكامل</h1>
+    <p class="summary">فلسفة Rails ونمط MVC، الهجرات و Active Record والتوجيه والعروض، ثم بناء مدوّنة كاملة خطوة بخطوة.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 90 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Ruby</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 7 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تفهم مبدأي «الاتفاق قبل الإعداد» و«لا تكرّر نفسك».</li><li>تنشئ تطبيق Rails وتفهم بنية مجلّداته.</li><li>تعرّف نماذج وهجرات وعلاقات بـ Active Record.</li><li>تكتب توجيهاً RESTful ومتحكّمات وعروضاً بـ ERB.</li><li>تضيف تحقّقاً ومصادقة وصلاحيات.</li><li>تبني مدوّنة كاملة من الصفر حتى النشر.</li></ul></div>
+      <h2 id="sec-1">فلسفة Rails</h2><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h4>الاتفاق قبل الإعداد</h4><p>لو سمّيت الأشياء بالطريقة المتوقّعة، يعمل كل شيء بلا إعداد. جدول <code>posts</code> ← نموذج <code>Post</code>.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div><h4>لا تكرّر نفسك</h4><p>كل معلومة تُعرَّف في مكان واحد فقط. بنية الجدول في الهجرة، والنموذج يقرأها تلقائياً.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h4>شامل بالبطاريات</h4><p>ORM وتوجيه وقوالب ومصادقة وبريد ومهام خلفية — كلها جاهزة ومتناسقة.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h4>سعادة المطوّر</h4><p>نفس فلسفة Ruby: الشيفرة الجميلة المقروءة أهمّ من الشيفرة الذكية.</p></div></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>«الاتفاق قبل الإعداد» يعني أن Rails يفترض افتراضات ذكية بدل إجبارك على ملفات إعداد. المقابل: عليك تعلّم هذه الاتفاقات — لكنك تتعلّمها مرة وتستفيد منها في كل مشروع.</p></div><h2 id="sec-2">MVC</h2><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> دورة حياة الطلب في Rails</div><iframe title="دورة حياة الطلب في Rails" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}body{font-family:system-ui;margin:0;padding:14px;background:#fff}.flow{display:flex;flex-direction:column;gap:8px}.step{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc}.n{width:26px;height:26px;border-radius:50%;background:#701516;color:#fff;display:grid;place-items:center;font-weight:700;font-size:.8em;flex-shrink:0}.t{font-weight:700;font-size:.88em;margin-bottom:2px}.d{font-size:.78em;color:#64748b}.arr{text-align:center;color:#cbd5e1;font-size:.9em;line-height:1}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;flow&quot;&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;1&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;المتصفّح&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;GET /posts/5&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;2&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;الموجّه — config/routes.rb&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;يطابق المسار ويحدّد المتحكّم والإجراء: posts#show&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;3&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;المتحكّم — PostsController#show&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;ينسّق العملية ويجهّز البيانات&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;4&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;النموذج — Post.find(5)&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;يستعلم من قاعدة البيانات ويطبّق منطق العمل&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;5&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;العرض — show.html.erb&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;يبني HTML من البيانات&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;6&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;الاستجابة&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;HTML يعود للمتصفّح&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:380px"></iframe></div><h2 id="sec-3">إنشاء المشروع</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>gem install rails
+rails new blog <span class="tok-attr">--database</span>=postgresql <span class="tok-attr">--css</span>=tailwind
+<span class="tok-keyword">cd</span> blog
+bin/rails db:create
+bin/rails server            <span class="tok-comment"># http://localhost:3000</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>blog/
+├── app/
+│   ├── controllers/     ← المتحكّمات
+│   ├── models/          ← النماذج ومنطق العمل
+│   ├── views/           ← القوالب
+│   ├── helpers/         ← دوال مساعدة للعروض
+│   ├── javascript/
+│   ├── jobs/            ← المهام الخلفية
+│   └── mailers/         ← البريد
+├── config/
+│   ├── routes.rb        ← تعريف المسارات
+│   ├── database.yml
+│   └── environments/
+├── db/
+│   ├── migrate/         ← الهجرات
+│   ├── schema.rb        ← البنية الحالية (مُولَّد)
+│   └── seeds.rb         ← بيانات أولية
+├── spec/ أو test/
+├── Gemfile
+└── bin/</code></pre></div><h2 id="sec-4">النماذج والهجرات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>bin/rails generate model Post title:string body:text published:boolean
+bin/rails db:migrate</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># db/migrate/20260827120000_create_posts.rb</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">CreatePosts</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ActiveRecord</span><span class="tok-punct">::</span><span class="tok-prop">Migration</span><span class="tok-punct">[</span><span class="tok-number">7.1</span><span class="tok-punct">]</span>
+  <span class="tok-keyword">def</span> change
+    create_table <span class="tok-bool">:posts</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>t<span class="tok-punct">|</span>
+      t<span class="tok-punct">.</span>string  <span class="tok-bool">:title</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span>
+      t<span class="tok-punct">.</span>text    <span class="tok-bool">:body</span>
+      t<span class="tok-punct">.</span>boolean <span class="tok-bool">:published</span><span class="tok-punct">,</span> default<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span>
+      t<span class="tok-punct">.</span>references <span class="tok-bool">:user</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> foreign_key<span class="tok-punct">:</span> <span class="tok-bool">true</span>
+      t<span class="tok-punct">.</span>datetime <span class="tok-bool">:published_at</span>
+
+      t<span class="tok-punct">.</span>timestamps          <span class="tok-comment"># created_at و updated_at</span>
+    <span class="tok-keyword">end</span>
+
+    add_index <span class="tok-bool">:posts</span><span class="tok-punct">,</span> <span class="tok-bool">:published</span>
+    add_index <span class="tok-bool">:posts</span><span class="tok-punct">,</span> <span class="tok-punct">[:</span>user_id<span class="tok-punct">,</span> <span class="tok-bool">:created_at</span><span class="tok-punct">]</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>bin/rails db:migrate             <span class="tok-comment"># طبّق الهجرات الجديدة</span>
+bin/rails db:rollback            <span class="tok-comment"># تراجع عن آخر هجرة</span>
+bin/rails db:migrate:status      <span class="tok-comment"># ما المُطبَّق وما لا؟</span>
+bin/rails db:seed                <span class="tok-comment"># شغّل seeds.rb</span>
+bin/rails db:prepare             <span class="tok-comment"># ينشئ ويهاجر ويزرع</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> لا تعدّل هجرة طُبِّقت على الإنتاج</div><p>اكتب هجرة جديدة بدلاً من ذلك. تعديل هجرة قديمة يجعل قاعدة بيانات فريقك وقاعدة الإنتاج مختلفتين عن الشيفرة، وهذا مصدر كوارث صامتة.</p></div><h2 id="sec-5">Active Record — العلاقات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">class</span> <span class="tok-prop">User</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationRecord</span>
+  has_many <span class="tok-bool">:posts</span><span class="tok-punct">,</span> dependent<span class="tok-punct">:</span> <span class="tok-bool">:destroy</span>
+  has_many <span class="tok-bool">:comments</span><span class="tok-punct">,</span> dependent<span class="tok-punct">:</span> <span class="tok-bool">:destroy</span>
+  has_many <span class="tok-bool">:commented_posts</span><span class="tok-punct">,</span> through<span class="tok-punct">:</span> <span class="tok-bool">:comments</span><span class="tok-punct">,</span> source<span class="tok-punct">:</span> <span class="tok-bool">:post</span>
+  has_one  <span class="tok-bool">:profile</span><span class="tok-punct">,</span> dependent<span class="tok-punct">:</span> <span class="tok-bool">:destroy</span>
+
+  validates <span class="tok-bool">:email</span><span class="tok-punct">,</span> presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> uniqueness<span class="tok-punct">:</span> <span class="tok-punct">{</span> case_sensitive<span class="tok-punct">:</span> <span class="tok-bool">false</span> <span class="tok-punct">},</span>
+                    format<span class="tok-punct">:</span> <span class="tok-punct">{</span> with<span class="tok-punct">:</span> <span class="tok-prop">URI</span><span class="tok-punct">::</span><span class="tok-prop">MailTo</span><span class="tok-punct">::</span><span class="tok-prop">EMAIL_REGEXP</span> <span class="tok-punct">}</span>
+  validates <span class="tok-bool">:name</span><span class="tok-punct">,</span> presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> <span class="tok-keyword">in</span><span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">..</span><span class="tok-number">60</span> <span class="tok-punct">}</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationRecord</span>
+  belongs_to <span class="tok-bool">:user</span>
+  has_many <span class="tok-bool">:comments</span><span class="tok-punct">,</span> dependent<span class="tok-punct">:</span> <span class="tok-bool">:destroy</span>
+  has_many <span class="tok-bool">:taggings</span><span class="tok-punct">,</span> dependent<span class="tok-punct">:</span> <span class="tok-bool">:destroy</span>
+  has_many <span class="tok-bool">:tags</span><span class="tok-punct">,</span> through<span class="tok-punct">:</span> <span class="tok-bool">:taggings</span>
+  has_one_attached <span class="tok-bool">:cover_image</span>
+
+  validates <span class="tok-bool">:title</span><span class="tok-punct">,</span> presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> <span class="tok-keyword">in</span><span class="tok-punct">:</span> <span class="tok-number">5</span><span class="tok-punct">..</span><span class="tok-number">120</span> <span class="tok-punct">}</span>
+  validates <span class="tok-bool">:body</span><span class="tok-punct">,</span>  presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> minimum<span class="tok-punct">:</span> <span class="tok-number">20</span> <span class="tok-punct">}</span>
+
+  scope <span class="tok-bool">:published</span><span class="tok-punct">,</span> <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span> <span class="tok-func">where</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  scope <span class="tok-bool">:recent</span><span class="tok-punct">,</span>    <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span> <span class="tok-func">order</span><span class="tok-punct">(</span>created_at<span class="tok-punct">:</span> <span class="tok-bool">:desc</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  scope <span class="tok-bool">:by_author</span><span class="tok-punct">,</span> <span class="tok-punct">-&gt;(</span>user<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-func">where</span><span class="tok-punct">(</span>user<span class="tok-punct">:)</span> <span class="tok-punct">}</span>
+  scope <span class="tok-bool">:search</span><span class="tok-punct">,</span>    <span class="tok-punct">-&gt;(</span>q<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&quot;title ILIKE ?&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;%#{q}%&quot;</span><span class="tok-punct">)</span> <span class="tok-keyword">if</span> q<span class="tok-punct">.</span>present? <span class="tok-punct">}</span>
+
+  before_save <span class="tok-bool">:set_published_at</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">excerpt</span><span class="tok-punct">(</span>length <span class="tok-punct">=</span> <span class="tok-number">160</span><span class="tok-punct">)</span> <span class="tok-punct">=</span> body<span class="tok-punct">.</span><span class="tok-func">truncate</span><span class="tok-punct">(</span>length<span class="tok-punct">)</span>
+  <span class="tok-keyword">def</span> reading_minutes <span class="tok-punct">=</span> <span class="tok-punct">(</span>body<span class="tok-punct">.</span>split<span class="tok-punct">.</span>size <span class="tok-punct">/</span> <span class="tok-number">200.0</span><span class="tok-punct">).</span>ceil
+
+  <span class="tok-keyword">private</span>
+
+  <span class="tok-keyword">def</span> set_published_at
+    <span class="tok-keyword">self</span><span class="tok-punct">.</span>published_at <span class="tok-punct">||=</span> <span class="tok-prop">Time</span><span class="tok-punct">.</span>current <span class="tok-keyword">if</span> published?
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span></code></pre></div><h3 id="sec-6">الاستعلامات</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-prop">Post</span><span class="tok-punct">.</span>all
+<span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">find</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">)</span>                       <span class="tok-comment"># يرمي RecordNotFound</span>
+<span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">find_by</span><span class="tok-punct">(</span>title<span class="tok-punct">:</span> <span class="tok-string">&quot;مرحبا&quot;</span><span class="tok-punct">)</span>       <span class="tok-comment"># يُرجع nil</span>
+<span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">where</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+<span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&quot;created_at &gt; ?&quot;</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">.</span>week<span class="tok-punct">.</span>ago<span class="tok-punct">)</span>
+<span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">where</span><span class="tok-punct">(</span>user<span class="tok-punct">:</span> current_user<span class="tok-punct">).</span>count
+
+<span class="tok-prop">Post</span><span class="tok-punct">.</span>published<span class="tok-punct">.</span>recent<span class="tok-punct">.</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-number">10</span><span class="tok-punct">)</span>    <span class="tok-comment"># النطاقات تتسلسل</span>
+<span class="tok-prop">Post</span><span class="tok-punct">.</span>published<span class="tok-punct">.</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>user<span class="tok-punct">,</span> <span class="tok-bool">:comments</span><span class="tok-punct">)</span>   <span class="tok-comment"># يمنع مشكلة N+1</span>
+<span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">joins</span><span class="tok-punct">(:</span>comments<span class="tok-punct">).</span><span class="tok-func">group</span><span class="tok-punct">(:</span>id<span class="tok-punct">).</span><span class="tok-func">having</span><span class="tok-punct">(</span><span class="tok-string">&quot;COUNT(comments.id) &gt; 5&quot;</span><span class="tok-punct">)</span>
+<span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">order</span><span class="tok-punct">(</span>created_at<span class="tok-punct">:</span> <span class="tok-bool">:desc</span><span class="tok-punct">).</span><span class="tok-func">page</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>page<span class="tok-punct">])</span>
+
+post <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>title<span class="tok-punct">:</span> <span class="tok-string">&quot;عنوان&quot;</span><span class="tok-punct">,</span> body<span class="tok-punct">:</span> <span class="tok-string">&quot;محتوى&quot;</span><span class="tok-punct">)</span>
+post<span class="tok-punct">.</span>save             <span class="tok-comment"># =&gt; true/false</span>
+post<span class="tok-punct">.</span>save!            <span class="tok-comment"># يرمي عند الفشل</span>
+post<span class="tok-punct">.</span><span class="tok-func">update</span><span class="tok-punct">(</span>title<span class="tok-punct">:</span> <span class="tok-string">&quot;جديد&quot;</span><span class="tok-punct">)</span>
+post<span class="tok-punct">.</span>destroy
+
+<span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>title<span class="tok-punct">:</span> <span class="tok-string">&quot;عنوان&quot;</span><span class="tok-punct">,</span> body<span class="tok-punct">:</span> <span class="tok-string">&quot;محتوى&quot;</span><span class="tok-punct">,</span> user<span class="tok-punct">:</span> current_user<span class="tok-punct">)</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> مشكلة N+1 — أشهر مشكلة أداء في Rails</div><p>عرض 50 مقالاً واسم كاتب كل منها بلا <code>includes</code> ينفّذ <strong>51 استعلاماً</strong> بدل استعلامين. أضف <code>includes(:user)</code> دائماً حين تعرض بيانات علاقة في حلقة، واستخدم gem مثل <code>bullet</code> ليحذّرك تلقائياً.</p></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span></div><pre><code><span class="tok-comment"># المتحكّم</span>
+<span class="tok-attr">@posts</span> <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span>published<span class="tok-punct">.</span>recent<span class="tok-punct">.</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-number">50</span><span class="tok-punct">)</span>
+
+<span class="tok-comment"># العرض</span>
+<span class="tok-punct">&lt;%</span> <span class="tok-attr">@posts</span><span class="tok-punct">.</span>each <span class="tok-keyword">do</span> <span class="tok-punct">|</span>post<span class="tok-punct">|</span> <span class="tok-punct">%&gt;</span>
+  <span class="tok-punct">&lt;</span><span class="tok-keyword">p</span><span class="tok-punct">&gt;&lt;%=</span> post<span class="tok-punct">.</span>user<span class="tok-punct">.</span>name <span class="tok-punct">%&gt;&lt;/</span><span class="tok-keyword">p</span><span class="tok-punct">&gt;</span>   <span class="tok-punct">&lt;%</span><span class="tok-comment"># استعلام لكل مقال! %&gt;</span>
+<span class="tok-punct">&lt;%</span> <span class="tok-keyword">end</span> <span class="tok-punct">%&gt;</span></code></pre></div><div class="why">51 استعلاماً: واحد للمقالات وواحد لكل كاتب. على 500 مقال يصبح الأمر كارثياً.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span></div><pre><code><span class="tok-comment"># المتحكّم</span>
+<span class="tok-attr">@posts</span> <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span>published<span class="tok-punct">.</span>recent<span class="tok-punct">.</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>user<span class="tok-punct">).</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-number">50</span><span class="tok-punct">)</span>
+
+<span class="tok-comment"># العرض — بلا تغيير</span>
+<span class="tok-punct">&lt;%</span> <span class="tok-attr">@posts</span><span class="tok-punct">.</span>each <span class="tok-keyword">do</span> <span class="tok-punct">|</span>post<span class="tok-punct">|</span> <span class="tok-punct">%&gt;</span>
+  <span class="tok-punct">&lt;</span><span class="tok-keyword">p</span><span class="tok-punct">&gt;&lt;%=</span> post<span class="tok-punct">.</span>user<span class="tok-punct">.</span>name <span class="tok-punct">%&gt;&lt;/</span><span class="tok-keyword">p</span><span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;%</span> <span class="tok-keyword">end</span> <span class="tok-punct">%&gt;</span></code></pre></div><div class="why">استعلامان فقط مهما كان عدد المقالات: واحد للمقالات وواحد لكل الكتّاب دفعة واحدة.</div></div></div><h2 id="sec-7">التوجيه</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># config/routes.rb</span>
+<span class="tok-prop">Rails</span><span class="tok-punct">.</span>application<span class="tok-punct">.</span>routes<span class="tok-punct">.</span>draw <span class="tok-keyword">do</span>
+  root <span class="tok-string">&quot;posts#index&quot;</span>
+
+  resources <span class="tok-bool">:posts</span> <span class="tok-keyword">do</span>
+    resources <span class="tok-bool">:comments</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[create destroy]</span>
+    member     <span class="tok-punct">{</span> patch <span class="tok-bool">:publish</span> <span class="tok-punct">}</span>      <span class="tok-comment"># /posts/5/publish</span>
+    collection <span class="tok-punct">{</span> get   <span class="tok-bool">:drafts</span> <span class="tok-punct">}</span>       <span class="tok-comment"># /posts/drafts</span>
+  <span class="tok-keyword">end</span>
+
+  resource  <span class="tok-bool">:session</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[new create destroy]</span>
+  resources <span class="tok-bool">:users</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[new create show]</span>
+
+  namespace <span class="tok-bool">:admin</span> <span class="tok-keyword">do</span>
+    resources <span class="tok-bool">:posts</span>
+    root <span class="tok-string">&quot;dashboard#index&quot;</span>
+  <span class="tok-keyword">end</span>
+
+  get  <span class="tok-string">&quot;/about&quot;</span><span class="tok-punct">,</span> to<span class="tok-punct">:</span> <span class="tok-string">&quot;pages#about&quot;</span>
+  get  <span class="tok-string">&quot;/@:username&quot;</span><span class="tok-punct">,</span> to<span class="tok-punct">:</span> <span class="tok-string">&quot;users#show&quot;</span><span class="tok-punct">,</span> as<span class="tok-punct">:</span> <span class="tok-bool">:profile</span>
+
+  match <span class="tok-string">&quot;/404&quot;</span><span class="tok-punct">,</span> to<span class="tok-punct">:</span> <span class="tok-string">&quot;errors#not_found&quot;</span><span class="tok-punct">,</span> via<span class="tok-punct">:</span> <span class="tok-bool">:all</span>
+<span class="tok-keyword">end</span></code></pre></div><p><code>resources :posts</code> يولّد سبعة مسارات RESTful:</p><div class="table-wrap"><table class="data"><thead><tr><th>الفعل</th><th>المسار</th><th>الإجراء</th><th>الغرض</th></tr></thead><tbody><tr><td>GET</td><td>/posts</td><td><code>index</code></td><td>قائمة</td></tr><tr><td>GET</td><td>/posts/new</td><td><code>new</code></td><td>نموذج إنشاء</td></tr><tr><td>POST</td><td>/posts</td><td><code>create</code></td><td>حفظ الجديد</td></tr><tr><td>GET</td><td>/posts/:id</td><td><code>show</code></td><td>عرض واحد</td></tr><tr><td>GET</td><td>/posts/:id/edit</td><td><code>edit</code></td><td>نموذج تعديل</td></tr><tr><td>PATCH</td><td>/posts/:id</td><td><code>update</code></td><td>حفظ التعديل</td></tr><tr><td>DELETE</td><td>/posts/:id</td><td><code>destroy</code></td><td>حذف</td></tr></tbody></table></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>اكتب <code>bin/rails routes | grep post</code> لرؤية كل مسارات المقالات مع أسماء الدوال المساعدة (<code>posts_path</code>, <code>edit_post_path(post)</code>).</p></div><h2 id="sec-8">المتحكّمات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">class</span> <span class="tok-prop">PostsController</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationController</span>
+  before_action <span class="tok-bool">:require_login</span><span class="tok-punct">,</span> except<span class="tok-punct">:</span> <span class="tok-string">%i[index show]</span>
+  before_action <span class="tok-bool">:set_post</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[show edit update destroy publish]</span>
+  before_action <span class="tok-bool">:authorize_owner!</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[edit update destroy publish]</span>
+
+  <span class="tok-keyword">def</span> index
+    <span class="tok-attr">@posts</span> <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span>published
+                 <span class="tok-punct">.</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>user<span class="tok-punct">,</span> <span class="tok-bool">:tags</span><span class="tok-punct">)</span>
+                 <span class="tok-punct">.</span><span class="tok-func">search</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>q<span class="tok-punct">])</span>
+                 <span class="tok-punct">.</span>recent
+                 <span class="tok-punct">.</span><span class="tok-func">page</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>page<span class="tok-punct">])</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> show
+    <span class="tok-attr">@comments</span> <span class="tok-punct">=</span> <span class="tok-attr">@post</span><span class="tok-punct">.</span>comments<span class="tok-punct">.</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>user<span class="tok-punct">).</span>recent
+    <span class="tok-attr">@comment</span>  <span class="tok-punct">=</span> <span class="tok-prop">Comment</span><span class="tok-punct">.</span><span class="tok-keyword">new</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-keyword">new</span>
+    <span class="tok-attr">@post</span> <span class="tok-punct">=</span> current_user<span class="tok-punct">.</span>posts<span class="tok-punct">.</span>build
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> create
+    <span class="tok-attr">@post</span> <span class="tok-punct">=</span> current_user<span class="tok-punct">.</span>posts<span class="tok-punct">.</span><span class="tok-func">build</span><span class="tok-punct">(</span>post_params<span class="tok-punct">)</span>
+
+    <span class="tok-keyword">if</span> <span class="tok-attr">@post</span><span class="tok-punct">.</span>save
+      redirect_to <span class="tok-attr">@post</span><span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;نُشِر المقال بنجاح.&quot;</span>
+    <span class="tok-keyword">else</span>
+      render <span class="tok-bool">:new</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-bool">:unprocessable_entity</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> edit<span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> update
+    <span class="tok-keyword">if</span> <span class="tok-attr">@post</span><span class="tok-punct">.</span><span class="tok-func">update</span><span class="tok-punct">(</span>post_params<span class="tok-punct">)</span>
+      redirect_to <span class="tok-attr">@post</span><span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;حُدِّث المقال.&quot;</span>
+    <span class="tok-keyword">else</span>
+      render <span class="tok-bool">:edit</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-bool">:unprocessable_entity</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> destroy
+    <span class="tok-attr">@post</span><span class="tok-punct">.</span>destroy
+    redirect_to posts_path<span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;حُذِف المقال.&quot;</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-bool">:see_other</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> publish
+    <span class="tok-attr">@post</span><span class="tok-punct">.</span><span class="tok-func">update!</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> published_at<span class="tok-punct">:</span> <span class="tok-prop">Time</span><span class="tok-punct">.</span>current<span class="tok-punct">)</span>
+    redirect_to <span class="tok-attr">@post</span><span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;أصبح المقال منشوراً.&quot;</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">private</span>
+
+  <span class="tok-keyword">def</span> set_post
+    <span class="tok-attr">@post</span> <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">find</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>id<span class="tok-punct">])</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> authorize_owner!
+    redirect_to posts_path<span class="tok-punct">,</span> alert<span class="tok-punct">:</span> <span class="tok-string">&quot;غير مصرّح.&quot;</span> <span class="tok-keyword">unless</span> <span class="tok-attr">@post</span><span class="tok-punct">.</span>user <span class="tok-punct">==</span> current_user
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-comment"># المعاملات القوية — تمنع الإسناد الجماعي الخطير</span>
+  <span class="tok-keyword">def</span> post_params
+    params<span class="tok-punct">.</span><span class="tok-keyword">require</span><span class="tok-punct">(:</span>post<span class="tok-punct">).</span><span class="tok-func">permit</span><span class="tok-punct">(:</span>title<span class="tok-punct">,</span> <span class="tok-bool">:body</span><span class="tok-punct">,</span> <span class="tok-bool">:published</span><span class="tok-punct">,</span> <span class="tok-bool">:cover_image</span><span class="tok-punct">,</span> tag_ids<span class="tok-punct">:</span> <span class="tok-punct">[])</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> المعاملات القوية ليست اختيارية</div><p>بدون <code>permit</code> يستطيع مهاجم إرسال <code>post[user_id]=1</code> أو <code>post[admin]=true</code> في النموذج فيغيّر حقولاً لم تقصد السماح بها. اسمح صراحةً بما تحتاجه فقط.</p></div><h2 id="sec-9">العروض</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>&lt;%# app/views/posts/index.html.erb %&gt;
+<span class="tok-tag">&lt;h1</span><span class="tok-tag">&gt;</span>المقالات<span class="tok-tag">&lt;/h1</span><span class="tok-tag">&gt;</span>
+
+&lt;%= form_with url: posts_path, method: :get, class: &quot;search&quot; do |f| %&gt;
+  &lt;%= f.search_field :q, value: params[:q], placeholder: &quot;ابحث…&quot; %&gt;
+  &lt;%= f.submit &quot;بحث&quot; %&gt;
+&lt;% end %&gt;
+
+&lt;% if @posts.any? %&gt;
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;grid&quot;</span><span class="tok-tag">&gt;</span>
+    &lt;%= render partial: &quot;post_card&quot;, collection: @posts, as: :post %&gt;
+  <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  &lt;%= paginate @posts %&gt;
+&lt;% else %&gt;
+  <span class="tok-tag">&lt;p</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;empty&quot;</span><span class="tok-tag">&gt;</span>لا توجد مقالات بعد.<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+&lt;% end %&gt;</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>&lt;%# app/views/posts/_post_card.html.erb %&gt;
+<span class="tok-tag">&lt;article</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;card&quot;</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;h2</span><span class="tok-tag">&gt;</span>&lt;%= link_to post.title, post %&gt;<span class="tok-tag">&lt;/h2</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;meta&quot;</span><span class="tok-tag">&gt;</span>
+    &lt;%= post.user.name %&gt; ·
+    &lt;%= l post.created_at, format: :short %&gt; ·
+    &lt;%= post.reading_minutes %&gt; دقائق قراءة
+  <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;p</span><span class="tok-tag">&gt;</span>&lt;%= post.excerpt %&gt;<span class="tok-tag">&lt;/p</span><span class="tok-tag">&gt;</span>
+
+  &lt;% if post.user == current_user %&gt;
+    &lt;%= link_to &quot;تعديل&quot;, edit_post_path(post) %&gt;
+    &lt;%= button_to &quot;حذف&quot;, post, method: :delete,
+                  form: { data: { turbo_confirm: &quot;متأكّد؟&quot; } } %&gt;
+  &lt;% end %&gt;
+<span class="tok-tag">&lt;/article</span><span class="tok-tag">&gt;</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">html</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>&lt;%# app/views/posts/_form.html.erb %&gt;
+&lt;%= form_with model: post do |f| %&gt;
+  &lt;% if post.errors.any? %&gt;
+    <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;errors&quot;</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;h3</span><span class="tok-tag">&gt;</span>تعذّر الحفظ:<span class="tok-tag">&lt;/h3</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;ul</span><span class="tok-tag">&gt;</span>
+        &lt;% post.errors.full_messages.each do |msg| %&gt;
+          <span class="tok-tag">&lt;li</span><span class="tok-tag">&gt;</span>&lt;%= msg %&gt;<span class="tok-tag">&lt;/li</span><span class="tok-tag">&gt;</span>
+        &lt;% end %&gt;
+      <span class="tok-tag">&lt;/ul</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+  &lt;% end %&gt;
+
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;field&quot;</span><span class="tok-tag">&gt;</span>
+    &lt;%= f.label :title, &quot;العنوان&quot; %&gt;
+    &lt;%= f.text_field :title, required: true %&gt;
+  <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;field&quot;</span><span class="tok-tag">&gt;</span>
+    &lt;%= f.label :body, &quot;المحتوى&quot; %&gt;
+    &lt;%= f.text_area :body, rows: 14 %&gt;
+  <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;field&quot;</span><span class="tok-tag">&gt;</span>
+    &lt;%= f.check_box :published %&gt;
+    &lt;%= f.label :published, &quot;نشر فوراً&quot; %&gt;
+  <span class="tok-tag">&lt;/div</span><span class="tok-tag">&gt;</span>
+
+  &lt;%= f.submit class: &quot;btn&quot; %&gt;
+&lt;% end %&gt;</code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> الهروب التلقائي</div><p>يهرّب Rails كل مخرجات <code>&lt;%= %&gt;</code> تلقائياً لمنع ثغرات XSS. لا تستخدم <code>raw</code> أو <code>html_safe</code> على محتوى من المستخدم أبداً — إن احتجت HTML من المستخدم، نظّفه بـ <code>sanitize</code> بقائمة وسوم مسموحة.</p></div><h2 id="sec-10">المصادقة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># Gemfile</span>
+gem <span class="tok-string">&quot;bcrypt&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;~&gt; 3.1&quot;</span>
+
+<span class="tok-comment"># النموذج</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">User</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationRecord</span>
+  has_secure_password           <span class="tok-comment"># يوفّر password و password_confirmation و authenticate</span>
+
+  validates <span class="tok-bool">:email</span><span class="tok-punct">,</span> presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> uniqueness<span class="tok-punct">:</span> <span class="tok-punct">{</span> case_sensitive<span class="tok-punct">:</span> <span class="tok-bool">false</span> <span class="tok-punct">}</span>
+  validates <span class="tok-bool">:password</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> minimum<span class="tok-punct">:</span> <span class="tok-number">8</span> <span class="tok-punct">},</span> <span class="tok-keyword">if</span><span class="tok-punct">:</span> <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span> password<span class="tok-punct">.</span>present? <span class="tok-punct">}</span>
+
+  normalizes <span class="tok-bool">:email</span><span class="tok-punct">,</span> with<span class="tok-punct">:</span> <span class="tok-punct">-&gt;(</span>e<span class="tok-punct">)</span> <span class="tok-punct">{</span> e<span class="tok-punct">.</span>strip<span class="tok-punct">.</span>downcase <span class="tok-punct">}</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># المتحكّم</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">SessionsController</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationController</span>
+  <span class="tok-keyword">def</span> <span class="tok-keyword">new</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> create
+    user <span class="tok-punct">=</span> <span class="tok-prop">User</span><span class="tok-punct">.</span><span class="tok-func">find_by</span><span class="tok-punct">(</span>email<span class="tok-punct">:</span> params<span class="tok-punct">[:</span>email<span class="tok-punct">].</span>to_s<span class="tok-punct">.</span>downcase<span class="tok-punct">)</span>
+
+    <span class="tok-keyword">if</span> user<span class="tok-punct">&amp;.</span><span class="tok-func">authenticate</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>password<span class="tok-punct">])</span>
+      session<span class="tok-punct">[:</span>user_id<span class="tok-punct">]</span> <span class="tok-punct">=</span> user<span class="tok-punct">.</span>id
+      redirect_to root_path<span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;أهلاً بعودتك يا #{user.name}!&quot;</span>
+    <span class="tok-keyword">else</span>
+      flash<span class="tok-punct">.</span>now<span class="tok-punct">[:</span>alert<span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-string">&quot;البريد أو كلمة المرور غير صحيحة.&quot;</span>
+      render <span class="tok-bool">:new</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-bool">:unprocessable_entity</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> destroy
+    session<span class="tok-punct">.</span><span class="tok-func">delete</span><span class="tok-punct">(:</span>user_id<span class="tok-punct">)</span>
+    redirect_to root_path<span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;تمّ تسجيل الخروج.&quot;</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-bool">:see_other</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ApplicationController</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">ApplicationController</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ActionController</span><span class="tok-punct">::</span><span class="tok-prop">Base</span>
+  helper_method <span class="tok-bool">:current_user</span><span class="tok-punct">,</span> <span class="tok-bool">:logged_in?</span>
+
+  <span class="tok-keyword">private</span>
+
+  <span class="tok-keyword">def</span> current_user
+    <span class="tok-attr">@current_user</span> <span class="tok-punct">||=</span> <span class="tok-prop">User</span><span class="tok-punct">.</span><span class="tok-func">find_by</span><span class="tok-punct">(</span>id<span class="tok-punct">:</span> session<span class="tok-punct">[:</span>user_id<span class="tok-punct">])</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> logged_in? <span class="tok-punct">=</span> current_user<span class="tok-punct">.</span>present?
+
+  <span class="tok-keyword">def</span> require_login
+    redirect_to new_session_path<span class="tok-punct">,</span> alert<span class="tok-punct">:</span> <span class="tok-string">&quot;سجّل الدخول أولاً.&quot;</span> <span class="tok-keyword">unless</span> logged_in?
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p><code>has_secure_password</code> يخزّن تجزئة bcrypt في العمود <code>password_digest</code> — لا تخزّن كلمة المرور نصّاً صريحاً أبداً تحت أي ظرف.</p></div><h2 id="sec-11">المشروع: مدوّنة كاملة</h2><section class="exercise" id="sec-12"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>مدوّنة Rails متكاملة</h3></header><div class="exercise-body"><p>ابنِ مدوّنة كاملة بمستخدمين ومقالات وتعليقات ووسوم وبحث ولوحة إدارة، مع اختبارات ونشر.</p><p><strong>المطلوب:</strong></p><ul><li><strong>النماذج</strong>: <code>User</code> (اسم، بريد، كلمة مرور، نبذة، دور)، <code>Post</code> (عنوان، محتوى، منشور، صورة غلاف)، <code>Comment</code>، <code>Tag</code> مع جدول وسيط <code>Tagging</code>.</li><li><strong>العلاقات</strong>: مستخدم ← مقالات وتعليقات، مقال ← تعليقات ووسوم (متعدّد لمتعدّد)، تعليق ← مستخدم ومقال.</li><li><strong>المصادقة</strong>: تسجيل وتسجيل دخول وخروج بـ <code>has_secure_password</code>، مع تذكّر الجلسة.</li><li><strong>الصلاحيات</strong>: صاحب المقال فقط يعدّل ويحذف، والمشرف يستطيع إدارة كل شيء.</li><li><strong>CRUD كامل</strong> للمقالات مع نطاقات: <code>published</code>, <code>drafts</code>, <code>recent</code>, <code>popular</code>.</li><li><strong>التعليقات</strong>: إضافة وحذف مع تحديث فوري (Turbo Streams إن أمكن).</li><li><strong>الوسوم</strong>: اختيار متعدّد في النموذج، وصفحة <code>/tags/:name</code> تعرض مقالات الوسم.</li><li><strong>البحث</strong>: في العنوان والمحتوى مع ترقيم صفحات.</li><li><strong>لوحة الإدارة</strong> في <code>namespace :admin</code> بإحصاءات: عدد المستخدمين والمقالات والتعليقات، وأكثر الكتّاب نشاطاً.</li><li><strong>الأداء</strong>: استخدم <code>includes</code> في كل صفحة تعرض علاقات — لا تترك أي N+1.</li><li><strong>التحقّق</strong>: على كل الحقول مع رسائل خطأ عربية واضحة تُعرض في النموذج.</li><li><strong>البذور</strong>: <code>seeds.rb</code> ينشئ 5 مستخدمين و 30 مقالاً و 100 تعليق و 10 وسوم ببيانات واقعية.</li><li><strong>الاختبارات</strong>: نماذج (تحقّق وعلاقات ونطاقات) ومتحكّمات (صلاحيات ومسارات فاشلة).</li><li><strong>الأمان</strong>: معاملات قوية في كل متحكّم، ولا <code>html_safe</code> على محتوى المستخدم.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>bin/rails g scaffold Post title:string body:text</code> يولّد كل شيء دفعة واحدة كنقطة بداية.</li><li>💡 <code>has_many :tags, through: :taggings</code> مع <code>accepts_nested_attributes_for</code> أو <code>tag_ids: []</code> في المعاملات.</li><li>💡 <code>gem &quot;kaminari&quot;</code> لترقيم الصفحات، و<code>gem &quot;faker&quot;</code> لبيانات البذور.</li><li>💡 <code>Post.joins(:comments).group(&quot;posts.id&quot;).order(&quot;COUNT(comments.id) DESC&quot;)</code> لأكثر المقالات تعليقاً.</li><li>💡 <code>gem &quot;bullet&quot;</code> في مجموعة development يحذّرك من كل N+1 تلقائياً.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># 1) الإعداد</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># rails new blog --database=postgresql --css=tailwind</span>
+<span class="tok-comment"># cd blog</span>
+<span class="tok-comment">#</span>
+<span class="tok-comment"># Gemfile:</span>
+<span class="tok-comment">#   gem &quot;bcrypt&quot;, &quot;~&gt; 3.1&quot;</span>
+<span class="tok-comment">#   gem &quot;kaminari&quot;</span>
+<span class="tok-comment">#   group :development do</span>
+<span class="tok-comment">#     gem &quot;bullet&quot;</span>
+<span class="tok-comment">#   end</span>
+<span class="tok-comment">#   group :development, :test do</span>
+<span class="tok-comment">#     gem &quot;rspec-rails&quot;</span>
+<span class="tok-comment">#     gem &quot;factory_bot_rails&quot;</span>
+<span class="tok-comment">#     gem &quot;faker&quot;</span>
+<span class="tok-comment">#   end</span>
+<span class="tok-comment">#</span>
+<span class="tok-comment"># bin/rails g rspec:install</span>
+<span class="tok-comment"># bin/rails db:create</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># 2) الهجرات</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">CreateUsers</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ActiveRecord</span><span class="tok-punct">::</span><span class="tok-prop">Migration</span><span class="tok-punct">[</span><span class="tok-number">7.1</span><span class="tok-punct">]</span>
+  <span class="tok-keyword">def</span> change
+    create_table <span class="tok-bool">:users</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>t<span class="tok-punct">|</span>
+      t<span class="tok-punct">.</span>string <span class="tok-bool">:name</span><span class="tok-punct">,</span>            null<span class="tok-punct">:</span> <span class="tok-bool">false</span>
+      t<span class="tok-punct">.</span>string <span class="tok-bool">:email</span><span class="tok-punct">,</span>           null<span class="tok-punct">:</span> <span class="tok-bool">false</span>
+      t<span class="tok-punct">.</span>string <span class="tok-bool">:password_digest</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span>
+      t<span class="tok-punct">.</span>text   <span class="tok-bool">:bio</span>
+      t<span class="tok-punct">.</span>string <span class="tok-bool">:role</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> default<span class="tok-punct">:</span> <span class="tok-string">&quot;author&quot;</span>
+      t<span class="tok-punct">.</span>timestamps
+    <span class="tok-keyword">end</span>
+    add_index <span class="tok-bool">:users</span><span class="tok-punct">,</span> <span class="tok-bool">:email</span><span class="tok-punct">,</span> unique<span class="tok-punct">:</span> <span class="tok-bool">true</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">CreatePosts</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ActiveRecord</span><span class="tok-punct">::</span><span class="tok-prop">Migration</span><span class="tok-punct">[</span><span class="tok-number">7.1</span><span class="tok-punct">]</span>
+  <span class="tok-keyword">def</span> change
+    create_table <span class="tok-bool">:posts</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>t<span class="tok-punct">|</span>
+      t<span class="tok-punct">.</span>references <span class="tok-bool">:user</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> foreign_key<span class="tok-punct">:</span> <span class="tok-bool">true</span>
+      t<span class="tok-punct">.</span>string   <span class="tok-bool">:title</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span>
+      t<span class="tok-punct">.</span>text     <span class="tok-bool">:body</span><span class="tok-punct">,</span>  null<span class="tok-punct">:</span> <span class="tok-bool">false</span>
+      t<span class="tok-punct">.</span>boolean  <span class="tok-bool">:published</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> default<span class="tok-punct">:</span> <span class="tok-bool">false</span>
+      t<span class="tok-punct">.</span>datetime <span class="tok-bool">:published_at</span>
+      t<span class="tok-punct">.</span>integer  <span class="tok-bool">:views_count</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> default<span class="tok-punct">:</span> <span class="tok-number">0</span>
+      t<span class="tok-punct">.</span>timestamps
+    <span class="tok-keyword">end</span>
+    add_index <span class="tok-bool">:posts</span><span class="tok-punct">,</span> <span class="tok-bool">:published</span>
+    add_index <span class="tok-bool">:posts</span><span class="tok-punct">,</span> <span class="tok-string">%i[user_id created_at]</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">CreateComments</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ActiveRecord</span><span class="tok-punct">::</span><span class="tok-prop">Migration</span><span class="tok-punct">[</span><span class="tok-number">7.1</span><span class="tok-punct">]</span>
+  <span class="tok-keyword">def</span> change
+    create_table <span class="tok-bool">:comments</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>t<span class="tok-punct">|</span>
+      t<span class="tok-punct">.</span>references <span class="tok-bool">:user</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> foreign_key<span class="tok-punct">:</span> <span class="tok-bool">true</span>
+      t<span class="tok-punct">.</span>references <span class="tok-bool">:post</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> foreign_key<span class="tok-punct">:</span> <span class="tok-bool">true</span>
+      t<span class="tok-punct">.</span>text <span class="tok-bool">:body</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span>
+      t<span class="tok-punct">.</span>timestamps
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">CreateTags</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ActiveRecord</span><span class="tok-punct">::</span><span class="tok-prop">Migration</span><span class="tok-punct">[</span><span class="tok-number">7.1</span><span class="tok-punct">]</span>
+  <span class="tok-keyword">def</span> change
+    create_table <span class="tok-bool">:tags</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>t<span class="tok-punct">|</span>
+      t<span class="tok-punct">.</span>string <span class="tok-bool">:name</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span>
+      t<span class="tok-punct">.</span>timestamps
+    <span class="tok-keyword">end</span>
+    add_index <span class="tok-bool">:tags</span><span class="tok-punct">,</span> <span class="tok-bool">:name</span><span class="tok-punct">,</span> unique<span class="tok-punct">:</span> <span class="tok-bool">true</span>
+
+    create_table <span class="tok-bool">:taggings</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>t<span class="tok-punct">|</span>
+      t<span class="tok-punct">.</span>references <span class="tok-bool">:post</span><span class="tok-punct">,</span> null<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> foreign_key<span class="tok-punct">:</span> <span class="tok-bool">true</span>
+      t<span class="tok-punct">.</span>references <span class="tok-bool">:tag</span><span class="tok-punct">,</span>  null<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">,</span> foreign_key<span class="tok-punct">:</span> <span class="tok-bool">true</span>
+      t<span class="tok-punct">.</span>timestamps
+    <span class="tok-keyword">end</span>
+    add_index <span class="tok-bool">:taggings</span><span class="tok-punct">,</span> <span class="tok-string">%i[post_id tag_id]</span><span class="tok-punct">,</span> unique<span class="tok-punct">:</span> <span class="tok-bool">true</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># 3) النماذج</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># app/models/user.rb</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">User</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationRecord</span>
+  has_secure_password
+
+  has_many <span class="tok-bool">:posts</span><span class="tok-punct">,</span>    dependent<span class="tok-punct">:</span> <span class="tok-bool">:destroy</span>
+  has_many <span class="tok-bool">:comments</span><span class="tok-punct">,</span> dependent<span class="tok-punct">:</span> <span class="tok-bool">:destroy</span>
+
+  <span class="tok-prop">ROLES</span> <span class="tok-punct">=</span> <span class="tok-string">%w[author admin]</span><span class="tok-punct">.</span><span class="tok-keyword">freeze</span>
+
+  normalizes <span class="tok-bool">:email</span><span class="tok-punct">,</span> with<span class="tok-punct">:</span> <span class="tok-punct">-&gt;(</span>e<span class="tok-punct">)</span> <span class="tok-punct">{</span> e<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span>strip<span class="tok-punct">.</span>downcase <span class="tok-punct">}</span>
+
+  validates <span class="tok-bool">:name</span><span class="tok-punct">,</span>  presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> <span class="tok-keyword">in</span><span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">..</span><span class="tok-number">60</span> <span class="tok-punct">}</span>
+  validates <span class="tok-bool">:email</span><span class="tok-punct">,</span> presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span>
+                    uniqueness<span class="tok-punct">:</span> <span class="tok-punct">{</span> case_sensitive<span class="tok-punct">:</span> <span class="tok-bool">false</span> <span class="tok-punct">},</span>
+                    format<span class="tok-punct">:</span> <span class="tok-punct">{</span> with<span class="tok-punct">:</span> <span class="tok-prop">URI</span><span class="tok-punct">::</span><span class="tok-prop">MailTo</span><span class="tok-punct">::</span><span class="tok-prop">EMAIL_REGEXP</span><span class="tok-punct">,</span> message<span class="tok-punct">:</span> <span class="tok-string">&quot;بصيغة غير صحيحة&quot;</span> <span class="tok-punct">}</span>
+  validates <span class="tok-bool">:password</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> minimum<span class="tok-punct">:</span> <span class="tok-number">8</span> <span class="tok-punct">},</span> <span class="tok-keyword">if</span><span class="tok-punct">:</span> <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span> password<span class="tok-punct">.</span>present? <span class="tok-punct">}</span>
+  validates <span class="tok-bool">:role</span><span class="tok-punct">,</span> inclusion<span class="tok-punct">:</span> <span class="tok-punct">{</span> <span class="tok-keyword">in</span><span class="tok-punct">:</span> <span class="tok-prop">ROLES</span> <span class="tok-punct">}</span>
+  validates <span class="tok-bool">:bio</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> maximum<span class="tok-punct">:</span> <span class="tok-number">400</span> <span class="tok-punct">},</span> allow_blank<span class="tok-punct">:</span> <span class="tok-bool">true</span>
+
+  scope <span class="tok-bool">:authors</span><span class="tok-punct">,</span> <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span> <span class="tok-func">where</span><span class="tok-punct">(</span>role<span class="tok-punct">:</span> <span class="tok-string">&quot;author&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  scope <span class="tok-bool">:most_active</span><span class="tok-punct">,</span> <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-func">left_joins</span><span class="tok-punct">(:</span>posts<span class="tok-punct">).</span><span class="tok-func">group</span><span class="tok-punct">(:</span>id<span class="tok-punct">).</span><span class="tok-func">order</span><span class="tok-punct">(</span><span class="tok-prop">Arel</span><span class="tok-punct">.</span><span class="tok-func">sql</span><span class="tok-punct">(</span><span class="tok-string">&quot;COUNT(posts.id) DESC&quot;</span><span class="tok-punct">))</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">def</span> admin? <span class="tok-punct">=</span> role <span class="tok-punct">==</span> <span class="tok-string">&quot;admin&quot;</span>
+  <span class="tok-keyword">def</span> to_s   <span class="tok-punct">=</span> name
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># app/models/post.rb</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationRecord</span>
+  belongs_to <span class="tok-bool">:user</span>
+  has_many <span class="tok-bool">:comments</span><span class="tok-punct">,</span> dependent<span class="tok-punct">:</span> <span class="tok-bool">:destroy</span>
+  has_many <span class="tok-bool">:taggings</span><span class="tok-punct">,</span> dependent<span class="tok-punct">:</span> <span class="tok-bool">:destroy</span>
+  has_many <span class="tok-bool">:tags</span><span class="tok-punct">,</span> through<span class="tok-punct">:</span> <span class="tok-bool">:taggings</span>
+
+  validates <span class="tok-bool">:title</span><span class="tok-punct">,</span> presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> <span class="tok-keyword">in</span><span class="tok-punct">:</span> <span class="tok-number">5</span><span class="tok-punct">..</span><span class="tok-number">120</span> <span class="tok-punct">}</span>
+  validates <span class="tok-bool">:body</span><span class="tok-punct">,</span>  presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> minimum<span class="tok-punct">:</span> <span class="tok-number">20</span> <span class="tok-punct">}</span>
+
+  scope <span class="tok-bool">:published</span><span class="tok-punct">,</span> <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span> <span class="tok-func">where</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  scope <span class="tok-bool">:drafts</span><span class="tok-punct">,</span>    <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span> <span class="tok-func">where</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  scope <span class="tok-bool">:recent</span><span class="tok-punct">,</span>    <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span> <span class="tok-func">order</span><span class="tok-punct">(</span>created_at<span class="tok-punct">:</span> <span class="tok-bool">:desc</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  scope <span class="tok-bool">:popular</span><span class="tok-punct">,</span>   <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-func">left_joins</span><span class="tok-punct">(:</span>comments<span class="tok-punct">).</span><span class="tok-func">group</span><span class="tok-punct">(:</span>id<span class="tok-punct">).</span><span class="tok-func">order</span><span class="tok-punct">(</span><span class="tok-prop">Arel</span><span class="tok-punct">.</span><span class="tok-func">sql</span><span class="tok-punct">(</span><span class="tok-string">&quot;COUNT(comments.id) DESC&quot;</span><span class="tok-punct">))</span>
+  <span class="tok-punct">}</span>
+  scope <span class="tok-bool">:search</span><span class="tok-punct">,</span> <span class="tok-punct">-&gt;(</span>q<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> all <span class="tok-keyword">if</span> q<span class="tok-punct">.</span>blank?
+    <span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&quot;title ILIKE :q OR body ILIKE :q&quot;</span><span class="tok-punct">,</span> q<span class="tok-punct">:</span> <span class="tok-string">&quot;%#{q}%&quot;</span><span class="tok-punct">)</span>
+  <span class="tok-punct">}</span>
+  scope <span class="tok-bool">:tagged_with</span><span class="tok-punct">,</span> <span class="tok-punct">-&gt;(</span>name<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-func">joins</span><span class="tok-punct">(:</span>tags<span class="tok-punct">).</span><span class="tok-func">where</span><span class="tok-punct">(</span>tags<span class="tok-punct">:</span> <span class="tok-punct">{</span> name<span class="tok-punct">:</span> <span class="tok-punct">})</span> <span class="tok-punct">}</span>
+
+  before_save <span class="tok-bool">:stamp_published_at</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">excerpt</span><span class="tok-punct">(</span>length <span class="tok-punct">=</span> <span class="tok-number">180</span><span class="tok-punct">)</span> <span class="tok-punct">=</span> body<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span><span class="tok-func">truncate</span><span class="tok-punct">(</span>length<span class="tok-punct">)</span>
+  <span class="tok-keyword">def</span> reading_minutes <span class="tok-punct">=</span> <span class="tok-punct">[(</span>body<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span>split<span class="tok-punct">.</span>size <span class="tok-punct">/</span> <span class="tok-number">200.0</span><span class="tok-punct">).</span>ceil<span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">].</span>max
+  <span class="tok-keyword">def</span> <span class="tok-func">owned_by?</span><span class="tok-punct">(</span>other<span class="tok-punct">)</span> <span class="tok-punct">=</span> user_id <span class="tok-punct">==</span> other<span class="tok-punct">&amp;.</span>id
+
+  <span class="tok-keyword">private</span>
+
+  <span class="tok-keyword">def</span> stamp_published_at
+    <span class="tok-keyword">self</span><span class="tok-punct">.</span>published_at <span class="tok-punct">||=</span> <span class="tok-prop">Time</span><span class="tok-punct">.</span>current <span class="tok-keyword">if</span> published?
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># app/models/comment.rb</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">Comment</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationRecord</span>
+  belongs_to <span class="tok-bool">:user</span>
+  belongs_to <span class="tok-bool">:post</span>
+
+  validates <span class="tok-bool">:body</span><span class="tok-punct">,</span> presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> <span class="tok-keyword">in</span><span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">..</span><span class="tok-number">2000</span> <span class="tok-punct">}</span>
+
+  scope <span class="tok-bool">:recent</span><span class="tok-punct">,</span> <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span> <span class="tok-func">order</span><span class="tok-punct">(</span>created_at<span class="tok-punct">:</span> <span class="tok-bool">:desc</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">owned_by?</span><span class="tok-punct">(</span>other<span class="tok-punct">)</span> <span class="tok-punct">=</span> user_id <span class="tok-punct">==</span> other<span class="tok-punct">&amp;.</span>id
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># app/models/tag.rb</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">Tag</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationRecord</span>
+  has_many <span class="tok-bool">:taggings</span><span class="tok-punct">,</span> dependent<span class="tok-punct">:</span> <span class="tok-bool">:destroy</span>
+  has_many <span class="tok-bool">:posts</span><span class="tok-punct">,</span> through<span class="tok-punct">:</span> <span class="tok-bool">:taggings</span>
+
+  normalizes <span class="tok-bool">:name</span><span class="tok-punct">,</span> with<span class="tok-punct">:</span> <span class="tok-punct">-&gt;(</span>n<span class="tok-punct">)</span> <span class="tok-punct">{</span> n<span class="tok-punct">.</span>to_s<span class="tok-punct">.</span>strip<span class="tok-punct">.</span>downcase <span class="tok-punct">}</span>
+
+  validates <span class="tok-bool">:name</span><span class="tok-punct">,</span> presence<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> uniqueness<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> length<span class="tok-punct">:</span> <span class="tok-punct">{</span> <span class="tok-keyword">in</span><span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">..</span><span class="tok-number">30</span> <span class="tok-punct">}</span>
+
+  scope <span class="tok-bool">:popular</span><span class="tok-punct">,</span> <span class="tok-punct">-&gt;</span> <span class="tok-punct">{</span>
+    <span class="tok-func">left_joins</span><span class="tok-punct">(:</span>posts<span class="tok-punct">).</span><span class="tok-func">group</span><span class="tok-punct">(:</span>id<span class="tok-punct">).</span><span class="tok-func">order</span><span class="tok-punct">(</span><span class="tok-prop">Arel</span><span class="tok-punct">.</span><span class="tok-func">sql</span><span class="tok-punct">(</span><span class="tok-string">&quot;COUNT(posts.id) DESC&quot;</span><span class="tok-punct">))</span>
+  <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">def</span> to_s <span class="tok-punct">=</span> name
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># 4) المسارات</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-prop">Rails</span><span class="tok-punct">.</span>application<span class="tok-punct">.</span>routes<span class="tok-punct">.</span>draw <span class="tok-keyword">do</span>
+  root <span class="tok-string">&quot;posts#index&quot;</span>
+
+  resources <span class="tok-bool">:posts</span> <span class="tok-keyword">do</span>
+    resources <span class="tok-bool">:comments</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[create destroy]</span>
+    member     <span class="tok-punct">{</span> patch <span class="tok-bool">:publish</span> <span class="tok-punct">}</span>
+    collection <span class="tok-punct">{</span> get <span class="tok-bool">:drafts</span> <span class="tok-punct">}</span>
+  <span class="tok-keyword">end</span>
+
+  resources <span class="tok-bool">:tags</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[index show]</span><span class="tok-punct">,</span> param<span class="tok-punct">:</span> <span class="tok-bool">:name</span>
+  resources <span class="tok-bool">:users</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[new create show]</span>
+  resource  <span class="tok-bool">:session</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[new create destroy]</span>
+
+  namespace <span class="tok-bool">:admin</span> <span class="tok-keyword">do</span>
+    root <span class="tok-string">&quot;dashboard#index&quot;</span>
+    resources <span class="tok-bool">:posts</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[index destroy]</span>
+    resources <span class="tok-bool">:users</span><span class="tok-punct">,</span> only<span class="tok-punct">:</span> <span class="tok-string">%i[index destroy]</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># 5) المتحكّمات</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># app/controllers/application_controller.rb</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">ApplicationController</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ActionController</span><span class="tok-punct">::</span><span class="tok-prop">Base</span>
+  helper_method <span class="tok-bool">:current_user</span><span class="tok-punct">,</span> <span class="tok-bool">:logged_in?</span>
+
+  rescue_from <span class="tok-prop">ActiveRecord</span><span class="tok-punct">::</span><span class="tok-prop">RecordNotFound</span> <span class="tok-keyword">do</span>
+    redirect_to root_path<span class="tok-punct">,</span> alert<span class="tok-punct">:</span> <span class="tok-string">&quot;الصفحة المطلوبة غير موجودة.&quot;</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">private</span>
+
+  <span class="tok-keyword">def</span> current_user
+    <span class="tok-attr">@current_user</span> <span class="tok-punct">||=</span> <span class="tok-prop">User</span><span class="tok-punct">.</span><span class="tok-func">find_by</span><span class="tok-punct">(</span>id<span class="tok-punct">:</span> session<span class="tok-punct">[:</span>user_id<span class="tok-punct">])</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> logged_in? <span class="tok-punct">=</span> current_user<span class="tok-punct">.</span>present?
+
+  <span class="tok-keyword">def</span> require_login
+    <span class="tok-keyword">return</span> <span class="tok-keyword">if</span> logged_in?
+    redirect_to new_session_path<span class="tok-punct">,</span> alert<span class="tok-punct">:</span> <span class="tok-string">&quot;سجّل الدخول للمتابعة.&quot;</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> require_admin
+    <span class="tok-keyword">return</span> <span class="tok-keyword">if</span> current_user<span class="tok-punct">&amp;.</span>admin?
+    redirect_to root_path<span class="tok-punct">,</span> alert<span class="tok-punct">:</span> <span class="tok-string">&quot;هذه الصفحة للمشرفين فقط.&quot;</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># app/controllers/posts_controller.rb</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">PostsController</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationController</span>
+  before_action <span class="tok-bool">:require_login</span><span class="tok-punct">,</span> except<span class="tok-punct">:</span> <span class="tok-string">%i[index show]</span>
+  before_action <span class="tok-bool">:set_post</span><span class="tok-punct">,</span>      only<span class="tok-punct">:</span> <span class="tok-string">%i[show edit update destroy publish]</span>
+  before_action <span class="tok-bool">:authorize!</span><span class="tok-punct">,</span>    only<span class="tok-punct">:</span> <span class="tok-string">%i[edit update destroy publish]</span>
+
+  <span class="tok-keyword">def</span> index
+    <span class="tok-attr">@posts</span> <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span>published
+                 <span class="tok-punct">.</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>user<span class="tok-punct">,</span> <span class="tok-bool">:tags</span><span class="tok-punct">)</span>
+                 <span class="tok-punct">.</span><span class="tok-func">search</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>q<span class="tok-punct">])</span>
+                 <span class="tok-punct">.</span>recent
+                 <span class="tok-punct">.</span><span class="tok-func">page</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>page<span class="tok-punct">]).</span><span class="tok-func">per</span><span class="tok-punct">(</span><span class="tok-number">9</span><span class="tok-punct">)</span>
+    <span class="tok-attr">@popular_tags</span> <span class="tok-punct">=</span> <span class="tok-prop">Tag</span><span class="tok-punct">.</span>popular<span class="tok-punct">.</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-number">12</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> drafts
+    <span class="tok-attr">@posts</span> <span class="tok-punct">=</span> current_user<span class="tok-punct">.</span>posts<span class="tok-punct">.</span>drafts<span class="tok-punct">.</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>tags<span class="tok-punct">).</span>recent<span class="tok-punct">.</span><span class="tok-func">page</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>page<span class="tok-punct">])</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> show
+    <span class="tok-attr">@post</span><span class="tok-punct">.</span><span class="tok-func">increment!</span><span class="tok-punct">(:</span>views_count<span class="tok-punct">)</span>
+    <span class="tok-attr">@comments</span> <span class="tok-punct">=</span> <span class="tok-attr">@post</span><span class="tok-punct">.</span>comments<span class="tok-punct">.</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>user<span class="tok-punct">).</span>recent
+    <span class="tok-attr">@comment</span>  <span class="tok-punct">=</span> <span class="tok-prop">Comment</span><span class="tok-punct">.</span><span class="tok-keyword">new</span>
+    <span class="tok-attr">@related</span>  <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span>published<span class="tok-punct">.</span><span class="tok-func">tagged_with</span><span class="tok-punct">(</span><span class="tok-attr">@post</span><span class="tok-punct">.</span>tags<span class="tok-punct">.</span>first<span class="tok-punct">&amp;.</span>name<span class="tok-punct">)</span>
+                    <span class="tok-punct">.</span>where<span class="tok-punct">.</span><span class="tok-func">not</span><span class="tok-punct">(</span>id<span class="tok-punct">:</span> <span class="tok-attr">@post</span><span class="tok-punct">.</span>id<span class="tok-punct">).</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>user<span class="tok-punct">).</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-number">3</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-keyword">new</span>  <span class="tok-punct">=</span> <span class="tok-attr">@post</span> <span class="tok-punct">=</span> current_user<span class="tok-punct">.</span>posts<span class="tok-punct">.</span>build
+  <span class="tok-keyword">def</span> edit<span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> create
+    <span class="tok-attr">@post</span> <span class="tok-punct">=</span> current_user<span class="tok-punct">.</span>posts<span class="tok-punct">.</span><span class="tok-func">build</span><span class="tok-punct">(</span>post_params<span class="tok-punct">)</span>
+
+    <span class="tok-keyword">if</span> <span class="tok-attr">@post</span><span class="tok-punct">.</span>save
+      redirect_to <span class="tok-attr">@post</span><span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;نُشِر المقال بنجاح.&quot;</span>
+    <span class="tok-keyword">else</span>
+      render <span class="tok-bool">:new</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-bool">:unprocessable_entity</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> update
+    <span class="tok-keyword">if</span> <span class="tok-attr">@post</span><span class="tok-punct">.</span><span class="tok-func">update</span><span class="tok-punct">(</span>post_params<span class="tok-punct">)</span>
+      redirect_to <span class="tok-attr">@post</span><span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;حُدِّث المقال.&quot;</span>
+    <span class="tok-keyword">else</span>
+      render <span class="tok-bool">:edit</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-bool">:unprocessable_entity</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> destroy
+    <span class="tok-attr">@post</span><span class="tok-punct">.</span>destroy
+    redirect_to posts_path<span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;حُذِف المقال.&quot;</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-bool">:see_other</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> publish
+    <span class="tok-attr">@post</span><span class="tok-punct">.</span><span class="tok-func">update!</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+    redirect_to <span class="tok-attr">@post</span><span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;أصبح المقال منشوراً.&quot;</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">private</span>
+
+  <span class="tok-keyword">def</span> set_post <span class="tok-punct">=</span> <span class="tok-attr">@post</span> <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>user<span class="tok-punct">,</span> <span class="tok-bool">:tags</span><span class="tok-punct">).</span><span class="tok-func">find</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>id<span class="tok-punct">])</span>
+
+  <span class="tok-keyword">def</span> authorize!
+    <span class="tok-keyword">return</span> <span class="tok-keyword">if</span> <span class="tok-attr">@post</span><span class="tok-punct">.</span><span class="tok-func">owned_by?</span><span class="tok-punct">(</span>current_user<span class="tok-punct">)</span> <span class="tok-punct">||</span> current_user<span class="tok-punct">.</span>admin?
+    redirect_to posts_path<span class="tok-punct">,</span> alert<span class="tok-punct">:</span> <span class="tok-string">&quot;غير مصرّح لك بهذا الإجراء.&quot;</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> post_params
+    params<span class="tok-punct">.</span><span class="tok-keyword">require</span><span class="tok-punct">(:</span>post<span class="tok-punct">).</span><span class="tok-func">permit</span><span class="tok-punct">(:</span>title<span class="tok-punct">,</span> <span class="tok-bool">:body</span><span class="tok-punct">,</span> <span class="tok-bool">:published</span><span class="tok-punct">,</span> tag_ids<span class="tok-punct">:</span> <span class="tok-punct">[])</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># app/controllers/comments_controller.rb</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">CommentsController</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationController</span>
+  before_action <span class="tok-bool">:require_login</span>
+
+  <span class="tok-keyword">def</span> create
+    <span class="tok-attr">@post</span>    <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">find</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>post_id<span class="tok-punct">])</span>
+    <span class="tok-attr">@comment</span> <span class="tok-punct">=</span> <span class="tok-attr">@post</span><span class="tok-punct">.</span>comments<span class="tok-punct">.</span><span class="tok-func">build</span><span class="tok-punct">(</span>comment_params<span class="tok-punct">.</span><span class="tok-func">merge</span><span class="tok-punct">(</span>user<span class="tok-punct">:</span> current_user<span class="tok-punct">))</span>
+
+    <span class="tok-keyword">if</span> <span class="tok-attr">@comment</span><span class="tok-punct">.</span>save
+      redirect_to <span class="tok-attr">@post</span><span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;أُضيف تعليقك.&quot;</span>
+    <span class="tok-keyword">else</span>
+      redirect_to <span class="tok-attr">@post</span><span class="tok-punct">,</span> alert<span class="tok-punct">:</span> <span class="tok-attr">@comment</span><span class="tok-punct">.</span>errors<span class="tok-punct">.</span>full_messages<span class="tok-punct">.</span>to_sentence
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> destroy
+    <span class="tok-attr">@comment</span> <span class="tok-punct">=</span> <span class="tok-prop">Comment</span><span class="tok-punct">.</span><span class="tok-func">find</span><span class="tok-punct">(</span>params<span class="tok-punct">[:</span>id<span class="tok-punct">])</span>
+    <span class="tok-keyword">unless</span> <span class="tok-attr">@comment</span><span class="tok-punct">.</span><span class="tok-func">owned_by?</span><span class="tok-punct">(</span>current_user<span class="tok-punct">)</span> <span class="tok-punct">||</span> current_user<span class="tok-punct">.</span>admin?
+      <span class="tok-keyword">return</span> redirect_to <span class="tok-attr">@comment</span><span class="tok-punct">.</span>post<span class="tok-punct">,</span> alert<span class="tok-punct">:</span> <span class="tok-string">&quot;غير مصرّح.&quot;</span>
+    <span class="tok-keyword">end</span>
+
+    post <span class="tok-punct">=</span> <span class="tok-attr">@comment</span><span class="tok-punct">.</span>post
+    <span class="tok-attr">@comment</span><span class="tok-punct">.</span>destroy
+    redirect_to post<span class="tok-punct">,</span> notice<span class="tok-punct">:</span> <span class="tok-string">&quot;حُذِف التعليق.&quot;</span><span class="tok-punct">,</span> status<span class="tok-punct">:</span> <span class="tok-bool">:see_other</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">private</span>
+
+  <span class="tok-keyword">def</span> comment_params <span class="tok-punct">=</span> params<span class="tok-punct">.</span><span class="tok-keyword">require</span><span class="tok-punct">(:</span>comment<span class="tok-punct">).</span><span class="tok-func">permit</span><span class="tok-punct">(:</span>body<span class="tok-punct">)</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># app/controllers/admin/dashboard_controller.rb</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">Admin</span>
+  <span class="tok-keyword">class</span> <span class="tok-prop">DashboardController</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">ApplicationController</span>
+    before_action <span class="tok-bool">:require_login</span>
+    before_action <span class="tok-bool">:require_admin</span>
+
+    <span class="tok-keyword">def</span> index
+      <span class="tok-attr">@stats</span> <span class="tok-punct">=</span> <span class="tok-punct">{</span>
+        users<span class="tok-punct">:</span>      <span class="tok-prop">User</span><span class="tok-punct">.</span>count<span class="tok-punct">,</span>
+        posts<span class="tok-punct">:</span>      <span class="tok-prop">Post</span><span class="tok-punct">.</span>count<span class="tok-punct">,</span>
+        published<span class="tok-punct">:</span>  <span class="tok-prop">Post</span><span class="tok-punct">.</span>published<span class="tok-punct">.</span>count<span class="tok-punct">,</span>
+        drafts<span class="tok-punct">:</span>     <span class="tok-prop">Post</span><span class="tok-punct">.</span>drafts<span class="tok-punct">.</span>count<span class="tok-punct">,</span>
+        comments<span class="tok-punct">:</span>   <span class="tok-prop">Comment</span><span class="tok-punct">.</span>count<span class="tok-punct">,</span>
+        tags<span class="tok-punct">:</span>       <span class="tok-prop">Tag</span><span class="tok-punct">.</span>count
+      <span class="tok-punct">}</span>
+      <span class="tok-attr">@top_authors</span> <span class="tok-punct">=</span> <span class="tok-prop">User</span><span class="tok-punct">.</span>most_active<span class="tok-punct">.</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">)</span>
+      <span class="tok-attr">@top_posts</span>   <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span>published<span class="tok-punct">.</span>popular<span class="tok-punct">.</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>user<span class="tok-punct">).</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">)</span>
+      <span class="tok-attr">@recent</span>      <span class="tok-punct">=</span> <span class="tok-prop">Comment</span><span class="tok-punct">.</span><span class="tok-func">includes</span><span class="tok-punct">(:</span>user<span class="tok-punct">,</span> <span class="tok-bool">:post</span><span class="tok-punct">).</span>recent<span class="tok-punct">.</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-number">10</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># 6) البذور — db/seeds.rb</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-keyword">require</span> <span class="tok-string">&quot;faker&quot;</span>
+<span class="tok-prop">Faker</span><span class="tok-punct">::</span><span class="tok-prop">Config</span><span class="tok-punct">.</span>locale <span class="tok-punct">=</span> <span class="tok-string">&quot;ar&quot;</span>
+
+<span class="tok-prop">Tagging</span><span class="tok-punct">.</span>destroy_all
+<span class="tok-prop">Comment</span><span class="tok-punct">.</span>destroy_all
+<span class="tok-prop">Post</span><span class="tok-punct">.</span>destroy_all
+<span class="tok-prop">Tag</span><span class="tok-punct">.</span>destroy_all
+<span class="tok-prop">User</span><span class="tok-punct">.</span>destroy_all
+
+admin <span class="tok-punct">=</span> <span class="tok-prop">User</span><span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>
+  name<span class="tok-punct">:</span> <span class="tok-string">&quot;المشرف&quot;</span><span class="tok-punct">,</span> email<span class="tok-punct">:</span> <span class="tok-string">&quot;admin@blog.test&quot;</span><span class="tok-punct">,</span>
+  password<span class="tok-punct">:</span> <span class="tok-string">&quot;password123&quot;</span><span class="tok-punct">,</span> role<span class="tok-punct">:</span> <span class="tok-string">&quot;admin&quot;</span><span class="tok-punct">,</span>
+  bio<span class="tok-punct">:</span> <span class="tok-string">&quot;مسؤول المنصّة&quot;</span>
+<span class="tok-punct">)</span>
+
+authors <span class="tok-punct">=</span> <span class="tok-number">5</span><span class="tok-punct">.</span>times<span class="tok-punct">.</span>map <span class="tok-keyword">do</span> <span class="tok-punct">|</span>i<span class="tok-punct">|</span>
+  <span class="tok-prop">User</span><span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>
+    name<span class="tok-punct">:</span> <span class="tok-prop">Faker</span><span class="tok-punct">::</span><span class="tok-prop">Name</span><span class="tok-punct">.</span>name<span class="tok-punct">,</span>
+    email<span class="tok-punct">:</span> <span class="tok-string">&quot;author#{i + 1}@blog.test&quot;</span><span class="tok-punct">,</span>
+    password<span class="tok-punct">:</span> <span class="tok-string">&quot;password123&quot;</span><span class="tok-punct">,</span>
+    bio<span class="tok-punct">:</span> <span class="tok-prop">Faker</span><span class="tok-punct">::</span><span class="tok-prop">Lorem</span><span class="tok-punct">.</span><span class="tok-func">paragraph</span><span class="tok-punct">(</span>sentence_count<span class="tok-punct">:</span> <span class="tok-number">2</span><span class="tok-punct">)</span>
+  <span class="tok-punct">)</span>
+<span class="tok-keyword">end</span>
+
+tags <span class="tok-punct">=</span> <span class="tok-string">%w[ruby rails برمجة تصميم قواعد-بيانات أمان أداء تعلّم-آلة واجهات مصادر]</span>
+       <span class="tok-punct">.</span>map <span class="tok-punct">{</span> <span class="tok-punct">|</span>name<span class="tok-punct">|</span> <span class="tok-prop">Tag</span><span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>name<span class="tok-punct">:)</span> <span class="tok-punct">}</span>
+
+<span class="tok-number">30</span><span class="tok-punct">.</span>times <span class="tok-keyword">do</span>
+  post <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>
+    user<span class="tok-punct">:</span>      authors<span class="tok-punct">.</span>sample<span class="tok-punct">,</span>
+    title<span class="tok-punct">:</span>     <span class="tok-prop">Faker</span><span class="tok-punct">::</span><span class="tok-prop">Lorem</span><span class="tok-punct">.</span><span class="tok-func">sentence</span><span class="tok-punct">(</span>word_count<span class="tok-punct">:</span> <span class="tok-number">5</span><span class="tok-punct">).</span><span class="tok-func">chomp</span><span class="tok-punct">(</span><span class="tok-string">&quot;.&quot;</span><span class="tok-punct">),</span>
+    body<span class="tok-punct">:</span>      <span class="tok-prop">Faker</span><span class="tok-punct">::</span><span class="tok-prop">Lorem</span><span class="tok-punct">.</span><span class="tok-func">paragraphs</span><span class="tok-punct">(</span>number<span class="tok-punct">:</span> <span class="tok-func">rand</span><span class="tok-punct">(</span><span class="tok-number">4</span><span class="tok-punct">..</span><span class="tok-number">9</span><span class="tok-punct">)).</span><span class="tok-func">join</span><span class="tok-punct">(</span><span class="tok-string">&quot;\n\n&quot;</span><span class="tok-punct">),</span>
+    published<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-bool">true</span><span class="tok-punct">,</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> <span class="tok-bool">false</span><span class="tok-punct">].</span>sample<span class="tok-punct">,</span>
+    created_at<span class="tok-punct">:</span> <span class="tok-func">rand</span><span class="tok-punct">(</span><span class="tok-number">90</span><span class="tok-punct">).</span>days<span class="tok-punct">.</span>ago
+  <span class="tok-punct">)</span>
+  post<span class="tok-punct">.</span>tags <span class="tok-punct">=</span> tags<span class="tok-punct">.</span><span class="tok-func">sample</span><span class="tok-punct">(</span><span class="tok-func">rand</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">..</span><span class="tok-number">3</span><span class="tok-punct">))</span>
+<span class="tok-keyword">end</span>
+
+posts <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">.</span>published<span class="tok-punct">.</span>to_a
+<span class="tok-number">100</span><span class="tok-punct">.</span>times <span class="tok-keyword">do</span>
+  <span class="tok-prop">Comment</span><span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>
+    user<span class="tok-punct">:</span> <span class="tok-punct">(</span>authors <span class="tok-punct">+</span> <span class="tok-punct">[</span>admin<span class="tok-punct">]).</span>sample<span class="tok-punct">,</span>
+    post<span class="tok-punct">:</span> posts<span class="tok-punct">.</span>sample<span class="tok-punct">,</span>
+    body<span class="tok-punct">:</span> <span class="tok-prop">Faker</span><span class="tok-punct">::</span><span class="tok-prop">Lorem</span><span class="tok-punct">.</span><span class="tok-func">sentence</span><span class="tok-punct">(</span>word_count<span class="tok-punct">:</span> <span class="tok-func">rand</span><span class="tok-punct">(</span><span class="tok-number">6</span><span class="tok-punct">..</span><span class="tok-number">20</span><span class="tok-punct">)),</span>
+    created_at<span class="tok-punct">:</span> <span class="tok-func">rand</span><span class="tok-punct">(</span><span class="tok-number">60</span><span class="tok-punct">).</span>days<span class="tok-punct">.</span>ago
+  <span class="tok-punct">)</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">puts</span> <span class="tok-string">&quot;✅ #{User.count} مستخدمين، #{Post.count} مقالاً، &quot;</span> \
+     <span class="tok-string">&quot;#{Comment.count} تعليقاً، #{Tag.count} وسماً.&quot;</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># 7) الاختبارات — spec/models/post_spec.rb</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-keyword">require</span> <span class="tok-string">&quot;rails_helper&quot;</span>
+
+<span class="tok-prop">RSpec</span><span class="tok-punct">.</span>describe <span class="tok-prop">Post</span> <span class="tok-keyword">do</span>
+  <span class="tok-func">let</span><span class="tok-punct">(:</span>user<span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-prop">User</span><span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;كاتب&quot;</span><span class="tok-punct">,</span> email<span class="tok-punct">:</span> <span class="tok-string">&quot;a@b.test&quot;</span><span class="tok-punct">,</span> password<span class="tok-punct">:</span> <span class="tok-string">&quot;password123&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">build_post</span><span class="tok-punct">(**</span>attrs<span class="tok-punct">)</span>
+    described_class<span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">({</span> user<span class="tok-punct">:,</span> title<span class="tok-punct">:</span> <span class="tok-string">&quot;عنوان صالح&quot;</span><span class="tok-punct">,</span> body<span class="tok-punct">:</span> <span class="tok-string">&quot;محتوى طويل بما يكفي للتحقّق.&quot;</span> <span class="tok-punct">}.</span><span class="tok-func">merge</span><span class="tok-punct">(</span>attrs<span class="tok-punct">))</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;التحقّق&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يقبل مقالاً صحيحاً&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>build_post<span class="tok-punct">).</span>to be_valid
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يرفض العنوان الفارغ&quot;</span> <span class="tok-keyword">do</span>
+      post <span class="tok-punct">=</span> <span class="tok-func">build_post</span><span class="tok-punct">(</span>title<span class="tok-punct">:</span> <span class="tok-string">&quot;&quot;</span><span class="tok-punct">)</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>post<span class="tok-punct">).</span>not_to be_valid
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>post<span class="tok-punct">.</span>errors<span class="tok-punct">[:</span>title<span class="tok-punct">]).</span>to be_present
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يرفض العنوان القصير&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span><span class="tok-func">build_post</span><span class="tok-punct">(</span>title<span class="tok-punct">:</span> <span class="tok-string">&quot;قصير&quot;</span><span class="tok-punct">)).</span>not_to be_valid
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يرفض المحتوى القصير&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span><span class="tok-func">build_post</span><span class="tok-punct">(</span>body<span class="tok-punct">:</span> <span class="tok-string">&quot;قصير&quot;</span><span class="tok-punct">)).</span>not_to be_valid
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;العلاقات&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;ينتمي لمستخدم&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>build_post<span class="tok-punct">.</span>user<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span>user<span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يحذف تعليقاته عند حذفه&quot;</span> <span class="tok-keyword">do</span>
+      post <span class="tok-punct">=</span> <span class="tok-func">build_post</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+      post<span class="tok-punct">.</span>save!
+      post<span class="tok-punct">.</span>comments<span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>user<span class="tok-punct">:,</span> body<span class="tok-punct">:</span> <span class="tok-string">&quot;تعليق&quot;</span><span class="tok-punct">)</span>
+
+      expect <span class="tok-punct">{</span> post<span class="tok-punct">.</span>destroy <span class="tok-punct">}.</span>to <span class="tok-func">change</span><span class="tok-punct">(</span><span class="tok-prop">Comment</span><span class="tok-punct">,</span> <span class="tok-bool">:count</span><span class="tok-punct">).</span><span class="tok-func">by</span><span class="tok-punct">(-</span><span class="tok-number">1</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;النطاقات&quot;</span> <span class="tok-keyword">do</span>
+    before <span class="tok-keyword">do</span>
+      <span class="tok-func">build_post</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">).</span>save!
+      <span class="tok-func">build_post</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">).</span>save!
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;.published يُرجع المنشورة فقط&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>described_class<span class="tok-punct">.</span>published<span class="tok-punct">.</span>count<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;.drafts يُرجع المسوّدات فقط&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>described_class<span class="tok-punct">.</span>drafts<span class="tok-punct">.</span>count<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;.search يطابق العنوان&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>described_class<span class="tok-punct">.</span><span class="tok-func">search</span><span class="tok-punct">(</span><span class="tok-string">&quot;عنوان&quot;</span><span class="tok-punct">).</span>count<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">)</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>described_class<span class="tok-punct">.</span><span class="tok-func">search</span><span class="tok-punct">(</span><span class="tok-string">&quot;لا-يوجد&quot;</span><span class="tok-punct">).</span>count<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;.search يُرجع الكل عند بحث فارغ&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>described_class<span class="tok-punct">.</span><span class="tok-func">search</span><span class="tok-punct">(</span><span class="tok-string">&quot;&quot;</span><span class="tok-punct">).</span>count<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;#stamp_published_at&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يضبط published_at عند النشر&quot;</span> <span class="tok-keyword">do</span>
+      post <span class="tok-punct">=</span> <span class="tok-func">build_post</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+      post<span class="tok-punct">.</span>save!
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>post<span class="tok-punct">.</span>published_at<span class="tok-punct">).</span>to be_present
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يتركه فارغاً للمسوّدة&quot;</span> <span class="tok-keyword">do</span>
+      post <span class="tok-punct">=</span> <span class="tok-func">build_post</span><span class="tok-punct">(</span>published<span class="tok-punct">:</span> <span class="tok-bool">false</span><span class="tok-punct">)</span>
+      post<span class="tok-punct">.</span>save!
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>post<span class="tok-punct">.</span>published_at<span class="tok-punct">).</span>to be_nil
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;#reading_minutes&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يُرجع دقيقة على الأقل&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>build_post<span class="tok-punct">.</span>reading_minutes<span class="tok-punct">).</span>to be <span class="tok-punct">&gt;=</span> <span class="tok-number">1</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># spec/requests/posts_spec.rb</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-keyword">require</span> <span class="tok-string">&quot;rails_helper&quot;</span>
+
+<span class="tok-prop">RSpec</span><span class="tok-punct">.</span>describe <span class="tok-string">&quot;Posts&quot;</span> <span class="tok-keyword">do</span>
+  <span class="tok-func">let</span><span class="tok-punct">(:</span>owner<span class="tok-punct">)</span>   <span class="tok-punct">{</span> <span class="tok-prop">User</span><span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;المالك&quot;</span><span class="tok-punct">,</span>  email<span class="tok-punct">:</span> <span class="tok-string">&quot;o@b.test&quot;</span><span class="tok-punct">,</span> password<span class="tok-punct">:</span> <span class="tok-string">&quot;password123&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  <span class="tok-func">let</span><span class="tok-punct">(:</span>hacker<span class="tok-punct">)</span>  <span class="tok-punct">{</span> <span class="tok-prop">User</span><span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>name<span class="tok-punct">:</span> <span class="tok-string">&quot;متطفّل&quot;</span><span class="tok-punct">,</span> email<span class="tok-punct">:</span> <span class="tok-string">&quot;h@b.test&quot;</span><span class="tok-punct">,</span> password<span class="tok-punct">:</span> <span class="tok-string">&quot;password123&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+  <span class="tok-func">let</span><span class="tok-punct">(:</span>post_record<span class="tok-punct">)</span> <span class="tok-keyword">do</span>
+    <span class="tok-prop">Post</span><span class="tok-punct">.</span><span class="tok-func">create!</span><span class="tok-punct">(</span>user<span class="tok-punct">:</span> owner<span class="tok-punct">,</span> title<span class="tok-punct">:</span> <span class="tok-string">&quot;عنوان المقال&quot;</span><span class="tok-punct">,</span> body<span class="tok-punct">:</span> <span class="tok-string">&quot;محتوى طويل للاختبار.&quot;</span><span class="tok-punct">,</span> published<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">sign_in</span><span class="tok-punct">(</span>user<span class="tok-punct">)</span>
+    post session_path<span class="tok-punct">,</span> params<span class="tok-punct">:</span> <span class="tok-punct">{</span> email<span class="tok-punct">:</span> user<span class="tok-punct">.</span>email<span class="tok-punct">,</span> password<span class="tok-punct">:</span> <span class="tok-string">&quot;password123&quot;</span> <span class="tok-punct">}</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;GET /posts&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يعمل بلا تسجيل دخول&quot;</span> <span class="tok-keyword">do</span>
+      get posts_path
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>response<span class="tok-punct">).</span>to <span class="tok-func">have_http_status</span><span class="tok-punct">(:</span>ok<span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;GET /posts/new&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يعيد التوجيه للزائر&quot;</span> <span class="tok-keyword">do</span>
+      get new_post_path
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>response<span class="tok-punct">).</span>to <span class="tok-func">redirect_to</span><span class="tok-punct">(</span>new_session_path<span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يعمل للمسجَّل&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">sign_in</span><span class="tok-punct">(</span>owner<span class="tok-punct">)</span>
+      get new_post_path
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>response<span class="tok-punct">).</span>to <span class="tok-func">have_http_status</span><span class="tok-punct">(:</span>ok<span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;PATCH /posts/:id&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يمنع غير المالك&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">sign_in</span><span class="tok-punct">(</span>hacker<span class="tok-punct">)</span>
+      patch <span class="tok-func">post_path</span><span class="tok-punct">(</span>post_record<span class="tok-punct">),</span> params<span class="tok-punct">:</span> <span class="tok-punct">{</span> post<span class="tok-punct">:</span> <span class="tok-punct">{</span> title<span class="tok-punct">:</span> <span class="tok-string">&quot;عنوان مخترَق&quot;</span> <span class="tok-punct">}</span> <span class="tok-punct">}</span>
+
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>response<span class="tok-punct">).</span>to <span class="tok-func">redirect_to</span><span class="tok-punct">(</span>posts_path<span class="tok-punct">)</span>
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>post_record<span class="tok-punct">.</span>reload<span class="tok-punct">.</span>title<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-string">&quot;عنوان المقال&quot;</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يسمح للمالك&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">sign_in</span><span class="tok-punct">(</span>owner<span class="tok-punct">)</span>
+      patch <span class="tok-func">post_path</span><span class="tok-punct">(</span>post_record<span class="tok-punct">),</span> params<span class="tok-punct">:</span> <span class="tok-punct">{</span> post<span class="tok-punct">:</span> <span class="tok-punct">{</span> title<span class="tok-punct">:</span> <span class="tok-string">&quot;عنوان محدَّث&quot;</span> <span class="tok-punct">}</span> <span class="tok-punct">}</span>
+
+      <span class="tok-func">expect</span><span class="tok-punct">(</span>post_record<span class="tok-punct">.</span>reload<span class="tok-punct">.</span>title<span class="tok-punct">).</span>to <span class="tok-func">eq</span><span class="tok-punct">(</span><span class="tok-string">&quot;عنوان محدَّث&quot;</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+
+  describe <span class="tok-string">&quot;DELETE /posts/:id&quot;</span> <span class="tok-keyword">do</span>
+    it <span class="tok-string">&quot;يمنع غير المالك&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">sign_in</span><span class="tok-punct">(</span>hacker<span class="tok-punct">)</span>
+      expect <span class="tok-punct">{</span> delete <span class="tok-func">post_path</span><span class="tok-punct">(</span>post_record<span class="tok-punct">)</span> <span class="tok-punct">}.</span>not_to <span class="tok-func">change</span><span class="tok-punct">(</span><span class="tok-prop">Post</span><span class="tok-punct">,</span> <span class="tok-bool">:count</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    it <span class="tok-string">&quot;يسمح للمالك&quot;</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">sign_in</span><span class="tok-punct">(</span>owner<span class="tok-punct">)</span>
+      post_record
+      expect <span class="tok-punct">{</span> delete <span class="tok-func">post_path</span><span class="tok-punct">(</span>post_record<span class="tok-punct">)</span> <span class="tok-punct">}.</span>to <span class="tok-func">change</span><span class="tok-punct">(</span><span class="tok-prop">Post</span><span class="tok-punct">,</span> <span class="tok-bool">:count</span><span class="tok-punct">).</span><span class="tok-func">by</span><span class="tok-punct">(-</span><span class="tok-number">1</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># 8) النشر</span>
+<span class="tok-comment"># ═══════════════════════════════════════════════════</span>
+<span class="tok-comment"># bin/rails db:migrate db:seed</span>
+<span class="tok-comment"># bin/rails s</span>
+<span class="tok-comment">#</span>
+<span class="tok-comment"># للإنتاج:</span>
+<span class="tok-comment">#   RAILS_ENV=production bin/rails assets:precompile</span>
+<span class="tok-comment">#   RAILS_ENV=production bin/rails db:migrate</span>
+<span class="tok-comment">#   bin/rails credentials:edit   # ضع الأسرار هنا لا في الشيفرة</span>
+<span class="tok-comment">#</span>
+<span class="tok-comment"># خيارات الاستضافة: Render, Fly.io, Hatchbox, Heroku</span></code></pre></div></details></div></section><h2 id="sec-13">إلى أين بعد ذلك؟</h2><ol class="steps"><li><strong>عمّق Active Record</strong>: الاستعلامات المتقدّمة، الفهارس، وتحسين الأداء.</li><li><strong>Hotwire</strong>: Turbo و Stimulus لتفاعل غنيّ بلا إطار JavaScript كامل.</li><li><strong>كائنات الخدمة</strong>: انقل المنطق المعقّد خارج المتحكّمات والنماذج.</li><li><strong>المهام الخلفية</strong>: Active Job مع Sidekiq للبريد والمعالجة الثقيلة.</li><li><strong>واجهات برمجية</strong>: <code>rails new --api</code> مع JSON Serializers.</li><li><strong>النشر</strong>: Kamal أو Render أو Fly.io مع CI/CD.</li><li><strong>الأمان</strong>: اقرأ دليل Rails Security كاملاً — إنه قصير ويستحقّ ذلك.</li></ol><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>أفضل مصدر بعد هذا المسار هو <strong>Rails Guides</strong> الرسمي على <code>guides.rubyonrails.org</code>. مكتوب بعناية ويغطّي كل ما تحتاجه بأمثلة عملية.</p></div><h2 id="sec-14">اختبر نفسك</h2><section class="quiz"><h2 id="sec-15"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما معنى «الاتفاق قبل الإعداد»؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>ملفات إعداد أقلّ حجماً</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>اتّباع تسمية متوقّعة يجعل كل شيء يعمل بلا إعداد يدوي</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>إعدادات افتراضية قابلة للتغيير</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا إعدادات إطلاقاً</span></label></div><div class="q-explain"><strong>الشرح:</strong> جدول <code>posts</code> ← نموذج <code>Post</code> ← متحكّم <code>PostsController</code> ← مجلّد <code>views/posts</code> — كلها مربوطة تلقائياً.</div></div><div class="q-item"><p class="q-text">2. ما مشكلة N+1 وكيف تحلّها؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>بطء الشبكة</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>استعلام إضافي لكل صفّ عند الوصول لعلاقة — تُحلّ بـ <code>includes</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>خطأ في الفهارس</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>مشكلة ذاكرة</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>Post.includes(:user)</code> ينفّذ استعلامين بدل 51، والفرق يتضاعف مع حجم البيانات.</div></div><div class="q-item"><p class="q-text">3. لماذا المعاملات القوية (<code>permit</code>) ضرورية؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>للأداء</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>تمنع المهاجم من تعديل حقول لم تسمح بها عبر إرسال معاملات إضافية</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>للتنسيق</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>إلزامية صياغياً</span></label></div><div class="q-explain"><strong>الشرح:</strong> بدونها يستطيع أحدهم إرسال <code>post[user_id]=1</code> أو <code>user[role]=admin</code> في النموذج.</div></div><div class="q-item"><p class="q-text">4. كم مساراً يولّد <code>resources :posts</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>4</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>7 مسارات RESTful</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>3</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>10</span></label></div><div class="q-explain"><strong>الشرح:</strong> index و new و create و show و edit و update و destroy.</div></div><div class="q-item"><p class="q-text">5. ما وظيفة <code>has_secure_password</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>يشفّر قاعدة البيانات</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>يوفّر <code>password</code> و <code>authenticate</code> ويخزّن تجزئة bcrypt في <code>password_digest</code></span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>يولّد كلمات مرور</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>يتحقّق من القوّة</span></label></div><div class="q-explain"><strong>الشرح:</strong> يتطلّب عمود <code>password_digest</code> و gem <code>bcrypt</code>. لا تخزّن كلمة المرور نصّاً صريحاً أبداً.</div></div><div class="q-item"><p class="q-text">6. لماذا لا تعدّل هجرة طُبِّقت على الإنتاج؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>ممنوع تقنياً</span></label><label class="q-option"><input type="radio" name="q1_5" value="correct"><span>ستختلف قاعدة بيانات الإنتاج عن الشيفرة بلا أن ينبّهك شيء</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>يفسد schema.rb فقط</span></label></div><div class="q-explain"><strong>الشرح:</strong> اكتب هجرة جديدة دائماً — التاريخ يجب أن يبقى قابلاً للتكرار من الصفر.</div></div><div class="q-item"><p class="q-text">7. ما فائدة النطاقات (scopes) في النموذج؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_6" value="correct"><span>تسمّي استعلاماً متكرّراً وتجعله قابلاً للتسلسل مع غيره</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>تحلّ محلّ الفهارس</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>للأمان</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>Post.published.recent.search(q)</code> — كل نطاق يُرجع علاقة قابلة للتسلسل مع التالي.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="ruby/10-rails-project" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="09-gems-testing.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>الأدوات: Gems و Bundler و RSpec</b></span></a>
+  <a class="next" href="../../tracks.html"><span><small>أنهيت المسار 🎉</small><b>تصفّح بقية المسارات</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Ruby</h3>
+        <div class="ring-wrap" data-ring data-track="ruby" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">فلسفة Rails</a></li><li><a href="#sec-2">MVC</a></li><li><a href="#sec-3">إنشاء المشروع</a></li><li><a href="#sec-4">النماذج والهجرات</a></li><li><a href="#sec-5">Active Record — العلاقات</a></li><li class="sub"><a href="#sec-6">الاستعلامات</a></li><li><a href="#sec-7">التوجيه</a></li><li><a href="#sec-8">المتحكّمات</a></li><li><a href="#sec-9">العروض</a></li><li><a href="#sec-10">المصادقة</a></li><li><a href="#sec-11">المشروع: مدوّنة كاملة</a></li><li><a href="#sec-12">مدوّنة Rails متكاملة</a></li><li><a href="#sec-13">إلى أين بعد ذلك؟</a></li><li><a href="#sec-14">اختبر نفسك</a></li><li><a href="#sec-15">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>rails new app</code><small>مشروع جديد</small></div><div class="ref-item"><code>rails g model X</code><small>توليد نموذج</small></div><div class="ref-item"><code>rails db:migrate</code><small>تطبيق الهجرات</small></div><div class="ref-item"><code>rails s</code><small>تشغيل الخادم</small></div><div class="ref-item"><code>rails c</code><small>صدفة تفاعلية</small></div><div class="ref-item"><code>rails routes</code><small>عرض المسارات</small></div><div class="ref-item"><code>has_many :posts</code><small>علاقة</small></div><div class="ref-item"><code>before_action</code><small>مرشّح</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

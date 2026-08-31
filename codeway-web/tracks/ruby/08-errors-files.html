@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="ruby">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>معالجة الأخطاء والملفات — مسار Ruby | CodeWay Web</title>
+<meta name="description" content="شجرة الاستثناءات، begin/rescue/ensure/retry، الأخطاء المخصّصة، وقراءة الملفات و JSON و CSV بكفاءة.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="معالجة الأخطاء والملفات — مسار Ruby | CodeWay Web">
+<meta property="og:description" content="شجرة الاستثناءات، begin/rescue/ensure/retry، الأخطاء المخصّصة، وقراءة الملفات و JSON و CSV بكفاءة.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Ruby</a></li>
+      <li aria-current="page">معالجة الأخطاء والملفات</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 8 من 10</span>
+      <span class="badge level-متوسط">متوسط</span>
+      <span class="badge">استثناءات</span><span class="badge">ملفات</span><span class="badge">JSON</span>
+    </div>
+    <h1>معالجة الأخطاء والملفات</h1>
+    <p class="summary">شجرة الاستثناءات، begin/rescue/ensure/retry، الأخطاء المخصّصة، وقراءة الملفات و JSON و CSV بكفاءة.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 55 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Ruby</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 7 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تفهم شجرة الاستثناءات ولماذا لا تلتقط <code>Exception</code> أبداً.</li><li>تستخدم <code>rescue</code> و <code>ensure</code> و <code>retry</code> و <code>raise</code> في مواضعها.</li><li>تعرّف أخطاءً مخصّصة تحمل سياقاً مفيداً.</li><li>تقرأ الملفات وتكتبها بأمان دون تسريب موارد.</li><li>تعالج الملفات الضخمة سطراً سطراً بلا استهلاك ذاكرة.</li><li>تتعامل مع JSON و CSV باستخدام المكتبة القياسية.</li></ul></div>
+      <h2 id="sec-1">شجرة الاستثناءات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>Exception                        ← الجذر — لا تلتقطه أبداً
+├── NoMemoryError                ← لا ذاكرة
+├── SystemExit                   ← استدعاء exit
+├── SignalException              ← Ctrl+C
+├── ScriptError
+│   ├── LoadError                ← require فشل
+│   ├── SyntaxError
+│   └── NotImplementedError
+└── StandardError                ← ✅ هذا ما تلتقطه
+    ├── ArgumentError
+    ├── IOError → EOFError
+    ├── IndexError → KeyError, StopIteration
+    ├── NameError → NoMethodError
+    ├── RangeError → FloatDomainError
+    ├── RuntimeError             ← raise &quot;نصّ&quot; الافتراضي
+    ├── TypeError
+    ├── ZeroDivisionError
+    └── SystemCallError → Errno::ENOENT وأخواتها</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> لا تلتقط `Exception` أبداً</div><p>يلتقط <code>SystemExit</code> و <code>SignalException</code> و <code>NoMemoryError</code> — أي أن <code>Ctrl+C</code> لن يوقف برنامجك وقد يستمر بعد نفاد الذاكرة. <code>rescue</code> بلا نوع يلتقط <code>StandardError</code> فقط، وهذا هو الصحيح.</p></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span></div><pre><code><span class="tok-keyword">begin</span>
+  risky_operation
+<span class="tok-keyword">rescue</span> <span class="tok-prop">Exception</span> <span class="tok-punct">=&gt;</span> e     <span class="tok-comment"># ✗ يلتقط كل شيء</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;خطأ&quot;</span>              <span class="tok-comment"># ✗ يبتلع التفاصيل</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="why">يلتقط إشارات النظام والخروج، ويبتلع الخطأ دون تسجيل نوعه ولا مكانه فيستحيل التنقيح.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span></div><pre><code><span class="tok-keyword">begin</span>
+  risky_operation
+<span class="tok-keyword">rescue</span> <span class="tok-prop">Net</span><span class="tok-punct">::</span><span class="tok-prop">ReadTimeout</span><span class="tok-punct">,</span> <span class="tok-prop">Errno</span><span class="tok-punct">::</span><span class="tok-prop">ECONNREFUSED</span> <span class="tok-punct">=&gt;</span> e
+  logger<span class="tok-punct">.</span><span class="tok-func">warn</span><span class="tok-punct">(</span><span class="tok-string">&quot;فشل الاتصال: #{e.class} — #{e.message}&quot;</span><span class="tok-punct">)</span>
+  fallback_value
+<span class="tok-keyword">rescue</span> <span class="tok-prop">StandardError</span> <span class="tok-punct">=&gt;</span> e
+  logger<span class="tok-punct">.</span><span class="tok-func">error</span><span class="tok-punct">(</span><span class="tok-string">&quot;#{e.class}: #{e.message}\n#{e.backtrace.first(5).join(&quot;</span>\n<span class="tok-string">&quot;)}&quot;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">raise</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="why">يلتقط الأخطاء المتوقّعة تحديداً ويعالجها، ويسجّل غير المتوقّع ثم يعيد رميه بدل إخفائه.</div></div></div><h2 id="sec-2">البنية الكاملة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">begin</span>
+  result <span class="tok-punct">=</span> perform_operation
+<span class="tok-keyword">rescue</span> <span class="tok-prop">ArgumentError</span> <span class="tok-punct">=&gt;</span> e
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;وسيط خاطئ: #{e.message}&quot;</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">IOError</span><span class="tok-punct">,</span> <span class="tok-prop">SystemCallError</span> <span class="tok-punct">=&gt;</span> e
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;مشكلة إدخال/إخراج: #{e.message}&quot;</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">StandardError</span> <span class="tok-punct">=&gt;</span> e
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;خطأ غير متوقّع: #{e.class}&quot;</span>
+  <span class="tok-keyword">raise</span>                          <span class="tok-comment"># أعد الرمي</span>
+<span class="tok-keyword">else</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;نجح بلا أخطاء&quot;</span>           <span class="tok-comment"># ينفّذ عند عدم وقوع خطأ فقط</span>
+<span class="tok-keyword">ensure</span>
+  cleanup                        <span class="tok-comment"># ينفّذ دائماً — نجح أو فشل</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الجزء</th><th>متى يُنفَّذ</th></tr></thead><tbody><tr><td><code>begin</code></td><td>دائماً — الشيفرة المحروسة</td></tr><tr><td><code>rescue</code></td><td>عند وقوع خطأ من النوع المحدّد</td></tr><tr><td><code>else</code></td><td>عند <strong>عدم</strong> وقوع أي خطأ</td></tr><tr><td><code>ensure</code></td><td><strong>دائماً</strong> — حتى مع <code>return</code> أو <code>raise</code></td></tr></tbody></table></div><h3 id="sec-3">rescue على مستوى الدالة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">def</span> <span class="tok-func">fetch_user</span><span class="tok-punct">(</span>id<span class="tok-punct">)</span>
+  api<span class="tok-punct">.</span><span class="tok-func">get</span><span class="tok-punct">(</span><span class="tok-string">&quot;/users/#{id}&quot;</span><span class="tok-punct">)</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">Net</span><span class="tok-punct">::</span><span class="tok-prop">HTTPError</span> <span class="tok-punct">=&gt;</span> e         <span class="tok-comment"># لا حاجة لـ begin</span>
+  logger<span class="tok-punct">.</span><span class="tok-func">warn</span><span class="tok-punct">(</span>e<span class="tok-punct">.</span>message<span class="tok-punct">)</span>
+  <span class="tok-bool">nil</span>
+<span class="tok-keyword">ensure</span>
+  api<span class="tok-punct">.</span>close
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># rescue بصيغة اللاحقة — للحالات البسيطة جداً</span>
+value <span class="tok-punct">=</span> <span class="tok-prop">Integer</span><span class="tok-punct">(</span>input<span class="tok-punct">)</span> <span class="tok-keyword">rescue</span> <span class="tok-number">0</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> حذار من `rescue` اللاحقة</div><p>تلتقط <strong>كل</strong> <code>StandardError</code> دون تمييز، فقد تخفي أخطاءً لا علاقة لها بما توقّعت. استخدمها فقط حين يكون سطر التحويل بسيطاً وواضحاً — وفي شيفرة الإنتاج فضّل الصيغة الكاملة.</p></div><h2 id="sec-4">رمي الأخطاء</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">raise</span> <span class="tok-string">&quot;رسالة&quot;</span>                       <span class="tok-comment"># RuntimeError</span>
+<span class="tok-keyword">raise</span> <span class="tok-prop">ArgumentError</span>                 <span class="tok-comment"># بلا رسالة</span>
+<span class="tok-keyword">raise</span> <span class="tok-prop">ArgumentError</span><span class="tok-punct">,</span> <span class="tok-string">&quot;العمر سالب&quot;</span>    <span class="tok-comment"># الشكل المعتاد</span>
+<span class="tok-keyword">raise</span> <span class="tok-prop">ArgumentError</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-string">&quot;العمر سالب&quot;</span><span class="tok-punct">)</span>
+
+<span class="tok-comment"># داخل rescue: أعد رمي الخطأ الحالي</span>
+<span class="tok-keyword">rescue</span> <span class="tok-punct">=&gt;</span> e
+  logger<span class="tok-punct">.</span><span class="tok-func">error</span><span class="tok-punct">(</span>e<span class="tok-punct">.</span>message<span class="tok-punct">)</span>
+  <span class="tok-keyword">raise</span>                             <span class="tok-comment"># نفس الخطأ بنفس backtrace</span>
+
+<span class="tok-comment"># أو غلّفه بخطأ أوضح مع الحفاظ على السبب</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">Net</span><span class="tok-punct">::</span><span class="tok-prop">OpenTimeout</span> <span class="tok-punct">=&gt;</span> e
+  <span class="tok-keyword">raise</span> <span class="tok-prop">PaymentError</span><span class="tok-punct">,</span> <span class="tok-string">&quot;تعذّر الوصول لبوّابة الدفع&quot;</span>
+  <span class="tok-comment"># e يبقى متاحاً في e.cause تلقائياً</span></code></pre></div><h2 id="sec-5">أخطاء مخصّصة</h2><p>عرّف شجرة أخطاء لتطبيقك. الفائدة: يستطيع مستخدم شيفرتك التقاط فئة كاملة أو خطأً بعينه.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">module</span> <span class="tok-prop">Payments</span>
+  <span class="tok-keyword">class</span> <span class="tok-prop">Error</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">StandardError</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">class</span> <span class="tok-prop">CardDeclined</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">Error</span>
+    <span class="tok-keyword">attr_reader</span> <span class="tok-bool">:code</span><span class="tok-punct">,</span> <span class="tok-bool">:card_last4</span>
+
+    <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>code<span class="tok-punct">:,</span> card_last4<span class="tok-punct">:)</span>
+      <span class="tok-attr">@code</span>       <span class="tok-punct">=</span> code
+      <span class="tok-attr">@card_last4</span> <span class="tok-punct">=</span> card_last4
+      <span class="tok-keyword">super</span><span class="tok-punct">(</span><span class="tok-string">&quot;رُفضت البطاقة المنتهية بـ #{card_last4} (رمز #{code})&quot;</span><span class="tok-punct">)</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">def</span> retryable? <span class="tok-punct">=</span> <span class="tok-string">%w[insufficient_funds try_again]</span><span class="tok-punct">.</span><span class="tok-keyword">include</span><span class="tok-punct">?(</span>code<span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">class</span> <span class="tok-prop">GatewayTimeout</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">Error</span>
+    <span class="tok-keyword">def</span> retryable? <span class="tok-punct">=</span> <span class="tok-bool">true</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">class</span> <span class="tok-prop">InvalidAmount</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">Error</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># الاستخدام</span>
+<span class="tok-keyword">begin</span>
+  <span class="tok-func">charge</span><span class="tok-punct">(</span>card<span class="tok-punct">,</span> amount<span class="tok-punct">)</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">Payments</span><span class="tok-punct">::</span><span class="tok-prop">CardDeclined</span> <span class="tok-punct">=&gt;</span> e
+  <span class="tok-keyword">if</span> e<span class="tok-punct">.</span>retryable?
+    <span class="tok-func">notify_user</span><span class="tok-punct">(</span><span class="tok-string">&quot;حاول مرة أخرى&quot;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">else</span>
+    <span class="tok-func">notify_user</span><span class="tok-punct">(</span><span class="tok-string">&quot;استخدم بطاقة أخرى&quot;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+  <span class="tok-func">audit_log</span><span class="tok-punct">(</span>e<span class="tok-punct">.</span>code<span class="tok-punct">,</span> e<span class="tok-punct">.</span>card_last4<span class="tok-punct">)</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">Payments</span><span class="tok-punct">::</span><span class="tok-prop">Error</span> <span class="tok-punct">=&gt;</span> e          <span class="tok-comment"># يلتقط كل أخطاء الدفع</span>
+  <span class="tok-func">alert_ops</span><span class="tok-punct">(</span>e<span class="tok-punct">)</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>اجعل خطأك يحمل <strong>بيانات</strong> لا رسالة فقط. <code>e.code</code> و <code>e.retryable?</code> تسمحان بمعالجة ذكية، بينما تحليل نصّ الرسالة هشّ ويكسر عند أول تعديل.</p></div><h2 id="sec-6">retry — إعادة المحاولة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">def</span> <span class="tok-func">fetch_with_retry</span><span class="tok-punct">(</span>url<span class="tok-punct">,</span> max<span class="tok-punct">:</span> <span class="tok-number">3</span><span class="tok-punct">)</span>
+  attempts <span class="tok-punct">=</span> <span class="tok-number">0</span>
+
+  <span class="tok-keyword">begin</span>
+    attempts <span class="tok-punct">+=</span> <span class="tok-number">1</span>
+    <span class="tok-prop">HTTP</span><span class="tok-punct">.</span><span class="tok-func">get</span><span class="tok-punct">(</span>url<span class="tok-punct">)</span>
+  <span class="tok-keyword">rescue</span> <span class="tok-prop">Net</span><span class="tok-punct">::</span><span class="tok-prop">ReadTimeout</span><span class="tok-punct">,</span> <span class="tok-prop">Errno</span><span class="tok-punct">::</span><span class="tok-prop">ECONNRESET</span> <span class="tok-punct">=&gt;</span> e
+    <span class="tok-keyword">if</span> attempts <span class="tok-punct">&lt;</span> max
+      <span class="tok-func">sleep</span><span class="tok-punct">(</span><span class="tok-number">2</span> <span class="tok-punct">**</span> attempts<span class="tok-punct">)</span>          <span class="tok-comment"># تراجع أُسّي: 2، 4، 8 ثوانٍ</span>
+      <span class="tok-keyword">retry</span>
+    <span class="tok-keyword">end</span>
+    <span class="tok-keyword">raise</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> كل retry يحتاج عدّاداً</div><p><code>retry</code> بلا حدّ = حلقة لانهائية. وأعد المحاولة فقط على الأخطاء <strong>العابرة</strong> (مهلة، انقطاع شبكة). إعادة المحاولة على <code>ArgumentError</code> لن تنجح أبداً مهما كرّرت.</p></div><h2 id="sec-7">ensure وتسريب الموارد</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># ✗ يسرّب الملف عند حدوث خطأ</span>
+file <span class="tok-punct">=</span> <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">open</span><span class="tok-punct">(</span><span class="tok-string">&quot;data.txt&quot;</span><span class="tok-punct">)</span>
+<span class="tok-func">process</span><span class="tok-punct">(</span>file<span class="tok-punct">.</span>read<span class="tok-punct">)</span>
+file<span class="tok-punct">.</span>close                    <span class="tok-comment"># لا يُنفَّذ إن رمى process خطأ</span>
+
+<span class="tok-comment"># ✓ ensure يضمن الإغلاق</span>
+file <span class="tok-punct">=</span> <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">open</span><span class="tok-punct">(</span><span class="tok-string">&quot;data.txt&quot;</span><span class="tok-punct">)</span>
+<span class="tok-keyword">begin</span>
+  <span class="tok-func">process</span><span class="tok-punct">(</span>file<span class="tok-punct">.</span>read<span class="tok-punct">)</span>
+<span class="tok-keyword">ensure</span>
+  file<span class="tok-punct">.</span>close
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ✓✓ الأفضل: الكتلة تغلق تلقائياً</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">open</span><span class="tok-punct">(</span><span class="tok-string">&quot;data.txt&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-punct">|</span>f<span class="tok-punct">|</span> <span class="tok-func">process</span><span class="tok-punct">(</span>f<span class="tok-punct">.</span>read<span class="tok-punct">)</span> <span class="tok-punct">}</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> `ensure` يبتلع القيم المُرجَعة</div><p>لا تكتب <code>return</code> أو <code>raise</code> داخل <code>ensure</code> — سيلغي الخطأ الأصلي أو القيمة المُرجَعة ويخفي المشكلة الحقيقية تماماً.</p></div><h2 id="sec-8">قراءة الملفات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># الملف كله كنصّ واحد</span>
+content <span class="tok-punct">=</span> <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">read</span><span class="tok-punct">(</span><span class="tok-string">&quot;data.txt&quot;</span><span class="tok-punct">)</span>
+
+<span class="tok-comment"># كمصفوفة أسطر</span>
+lines <span class="tok-punct">=</span> <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">readlines</span><span class="tok-punct">(</span><span class="tok-string">&quot;data.txt&quot;</span><span class="tok-punct">,</span> chomp<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+
+<span class="tok-comment"># ✅ سطراً سطراً — للملفات الضخمة</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">foreach</span><span class="tok-punct">(</span><span class="tok-string">&quot;huge.log&quot;</span><span class="tok-punct">)</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>line<span class="tok-punct">|</span>
+  <span class="tok-keyword">puts</span> line <span class="tok-keyword">if</span> line<span class="tok-punct">.</span><span class="tok-keyword">include</span><span class="tok-punct">?(</span><span class="tok-string">&quot;ERROR&quot;</span><span class="tok-punct">)</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># مع كتلة — يغلق تلقائياً</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">open</span><span class="tok-punct">(</span><span class="tok-string">&quot;data.txt&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;r&quot;</span><span class="tok-punct">)</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>f<span class="tok-punct">|</span>
+  f<span class="tok-punct">.</span>each_line <span class="tok-punct">{</span> <span class="tok-punct">|</span>line<span class="tok-punct">|</span> <span class="tok-func">process</span><span class="tok-punct">(</span>line<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> لا تقرأ ملفاً ضخماً كاملاً</div><p><code>File.read</code> على ملف بحجم 2 غيغابايت يحمّله كله في الذاكرة فينهار برنامجك. استخدم <code>File.foreach</code> أو <code>each_line</code> — تستهلك ذاكرة ثابتة مهما كان حجم الملف.</p></div><h3 id="sec-9">الكتابة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">write</span><span class="tok-punct">(</span><span class="tok-string">&quot;out.txt&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;محتوى&quot;</span><span class="tok-punct">)</span>              <span class="tok-comment"># يستبدل</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">write</span><span class="tok-punct">(</span><span class="tok-string">&quot;log.txt&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;سطر\n&quot;</span><span class="tok-punct">,</span> mode<span class="tok-punct">:</span> <span class="tok-string">&quot;a&quot;</span><span class="tok-punct">)</span>   <span class="tok-comment"># يُلحِق</span>
+
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">open</span><span class="tok-punct">(</span><span class="tok-string">&quot;report.txt&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;w&quot;</span><span class="tok-punct">)</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>f<span class="tok-punct">|</span>
+  f<span class="tok-punct">.</span><span class="tok-keyword">puts</span> <span class="tok-string">&quot;التقرير&quot;</span>
+  f<span class="tok-punct">.</span><span class="tok-keyword">puts</span> <span class="tok-string">&quot;=&quot;</span> <span class="tok-punct">*</span> <span class="tok-number">20</span>
+  data<span class="tok-punct">.</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span>row<span class="tok-punct">|</span> f<span class="tok-punct">.</span><span class="tok-keyword">puts</span> row<span class="tok-punct">.</span><span class="tok-func">join</span><span class="tok-punct">(</span><span class="tok-string">&quot;,&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الوضع</th><th>المعنى</th></tr></thead><tbody><tr><td><code>&quot;r&quot;</code></td><td>قراءة فقط (الافتراضي)</td></tr><tr><td><code>&quot;w&quot;</code></td><td>كتابة — <strong>يمسح المحتوى</strong> أو ينشئ الملف</td></tr><tr><td><code>&quot;a&quot;</code></td><td>إلحاق في النهاية</td></tr><tr><td><code>&quot;r+&quot;</code></td><td>قراءة وكتابة من البداية</td></tr><tr><td><code>&quot;w+&quot;</code></td><td>قراءة وكتابة مع المسح</td></tr><tr><td><code>&quot;b&quot;</code></td><td>يُضاف للوضع للملفات الثنائية: <code>&quot;rb&quot;</code></td></tr></tbody></table></div><h3 id="sec-10">المسارات والاختبارات</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">exist?</span><span class="tok-punct">(</span><span class="tok-string">&quot;data.txt&quot;</span><span class="tok-punct">)</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">file?</span><span class="tok-punct">(</span><span class="tok-string">&quot;data.txt&quot;</span><span class="tok-punct">)</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">directory?</span><span class="tok-punct">(</span><span class="tok-string">&quot;logs&quot;</span><span class="tok-punct">)</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">size</span><span class="tok-punct">(</span><span class="tok-string">&quot;data.txt&quot;</span><span class="tok-punct">)</span>            <span class="tok-comment"># بالبايت</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">extname</span><span class="tok-punct">(</span><span class="tok-string">&quot;a/b/report.csv&quot;</span><span class="tok-punct">)</span>   <span class="tok-comment"># =&gt; &quot;.csv&quot;</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">basename</span><span class="tok-punct">(</span><span class="tok-string">&quot;a/b/report.csv&quot;</span><span class="tok-punct">)</span>  <span class="tok-comment"># =&gt; &quot;report.csv&quot;</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">basename</span><span class="tok-punct">(</span><span class="tok-string">&quot;a/b/report.csv&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;.csv&quot;</span><span class="tok-punct">)</span>  <span class="tok-comment"># =&gt; &quot;report&quot;</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">dirname</span><span class="tok-punct">(</span><span class="tok-string">&quot;a/b/report.csv&quot;</span><span class="tok-punct">)</span>   <span class="tok-comment"># =&gt; &quot;a/b&quot;</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">join</span><span class="tok-punct">(</span><span class="tok-string">&quot;data&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;2026&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;x.csv&quot;</span><span class="tok-punct">)</span>       <span class="tok-comment"># ✅ يعمل على كل الأنظمة</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">expand_path</span><span class="tok-punct">(</span><span class="tok-string">&quot;~/data.txt&quot;</span><span class="tok-punct">)</span>
+
+<span class="tok-prop">Dir</span><span class="tok-punct">.</span><span class="tok-func">glob</span><span class="tok-punct">(</span><span class="tok-string">&quot;logs/**/*.log&quot;</span><span class="tok-punct">)</span>        <span class="tok-comment"># بحث تعاودي</span>
+<span class="tok-prop">Dir</span><span class="tok-punct">.</span><span class="tok-func">children</span><span class="tok-punct">(</span><span class="tok-string">&quot;logs&quot;</span><span class="tok-punct">)</span>
+<span class="tok-prop">FileUtils</span><span class="tok-punct">.</span><span class="tok-func">mkdir_p</span><span class="tok-punct">(</span><span class="tok-string">&quot;out/reports&quot;</span><span class="tok-punct">)</span> <span class="tok-comment"># ينشئ الشجرة كاملة</span>
+<span class="tok-prop">FileUtils</span><span class="tok-punct">.</span><span class="tok-func">cp</span><span class="tok-punct">(</span><span class="tok-string">&quot;a.txt&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;b.txt&quot;</span><span class="tok-punct">)</span>
+<span class="tok-prop">FileUtils</span><span class="tok-punct">.</span><span class="tok-func">rm_f</span><span class="tok-punct">(</span><span class="tok-string">&quot;temp.txt&quot;</span><span class="tok-punct">)</span>       <span class="tok-comment"># لا يخطئ إن لم يوجد</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استخدم <code>File.join</code> لا الجمع بـ <code>&quot;/&quot;</code> — يستخدم الفاصل الصحيح لكل نظام تشغيل ويتجنّب الشرطات المزدوجة.</p></div><h3 id="sec-11">أخطاء الملفات الشائعة</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">begin</span>
+  data <span class="tok-punct">=</span> <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">read</span><span class="tok-punct">(</span>path<span class="tok-punct">)</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">Errno</span><span class="tok-punct">::</span><span class="tok-prop">ENOENT</span>
+  warn <span class="tok-string">&quot;الملف غير موجود: #{path}&quot;</span>
+  data <span class="tok-punct">=</span> <span class="tok-string">&quot;&quot;</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">Errno</span><span class="tok-punct">::</span><span class="tok-prop">EACCES</span>
+  warn <span class="tok-string">&quot;لا صلاحية للقراءة: #{path}&quot;</span>
+  exit <span class="tok-number">1</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">Errno</span><span class="tok-punct">::</span><span class="tok-prop">EISDIR</span>
+  warn <span class="tok-string">&quot;#{path} مجلّد لا ملف&quot;</span>
+<span class="tok-keyword">end</span></code></pre></div><h2 id="sec-12">JSON</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">require</span> <span class="tok-string">&#39;json&#39;</span>
+
+<span class="tok-comment"># كائن ← نصّ</span>
+data <span class="tok-punct">=</span> <span class="tok-punct">{</span> name<span class="tok-punct">:</span> <span class="tok-string">&quot;سارة&quot;</span><span class="tok-punct">,</span> roles<span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-string">&quot;admin&quot;</span><span class="tok-punct">],</span> active<span class="tok-punct">:</span> <span class="tok-bool">true</span> <span class="tok-punct">}</span>
+data<span class="tok-punct">.</span>to_json                      <span class="tok-comment"># مضغوط</span>
+<span class="tok-prop">JSON</span><span class="tok-punct">.</span><span class="tok-func">pretty_generate</span><span class="tok-punct">(</span>data<span class="tok-punct">)</span>        <span class="tok-comment"># منسّق للقراءة</span>
+
+<span class="tok-comment"># نصّ ← كائن</span>
+parsed <span class="tok-punct">=</span> <span class="tok-prop">JSON</span><span class="tok-punct">.</span><span class="tok-func">parse</span><span class="tok-punct">(</span><span class="tok-string">&#39;{&quot;name&quot;:&quot;سارة&quot;}&#39;</span><span class="tok-punct">)</span>
+parsed<span class="tok-punct">[</span><span class="tok-string">&quot;name&quot;</span><span class="tok-punct">]</span>                    <span class="tok-comment"># مفاتيح نصّية</span>
+
+<span class="tok-prop">JSON</span><span class="tok-punct">.</span><span class="tok-func">parse</span><span class="tok-punct">(</span><span class="tok-string">&#39;{&quot;name&quot;:&quot;سارة&quot;}&#39;</span><span class="tok-punct">,</span> symbolize_names<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+<span class="tok-comment"># =&gt; { name: &quot;سارة&quot; }             ← مفاتيح رموز</span>
+
+<span class="tok-comment"># من ملف وإليه</span>
+config <span class="tok-punct">=</span> <span class="tok-prop">JSON</span><span class="tok-punct">.</span><span class="tok-func">parse</span><span class="tok-punct">(</span><span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">read</span><span class="tok-punct">(</span><span class="tok-string">&quot;config.json&quot;</span><span class="tok-punct">),</span> symbolize_names<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+<span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">write</span><span class="tok-punct">(</span><span class="tok-string">&quot;out.json&quot;</span><span class="tok-punct">,</span> <span class="tok-prop">JSON</span><span class="tok-punct">.</span><span class="tok-func">pretty_generate</span><span class="tok-punct">(</span>config<span class="tok-punct">))</span>
+
+<span class="tok-comment"># التعامل مع JSON فاسد</span>
+<span class="tok-keyword">begin</span>
+  <span class="tok-prop">JSON</span><span class="tok-punct">.</span><span class="tok-func">parse</span><span class="tok-punct">(</span>response<span class="tok-punct">.</span>body<span class="tok-punct">)</span>
+<span class="tok-keyword">rescue</span> <span class="tok-prop">JSON</span><span class="tok-punct">::</span><span class="tok-prop">ParserError</span> <span class="tok-punct">=&gt;</span> e
+  logger<span class="tok-punct">.</span><span class="tok-func">error</span><span class="tok-punct">(</span><span class="tok-string">&quot;استجابة غير صالحة: #{e.message}&quot;</span><span class="tok-punct">)</span>
+  <span class="tok-punct">{}</span>
+<span class="tok-keyword">end</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p><code>symbolize_names: true</code> يحوّل المفاتيح إلى رموز فتكتب <code>data[:name]</code> بدل <code>data[&quot;name&quot;]</code>. مريح، لكن <strong>لا تستخدمه</strong> مع JSON من مصدر غير موثوق: كل مفتاح جديد ينشئ رمزاً دائماً في الذاكرة (وإن كان Ruby الحديث يجمع الرموز الديناميكية).</p></div><h2 id="sec-13">CSV</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">require</span> <span class="tok-string">&#39;csv&#39;</span>
+
+<span class="tok-comment"># القراءة مع رؤوس الأعمدة</span>
+<span class="tok-prop">CSV</span><span class="tok-punct">.</span><span class="tok-func">foreach</span><span class="tok-punct">(</span><span class="tok-string">&quot;sales.csv&quot;</span><span class="tok-punct">,</span> headers<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>row<span class="tok-punct">|</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;#{row[&#39;product&#39;]}: #{row[&#39;total&#39;]}&quot;</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># كجدول قابل للاستعلام</span>
+table <span class="tok-punct">=</span> <span class="tok-prop">CSV</span><span class="tok-punct">.</span><span class="tok-func">read</span><span class="tok-punct">(</span><span class="tok-string">&quot;sales.csv&quot;</span><span class="tok-punct">,</span> headers<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+table<span class="tok-punct">.</span>by_col<span class="tok-punct">[</span><span class="tok-string">&quot;total&quot;</span><span class="tok-punct">].</span><span class="tok-func">map</span><span class="tok-punct">(&amp;:</span>to_i<span class="tok-punct">).</span>sum
+table<span class="tok-punct">.</span>select <span class="tok-punct">{</span> <span class="tok-punct">|</span>row<span class="tok-punct">|</span> row<span class="tok-punct">[</span><span class="tok-string">&quot;city&quot;</span><span class="tok-punct">]</span> <span class="tok-punct">==</span> <span class="tok-string">&quot;الرياض&quot;</span> <span class="tok-punct">}</span>
+
+<span class="tok-comment"># مع تحويل الأنواع</span>
+<span class="tok-prop">CSV</span><span class="tok-punct">.</span><span class="tok-func">foreach</span><span class="tok-punct">(</span><span class="tok-string">&quot;sales.csv&quot;</span><span class="tok-punct">,</span> headers<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span> converters<span class="tok-punct">:</span> <span class="tok-bool">:numeric</span><span class="tok-punct">)</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>row<span class="tok-punct">|</span>
+  total <span class="tok-punct">=</span> row<span class="tok-punct">[</span><span class="tok-string">&quot;price&quot;</span><span class="tok-punct">]</span> <span class="tok-punct">*</span> row<span class="tok-punct">[</span><span class="tok-string">&quot;qty&quot;</span><span class="tok-punct">]</span>     <span class="tok-comment"># أعداد لا نصوص</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># الكتابة</span>
+<span class="tok-prop">CSV</span><span class="tok-punct">.</span><span class="tok-func">open</span><span class="tok-punct">(</span><span class="tok-string">&quot;report.csv&quot;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;w&quot;</span><span class="tok-punct">,</span> write_headers<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span>
+         headers<span class="tok-punct">:</span> <span class="tok-string">%w[المنتج الكمية الإجمالي]</span><span class="tok-punct">)</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>csv<span class="tok-punct">|</span>
+  products<span class="tok-punct">.</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span><span class="tok-keyword">p</span><span class="tok-punct">|</span> csv <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">[</span><span class="tok-keyword">p</span><span class="tok-punct">.</span>name<span class="tok-punct">,</span> <span class="tok-keyword">p</span><span class="tok-punct">.</span>qty<span class="tok-punct">,</span> <span class="tok-keyword">p</span><span class="tok-punct">.</span>total<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># تحليل نصّ CSV مباشرة</span>
+rows <span class="tok-punct">=</span> <span class="tok-prop">CSV</span><span class="tok-punct">.</span><span class="tok-func">parse</span><span class="tok-punct">(</span><span class="tok-string">&quot;a,b\n1,2&quot;</span><span class="tok-punct">,</span> headers<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">)</span></code></pre></div><h2 id="sec-14">تمرين</h2><section class="exercise" id="sec-15"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>محلّل سجلّات مع تقرير</h3></header><div class="exercise-body"><p>اكتب أداة تقرأ ملف سجلّ ضخماً، تحلّله، وتنتج تقارير بصيغ متعدّدة — بمعالجة أخطاء متينة.</p><p><strong>المطلوب:</strong></p><ul><li>اقرأ ملف سجلّ نصّي بصيغة <code>[التاريخ] المستوى المسار زمن_الاستجابة الرسالة</code> سطراً سطراً بـ <code>File.foreach</code>.</li><li>تجاهل السطور الفاسدة واحسبها، ولا تنهر البرنامج بسببها.</li><li>عرّف خطأ <code>LogParseError</code> مخصّصاً يحمل رقم السطر ونصّه.</li><li>أنتج إحصاءات: عدد كل مستوى، أبطأ خمسة مسارات، معدّل الأخطاء لكل ساعة.</li><li>اكتب التقرير بثلاث صيغ: نصّية للطرفية، JSON، و CSV.</li><li>استخدم <code>ensure</code> لضمان إغلاق كل الملفات المفتوحة.</li><li>عالج غياب الملف وانعدام الصلاحية برسائل واضحة وأكواد خروج مناسبة.</li><li>أضف وضع <code>--watch</code> يعيد التحليل كل خمس ثوانٍ (استخدم <code>retry</code> عند فشل مؤقّت).</li><li>ولّد ملف سجلّ تجريبياً إن لم يوجد، ليعمل السكربت من أول تشغيل.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 تعبير نمطي واحد يلتقط كل الحقول: <code>/^\[(.+?)\] (\w+) (\S+) (\d+)ms (.*)$/</code>.</li><li>💡 <code>Hash.new(0)</code> مثالي للعدّادات.</li><li>💡 <code>Time.parse</code> تحتاج <code>require &quot;time&quot;</code>.</li><li>💡 <code>ARGV.include?(&quot;--watch&quot;)</code> لقراءة وسائط سطر الأوامر.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">ruby</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># frozen_string_literal: true</span>
+<span class="tok-comment"># log_analyzer.rb — محلّل سجلّات</span>
+<span class="tok-keyword">require</span> <span class="tok-string">&#39;json&#39;</span>
+<span class="tok-keyword">require</span> <span class="tok-string">&#39;csv&#39;</span>
+<span class="tok-keyword">require</span> <span class="tok-string">&#39;time&#39;</span>
+<span class="tok-keyword">require</span> <span class="tok-string">&#39;fileutils&#39;</span>
+
+<span class="tok-comment"># ===== الأخطاء =====</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">AnalyzerError</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">StandardError</span><span class="tok-punct">;</span> <span class="tok-keyword">end</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">LogParseError</span> <span class="tok-punct">&lt;</span> <span class="tok-prop">AnalyzerError</span>
+  <span class="tok-keyword">attr_reader</span> <span class="tok-bool">:line_number</span><span class="tok-punct">,</span> <span class="tok-bool">:raw</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>line_number<span class="tok-punct">:,</span> raw<span class="tok-punct">:)</span>
+    <span class="tok-attr">@line_number</span> <span class="tok-punct">=</span> line_number
+    <span class="tok-attr">@raw</span>         <span class="tok-punct">=</span> raw
+    <span class="tok-keyword">super</span><span class="tok-punct">(</span><span class="tok-string">&quot;سطر #{line_number} غير قابل للتحليل: #{raw[0, 60]}…&quot;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== المحلّل =====</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">LogAnalyzer</span>
+  <span class="tok-prop">PATTERN</span> <span class="tok-punct">=</span> <span class="tok-punct">/^</span>\<span class="tok-punct">[(.+?)</span>\<span class="tok-punct">]</span>\s<span class="tok-punct">+(</span>\w<span class="tok-punct">+)</span>\s<span class="tok-punct">+(</span>\<span class="tok-prop">S</span><span class="tok-punct">+)</span>\s<span class="tok-punct">+(</span>\d<span class="tok-punct">+)</span>ms\s<span class="tok-punct">+(.*)</span>$<span class="tok-punct">/</span>
+  <span class="tok-prop">LEVELS</span>  <span class="tok-punct">=</span> <span class="tok-string">%w[DEBUG INFO WARN ERROR FATAL]</span><span class="tok-punct">.</span><span class="tok-keyword">freeze</span>
+
+  <span class="tok-keyword">attr_reader</span> <span class="tok-bool">:path</span><span class="tok-punct">,</span> <span class="tok-bool">:entries</span><span class="tok-punct">,</span> <span class="tok-bool">:malformed</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">initialize</span><span class="tok-punct">(</span>path<span class="tok-punct">)</span>
+    <span class="tok-attr">@path</span>      <span class="tok-punct">=</span> path
+    <span class="tok-attr">@entries</span>   <span class="tok-punct">=</span> <span class="tok-punct">[]</span>
+    <span class="tok-attr">@malformed</span> <span class="tok-punct">=</span> <span class="tok-punct">[]</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> analyze!
+    <span class="tok-keyword">raise</span> <span class="tok-prop">AnalyzerError</span><span class="tok-punct">,</span> <span class="tok-string">&quot;الملف غير موجود: #{path}&quot;</span> <span class="tok-keyword">unless</span> <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">exist?</span><span class="tok-punct">(</span>path<span class="tok-punct">)</span>
+    <span class="tok-keyword">raise</span> <span class="tok-prop">AnalyzerError</span><span class="tok-punct">,</span> <span class="tok-string">&quot;#{path} مجلّد لا ملف&quot;</span>      <span class="tok-keyword">if</span> <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">directory?</span><span class="tok-punct">(</span>path<span class="tok-punct">)</span>
+
+    <span class="tok-attr">@entries</span>   <span class="tok-punct">=</span> <span class="tok-punct">[]</span>
+    <span class="tok-attr">@malformed</span> <span class="tok-punct">=</span> <span class="tok-punct">[]</span>
+
+    <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">foreach</span><span class="tok-punct">(</span>path<span class="tok-punct">).</span><span class="tok-func">with_index</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>line<span class="tok-punct">,</span> number<span class="tok-punct">|</span>
+      line <span class="tok-punct">=</span> line<span class="tok-punct">.</span>strip
+      <span class="tok-keyword">next</span> <span class="tok-keyword">if</span> line<span class="tok-punct">.</span>empty? <span class="tok-punct">||</span> line<span class="tok-punct">.</span><span class="tok-func">start_with?</span><span class="tok-punct">(</span><span class="tok-string">&quot;#&quot;</span><span class="tok-punct">)</span>
+
+      <span class="tok-keyword">begin</span>
+        <span class="tok-attr">@entries</span> <span class="tok-punct">&lt;&lt;</span> <span class="tok-func">parse_line</span><span class="tok-punct">(</span>line<span class="tok-punct">,</span> number<span class="tok-punct">)</span>
+      <span class="tok-keyword">rescue</span> <span class="tok-prop">LogParseError</span> <span class="tok-punct">=&gt;</span> e
+        <span class="tok-attr">@malformed</span> <span class="tok-punct">&lt;&lt;</span> e
+      <span class="tok-keyword">end</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">self</span>
+  <span class="tok-keyword">rescue</span> <span class="tok-prop">Errno</span><span class="tok-punct">::</span><span class="tok-prop">EACCES</span>
+    <span class="tok-keyword">raise</span> <span class="tok-prop">AnalyzerError</span><span class="tok-punct">,</span> <span class="tok-string">&quot;لا صلاحية لقراءة #{path}&quot;</span>
+  <span class="tok-keyword">rescue</span> <span class="tok-prop">Errno</span><span class="tok-punct">::</span><span class="tok-prop">ENOENT</span>
+    <span class="tok-keyword">raise</span> <span class="tok-prop">AnalyzerError</span><span class="tok-punct">,</span> <span class="tok-string">&quot;الملف اختفى أثناء القراءة: #{path}&quot;</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> stats
+    <span class="tok-punct">{</span>
+      file<span class="tok-punct">:</span>            path<span class="tok-punct">,</span>
+      generated_at<span class="tok-punct">:</span>    <span class="tok-prop">Time</span><span class="tok-punct">.</span>now<span class="tok-punct">.</span>iso8601<span class="tok-punct">,</span>
+      total_lines<span class="tok-punct">:</span>     entries<span class="tok-punct">.</span>size <span class="tok-punct">+</span> malformed<span class="tok-punct">.</span>size<span class="tok-punct">,</span>
+      parsed<span class="tok-punct">:</span>          entries<span class="tok-punct">.</span>size<span class="tok-punct">,</span>
+      malformed<span class="tok-punct">:</span>       malformed<span class="tok-punct">.</span>size<span class="tok-punct">,</span>
+      by_level<span class="tok-punct">:</span>        by_level<span class="tok-punct">,</span>
+      error_rate<span class="tok-punct">:</span>      error_rate<span class="tok-punct">,</span>
+      avg_duration_ms<span class="tok-punct">:</span> avg_duration<span class="tok-punct">,</span>
+      slowest_paths<span class="tok-punct">:</span>   <span class="tok-func">slowest_paths</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">),</span>
+      errors_by_hour<span class="tok-punct">:</span>  errors_by_hour<span class="tok-punct">,</span>
+      busiest_hour<span class="tok-punct">:</span>    errors_by_hour<span class="tok-punct">.</span>max_by <span class="tok-punct">{</span> <span class="tok-punct">|</span>_<span class="tok-punct">,</span> v<span class="tok-punct">|</span> v <span class="tok-punct">}&amp;.</span>first
+    <span class="tok-punct">}</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">private</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">parse_line</span><span class="tok-punct">(</span>line<span class="tok-punct">,</span> number<span class="tok-punct">)</span>
+    match <span class="tok-punct">=</span> <span class="tok-prop">PATTERN</span><span class="tok-punct">.</span><span class="tok-func">match</span><span class="tok-punct">(</span>line<span class="tok-punct">)</span>
+    <span class="tok-keyword">raise</span> <span class="tok-prop">LogParseError</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>line_number<span class="tok-punct">:</span> number<span class="tok-punct">,</span> raw<span class="tok-punct">:</span> line<span class="tok-punct">)</span> <span class="tok-keyword">unless</span> match
+
+    timestamp<span class="tok-punct">,</span> level<span class="tok-punct">,</span> path<span class="tok-punct">,</span> duration<span class="tok-punct">,</span> message <span class="tok-punct">=</span> match<span class="tok-punct">.</span>captures
+    <span class="tok-keyword">raise</span> <span class="tok-prop">LogParseError</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>line_number<span class="tok-punct">:</span> number<span class="tok-punct">,</span> raw<span class="tok-punct">:</span> line<span class="tok-punct">)</span> <span class="tok-keyword">unless</span> <span class="tok-prop">LEVELS</span><span class="tok-punct">.</span><span class="tok-keyword">include</span><span class="tok-punct">?(</span>level<span class="tok-punct">)</span>
+
+    <span class="tok-punct">{</span>
+      time<span class="tok-punct">:</span>     <span class="tok-func">safe_time</span><span class="tok-punct">(</span>timestamp<span class="tok-punct">),</span>
+      level<span class="tok-punct">:,</span>
+      path<span class="tok-punct">:,</span>
+      duration<span class="tok-punct">:</span> duration<span class="tok-punct">.</span>to_i<span class="tok-punct">,</span>
+      message<span class="tok-punct">:</span>
+    <span class="tok-punct">}</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">safe_time</span><span class="tok-punct">(</span>string<span class="tok-punct">)</span>
+    <span class="tok-prop">Time</span><span class="tok-punct">.</span><span class="tok-func">parse</span><span class="tok-punct">(</span>string<span class="tok-punct">)</span>
+  <span class="tok-keyword">rescue</span> <span class="tok-prop">ArgumentError</span>
+    <span class="tok-prop">Time</span><span class="tok-punct">.</span>now
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> by_level
+    entries<span class="tok-punct">.</span><span class="tok-func">each_with_object</span><span class="tok-punct">(</span><span class="tok-prop">Hash</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">))</span> <span class="tok-punct">{</span> <span class="tok-punct">|</span>e<span class="tok-punct">,</span> h<span class="tok-punct">|</span> h<span class="tok-punct">[</span>e<span class="tok-punct">[:</span>level<span class="tok-punct">]]</span> <span class="tok-punct">+=</span> <span class="tok-number">1</span> <span class="tok-punct">}</span>
+           <span class="tok-punct">.</span>sort_by <span class="tok-punct">{</span> <span class="tok-punct">|</span>level<span class="tok-punct">,</span> _<span class="tok-punct">|</span> <span class="tok-prop">LEVELS</span><span class="tok-punct">.</span><span class="tok-func">index</span><span class="tok-punct">(</span>level<span class="tok-punct">)</span> <span class="tok-punct">}</span>
+           <span class="tok-punct">.</span>to_h
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> error_rate
+    <span class="tok-keyword">return</span> <span class="tok-number">0.0</span> <span class="tok-keyword">if</span> entries<span class="tok-punct">.</span>empty?
+    errors <span class="tok-punct">=</span> entries<span class="tok-punct">.</span>count <span class="tok-punct">{</span> <span class="tok-punct">|</span>e<span class="tok-punct">|</span> <span class="tok-string">%w[ERROR FATAL]</span><span class="tok-punct">.</span><span class="tok-keyword">include</span><span class="tok-punct">?(</span>e<span class="tok-punct">[:</span>level<span class="tok-punct">])</span> <span class="tok-punct">}</span>
+    <span class="tok-punct">(</span>errors<span class="tok-punct">.</span><span class="tok-func">fdiv</span><span class="tok-punct">(</span>entries<span class="tok-punct">.</span>size<span class="tok-punct">)</span> <span class="tok-punct">*</span> <span class="tok-number">100</span><span class="tok-punct">).</span><span class="tok-func">round</span><span class="tok-punct">(</span><span class="tok-number">2</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> avg_duration
+    <span class="tok-keyword">return</span> <span class="tok-number">0</span> <span class="tok-keyword">if</span> entries<span class="tok-punct">.</span>empty?
+    entries<span class="tok-punct">.</span>sum <span class="tok-punct">{</span> <span class="tok-punct">|</span>e<span class="tok-punct">|</span> e<span class="tok-punct">[:</span>duration<span class="tok-punct">]</span> <span class="tok-punct">}.</span><span class="tok-func">fdiv</span><span class="tok-punct">(</span>entries<span class="tok-punct">.</span>size<span class="tok-punct">).</span><span class="tok-func">round</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">slowest_paths</span><span class="tok-punct">(</span>limit<span class="tok-punct">)</span>
+    entries<span class="tok-punct">.</span>group_by <span class="tok-punct">{</span> <span class="tok-punct">|</span>e<span class="tok-punct">|</span> e<span class="tok-punct">[:</span>path<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+           <span class="tok-punct">.</span>transform_values <span class="tok-keyword">do</span> <span class="tok-punct">|</span>list<span class="tok-punct">|</span>
+             <span class="tok-punct">{</span> calls<span class="tok-punct">:</span> list<span class="tok-punct">.</span>size<span class="tok-punct">,</span> avg_ms<span class="tok-punct">:</span> list<span class="tok-punct">.</span>sum <span class="tok-punct">{</span> <span class="tok-punct">|</span>e<span class="tok-punct">|</span> e<span class="tok-punct">[:</span>duration<span class="tok-punct">]</span> <span class="tok-punct">}.</span><span class="tok-func">fdiv</span><span class="tok-punct">(</span>list<span class="tok-punct">.</span>size<span class="tok-punct">).</span><span class="tok-func">round</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">)</span> <span class="tok-punct">}</span>
+           <span class="tok-keyword">end</span>
+           <span class="tok-punct">.</span>sort_by <span class="tok-punct">{</span> <span class="tok-punct">|</span>_<span class="tok-punct">,</span> v<span class="tok-punct">|</span> <span class="tok-punct">-</span>v<span class="tok-punct">[:</span>avg_ms<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+           <span class="tok-punct">.</span><span class="tok-func">first</span><span class="tok-punct">(</span>limit<span class="tok-punct">)</span>
+           <span class="tok-punct">.</span>to_h
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> errors_by_hour
+    entries<span class="tok-punct">.</span>select <span class="tok-punct">{</span> <span class="tok-punct">|</span>e<span class="tok-punct">|</span> <span class="tok-string">%w[ERROR FATAL]</span><span class="tok-punct">.</span><span class="tok-keyword">include</span><span class="tok-punct">?(</span>e<span class="tok-punct">[:</span>level<span class="tok-punct">])</span> <span class="tok-punct">}</span>
+           <span class="tok-punct">.</span><span class="tok-func">each_with_object</span><span class="tok-punct">(</span><span class="tok-prop">Hash</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span><span class="tok-number">0</span><span class="tok-punct">))</span> <span class="tok-punct">{</span> <span class="tok-punct">|</span>e<span class="tok-punct">,</span> h<span class="tok-punct">|</span> h<span class="tok-punct">[</span>e<span class="tok-punct">[:</span>time<span class="tok-punct">].</span><span class="tok-func">strftime</span><span class="tok-punct">(</span><span class="tok-string">&quot;%H:00&quot;</span><span class="tok-punct">)]</span> <span class="tok-punct">+=</span> <span class="tok-number">1</span> <span class="tok-punct">}</span>
+           <span class="tok-punct">.</span>sort<span class="tok-punct">.</span>to_h
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== المُصدِّرات =====</span>
+<span class="tok-keyword">module</span> <span class="tok-prop">Reporters</span>
+  module_function
+
+  <span class="tok-keyword">def</span> <span class="tok-func">text</span><span class="tok-punct">(</span>stats<span class="tok-punct">,</span> malformed<span class="tok-punct">)</span>
+    line <span class="tok-punct">=</span> <span class="tok-string">&quot;─&quot;</span> <span class="tok-punct">*</span> <span class="tok-number">58</span>
+    out  <span class="tok-punct">=</span> <span class="tok-punct">[]</span>
+
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;╭#{line}╮&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;│#{&#39; 📊 تقرير تحليل السجلّات&#39;.ljust(56)}│&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;╰#{line}╯&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  الملف:            #{stats[:file]}&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  إجمالي السطور:    #{stats[:total_lines]}&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  حُلِّلت:            #{stats[:parsed]}&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  فاسدة:            #{stats[:malformed]}&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  معدّل الأخطاء:     #{stats[:error_rate]}٪&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  متوسّط الاستجابة:  #{stats[:avg_duration_ms]} مللي ثانية&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  ▸ حسب المستوى&quot;</span>
+    stats<span class="tok-punct">[:</span>by_level<span class="tok-punct">].</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span>level<span class="tok-punct">,</span> count<span class="tok-punct">|</span> out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;    #{level.ljust(8)} #{count}&quot;</span> <span class="tok-punct">}</span>
+
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;&quot;</span>
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  ▸ أبطأ المسارات&quot;</span>
+    stats<span class="tok-punct">[:</span>slowest_paths<span class="tok-punct">].</span>each <span class="tok-keyword">do</span> <span class="tok-punct">|</span>path<span class="tok-punct">,</span> info<span class="tok-punct">|</span>
+      out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;    #{path.ljust(28)} #{info[:avg_ms].to_s.rjust(8)} مللي · #{info[:calls]} طلب&quot;</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">unless</span> stats<span class="tok-punct">[:</span>errors_by_hour<span class="tok-punct">].</span>empty?
+      out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;&quot;</span>
+      out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  ▸ الأخطاء حسب الساعة&quot;</span>
+      max <span class="tok-punct">=</span> stats<span class="tok-punct">[:</span>errors_by_hour<span class="tok-punct">].</span>values<span class="tok-punct">.</span>max
+      stats<span class="tok-punct">[:</span>errors_by_hour<span class="tok-punct">].</span>each <span class="tok-keyword">do</span> <span class="tok-punct">|</span>hour<span class="tok-punct">,</span> count<span class="tok-punct">|</span>
+        bar <span class="tok-punct">=</span> <span class="tok-string">&quot;█&quot;</span> <span class="tok-punct">*</span> <span class="tok-punct">((</span>count<span class="tok-punct">.</span><span class="tok-func">fdiv</span><span class="tok-punct">(</span>max<span class="tok-punct">)</span> <span class="tok-punct">*</span> <span class="tok-number">24</span><span class="tok-punct">).</span>ceil<span class="tok-punct">)</span>
+        out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;    #{hour}  #{bar} #{count}&quot;</span>
+      <span class="tok-keyword">end</span>
+      out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;&quot;</span>
+      out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  ⚠️  أكثر ساعة أخطاءً: #{stats[:busiest_hour]}&quot;</span>
+    <span class="tok-keyword">end</span>
+
+    <span class="tok-keyword">unless</span> malformed<span class="tok-punct">.</span>empty?
+      out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;&quot;</span>
+      out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;  ▸ أول خمسة سطور فاسدة&quot;</span>
+      malformed<span class="tok-punct">.</span><span class="tok-func">first</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">).</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span>e<span class="tok-punct">|</span> out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;    #{e.message}&quot;</span> <span class="tok-punct">}</span>
+    <span class="tok-keyword">end</span>
+
+    out <span class="tok-punct">&lt;&lt;</span> <span class="tok-string">&quot;&quot;</span>
+    out<span class="tok-punct">.</span><span class="tok-func">join</span><span class="tok-punct">(</span><span class="tok-string">&quot;\n&quot;</span><span class="tok-punct">)</span>
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">json</span><span class="tok-punct">(</span>stats<span class="tok-punct">,</span> path<span class="tok-punct">)</span>
+    <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">write</span><span class="tok-punct">(</span>path<span class="tok-punct">,</span> <span class="tok-prop">JSON</span><span class="tok-punct">.</span><span class="tok-func">pretty_generate</span><span class="tok-punct">(</span>stats<span class="tok-punct">))</span>
+    path
+  <span class="tok-keyword">end</span>
+
+  <span class="tok-keyword">def</span> <span class="tok-func">csv</span><span class="tok-punct">(</span>stats<span class="tok-punct">,</span> path<span class="tok-punct">)</span>
+    <span class="tok-prop">CSV</span><span class="tok-punct">.</span><span class="tok-func">open</span><span class="tok-punct">(</span>path<span class="tok-punct">,</span> <span class="tok-string">&quot;w&quot;</span><span class="tok-punct">,</span> write_headers<span class="tok-punct">:</span> <span class="tok-bool">true</span><span class="tok-punct">,</span>
+             headers<span class="tok-punct">:</span> <span class="tok-string">%w[metric value]</span><span class="tok-punct">)</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>csv<span class="tok-punct">|</span>
+      csv <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">[</span><span class="tok-string">&quot;file&quot;</span><span class="tok-punct">,</span>            stats<span class="tok-punct">[:</span>file<span class="tok-punct">]]</span>
+      csv <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">[</span><span class="tok-string">&quot;parsed&quot;</span><span class="tok-punct">,</span>          stats<span class="tok-punct">[:</span>parsed<span class="tok-punct">]]</span>
+      csv <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">[</span><span class="tok-string">&quot;malformed&quot;</span><span class="tok-punct">,</span>       stats<span class="tok-punct">[:</span>malformed<span class="tok-punct">]]</span>
+      csv <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">[</span><span class="tok-string">&quot;error_rate&quot;</span><span class="tok-punct">,</span>      stats<span class="tok-punct">[:</span>error_rate<span class="tok-punct">]]</span>
+      csv <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">[</span><span class="tok-string">&quot;avg_duration_ms&quot;</span><span class="tok-punct">,</span> stats<span class="tok-punct">[:</span>avg_duration_ms<span class="tok-punct">]]</span>
+      stats<span class="tok-punct">[:</span>by_level<span class="tok-punct">].</span>each      <span class="tok-punct">{</span> <span class="tok-punct">|</span>level<span class="tok-punct">,</span> n<span class="tok-punct">|</span> csv <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">[</span><span class="tok-string">&quot;level_#{level}&quot;</span><span class="tok-punct">,</span> n<span class="tok-punct">]</span> <span class="tok-punct">}</span>
+      stats<span class="tok-punct">[:</span>slowest_paths<span class="tok-punct">].</span>each <span class="tok-punct">{</span> <span class="tok-punct">|</span><span class="tok-keyword">p</span><span class="tok-punct">,</span> info<span class="tok-punct">|</span> csv <span class="tok-punct">&lt;&lt;</span> <span class="tok-punct">[</span><span class="tok-string">&quot;slow_#{p}&quot;</span><span class="tok-punct">,</span> info<span class="tok-punct">[:</span>avg_ms<span class="tok-punct">]]</span> <span class="tok-punct">}</span>
+    <span class="tok-keyword">end</span>
+    path
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== توليد سجلّ تجريبي =====</span>
+<span class="tok-keyword">def</span> <span class="tok-func">generate_sample</span><span class="tok-punct">(</span>path<span class="tok-punct">)</span>
+  paths   <span class="tok-punct">=</span> <span class="tok-string">%w[/api/users /api/orders /api/products /login /health /api/reports]</span>
+  levels  <span class="tok-punct">=</span> <span class="tok-string">%w[INFO INFO INFO INFO DEBUG WARN ERROR ERROR FATAL]</span>
+  base    <span class="tok-punct">=</span> <span class="tok-prop">Time</span><span class="tok-punct">.</span>now <span class="tok-punct">-</span> <span class="tok-number">6</span> <span class="tok-punct">*</span> <span class="tok-number">3600</span>
+
+  <span class="tok-prop">FileUtils</span><span class="tok-punct">.</span><span class="tok-func">mkdir_p</span><span class="tok-punct">(</span><span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">dirname</span><span class="tok-punct">(</span>path<span class="tok-punct">))</span>
+
+  <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">open</span><span class="tok-punct">(</span>path<span class="tok-punct">,</span> <span class="tok-string">&quot;w&quot;</span><span class="tok-punct">)</span> <span class="tok-keyword">do</span> <span class="tok-punct">|</span>f<span class="tok-punct">|</span>
+    f<span class="tok-punct">.</span><span class="tok-keyword">puts</span> <span class="tok-string">&quot;# سجلّ تجريبي وُلِّد في #{Time.now}&quot;</span>
+    <span class="tok-number">300</span><span class="tok-punct">.</span>times <span class="tok-keyword">do</span> <span class="tok-punct">|</span>i<span class="tok-punct">|</span>
+      time     <span class="tok-punct">=</span> base <span class="tok-punct">+</span> <span class="tok-func">rand</span><span class="tok-punct">(</span><span class="tok-number">6</span> <span class="tok-punct">*</span> <span class="tok-number">3600</span><span class="tok-punct">)</span>
+      level    <span class="tok-punct">=</span> levels<span class="tok-punct">.</span>sample
+      endpoint <span class="tok-punct">=</span> paths<span class="tok-punct">.</span>sample
+      duration <span class="tok-punct">=</span> endpoint <span class="tok-punct">==</span> <span class="tok-string">&quot;/api/reports&quot;</span> <span class="tok-punct">?</span> <span class="tok-func">rand</span><span class="tok-punct">(</span><span class="tok-number">800</span><span class="tok-punct">..</span><span class="tok-number">3000</span><span class="tok-punct">)</span> <span class="tok-punct">:</span> <span class="tok-func">rand</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">..</span><span class="tok-number">400</span><span class="tok-punct">)</span>
+      f<span class="tok-punct">.</span><span class="tok-keyword">puts</span> <span class="tok-string">&quot;[#{time.strftime(&#39;%Y-%m-%d %H:%M:%S&#39;)}] #{level} #{endpoint} #{duration}ms طلب رقم #{i}&quot;</span>
+    <span class="tok-keyword">end</span>
+    <span class="tok-number">5</span><span class="tok-punct">.</span>times <span class="tok-punct">{</span> <span class="tok-punct">|</span>i<span class="tok-punct">|</span> f<span class="tok-punct">.</span><span class="tok-keyword">puts</span> <span class="tok-string">&quot;سطر فاسد بلا بنية رقم #{i}&quot;</span> <span class="tok-punct">}</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-comment"># ===== التشغيل =====</span>
+<span class="tok-prop">LOG_PATH</span>  <span class="tok-punct">=</span> <span class="tok-prop">ARGV</span><span class="tok-punct">.</span>find <span class="tok-punct">{</span> <span class="tok-punct">|</span>a<span class="tok-punct">|</span> <span class="tok-punct">!</span>a<span class="tok-punct">.</span><span class="tok-func">start_with?</span><span class="tok-punct">(</span><span class="tok-string">&quot;--&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">}</span> <span class="tok-punct">||</span> <span class="tok-string">&quot;logs/app.log&quot;</span>
+<span class="tok-prop">WATCH</span>     <span class="tok-punct">=</span> <span class="tok-prop">ARGV</span><span class="tok-punct">.</span><span class="tok-keyword">include</span><span class="tok-punct">?(</span><span class="tok-string">&quot;--watch&quot;</span><span class="tok-punct">)</span>
+<span class="tok-prop">OUT_DIR</span>   <span class="tok-punct">=</span> <span class="tok-string">&quot;out&quot;</span>
+
+<span class="tok-func">generate_sample</span><span class="tok-punct">(</span><span class="tok-prop">LOG_PATH</span><span class="tok-punct">)</span> <span class="tok-keyword">unless</span> <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">exist?</span><span class="tok-punct">(</span><span class="tok-prop">LOG_PATH</span><span class="tok-punct">)</span>
+<span class="tok-prop">FileUtils</span><span class="tok-punct">.</span><span class="tok-func">mkdir_p</span><span class="tok-punct">(</span><span class="tok-prop">OUT_DIR</span><span class="tok-punct">)</span>
+
+<span class="tok-keyword">def</span> <span class="tok-func">run_once</span><span class="tok-punct">(</span>path<span class="tok-punct">,</span> out_dir<span class="tok-punct">)</span>
+  attempts <span class="tok-punct">=</span> <span class="tok-number">0</span>
+
+  <span class="tok-keyword">begin</span>
+    attempts <span class="tok-punct">+=</span> <span class="tok-number">1</span>
+    analyzer <span class="tok-punct">=</span> <span class="tok-prop">LogAnalyzer</span><span class="tok-punct">.</span><span class="tok-keyword">new</span><span class="tok-punct">(</span>path<span class="tok-punct">).</span>analyze!
+    stats    <span class="tok-punct">=</span> analyzer<span class="tok-punct">.</span>stats
+
+    <span class="tok-keyword">puts</span> <span class="tok-prop">Reporters</span><span class="tok-punct">.</span><span class="tok-func">text</span><span class="tok-punct">(</span>stats<span class="tok-punct">,</span> analyzer<span class="tok-punct">.</span>malformed<span class="tok-punct">)</span>
+
+    json_path <span class="tok-punct">=</span> <span class="tok-prop">Reporters</span><span class="tok-punct">.</span><span class="tok-func">json</span><span class="tok-punct">(</span>stats<span class="tok-punct">,</span> <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">join</span><span class="tok-punct">(</span>out_dir<span class="tok-punct">,</span> <span class="tok-string">&quot;report.json&quot;</span><span class="tok-punct">))</span>
+    csv_path  <span class="tok-punct">=</span> <span class="tok-prop">Reporters</span><span class="tok-punct">.</span><span class="tok-func">csv</span><span class="tok-punct">(</span>stats<span class="tok-punct">,</span>  <span class="tok-prop">File</span><span class="tok-punct">.</span><span class="tok-func">join</span><span class="tok-punct">(</span>out_dir<span class="tok-punct">,</span> <span class="tok-string">&quot;report.csv&quot;</span><span class="tok-punct">))</span>
+    <span class="tok-keyword">puts</span> <span class="tok-string">&quot;  💾 حُفِظ: #{json_path} و #{csv_path}&quot;</span>
+    <span class="tok-keyword">puts</span>
+    <span class="tok-bool">true</span>
+  <span class="tok-keyword">rescue</span> <span class="tok-prop">Errno</span><span class="tok-punct">::</span><span class="tok-prop">EAGAIN</span><span class="tok-punct">,</span> <span class="tok-prop">Errno</span><span class="tok-punct">::</span><span class="tok-prop">EBUSY</span> <span class="tok-punct">=&gt;</span> e
+    <span class="tok-keyword">if</span> attempts <span class="tok-punct">&lt;</span> <span class="tok-number">3</span>
+      <span class="tok-func">sleep</span><span class="tok-punct">(</span><span class="tok-number">2</span> <span class="tok-punct">**</span> attempts<span class="tok-punct">)</span>
+      <span class="tok-keyword">retry</span>
+    <span class="tok-keyword">end</span>
+    warn <span class="tok-string">&quot;❌ الملف مشغول بعد #{attempts} محاولات: #{e.message}&quot;</span>
+    <span class="tok-bool">false</span>
+  <span class="tok-keyword">rescue</span> <span class="tok-prop">AnalyzerError</span> <span class="tok-punct">=&gt;</span> e
+    warn <span class="tok-string">&quot;❌ #{e.message}&quot;</span>
+    <span class="tok-bool">false</span>
+  <span class="tok-keyword">rescue</span> <span class="tok-prop">StandardError</span> <span class="tok-punct">=&gt;</span> e
+    warn <span class="tok-string">&quot;💥 خطأ غير متوقّع: #{e.class} — #{e.message}&quot;</span>
+    warn e<span class="tok-punct">.</span>backtrace<span class="tok-punct">.</span><span class="tok-func">first</span><span class="tok-punct">(</span><span class="tok-number">3</span><span class="tok-punct">).</span><span class="tok-func">join</span><span class="tok-punct">(</span><span class="tok-string">&quot;\n&quot;</span><span class="tok-punct">)</span>
+    <span class="tok-bool">false</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">end</span>
+
+<span class="tok-keyword">if</span> <span class="tok-prop">WATCH</span>
+  <span class="tok-keyword">puts</span> <span class="tok-string">&quot;👀 وضع المراقبة — كل 5 ثوانٍ (Ctrl+C للإيقاف)&quot;</span>
+  <span class="tok-keyword">begin</span>
+    <span class="tok-keyword">loop</span> <span class="tok-keyword">do</span>
+      <span class="tok-func">system</span><span class="tok-punct">(</span><span class="tok-string">&quot;clear&quot;</span><span class="tok-punct">)</span> <span class="tok-punct">||</span> <span class="tok-func">system</span><span class="tok-punct">(</span><span class="tok-string">&quot;cls&quot;</span><span class="tok-punct">)</span>
+      <span class="tok-func">run_once</span><span class="tok-punct">(</span><span class="tok-prop">LOG_PATH</span><span class="tok-punct">,</span> <span class="tok-prop">OUT_DIR</span><span class="tok-punct">)</span>
+      sleep <span class="tok-number">5</span>
+    <span class="tok-keyword">end</span>
+  <span class="tok-keyword">rescue</span> <span class="tok-prop">Interrupt</span>
+    <span class="tok-keyword">puts</span> <span class="tok-string">&quot;\n👋 توقّفت المراقبة.&quot;</span>
+  <span class="tok-keyword">end</span>
+<span class="tok-keyword">else</span>
+  ok <span class="tok-punct">=</span> <span class="tok-func">run_once</span><span class="tok-punct">(</span><span class="tok-prop">LOG_PATH</span><span class="tok-punct">,</span> <span class="tok-prop">OUT_DIR</span><span class="tok-punct">)</span>
+  <span class="tok-func">exit</span><span class="tok-punct">(</span>ok <span class="tok-punct">?</span> <span class="tok-number">0</span> <span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">)</span>
+<span class="tok-keyword">end</span></code></pre></div></details></div></section><h2 id="sec-16">اختبر نفسك</h2><section class="quiz"><h2 id="sec-17"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. لماذا لا نلتقط <code>Exception</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>يلتقط SystemExit و SignalException فيمنع Ctrl+C وإنهاء البرنامج</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>غير مسموح</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لا فرق</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>rescue</code> بلا نوع يلتقط <code>StandardError</code> فقط، وهذا هو السلوك الصحيح.</div></div><div class="q-item"><p class="q-text">2. متى يُنفَّذ <code>ensure</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>عند النجاح</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>دائماً — نجح أو فشل، وحتى مع <code>return</code> أو <code>raise</code></span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>عند الفشل</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>إن لم يقع خطأ</span></label></div><div class="q-explain"><strong>الشرح:</strong> ولهذا هو المكان الصحيح لإغلاق الموارد. <code>else</code> هو الذي يُنفَّذ عند عدم وقوع خطأ.</div></div><div class="q-item"><p class="q-text">3. ما شرط استخدام <code>retry</code> بأمان؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>لا شروط</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>عدّاد يحدّ المحاولات، وأن يكون الخطأ عابراً لا منطقياً</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أن يكون داخل حلقة</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>مع ensure</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>retry</code> بلا حدّ = حلقة لانهائية، وإعادة المحاولة على <code>ArgumentError</code> لن تنجح أبداً.</div></div><div class="q-item"><p class="q-text">4. كيف تقرأ ملفاً بحجم 3 غيغابايت؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span><code>File.read</code></span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span><code>File.foreach</code> أو <code>each_line</code> — ذاكرة ثابتة مهما كان الحجم</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span><code>File.readlines</code></span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>تقسيمه يدوياً</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>File.read</code> يحمّل الملف كله في الذاكرة فينهار البرنامج.</div></div><div class="q-item"><p class="q-text">5. ما ميزة الخطأ المخصّص الذي يحمل بيانات مثل <code>e.code</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>يسمح بمعالجة ذكية بدل تحليل نصّ الرسالة الهشّ</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>أقصر</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>إلزامي</span></label></div><div class="q-explain"><strong>الشرح:</strong> وشجرة أخطاء مثل <code>Payments::Error</code> تسمح بالتقاط فئة كاملة أو خطأ بعينه.</div></div><div class="q-item"><p class="q-text">6. ما خطر <code>value = risky rescue nil</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_5" value="correct"><span>يلتقط كل StandardError دون تمييز فيخفي أخطاءً غير متوقّعة</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>خطأ صياغي</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>لا خطر</span></label></div><div class="q-explain"><strong>الشرح:</strong> استخدمه فقط في التحويلات البسيطة الواضحة، وفضّل الصيغة الكاملة في الإنتاج.</div></div><div class="q-item"><p class="q-text">7. لماذا <code>File.join(&quot;a&quot;, &quot;b&quot;)</code> أفضل من <code>&quot;a&quot; + &quot;/&quot; + &quot;b&quot;</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>أقصر</span></label><label class="q-option"><input type="radio" name="q1_6" value="correct"><span>يستخدم الفاصل الصحيح لكل نظام ويتجنّب الشرطات المزدوجة</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>لا فرق</span></label></div><div class="q-explain"><strong>الشرح:</strong> ويعمل بشكل صحيح مع المسارات القادمة من مصادر مختلفة.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="ruby/08-errors-files" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="07-modules.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>الوحدات والـ Mixins</b></span></a>
+  <a class="next" href="09-gems-testing.html"><span><small>الدرس التالي</small><b>الأدوات: Gems و Bundler و RSpec</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Ruby</h3>
+        <div class="ring-wrap" data-ring data-track="ruby" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">شجرة الاستثناءات</a></li><li><a href="#sec-2">البنية الكاملة</a></li><li class="sub"><a href="#sec-3">rescue على مستوى الدالة</a></li><li><a href="#sec-4">رمي الأخطاء</a></li><li><a href="#sec-5">أخطاء مخصّصة</a></li><li><a href="#sec-6">retry — إعادة المحاولة</a></li><li><a href="#sec-7">ensure وتسريب الموارد</a></li><li><a href="#sec-8">قراءة الملفات</a></li><li class="sub"><a href="#sec-9">الكتابة</a></li><li class="sub"><a href="#sec-10">المسارات والاختبارات</a></li><li class="sub"><a href="#sec-11">أخطاء الملفات الشائعة</a></li><li><a href="#sec-12">JSON</a></li><li><a href="#sec-13">CSV</a></li><li><a href="#sec-14">تمرين</a></li><li><a href="#sec-15">محلّل سجلّات مع تقرير</a></li><li><a href="#sec-16">اختبر نفسك</a></li><li><a href="#sec-17">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>begin … rescue … end</code><small>التقاط خطأ</small></div><div class="ref-item"><code>rescue E =&gt; e</code><small>ربط الخطأ</small></div><div class="ref-item"><code>ensure</code><small>ينفّذ دائماً</small></div><div class="ref-item"><code>retry</code><small>أعد المحاولة</small></div><div class="ref-item"><code>raise E, &quot;msg&quot;</code><small>رمي خطأ</small></div><div class="ref-item"><code>File.foreach</code><small>قراءة سطراً سطراً</small></div><div class="ref-item"><code>JSON.parse(s)</code><small>تحليل JSON</small></div><div class="ref-item"><code>CSV.foreach</code><small>قراءة CSV</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="09-gems-testing.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>الأدوات: Gems و Bundler و RSpec<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>
