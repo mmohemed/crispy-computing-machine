@@ -209,7 +209,7 @@ function buildTracksPage() {
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <h2>كل مسارات تطوير الويب</h2>
+      <h1>كل مسارات تطوير الويب</h1>
       <p>${tracks.length} مساراً مقسّمة على أربع مجموعات. المسارات المنشورة تحتوي دروساً كاملة، والباقي معلن بمنهجه التفصيلي.</p>
     </div>
 
@@ -287,7 +287,7 @@ function buildRoadmap() {
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <h2>خريطة طريق مطوّر الويب</h2>
+      <h1>خريطة طريق مطوّر الويب</h1>
       <p>ترتيب منطقي للتعلّم يمنع القفز المبكر إلى الأدوات المتقدّمة قبل ترسيخ الأساس. المدد تقديرية لمن يدرس ساعة إلى ساعتين يومياً.</p>
     </div>
 
@@ -327,7 +327,7 @@ function buildAbout() {
   const content = `
 <section class="section">
   <div class="container" style="max-width:860px">
-    <div class="section-head"><h2>عن المنصة</h2></div>
+    <div class="section-head"><h1>عن المنصة</h1></div>
     <div class="lesson-main">
       <h2 id="sec-1">لماذا CodeWay Web؟</h2>
       <p>معظم المحتوى العربي في تطوير الويب إمّا مترجَم حرفياً فيصعب فهمه، أو مختصر جداً فيترك المتعلّم في منتصف الطريق. هذه المنصة تحاول شيئاً ثالثاً: <strong>شرح عربي أصيل ومتدرّج</strong>، كل درس فيه يفترض أنك قرأت ما قبله ولم تقرأ ما بعده.</p>

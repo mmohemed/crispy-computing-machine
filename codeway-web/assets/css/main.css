@@ -215,6 +215,7 @@ code, kbd, samp, pre { font-family: var(--font-mono); direction: ltr; unicode-bi
 .section { padding: var(--space-8) 0; }
 .section-alt { background: var(--bg-alt); }
 .section-head { margin-bottom: var(--space-6); }
+.section-head h1,
 .section-head h2 { font-size: clamp(1.6rem, 3.4vw, 2.4rem); margin-bottom: var(--space-2); }
 .section-head p { color: var(--text-muted); font-size: 1.05rem; max-width: 70ch; }
 .section-head.center { text-align: center; }

@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="laravel">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eloquent ORM — مسار Laravel | CodeWay Web</title>
+<meta name="description" content="النماذج والاستعلامات، الإسناد الجماعي، التحويلات، النطاقات، الملحقات، والأحداث — قلب Laravel.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="Eloquent ORM — مسار Laravel | CodeWay Web">
+<meta property="og:description" content="النماذج والاستعلامات، الإسناد الجماعي، التحويلات، النطاقات، الملحقات، والأحداث — قلب Laravel.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Laravel</a></li>
+      <li aria-current="page">Eloquent ORM</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 5 من 10</span>
+      <span class="badge level-متوسط">متوسط</span>
+      <span class="badge">Eloquent</span><span class="badge">ORM</span><span class="badge">Models</span>
+    </div>
+    <h1>Eloquent ORM</h1>
+    <p class="summary">النماذج والاستعلامات، الإسناد الجماعي، التحويلات، النطاقات، الملحقات، والأحداث — قلب Laravel.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 60 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Laravel</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 7 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تعرّف نموذجاً وتفهم اتفاقات Eloquent.</li><li>تكتب استعلامات معقّدة بصياغة قابلة للقراءة.</li><li>تحمي نفسك من ثغرة الإسناد الجماعي.</li><li>تستخدم التحويلات (Casts) لتحويل الأنواع تلقائياً.</li><li>تعرّف نطاقات وملحقات لتقليل التكرار.</li><li>تفهم أحداث النموذج والحذف الناعم.</li></ul></div>
+      <h2 id="sec-1">النموذج واتفاقاته</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>php artisan make:model Post
+php artisan make:model Post <span class="tok-attr">-mfsc</span>      <span class="tok-comment"># + هجرة ومصنع وبذرة ومتحكّم</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">namespace</span> <span class="tok-prop">App</span>\<span class="tok-prop">Models</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Database</span>\<span class="tok-prop">Eloquent</span>\<span class="tok-prop">Model</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span>
+<span class="tok-punct">{</span>
+    <span class="tok-comment">// الاتفاقات — كلها اختيارية إن اتّبعت التسمية المتوقّعة</span>
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$table</span> <span class="tok-punct">=</span> <span class="tok-string">&#39;posts&#39;</span><span class="tok-punct">;</span>           <span class="tok-comment">// مستنتَج: جمع اسم الصنف بحروف صغيرة</span>
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$primaryKey</span> <span class="tok-punct">=</span> <span class="tok-string">&#39;id&#39;</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">public</span> <span class="tok-attr">$incrementing</span> <span class="tok-punct">=</span> <span class="tok-bool">true</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$keyType</span> <span class="tok-punct">=</span> <span class="tok-string">&#39;int&#39;</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">public</span> <span class="tok-attr">$timestamps</span> <span class="tok-punct">=</span> <span class="tok-bool">true</span><span class="tok-punct">;</span>            <span class="tok-comment">// created_at و updated_at</span>
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$dateFormat</span> <span class="tok-punct">=</span> <span class="tok-string">&#39;Y-m-d H:i:s&#39;</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$connection</span> <span class="tok-punct">=</span> <span class="tok-string">&#39;mysql&#39;</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span></code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الصنف</th><th>الجدول المستنتَج</th></tr></thead><tbody><tr><td><code>Post</code></td><td><code>posts</code></td></tr><tr><td><code>Category</code></td><td><code>categories</code></td></tr><tr><td><code>OrderItem</code></td><td><code>order_items</code></td></tr><tr><td><code>Person</code></td><td><code>people</code></td></tr></tbody></table></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>Laravel يستخدم مكتبة تصريف إنجليزية ذكية تعرف الجموع الشاذّة. إن لم يوافق ما تريده، حدّد <code>$table</code> صراحةً.</p></div><h2 id="sec-2">الاستعلامات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// جلب</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">all</span><span class="tok-punct">();</span>                              <span class="tok-comment">// ⚠️ كل الصفوف — احذر مع الجداول الكبيرة</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">find</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">);</span>                            <span class="tok-comment">// بالمفتاح، أو null</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">findOrFail</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">);</span>                      <span class="tok-comment">// أو 404</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">find</span><span class="tok-punct">([</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">]);</span>                    <span class="tok-comment">// عدة مفاتيح</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">first</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">firstWhere</span><span class="tok-punct">(</span><span class="tok-string">&#39;slug&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;my-post&#39;</span><span class="tok-punct">);</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">firstOrFail</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">latest</span><span class="tok-punct">()-&gt;</span><span class="tok-func">first</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">count</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">pluck</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;id&#39;</span><span class="tok-punct">);</span>               <span class="tok-comment">// =&gt; [1 =&gt; &#39;عنوان&#39;, ...]</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">value</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">);</span>                     <span class="tok-comment">// عمود واحد من أول صفّ</span>
+
+<span class="tok-comment">// الترشيح</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;published&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;views&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&gt;&#39;</span><span class="tok-punct">,</span> <span class="tok-number">1000</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;like&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;%ruby%&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">whereIn</span><span class="tok-punct">(</span><span class="tok-string">&#39;id&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">])-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">whereNotIn</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-string">&#39;draft&#39;</span><span class="tok-punct">])-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">whereBetween</span><span class="tok-punct">(</span><span class="tok-string">&#39;price&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-number">100</span><span class="tok-punct">,</span> <span class="tok-number">500</span><span class="tok-punct">])-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">whereNull</span><span class="tok-punct">(</span><span class="tok-string">&#39;deleted_at&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">whereDate</span><span class="tok-punct">(</span><span class="tok-string">&#39;created_at&#39;</span><span class="tok-punct">,</span> <span class="tok-func">today</span><span class="tok-punct">())-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">whereYear</span><span class="tok-punct">(</span><span class="tok-string">&#39;created_at&#39;</span><span class="tok-punct">,</span> <span class="tok-number">2026</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">whereMonth</span><span class="tok-punct">(</span><span class="tok-string">&#39;created_at&#39;</span><span class="tok-punct">,</span> <span class="tok-number">8</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+
+<span class="tok-comment">// أعمدة كأسماء دوال</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">whereStatus</span><span class="tok-punct">(</span><span class="tok-string">&#39;published&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">whereSlugAndStatus</span><span class="tok-punct">(</span><span class="tok-string">&#39;x&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;published&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">first</span><span class="tok-punct">();</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// شروط مركّبة</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;published&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">(</span><span class="tok-attr">$query</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;featured&#39;</span><span class="tok-punct">,</span> <span class="tok-bool">true</span><span class="tok-punct">)</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">orWhere</span><span class="tok-punct">(</span><span class="tok-string">&#39;views&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&gt;&#39;</span><span class="tok-punct">,</span> <span class="tok-number">5000</span><span class="tok-punct">);</span>
+    <span class="tok-punct">})</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+
+<span class="tok-comment">// شرط اختياري — الأنظف</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">query</span><span class="tok-punct">()</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>search<span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$q</span><span class="tok-punct">,</span> <span class="tok-attr">$term</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;like&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;%{$term}%&quot;</span><span class="tok-punct">))</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>category<span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$q</span><span class="tok-punct">,</span> <span class="tok-attr">$id</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;category_id&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$id</span><span class="tok-punct">))</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>sort <span class="tok-punct">===</span> <span class="tok-string">&#39;popular&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$q</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">orderByDesc</span><span class="tok-punct">(</span><span class="tok-string">&#39;views&#39;</span><span class="tok-punct">),</span>
+        <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$q</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">latest</span><span class="tok-punct">())</span>          <span class="tok-comment">// وإلا</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">paginate</span><span class="tok-punct">(</span><span class="tok-number">15</span><span class="tok-punct">);</span></code></pre></div><div class="compare"><div class="compare-col compare-bad"><header>✗ خطأ</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span></div><pre><code><span class="tok-attr">$query</span> <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">query</span><span class="tok-punct">();</span>
+
+<span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>search<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;like&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;%{$request-&gt;search}%&quot;</span><span class="tok-punct">);</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>category<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;category_id&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>category<span class="tok-punct">);</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>min_price<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;price&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&gt;=&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>min_price<span class="tok-punct">);</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-attr">$posts</span> <span class="tok-punct">=</span> <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">paginate</span><span class="tok-punct">(</span><span class="tok-number">15</span><span class="tok-punct">);</span></code></pre></div><div class="why">يعمل، لكن الشيفرة تنقطع بين الشروط ويصعب قراءة الاستعلام كوحدة واحدة.</div></div><div class="compare-col compare-good"><header>✓ صواب</header><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span></div><pre><code><span class="tok-attr">$posts</span> <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">query</span><span class="tok-punct">()</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>search<span class="tok-punct">,</span>    <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$q</span><span class="tok-punct">,</span> <span class="tok-attr">$v</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;like&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;%{$v}%&quot;</span><span class="tok-punct">))</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>category<span class="tok-punct">,</span>  <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$q</span><span class="tok-punct">,</span> <span class="tok-attr">$v</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;category_id&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$v</span><span class="tok-punct">))</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>min_price<span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$q</span><span class="tok-punct">,</span> <span class="tok-attr">$v</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;price&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&gt;=&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$v</span><span class="tok-punct">))</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">paginate</span><span class="tok-punct">(</span><span class="tok-number">15</span><span class="tok-punct">);</span></code></pre></div><div class="why">سلسلة واحدة تُقرأ من أعلى لأسفل، والقيمة تُمرَّر للدالة تلقائياً كمعامل ثانٍ.</div></div></div><h3 id="sec-3">الترتيب والحدّ والتجميع</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">orderBy</span><span class="tok-punct">(</span><span class="tok-string">&#39;created_at&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;desc&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">latest</span><span class="tok-punct">()-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>                      <span class="tok-comment">// اختصار لـ created_at desc</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">oldest</span><span class="tok-punct">()-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">latest</span><span class="tok-punct">(</span><span class="tok-string">&#39;published_at&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">inRandomOrder</span><span class="tok-punct">()-&gt;</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-number">3</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">orderByRaw</span><span class="tok-punct">(</span><span class="tok-string">&#39;FIELD(status, &quot;published&quot;, &quot;draft&quot;)&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">take</span><span class="tok-punct">(</span><span class="tok-number">10</span><span class="tok-punct">)-&gt;</span><span class="tok-func">skip</span><span class="tok-punct">(</span><span class="tok-number">20</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">paginate</span><span class="tok-punct">(</span><span class="tok-number">15</span><span class="tok-punct">);</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">simplePaginate</span><span class="tok-punct">(</span><span class="tok-number">15</span><span class="tok-punct">);</span>                   <span class="tok-comment">// بلا عدّ إجمالي — أسرع</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">cursorPaginate</span><span class="tok-punct">(</span><span class="tok-number">15</span><span class="tok-punct">);</span>                   <span class="tok-comment">// الأفضل للجداول الضخمة</span>
+
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">selectRaw</span><span class="tok-punct">(</span><span class="tok-string">&#39;status, COUNT(*) as total&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">groupBy</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">having</span><span class="tok-punct">(</span><span class="tok-string">&#39;total&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&gt;&#39;</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">)</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">sum</span><span class="tok-punct">(</span><span class="tok-string">&#39;views&#39;</span><span class="tok-punct">);</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">avg</span><span class="tok-punct">(</span><span class="tok-string">&#39;rating&#39;</span><span class="tok-punct">);</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">max</span><span class="tok-punct">(</span><span class="tok-string">&#39;price&#39;</span><span class="tok-punct">);</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>استخدم <code>cursorPaginate</code> على الجداول الضخمة: <code>paginate</code> ينفّذ <code>COUNT(*)</code> على الجدول كله في كل صفحة، وهذا يصبح بطيئاً جداً بعد ملايين الصفوف.</p></div><h2 id="sec-4">الإنشاء والتحديث</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// الإنشاء</span>
+<span class="tok-attr">$post</span> <span class="tok-punct">=</span> <span class="tok-keyword">new</span> <span class="tok-func">Post</span><span class="tok-punct">();</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>title <span class="tok-punct">=</span> <span class="tok-string">&#39;عنوان&#39;</span><span class="tok-punct">;</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>body  <span class="tok-punct">=</span> <span class="tok-string">&#39;محتوى&#39;</span><span class="tok-punct">;</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">save</span><span class="tok-punct">();</span>
+
+<span class="tok-attr">$post</span> <span class="tok-punct">=</span> <span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">create</span><span class="tok-punct">([</span>                    <span class="tok-comment">// يحتاج $fillable</span>
+    <span class="tok-string">&#39;title&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;عنوان&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&#39;body&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;محتوى&#39;</span><span class="tok-punct">,</span>
+<span class="tok-punct">]);</span>
+
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">insert</span><span class="tok-punct">([...]);</span>                       <span class="tok-comment">// إدراج جماعي — بلا أحداث ولا timestamps</span>
+
+<span class="tok-comment">// التحديث</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">update</span><span class="tok-punct">([</span><span class="tok-string">&#39;title&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;جديد&#39;</span><span class="tok-punct">]);</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>title <span class="tok-punct">=</span> <span class="tok-string">&#39;جديد&#39;</span><span class="tok-punct">;</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">save</span><span class="tok-punct">();</span>
+
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;draft&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">update</span><span class="tok-punct">([</span><span class="tok-string">&#39;status&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;archived&#39;</span><span class="tok-punct">]);</span>  <span class="tok-comment">// جماعي</span>
+
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">increment</span><span class="tok-punct">(</span><span class="tok-string">&#39;views&#39;</span><span class="tok-punct">);</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">increment</span><span class="tok-punct">(</span><span class="tok-string">&#39;views&#39;</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">);</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">decrement</span><span class="tok-punct">(</span><span class="tok-string">&#39;stock&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$quantity</span><span class="tok-punct">);</span>
+
+<span class="tok-comment">// الحفظ الذكي</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">firstOrCreate</span><span class="tok-punct">(</span>
+    <span class="tok-punct">[</span><span class="tok-string">&#39;slug&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;my-post&#39;</span><span class="tok-punct">],</span>                 <span class="tok-comment">// البحث بهذا</span>
+    <span class="tok-punct">[</span><span class="tok-string">&#39;title&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;عنواني&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;body&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;…&#39;</span><span class="tok-punct">]</span>   <span class="tok-comment">// والإنشاء بهذا إن لم يوجد</span>
+<span class="tok-punct">);</span>
+
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">updateOrCreate</span><span class="tok-punct">(</span>
+    <span class="tok-punct">[</span><span class="tok-string">&#39;slug&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;my-post&#39;</span><span class="tok-punct">],</span>
+    <span class="tok-punct">[</span><span class="tok-string">&#39;title&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;عنوان محدَّث&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;views&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">0</span><span class="tok-punct">]</span>
+<span class="tok-punct">);</span>
+
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">firstOrNew</span><span class="tok-punct">([</span><span class="tok-string">&#39;slug&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;x&#39;</span><span class="tok-punct">]);</span>         <span class="tok-comment">// بلا حفظ</span>
+
+<span class="tok-comment">// الحذف</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">delete</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">destroy</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">);</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">destroy</span><span class="tok-punct">([</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">]);</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;spam&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">delete</span><span class="tok-punct">();</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> التحديث الجماعي لا يشغّل الأحداث</div><p><code>Post::where(...)-&gt;update([...])</code> ينفّذ استعلام SQL واحداً مباشرة، فلا تُستدعى أحداث <code>saving</code> و <code>saved</code> ولا المراقبون. إن كان منطقك يعتمد عليها، مرّ على السجلّات بـ <code>each</code> بدلاً من ذلك.</p></div><h2 id="sec-5">الإسناد الجماعي والحماية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span>
+<span class="tok-punct">{</span>
+    <span class="tok-comment">// ✅ قائمة بيضاء — الأفضل</span>
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$fillable</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;body&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;category_id&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;published&#39;</span><span class="tok-punct">];</span>
+
+    <span class="tok-comment">// ⚠️ قائمة سوداء — أخطر</span>
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$guarded</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&#39;id&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;user_id&#39;</span><span class="tok-punct">];</span>
+
+    <span class="tok-comment">// 🚨 لا تفعل هذا أبداً</span>
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$guarded</span> <span class="tok-punct">=</span> <span class="tok-punct">[];</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> ثغرة الإسناد الجماعي</div><p>لو كتبت <code>Post::create($request-&gt;all())</code> بلا <code>$fillable</code> صحيح، يستطيع مهاجم إرسال <code>user_id=1</code> أو <code>is_admin=1</code> في النموذج فيسند القيمة مباشرة. <strong>دائماً</strong>: عرّف <code>$fillable</code>، واستخدم <code>$request-&gt;validated()</code> لا <code>$request-&gt;all()</code>.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// ✗ خطير</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">create</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">all</span><span class="tok-punct">());</span>
+
+<span class="tok-comment">// ✅ آمن — التحقّق يُرجع الحقول المسموحة فقط</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">create</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">validated</span><span class="tok-punct">());</span>
+
+<span class="tok-comment">// ✅ آمن — تحديد صريح</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">create</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">only</span><span class="tok-punct">([</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;body&#39;</span><span class="tok-punct">]));</span>
+
+<span class="tok-comment">// ✅ آمن — الحقول الحسّاسة تُسند صراحةً</span>
+<span class="tok-attr">$post</span> <span class="tok-punct">=</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">user</span><span class="tok-punct">()-&gt;</span><span class="tok-func">posts</span><span class="tok-punct">()-&gt;</span><span class="tok-func">create</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">validated</span><span class="tok-punct">());</span></code></pre></div><h2 id="sec-6">التحويلات (Casts)</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Database</span>\<span class="tok-prop">Eloquent</span>\<span class="tok-prop">Casts</span>\<span class="tok-prop">AsCollection</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">casts</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>      <span class="tok-comment">// Laravel 11+</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-punct">[</span>
+            <span class="tok-string">&#39;published&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;boolean&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;views_count&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;price&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;decimal:2&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;meta&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;array&#39;</span><span class="tok-punct">,</span>            <span class="tok-comment">// JSON ↔ مصفوفة</span>
+            <span class="tok-string">&#39;settings&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-prop">AsCollection</span><span class="tok-punct">::</span><span class="tok-keyword">class</span><span class="tok-punct">,</span> <span class="tok-comment">// JSON ↔ Collection</span>
+            <span class="tok-string">&#39;published_at&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;datetime&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;launched_on&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;date&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;status&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-prop">PostStatus</span><span class="tok-punct">::</span><span class="tok-keyword">class</span><span class="tok-punct">,</span>   <span class="tok-comment">// Enum من PHP 8.1</span>
+            <span class="tok-string">&#39;api_token&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;encrypted&#39;</span><span class="tok-punct">,</span>         <span class="tok-comment">// مشفّر في القاعدة</span>
+            <span class="tok-string">&#39;options&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;encrypted:array&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">];</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>published<span class="tok-punct">;</span>        <span class="tok-comment">// bool وليس &quot;1&quot;</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>published_at<span class="tok-punct">;</span>     <span class="tok-comment">// كائن Carbon</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>published_at<span class="tok-punct">-&gt;</span><span class="tok-func">diffForHumans</span><span class="tok-punct">();</span>     <span class="tok-comment">// &quot;قبل ٣ أيام&quot;</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>published_at<span class="tok-punct">-&gt;</span><span class="tok-func">format</span><span class="tok-punct">(</span><span class="tok-string">&#39;Y-m-d&#39;</span><span class="tok-punct">);</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>meta<span class="tok-punct">[</span><span class="tok-string">&#39;author&#39;</span><span class="tok-punct">];</span>   <span class="tok-comment">// مصفوفة جاهزة</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>meta <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&#39;author&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;سارة&#39;</span><span class="tok-punct">];</span>        <span class="tok-comment">// يُحوَّل لـ JSON تلقائياً</span></code></pre></div><h3 id="sec-7">Enums</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">enum</span> <span class="tok-prop">PostStatus</span><span class="tok-punct">:</span> string
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-prop">Draft</span>     <span class="tok-punct">=</span> <span class="tok-string">&#39;draft&#39;</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-prop">Published</span> <span class="tok-punct">=</span> <span class="tok-string">&#39;published&#39;</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-prop">Archived</span>  <span class="tok-punct">=</span> <span class="tok-string">&#39;archived&#39;</span><span class="tok-punct">;</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">label</span><span class="tok-punct">():</span> string
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-keyword">match</span> <span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            self<span class="tok-punct">::</span><span class="tok-prop">Draft</span>     <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;مسوّدة&#39;</span><span class="tok-punct">,</span>
+            self<span class="tok-punct">::</span><span class="tok-prop">Published</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;منشور&#39;</span><span class="tok-punct">,</span>
+            self<span class="tok-punct">::</span><span class="tok-prop">Archived</span>  <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;مؤرشف&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">};</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">color</span><span class="tok-punct">():</span> string
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-keyword">match</span> <span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            self<span class="tok-punct">::</span><span class="tok-prop">Draft</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;amber&#39;</span><span class="tok-punct">,</span> self<span class="tok-punct">::</span><span class="tok-prop">Published</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;green&#39;</span><span class="tok-punct">,</span> self<span class="tok-punct">::</span><span class="tok-prop">Archived</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;gray&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">};</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// الاستخدام</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>status <span class="tok-punct">===</span> <span class="tok-prop">PostStatus</span><span class="tok-punct">::</span><span class="tok-prop">Published</span><span class="tok-punct">;</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>status<span class="tok-punct">-&gt;</span><span class="tok-func">label</span><span class="tok-punct">();</span>                    <span class="tok-comment">// &quot;منشور&quot;</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">PostStatus</span><span class="tok-punct">::</span><span class="tok-prop">Published</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>الـ Enums تحلّ مشكلة «النصوص السحرية»: كتابة <code>&#39;publised&#39;</code> بخطأ إملائي تمرّ بصمت مع النصّ، بينما <code>PostStatus::Publised</code> تفشل فوراً في المحرّر وفي التحليل الساكن.</p></div><h2 id="sec-8">النطاقات (Scopes)</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span>
+<span class="tok-punct">{</span>
+    <span class="tok-comment">// نطاق محلي — يُستدعى باسمه بلا البادئة</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopePublished</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">PostStatus</span><span class="tok-punct">::</span><span class="tok-prop">Published</span><span class="tok-punct">)</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">whereNotNull</span><span class="tok-punct">(</span><span class="tok-string">&#39;published_at&#39;</span><span class="tok-punct">)</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;published_at&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&lt;=&#39;</span><span class="tok-punct">,</span> <span class="tok-func">now</span><span class="tok-punct">());</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopePopular</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">,</span> int <span class="tok-attr">$min</span> <span class="tok-punct">=</span> <span class="tok-number">1000</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;views_count&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&gt;=&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$min</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeSearch</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">,</span> <span class="tok-punct">?</span>string <span class="tok-attr">$term</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$term</span><span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$q</span><span class="tok-punct">,</span> <span class="tok-attr">$t</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span>
+            <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$q</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span>
+                <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;like&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;%{$t}%&quot;</span><span class="tok-punct">)</span>
+                  <span class="tok-punct">-&gt;</span><span class="tok-func">orWhere</span><span class="tok-punct">(</span><span class="tok-string">&#39;body&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;like&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;%{$t}%&quot;</span><span class="tok-punct">)</span>
+            <span class="tok-punct">)</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeOwnedBy</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">,</span> <span class="tok-prop">User</span> <span class="tok-attr">$user</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;user_id&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$user</span><span class="tok-punct">-&gt;</span>id<span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// الاستخدام — تتسلسل بحرّية</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">published</span><span class="tok-punct">()-&gt;</span><span class="tok-func">popular</span><span class="tok-punct">()-&gt;</span><span class="tok-func">latest</span><span class="tok-punct">()-&gt;</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-number">10</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">published</span><span class="tok-punct">()-&gt;</span><span class="tok-func">search</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span>q<span class="tok-punct">)-&gt;</span><span class="tok-func">paginate</span><span class="tok-punct">(</span><span class="tok-number">15</span><span class="tok-punct">);</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">ownedBy</span><span class="tok-punct">(</span><span class="tok-attr">$user</span><span class="tok-punct">)-&gt;</span><span class="tok-func">published</span><span class="tok-punct">()-&gt;</span><span class="tok-func">count</span><span class="tok-punct">();</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// نطاق عام — يُطبَّق تلقائياً على كل استعلام</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">PublishedScope</span> <span class="tok-keyword">implements</span> <span class="tok-prop">Scope</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">apply</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$builder</span><span class="tok-punct">,</span> <span class="tok-prop">Model</span> <span class="tok-attr">$model</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$builder</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;published&#39;</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">static</span> <span class="tok-keyword">function</span> <span class="tok-func">booted</span><span class="tok-punct">():</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">addGlobalScope</span><span class="tok-punct">(</span><span class="tok-keyword">new</span> <span class="tok-func">PublishedScope</span><span class="tok-punct">());</span>
+
+        <span class="tok-comment">// أو مباشرة</span>
+        <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">addGlobalScope</span><span class="tok-punct">(</span><span class="tok-string">&#39;published&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$q</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span>
+            <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;published&#39;</span><span class="tok-punct">)</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// التجاوز عند الحاجة</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">withoutGlobalScope</span><span class="tok-punct">(</span><span class="tok-string">&#39;published&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">withoutGlobalScopes</span><span class="tok-punct">()-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> النطاقات العامة سيف ذو حدّين</div><p>مريحة، لكنها تجعل سلوك النموذج مفاجئاً: مطوّر يكتب <code>Post::count()</code> ويحصل على رقم لا يفهم مصدره. استخدمها فقط حين يكون الترشيح <strong>حقيقة ثابتة</strong> عن النموذج (مثل عزل بيانات المستأجرين في تطبيق متعدّد المستأجرين).</p></div><h2 id="sec-9">الملحقات (Accessors &amp; Mutators)</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Database</span>\<span class="tok-prop">Eloquent</span>\<span class="tok-prop">Casts</span>\<span class="tok-prop">Attribute</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Support</span>\<span class="tok-prop">Str</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span>
+<span class="tok-punct">{</span>
+    <span class="tok-comment">// قراءة فقط — خاصية محسوبة</span>
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">excerpt</span><span class="tok-punct">():</span> <span class="tok-prop">Attribute</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-prop">Attribute</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span>
+            get<span class="tok-punct">:</span> <span class="tok-keyword">fn</span> <span class="tok-punct">()</span> <span class="tok-punct">=&gt;</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">limit</span><span class="tok-punct">(</span><span class="tok-func">strip_tags</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>body<span class="tok-punct">),</span> <span class="tok-number">160</span><span class="tok-punct">),</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">readingMinutes</span><span class="tok-punct">():</span> <span class="tok-prop">Attribute</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-prop">Attribute</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span>
+            get<span class="tok-punct">:</span> <span class="tok-keyword">fn</span> <span class="tok-punct">()</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">max</span><span class="tok-punct">(</span><span class="tok-number">1</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>int<span class="tok-punct">)</span> <span class="tok-func">ceil</span><span class="tok-punct">(</span><span class="tok-func">str_word_count</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>body<span class="tok-punct">)</span> <span class="tok-punct">/</span> <span class="tok-number">200</span><span class="tok-punct">)),</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">// قراءة وكتابة</span>
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">title</span><span class="tok-punct">():</span> <span class="tok-prop">Attribute</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-prop">Attribute</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span>
+            get<span class="tok-punct">:</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span>string <span class="tok-attr">$value</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">ucfirst</span><span class="tok-punct">(</span><span class="tok-attr">$value</span><span class="tok-punct">),</span>
+            set<span class="tok-punct">:</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span>string <span class="tok-attr">$value</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+                <span class="tok-string">&#39;title&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">trim</span><span class="tok-punct">(</span><span class="tok-attr">$value</span><span class="tok-punct">),</span>
+                <span class="tok-string">&#39;slug&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">slug</span><span class="tok-punct">(</span><span class="tok-attr">$value</span><span class="tok-punct">)</span> <span class="tok-punct">.</span> <span class="tok-string">&#39;-&#39;</span> <span class="tok-punct">.</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">random</span><span class="tok-punct">(</span><span class="tok-number">6</span><span class="tok-punct">),</span>
+            <span class="tok-punct">],</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">// مع تخزين مؤقّت للحسابات الثقيلة</span>
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">statistics</span><span class="tok-punct">():</span> <span class="tok-prop">Attribute</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-prop">Attribute</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span>
+            get<span class="tok-punct">:</span> <span class="tok-keyword">fn</span> <span class="tok-punct">()</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">computeStats</span><span class="tok-punct">(),</span>
+        <span class="tok-punct">)-&gt;</span><span class="tok-func">shouldCache</span><span class="tok-punct">();</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// الاستخدام — كأنها أعمدة حقيقية</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>excerpt<span class="tok-punct">;</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>reading_minutes<span class="tok-punct">;</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>title <span class="tok-punct">=</span> <span class="tok-string">&#39;  عنواني  &#39;</span><span class="tok-punct">;</span>    <span class="tok-comment">// يُنظَّف ويولّد slug تلقائياً</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// إضافة الخصائص المحسوبة إلى JSON تلقائياً</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$appends</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&#39;excerpt&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;reading_minutes&#39;</span><span class="tok-punct">];</span>
+
+    <span class="tok-comment">// إخفاء حقول حسّاسة من JSON</span>
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$hidden</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&#39;api_token&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;internal_notes&#39;</span><span class="tok-punct">];</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">toArray</span><span class="tok-punct">();</span>      <span class="tok-comment">// يشمل excerpt و reading_minutes</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">toJson</span><span class="tok-punct">();</span></code></pre></div><h2 id="sec-10">الحذف الناعم</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Database</span>\<span class="tok-prop">Eloquent</span>\<span class="tok-prop">SoftDeletes</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">use</span> <span class="tok-prop">SoftDeletes</span><span class="tok-punct">;</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// الهجرة: $table-&gt;softDeletes();</span>
+
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">delete</span><span class="tok-punct">();</span>                    <span class="tok-comment">// يضبط deleted_at فقط</span>
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">trashed</span><span class="tok-punct">();</span>                   <span class="tok-comment">// =&gt; true</span>
+
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">all</span><span class="tok-punct">();</span>                        <span class="tok-comment">// يستثني المحذوفة تلقائياً</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">withTrashed</span><span class="tok-punct">()-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>         <span class="tok-comment">// مع المحذوفة</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">onlyTrashed</span><span class="tok-punct">()-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>         <span class="tok-comment">// المحذوفة فقط</span>
+
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">restore</span><span class="tok-punct">();</span>                   <span class="tok-comment">// استرجاع</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">onlyTrashed</span><span class="tok-punct">()-&gt;</span><span class="tok-func">restore</span><span class="tok-punct">();</span>
+
+<span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">forceDelete</span><span class="tok-punct">();</span>               <span class="tok-comment">// حذف نهائي</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">onlyTrashed</span><span class="tok-punct">()-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;deleted_at&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&lt;&#39;</span><span class="tok-punct">,</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">subYear</span><span class="tok-punct">())-&gt;</span><span class="tok-func">forceDelete</span><span class="tok-punct">();</span></code></pre></div><h2 id="sec-11">أحداث النموذج</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">static</span> <span class="tok-keyword">function</span> <span class="tok-func">booted</span><span class="tok-punct">():</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">creating</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">(</span><span class="tok-prop">Post</span> <span class="tok-attr">$post</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>slug <span class="tok-punct">??=</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">slug</span><span class="tok-punct">(</span><span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>title<span class="tok-punct">)</span> <span class="tok-punct">.</span> <span class="tok-string">&#39;-&#39;</span> <span class="tok-punct">.</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">random</span><span class="tok-punct">(</span><span class="tok-number">6</span><span class="tok-punct">);</span>
+            <span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>user_id <span class="tok-punct">??=</span> <span class="tok-func">auth</span><span class="tok-punct">()-&gt;</span><span class="tok-func">id</span><span class="tok-punct">();</span>
+        <span class="tok-punct">});</span>
+
+        <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">updating</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">(</span><span class="tok-prop">Post</span> <span class="tok-attr">$post</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">isDirty</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">&amp;&amp;</span> <span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>status <span class="tok-punct">===</span> <span class="tok-prop">PostStatus</span><span class="tok-punct">::</span><span class="tok-prop">Published</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+                <span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>published_at <span class="tok-punct">??=</span> <span class="tok-func">now</span><span class="tok-punct">();</span>
+            <span class="tok-punct">}</span>
+        <span class="tok-punct">});</span>
+
+        <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">deleting</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">(</span><span class="tok-prop">Post</span> <span class="tok-attr">$post</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">comments</span><span class="tok-punct">()-&gt;</span><span class="tok-func">delete</span><span class="tok-punct">();</span>
+            <span class="tok-prop">Storage</span><span class="tok-punct">::</span><span class="tok-func">delete</span><span class="tok-punct">(</span><span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span>cover_path<span class="tok-punct">);</span>
+        <span class="tok-punct">});</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="table-wrap"><table class="data"><thead><tr><th>الحدث</th><th>متى</th></tr></thead><tbody><tr><td><code>retrieved</code></td><td>بعد الجلب من القاعدة</td></tr><tr><td><code>creating</code> / <code>created</code></td><td>قبل/بعد الإنشاء</td></tr><tr><td><code>updating</code> / <code>updated</code></td><td>قبل/بعد التحديث</td></tr><tr><td><code>saving</code> / <code>saved</code></td><td>قبل/بعد كليهما</td></tr><tr><td><code>deleting</code> / <code>deleted</code></td><td>قبل/بعد الحذف</td></tr><tr><td><code>restoring</code> / <code>restored</code></td><td>قبل/بعد الاسترجاع</td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># للمنطق الطويل استخدم مراقباً مستقلاً</span>
+php artisan make:observer PostObserver <span class="tok-attr">--model</span>=Post</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">#[ObservedBy(PostObserver::class)]      // Laravel 11+</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">Post</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span> <span class="tok-punct">{}</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">PostObserver</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">created</span><span class="tok-punct">(</span><span class="tok-prop">Post</span> <span class="tok-attr">$post</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-prop">SendNewPostNotification</span><span class="tok-punct">::</span><span class="tok-func">dispatch</span><span class="tok-punct">(</span><span class="tok-attr">$post</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">deleted</span><span class="tok-punct">(</span><span class="tok-prop">Post</span> <span class="tok-attr">$post</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-prop">Cache</span><span class="tok-punct">::</span><span class="tok-func">forget</span><span class="tok-punct">(</span><span class="tok-string">&quot;post.{$post-&gt;id}&quot;</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> لا تضع منطقاً ثقيلاً في الأحداث</div><p>إرسال بريد أو استدعاء واجهة خارجية داخل حدث <code>created</code> يبطئ الطلب ويجعل الفشل غامضاً. أرسل مهمّة للطابور بدلاً من ذلك، وضع منطق العمل المعقّد في <strong>كائن خدمة</strong> يُستدعى صراحةً.</p></div><h2 id="sec-12">الأداء</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// اطلب الأعمدة التي تحتاجها فقط</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">select</span><span class="tok-punct">(</span><span class="tok-string">&#39;id&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;slug&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;user_id&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span>
+
+<span class="tok-comment">// عالج الجداول الضخمة على دفعات</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">chunk</span><span class="tok-punct">(</span><span class="tok-number">500</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">(</span><span class="tok-attr">$posts</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">foreach</span> <span class="tok-punct">(</span><span class="tok-attr">$posts</span> <span class="tok-keyword">as</span> <span class="tok-attr">$post</span><span class="tok-punct">)</span> <span class="tok-punct">{</span> <span class="tok-comment">/* … */</span> <span class="tok-punct">}</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">chunkById</span><span class="tok-punct">(</span><span class="tok-number">500</span><span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$posts</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$posts</span><span class="tok-punct">-&gt;</span>each<span class="tok-punct">-&gt;</span><span class="tok-func">reindex</span><span class="tok-punct">());</span>   <span class="tok-comment">// أأمن مع التعديل</span>
+
+<span class="tok-comment">// كسول — واجهة Collection مع استهلاك ذاكرة ثابت</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">lazy</span><span class="tok-punct">()-&gt;</span><span class="tok-func">each</span><span class="tok-punct">(</span><span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$post</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$post</span><span class="tok-punct">-&gt;</span><span class="tok-func">process</span><span class="tok-punct">());</span>
+
+<span class="tok-comment">// عدّ بلا جلب</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;published&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">count</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;id&#39;</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">)-&gt;</span><span class="tok-func">exists</span><span class="tok-punct">();</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;id&#39;</span><span class="tok-punct">,</span> <span class="tok-number">5</span><span class="tok-punct">)-&gt;</span><span class="tok-func">doesntExist</span><span class="tok-punct">();</span>
+
+<span class="tok-comment">// استعلام خام عند الحاجة</span>
+<span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">selectRaw</span><span class="tok-punct">(</span><span class="tok-string">&#39;DATE(created_at) as day, COUNT(*) as total&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">groupBy</span><span class="tok-punct">(</span><span class="tok-string">&#39;day&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">orderByDesc</span><span class="tok-punct">(</span><span class="tok-string">&#39;day&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">-&gt;</span><span class="tok-func">get</span><span class="tok-punct">();</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> لا تستخدم `Post::all()` على جدول كبير</div><p>يحمّل كل الصفوف في الذاكرة دفعة واحدة. على مليون صفّ ينفد حدّ الذاكرة وينهار الطلب. استخدم <code>paginate</code> أو <code>chunk</code> أو <code>lazy</code>.</p></div><h2 id="sec-13">تمرين</h2><section class="exercise" id="sec-14"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>نموذج منتج غنيّ</h3></header><div class="exercise-body"><p>ابنِ نموذج <code>Product</code> كاملاً بكل ما تعلّمته: نطاقات وملحقات وتحويلات وأحداث.</p><p><strong>المطلوب:</strong></p><ul><li>تحويلات لكل الأعمدة: أسعار <code>decimal</code>، حالة <code>Enum</code>، بيانات وصفية <code>array</code>، تواريخ <code>datetime</code>.</li><li>Enum <code>ProductStatus</code> بدوال <code>label()</code> و <code>color()</code> و <code>isVisible()</code>.</li><li>نطاقات: <code>active</code>, <code>inStock</code>, <code>outOfStock</code>, <code>onSale</code>, <code>featured</code>, <code>search</code>, <code>priceBetween</code>, <code>inCategory</code>, <code>sortBy</code>.</li><li>ملحقات: <code>final_price</code> (يراعي الخصم)، <code>discount_percentage</code>، <code>is_on_sale</code>، <code>stock_status</code>، <code>primary_image_url</code>.</li><li>ملحق <code>name</code> يولّد <code>slug</code> تلقائياً عند التعيين.</li><li>أحداث: توليد SKU عند الإنشاء، وتفريغ الذاكرة المؤقّتة عند التحديث والحذف.</li><li>حذف ناعم مع دالة صنف <code>purgeOldTrashed()</code> تحذف نهائياً ما مضى عليه سنة.</li><li>دوال عمل: <code>decreaseStock($qty)</code> و <code>increaseStock($qty)</code> مع حماية من المخزون السالب.</li><li>دالة <code>isAvailableFor($quantity)</code> تجمع كل شروط التوفّر.</li><li>دالة نطاق <code>filter(array $filters)</code> تطبّق كل مرشّحات الواجهة دفعة واحدة.</li><li>اكتب مثال استخدام في نهاية الملف يوضّح كل ما سبق.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>Attribute::make(get: ..., set: ...)</code> هي الصياغة الحديثة للملحقات.</li><li>💡 <code>$this-&gt;isDirty(&#39;price&#39;)</code> تخبرك إن تغيّر عمود قبل الحفظ.</li><li>💡 <code>static::booted()</code> هو المكان الصحيح لتسجيل الأحداث.</li><li>💡 استخدم <code>match</code> في الـ Enum لا <code>switch</code> — أوضح وأكثر أماناً.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// app/Enums/ProductStatus.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">namespace</span> <span class="tok-prop">App</span>\<span class="tok-prop">Enums</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">enum</span> <span class="tok-prop">ProductStatus</span><span class="tok-punct">:</span> string
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">case</span> <span class="tok-prop">Draft</span>    <span class="tok-punct">=</span> <span class="tok-string">&#39;draft&#39;</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-prop">Active</span>   <span class="tok-punct">=</span> <span class="tok-string">&#39;active&#39;</span><span class="tok-punct">;</span>
+    <span class="tok-keyword">case</span> <span class="tok-prop">Archived</span> <span class="tok-punct">=</span> <span class="tok-string">&#39;archived&#39;</span><span class="tok-punct">;</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">label</span><span class="tok-punct">():</span> string
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-keyword">match</span> <span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            self<span class="tok-punct">::</span><span class="tok-prop">Draft</span>    <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;مسوّدة&#39;</span><span class="tok-punct">,</span>
+            self<span class="tok-punct">::</span><span class="tok-prop">Active</span>   <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;نشط&#39;</span><span class="tok-punct">,</span>
+            self<span class="tok-punct">::</span><span class="tok-prop">Archived</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;مؤرشف&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">};</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">color</span><span class="tok-punct">():</span> string
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-keyword">match</span> <span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            self<span class="tok-punct">::</span><span class="tok-prop">Draft</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;amber&#39;</span><span class="tok-punct">,</span> self<span class="tok-punct">::</span><span class="tok-prop">Active</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;green&#39;</span><span class="tok-punct">,</span> self<span class="tok-punct">::</span><span class="tok-prop">Archived</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;gray&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">};</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">isVisible</span><span class="tok-punct">():</span> bool
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-attr">$this</span> <span class="tok-punct">===</span> self<span class="tok-punct">::</span><span class="tok-prop">Active</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">static</span> <span class="tok-keyword">function</span> <span class="tok-func">options</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-func">array_map</span><span class="tok-punct">(</span>
+            <span class="tok-keyword">fn</span> <span class="tok-punct">(</span>self <span class="tok-attr">$case</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;value&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$case</span><span class="tok-punct">-&gt;</span>value<span class="tok-punct">,</span> <span class="tok-string">&#39;label&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$case</span><span class="tok-punct">-&gt;</span><span class="tok-func">label</span><span class="tok-punct">()],</span>
+            self<span class="tok-punct">::</span><span class="tok-func">cases</span><span class="tok-punct">()</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// app/Models/Product.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">namespace</span> <span class="tok-prop">App</span>\<span class="tok-prop">Models</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">use</span> <span class="tok-prop">App</span>\<span class="tok-prop">Enums</span>\<span class="tok-prop">ProductStatus</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Database</span>\<span class="tok-prop">Eloquent</span>\<span class="tok-prop">Builder</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Database</span>\<span class="tok-prop">Eloquent</span>\<span class="tok-prop">Casts</span>\<span class="tok-prop">Attribute</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Database</span>\<span class="tok-prop">Eloquent</span>\<span class="tok-prop">Factories</span>\<span class="tok-prop">HasFactory</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Database</span>\<span class="tok-prop">Eloquent</span>\<span class="tok-prop">Model</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Database</span>\<span class="tok-prop">Eloquent</span>\<span class="tok-prop">SoftDeletes</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Support</span>\<span class="tok-prop">Facades</span>\<span class="tok-prop">Cache</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Support</span>\<span class="tok-prop">Str</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">RuntimeException</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">Product</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Model</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">use</span> <span class="tok-prop">HasFactory</span><span class="tok-punct">,</span> <span class="tok-prop">SoftDeletes</span><span class="tok-punct">;</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$fillable</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+        <span class="tok-string">&#39;category_id&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;name&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;slug&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;sku&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;short_description&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;description&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;price&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;compare_at_price&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;stock&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;low_stock_threshold&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;is_featured&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;meta&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-punct">];</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-attr">$appends</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&#39;final_price&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;is_on_sale&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;discount_percentage&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;stock_status&#39;</span><span class="tok-punct">];</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">casts</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-punct">[</span>
+            <span class="tok-string">&#39;price&#39;</span>               <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;decimal:2&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;compare_at_price&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;decimal:2&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;stock&#39;</span>               <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;low_stock_threshold&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;views_count&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;sales_count&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;rating_avg&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;decimal:2&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;rating_count&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;is_featured&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;boolean&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;status&#39;</span>              <span class="tok-punct">=&gt;</span> <span class="tok-prop">ProductStatus</span><span class="tok-punct">::</span><span class="tok-keyword">class</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;meta&#39;</span>                <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;array&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;published_at&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;datetime&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">];</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/* ══════════════ العلاقات ══════════════ */</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">category</span><span class="tok-punct">()</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">belongsTo</span><span class="tok-punct">(</span><span class="tok-prop">Category</span><span class="tok-punct">::</span><span class="tok-keyword">class</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">images</span><span class="tok-punct">()</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">hasMany</span><span class="tok-punct">(</span><span class="tok-prop">ProductImage</span><span class="tok-punct">::</span><span class="tok-keyword">class</span><span class="tok-punct">)-&gt;</span><span class="tok-func">orderBy</span><span class="tok-punct">(</span><span class="tok-string">&#39;sort_order&#39;</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">reviews</span><span class="tok-punct">()</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">hasMany</span><span class="tok-punct">(</span><span class="tok-prop">Review</span><span class="tok-punct">::</span><span class="tok-keyword">class</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/* ══════════════ النطاقات ══════════════ */</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeActive</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">ProductStatus</span><span class="tok-punct">::</span><span class="tok-prop">Active</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeInStock</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;stock&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&gt;&#39;</span><span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeOutOfStock</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;stock&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&lt;=&#39;</span><span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeLowStock</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">whereColumn</span><span class="tok-punct">(</span><span class="tok-string">&#39;stock&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&lt;=&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;low_stock_threshold&#39;</span><span class="tok-punct">)</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;stock&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&gt;&#39;</span><span class="tok-punct">,</span> <span class="tok-number">0</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeOnSale</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">whereNotNull</span><span class="tok-punct">(</span><span class="tok-string">&#39;compare_at_price&#39;</span><span class="tok-punct">)</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">whereColumn</span><span class="tok-punct">(</span><span class="tok-string">&#39;compare_at_price&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&gt;&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;price&#39;</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeFeatured</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;is_featured&#39;</span><span class="tok-punct">,</span> <span class="tok-bool">true</span><span class="tok-punct">)-&gt;</span><span class="tok-func">active</span><span class="tok-punct">();</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeSearch</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">,</span> <span class="tok-punct">?</span>string <span class="tok-attr">$term</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$term</span><span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$q</span><span class="tok-punct">,</span> string <span class="tok-attr">$t</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span>
+            <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$inner</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span>
+                <span class="tok-attr">$inner</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;name&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;like&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;%{$t}%&quot;</span><span class="tok-punct">)</span>
+                      <span class="tok-punct">-&gt;</span><span class="tok-func">orWhere</span><span class="tok-punct">(</span><span class="tok-string">&#39;sku&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;like&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;%{$t}%&quot;</span><span class="tok-punct">)</span>
+                      <span class="tok-punct">-&gt;</span><span class="tok-func">orWhere</span><span class="tok-punct">(</span><span class="tok-string">&#39;short_description&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;like&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;%{$t}%&quot;</span><span class="tok-punct">)</span>
+            <span class="tok-punct">)</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopePriceBetween</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">,</span> <span class="tok-punct">?</span>float <span class="tok-attr">$min</span><span class="tok-punct">,</span> <span class="tok-punct">?</span>float <span class="tok-attr">$max</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$min</span><span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$q</span><span class="tok-punct">,</span> float <span class="tok-attr">$v</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;price&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&gt;=&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$v</span><span class="tok-punct">))</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$max</span><span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$q</span><span class="tok-punct">,</span> float <span class="tok-attr">$v</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;price&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&lt;=&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$v</span><span class="tok-punct">));</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeInCategory</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">,</span> <span class="tok-prop">Category</span><span class="tok-punct">|</span>int<span class="tok-punct">|</span><span class="tok-bool">null</span> <span class="tok-attr">$category</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">(</span><span class="tok-attr">$category</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$q</span><span class="tok-punct">,</span> <span class="tok-attr">$value</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$id</span> <span class="tok-punct">=</span> <span class="tok-attr">$value</span> <span class="tok-keyword">instanceof</span> <span class="tok-prop">Category</span> <span class="tok-punct">?</span> <span class="tok-attr">$value</span><span class="tok-punct">-&gt;</span>id <span class="tok-punct">:</span> <span class="tok-attr">$value</span><span class="tok-punct">;</span>
+            <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;category_id&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$id</span><span class="tok-punct">);</span>
+        <span class="tok-punct">});</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeSortBy</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">,</span> <span class="tok-punct">?</span>string <span class="tok-attr">$sort</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">match</span> <span class="tok-punct">(</span><span class="tok-attr">$sort</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-string">&#39;price_asc&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">orderBy</span><span class="tok-punct">(</span><span class="tok-string">&#39;price&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;price_desc&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">orderByDesc</span><span class="tok-punct">(</span><span class="tok-string">&#39;price&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;newest&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">latest</span><span class="tok-punct">(),</span>
+            <span class="tok-string">&#39;popular&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">orderByDesc</span><span class="tok-punct">(</span><span class="tok-string">&#39;sales_count&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;rating&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">orderByDesc</span><span class="tok-punct">(</span><span class="tok-string">&#39;rating_avg&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">orderByDesc</span><span class="tok-punct">(</span><span class="tok-string">&#39;rating_count&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-keyword">default</span>      <span class="tok-punct">=&gt;</span> <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">orderByDesc</span><span class="tok-punct">(</span><span class="tok-string">&#39;is_featured&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">latest</span><span class="tok-punct">(),</span>
+        <span class="tok-punct">};</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/** يطبّق كل مرشّحات الواجهة دفعة واحدة */</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">scopeFilter</span><span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$query</span><span class="tok-punct">,</span> <span class="tok-keyword">array</span> <span class="tok-attr">$filters</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$query</span><span class="tok-punct">-&gt;</span><span class="tok-func">search</span><span class="tok-punct">(</span><span class="tok-attr">$filters</span><span class="tok-punct">[</span><span class="tok-string">&#39;q&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">)</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">inCategory</span><span class="tok-punct">(</span><span class="tok-attr">$filters</span><span class="tok-punct">[</span><span class="tok-string">&#39;category&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">)</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">priceBetween</span><span class="tok-punct">(</span><span class="tok-attr">$filters</span><span class="tok-punct">[</span><span class="tok-string">&#39;min&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">,</span> <span class="tok-attr">$filters</span><span class="tok-punct">[</span><span class="tok-string">&#39;max&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">)</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">((</span><span class="tok-attr">$filters</span><span class="tok-punct">[</span><span class="tok-string">&#39;in_stock&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">false</span><span class="tok-punct">),</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$q</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">inStock</span><span class="tok-punct">())</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">when</span><span class="tok-punct">((</span><span class="tok-attr">$filters</span><span class="tok-punct">[</span><span class="tok-string">&#39;on_sale&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">false</span><span class="tok-punct">),</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-prop">Builder</span> <span class="tok-attr">$q</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$q</span><span class="tok-punct">-&gt;</span><span class="tok-func">onSale</span><span class="tok-punct">())</span>
+              <span class="tok-punct">-&gt;</span><span class="tok-func">sortBy</span><span class="tok-punct">(</span><span class="tok-attr">$filters</span><span class="tok-punct">[</span><span class="tok-string">&#39;sort&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/* ══════════════ الملحقات ══════════════ */</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">name</span><span class="tok-punct">():</span> <span class="tok-prop">Attribute</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-prop">Attribute</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span>
+            set<span class="tok-punct">:</span> <span class="tok-keyword">fn</span> <span class="tok-punct">(</span>string <span class="tok-attr">$value</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+                <span class="tok-string">&#39;name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">trim</span><span class="tok-punct">(</span><span class="tok-attr">$value</span><span class="tok-punct">),</span>
+                <span class="tok-string">&#39;slug&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">slug</span><span class="tok-punct">(</span><span class="tok-attr">$value</span><span class="tok-punct">)</span> <span class="tok-punct">.</span> <span class="tok-string">&#39;-&#39;</span> <span class="tok-punct">.</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">lower</span><span class="tok-punct">(</span><span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">random</span><span class="tok-punct">(</span><span class="tok-number">5</span><span class="tok-punct">)),</span>
+            <span class="tok-punct">],</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">finalPrice</span><span class="tok-punct">():</span> <span class="tok-prop">Attribute</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-prop">Attribute</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span>
+            get<span class="tok-punct">:</span> <span class="tok-keyword">fn</span> <span class="tok-punct">()</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">(</span>float<span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>price<span class="tok-punct">,</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">isOnSale</span><span class="tok-punct">():</span> <span class="tok-prop">Attribute</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-prop">Attribute</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span>
+            get<span class="tok-punct">:</span> <span class="tok-keyword">fn</span> <span class="tok-punct">()</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>compare_at_price <span class="tok-punct">!==</span> <span class="tok-bool">null</span>
+                       <span class="tok-punct">&amp;&amp;</span> <span class="tok-punct">(</span>float<span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>compare_at_price <span class="tok-punct">&gt;</span> <span class="tok-punct">(</span>float<span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>price<span class="tok-punct">,</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">discountPercentage</span><span class="tok-punct">():</span> <span class="tok-prop">Attribute</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-prop">Attribute</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span>
+            get<span class="tok-punct">:</span> <span class="tok-keyword">function</span> <span class="tok-punct">():</span> int <span class="tok-punct">{</span>
+                <span class="tok-keyword">if</span> <span class="tok-punct">(!</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>is_on_sale<span class="tok-punct">)</span> <span class="tok-punct">{</span>
+                    <span class="tok-keyword">return</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+                <span class="tok-punct">}</span>
+
+                <span class="tok-attr">$was</span> <span class="tok-punct">=</span> <span class="tok-punct">(</span>float<span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>compare_at_price<span class="tok-punct">;</span>
+                <span class="tok-attr">$now</span> <span class="tok-punct">=</span> <span class="tok-punct">(</span>float<span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>price<span class="tok-punct">;</span>
+
+                <span class="tok-keyword">return</span> <span class="tok-punct">(</span>int<span class="tok-punct">)</span> <span class="tok-func">round</span><span class="tok-punct">(((</span><span class="tok-attr">$was</span> <span class="tok-punct">-</span> <span class="tok-attr">$now</span><span class="tok-punct">)</span> <span class="tok-punct">/</span> <span class="tok-attr">$was</span><span class="tok-punct">)</span> <span class="tok-punct">*</span> <span class="tok-number">100</span><span class="tok-punct">);</span>
+            <span class="tok-punct">},</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">stockStatus</span><span class="tok-punct">():</span> <span class="tok-prop">Attribute</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-prop">Attribute</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span>
+            get<span class="tok-punct">:</span> <span class="tok-keyword">fn</span> <span class="tok-punct">():</span> string <span class="tok-punct">=&gt;</span> <span class="tok-keyword">match</span> <span class="tok-punct">(</span><span class="tok-bool">true</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+                <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>stock <span class="tok-punct">&lt;=</span> <span class="tok-number">0</span>                          <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;نفد المخزون&#39;</span><span class="tok-punct">,</span>
+                <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>stock <span class="tok-punct">&lt;=</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>low_stock_threshold <span class="tok-punct">=&gt;</span> <span class="tok-string">&quot;كمية محدودة ({$this-&gt;stock})&quot;</span><span class="tok-punct">,</span>
+                <span class="tok-keyword">default</span>                                    <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;متوفّر&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-punct">},</span>
+        <span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">primaryImageUrl</span><span class="tok-punct">():</span> <span class="tok-prop">Attribute</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-prop">Attribute</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span>
+            get<span class="tok-punct">:</span> <span class="tok-keyword">fn</span> <span class="tok-punct">()</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>images<span class="tok-punct">-&gt;</span><span class="tok-func">firstWhere</span><span class="tok-punct">(</span><span class="tok-string">&#39;is_primary&#39;</span><span class="tok-punct">,</span> <span class="tok-bool">true</span><span class="tok-punct">)?-&gt;</span>url
+                       <span class="tok-punct">??</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>images<span class="tok-punct">-&gt;</span><span class="tok-func">first</span><span class="tok-punct">()?-&gt;</span>url
+                       <span class="tok-punct">??</span> <span class="tok-func">asset</span><span class="tok-punct">(</span><span class="tok-string">&#39;images/placeholder.png&#39;</span><span class="tok-punct">),</span>
+        <span class="tok-punct">)-&gt;</span><span class="tok-func">shouldCache</span><span class="tok-punct">();</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/* ══════════════ منطق العمل ══════════════ */</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">isAvailableFor</span><span class="tok-punct">(</span>int <span class="tok-attr">$quantity</span> <span class="tok-punct">=</span> <span class="tok-number">1</span><span class="tok-punct">):</span> bool
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>status<span class="tok-punct">-&gt;</span><span class="tok-func">isVisible</span><span class="tok-punct">()</span>
+            <span class="tok-punct">&amp;&amp;</span> <span class="tok-punct">!</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">trashed</span><span class="tok-punct">()</span>
+            <span class="tok-punct">&amp;&amp;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>stock <span class="tok-punct">&gt;=</span> <span class="tok-attr">$quantity</span>
+            <span class="tok-punct">&amp;&amp;</span> <span class="tok-attr">$quantity</span> <span class="tok-punct">&gt;</span> <span class="tok-number">0</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">decreaseStock</span><span class="tok-punct">(</span>int <span class="tok-attr">$quantity</span><span class="tok-punct">):</span> <span class="tok-keyword">static</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$quantity</span> <span class="tok-punct">&lt;=</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-func">RuntimeException</span><span class="tok-punct">(</span><span class="tok-string">&#39;الكمية يجب أن تكون موجبة.&#39;</span><span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>stock <span class="tok-punct">&lt;</span> <span class="tok-attr">$quantity</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-func">RuntimeException</span><span class="tok-punct">(</span>
+                <span class="tok-string">&quot;المخزون لا يكفي: المطلوب {$quantity} والمتاح {$this-&gt;stock}.&quot;</span>
+            <span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+
+        <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">decrement</span><span class="tok-punct">(</span><span class="tok-string">&#39;stock&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$quantity</span><span class="tok-punct">);</span>
+        <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">increment</span><span class="tok-punct">(</span><span class="tok-string">&#39;sales_count&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$quantity</span><span class="tok-punct">);</span>
+
+        <span class="tok-keyword">return</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">refresh</span><span class="tok-punct">();</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">increaseStock</span><span class="tok-punct">(</span>int <span class="tok-attr">$quantity</span><span class="tok-punct">):</span> <span class="tok-keyword">static</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$quantity</span> <span class="tok-punct">&lt;=</span> <span class="tok-number">0</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-func">RuntimeException</span><span class="tok-punct">(</span><span class="tok-string">&#39;الكمية يجب أن تكون موجبة.&#39;</span><span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+
+        <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">increment</span><span class="tok-punct">(</span><span class="tok-string">&#39;stock&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$quantity</span><span class="tok-punct">);</span>
+
+        <span class="tok-keyword">return</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">refresh</span><span class="tok-punct">();</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">refreshRating</span><span class="tok-punct">():</span> <span class="tok-keyword">static</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$approved</span> <span class="tok-punct">=</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">reviews</span><span class="tok-punct">()-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;is_approved&#39;</span><span class="tok-punct">,</span> <span class="tok-bool">true</span><span class="tok-punct">);</span>
+
+        <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">forceFill</span><span class="tok-punct">([</span>
+            <span class="tok-string">&#39;rating_avg&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-func">round</span><span class="tok-punct">((</span>float<span class="tok-punct">)</span> <span class="tok-attr">$approved</span><span class="tok-punct">-&gt;</span><span class="tok-func">avg</span><span class="tok-punct">(</span><span class="tok-string">&#39;rating&#39;</span><span class="tok-punct">),</span> <span class="tok-number">2</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;rating_count&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$approved</span><span class="tok-punct">-&gt;</span><span class="tok-func">count</span><span class="tok-punct">(),</span>
+        <span class="tok-punct">])-&gt;</span><span class="tok-func">save</span><span class="tok-punct">();</span>
+
+        <span class="tok-keyword">return</span> <span class="tok-attr">$this</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">static</span> <span class="tok-keyword">function</span> <span class="tok-func">purgeOldTrashed</span><span class="tok-punct">(</span>int <span class="tok-attr">$days</span> <span class="tok-punct">=</span> <span class="tok-number">365</span><span class="tok-punct">):</span> int
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">onlyTrashed</span><span class="tok-punct">()</span>
+            <span class="tok-punct">-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;deleted_at&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&lt;&#39;</span><span class="tok-punct">,</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">subDays</span><span class="tok-punct">(</span><span class="tok-attr">$days</span><span class="tok-punct">))</span>
+            <span class="tok-punct">-&gt;</span><span class="tok-func">forceDelete</span><span class="tok-punct">();</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/* ══════════════ الأحداث ══════════════ */</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">static</span> <span class="tok-keyword">function</span> <span class="tok-func">booted</span><span class="tok-punct">():</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">creating</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">(</span>self <span class="tok-attr">$product</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span>sku <span class="tok-punct">??=</span> <span class="tok-string">&#39;SKU-&#39;</span> <span class="tok-punct">.</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">upper</span><span class="tok-punct">(</span><span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">random</span><span class="tok-punct">(</span><span class="tok-number">8</span><span class="tok-punct">));</span>
+            <span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span>status <span class="tok-punct">??=</span> <span class="tok-prop">ProductStatus</span><span class="tok-punct">::</span><span class="tok-prop">Draft</span><span class="tok-punct">;</span>
+        <span class="tok-punct">});</span>
+
+        <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">updating</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">(</span>self <span class="tok-attr">$product</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span><span class="tok-func">isDirty</span><span class="tok-punct">(</span><span class="tok-string">&#39;status&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">&amp;&amp;</span> <span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span>status <span class="tok-punct">===</span> <span class="tok-prop">ProductStatus</span><span class="tok-punct">::</span><span class="tok-prop">Active</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+                <span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span>published_at <span class="tok-punct">??=</span> <span class="tok-func">now</span><span class="tok-punct">();</span>
+            <span class="tok-punct">}</span>
+        <span class="tok-punct">});</span>
+
+        <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">saved</span><span class="tok-punct">(</span><span class="tok-keyword">fn</span> <span class="tok-punct">(</span>self <span class="tok-attr">$product</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span><span class="tok-func">flushCache</span><span class="tok-punct">());</span>
+        <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">deleted</span><span class="tok-punct">(</span><span class="tok-keyword">fn</span> <span class="tok-punct">(</span>self <span class="tok-attr">$product</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span><span class="tok-func">flushCache</span><span class="tok-punct">());</span>
+        <span class="tok-keyword">static</span><span class="tok-punct">::</span><span class="tok-func">restored</span><span class="tok-punct">(</span><span class="tok-keyword">fn</span> <span class="tok-punct">(</span>self <span class="tok-attr">$product</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span><span class="tok-func">flushCache</span><span class="tok-punct">());</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">flushCache</span><span class="tok-punct">():</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-prop">Cache</span><span class="tok-punct">::</span><span class="tok-func">forget</span><span class="tok-punct">(</span><span class="tok-string">&quot;product.{$this-&gt;id}&quot;</span><span class="tok-punct">);</span>
+        <span class="tok-prop">Cache</span><span class="tok-punct">::</span><span class="tok-func">forget</span><span class="tok-punct">(</span><span class="tok-string">&quot;product.slug.{$this-&gt;slug}&quot;</span><span class="tok-punct">);</span>
+        <span class="tok-prop">Cache</span><span class="tok-punct">::</span><span class="tok-func">tags</span><span class="tok-punct">([</span><span class="tok-string">&#39;products&#39;</span><span class="tok-punct">])-&gt;</span><span class="tok-func">flush</span><span class="tok-punct">();</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">getRouteKeyName</span><span class="tok-punct">():</span> string
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-string">&#39;slug&#39;</span><span class="tok-punct">;</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">/* ═══════════════════════════════════════════════
+ * أمثلة الاستخدام
+ * ═══════════════════════════════════════════════
+
+// صفحة القائمة — كل المرشّحات في سطر واحد
+$products = Product::query()
+    -&gt;active()
+    -&gt;with([&#39;category&#39;, &#39;images&#39;])
+    -&gt;filter($request-&gt;only([&#39;q&#39;, &#39;category&#39;, &#39;min&#39;, &#39;max&#39;, &#39;in_stock&#39;, &#39;on_sale&#39;, &#39;sort&#39;]))
+    -&gt;paginate(24)
+    -&gt;withQueryString();
+
+// الواجهة الرئيسية
+$featured = Product::featured()-&gt;inStock()-&gt;with(&#39;images&#39;)-&gt;limit(8)-&gt;get();
+$deals    = Product::active()-&gt;onSale()-&gt;orderByDesc(&#39;rating_avg&#39;)-&gt;limit(6)-&gt;get();
+
+// لوحة الإدارة
+$needsRestock = Product::lowStock()-&gt;with(&#39;category&#39;)-&gt;get();
+$outOfStock   = Product::outOfStock()-&gt;count();
+
+// الملحقات
+$product-&gt;final_price;           // 349.00
+$product-&gt;is_on_sale;            // true
+$product-&gt;discount_percentage;   // 30
+$product-&gt;stock_status;          // &quot;كمية محدودة (3)&quot;
+$product-&gt;status-&gt;label();       // &quot;نشط&quot;
+
+// منطق العمل
+if ($product-&gt;isAvailableFor(2)) {
+    $product-&gt;decreaseStock(2);
+}
+
+// الصيانة
+Product::purgeOldTrashed();
+*/</span></code></pre></div></details></div></section><h2 id="sec-15">اختبر نفسك</h2><section class="quiz"><h2 id="sec-16"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما ثغرة الإسناد الجماعي؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>بطء الاستعلام</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>تمرير <code>$request-&gt;all()</code> يسمح للمهاجم بإسناد حقول لم تقصدها مثل <code>user_id</code></span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>تكرار البيانات</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>خطأ في الفهارس</span></label></div><div class="q-explain"><strong>الشرح:</strong> الحماية: <code>$fillable</code> صحيح + <code>$request-&gt;validated()</code> بدل <code>all()</code>.</div></div><div class="q-item"><p class="q-text">2. لماذا لا تشغّل <code>Model::where(...)-&gt;update([...])</code> أحداث النموذج؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>خطأ في Laravel</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>لأنها تنفّذ استعلام SQL واحداً مباشرة بلا تحميل السجلّات ككائنات</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>للأداء فقط</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>تشغّلها فعلاً</span></label></div><div class="q-explain"><strong>الشرح:</strong> إن احتجت الأحداث، مرّ على السجلّات بـ <code>each</code> بدل التحديث الجماعي.</div></div><div class="q-item"><p class="q-text">3. ما ميزة الـ Enum على النصّ في عمود الحالة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أصغر حجماً</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>الخطأ الإملائي يفشل فوراً في المحرّر بدل أن يمرّ بصمت</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>إلزامي</span></label></div><div class="q-explain"><strong>الشرح:</strong> وتستطيع إضافة دوال مثل <code>label()</code> و <code>color()</code> داخل الـ Enum نفسه.</div></div><div class="q-item"><p class="q-text">4. متى تستخدم <code>cursorPaginate</code> بدل <code>paginate</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>دائماً</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>على الجداول الضخمة — <code>paginate</code> ينفّذ COUNT(*) على الجدول كله في كل صفحة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>مع البحث</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>أبداً</span></label></div><div class="q-explain"><strong>الشرح:</strong> العيب: لا يعرض عدد الصفحات ولا يسمح بالقفز لصفحة محدّدة.</div></div><div class="q-item"><p class="q-text">5. ما خطر النطاق العام (Global Scope)؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>بطيء</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>يجعل سلوك النموذج مفاجئاً — استعلام بسيط يُرشَّح دون أن يظهر ذلك في الشيفرة</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا يعمل</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>يستهلك ذاكرة</span></label></div><div class="q-explain"><strong>الشرح:</strong> استخدمه فقط حين يكون الترشيح حقيقة ثابتة عن النموذج، مثل عزل المستأجرين.</div></div><div class="q-item"><p class="q-text">6. لماذا نتجنّب المنطق الثقيل في أحداث النموذج؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>ممنوع</span></label><label class="q-option"><input type="radio" name="q1_5" value="correct"><span>يبطئ الطلب ويجعل الفشل غامضاً — أرسل مهمّة للطابور بدلاً منه</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>لا يعمل</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>يكسر الأحداث</span></label></div><div class="q-explain"><strong>الشرح:</strong> ضع منطق العمل المعقّد في كائن خدمة يُستدعى صراحةً بدل حدث ضمني.</div></div><div class="q-item"><p class="q-text">7. ما فائدة <code>-&gt;when($condition, $callback)</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>التخزين المؤقّت</span></label><label class="q-option"><input type="radio" name="q1_6" value="correct"><span>تطبّق جزءاً من الاستعلام شرطياً مع إبقاء السلسلة متّصلة ومقروءة</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>التحقّق</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>الترتيب</span></label></div><div class="q-explain"><strong>الشرح:</strong> والقيمة تُمرَّر للدالة كمعامل ثانٍ تلقائياً، ويمكن تمرير دالة ثانية للحالة المعاكسة.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="laravel/05-eloquent" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="04-database-migrations.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>قواعد البيانات والهجرات</b></span></a>
+  <a class="next" href="06-relationships.html"><span><small>الدرس التالي</small><b>العلاقات في Eloquent</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Laravel</h3>
+        <div class="ring-wrap" data-ring data-track="laravel" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">النموذج واتفاقاته</a></li><li><a href="#sec-2">الاستعلامات</a></li><li class="sub"><a href="#sec-3">الترتيب والحدّ والتجميع</a></li><li><a href="#sec-4">الإنشاء والتحديث</a></li><li><a href="#sec-5">الإسناد الجماعي والحماية</a></li><li><a href="#sec-6">التحويلات (Casts)</a></li><li class="sub"><a href="#sec-7">Enums</a></li><li><a href="#sec-8">النطاقات (Scopes)</a></li><li><a href="#sec-9">الملحقات (Accessors &amp; Mutators)</a></li><li><a href="#sec-10">الحذف الناعم</a></li><li><a href="#sec-11">أحداث النموذج</a></li><li><a href="#sec-12">الأداء</a></li><li><a href="#sec-13">تمرين</a></li><li><a href="#sec-14">نموذج منتج غنيّ</a></li><li><a href="#sec-15">اختبر نفسك</a></li><li><a href="#sec-16">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>Model::find($id)</code><small>بالمفتاح</small></div><div class="ref-item"><code>::where(...)-&gt;get()</code><small>استعلام</small></div><div class="ref-item"><code>$fillable</code><small>حقول مسموحة</small></div><div class="ref-item"><code>$casts / casts()</code><small>تحويل الأنواع</small></div><div class="ref-item"><code>scopeX()</code><small>نطاق</small></div><div class="ref-item"><code>Attribute::make()</code><small>ملحق</small></div><div class="ref-item"><code>SoftDeletes</code><small>حذف ناعم</small></div><div class="ref-item"><code>-&gt;when($c, $fn)</code><small>شرط في الاستعلام</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="06-relationships.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>العلاقات في Eloquent<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

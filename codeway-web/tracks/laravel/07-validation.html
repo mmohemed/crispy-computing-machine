@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="laravel">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>النماذج والتحقّق — مسار Laravel | CodeWay Web</title>
+<meta name="description" content="قواعد التحقّق كلها، أصناف الطلب المخصّصة، الرسائل العربية، رفع الملفات، والقواعد المخصّصة.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="النماذج والتحقّق — مسار Laravel | CodeWay Web">
+<meta property="og:description" content="قواعد التحقّق كلها، أصناف الطلب المخصّصة، الرسائل العربية، رفع الملفات، والقواعد المخصّصة.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Laravel</a></li>
+      <li aria-current="page">النماذج والتحقّق</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 7 من 10</span>
+      <span class="badge level-متوسط">متوسط</span>
+      <span class="badge">Validation</span><span class="badge">Form Requests</span><span class="badge">Uploads</span>
+    </div>
+    <h1>النماذج والتحقّق</h1>
+    <p class="summary">قواعد التحقّق كلها، أصناف الطلب المخصّصة، الرسائل العربية، رفع الملفات، والقواعد المخصّصة.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 55 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Laravel</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 7 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تتحقّق من المدخلات بثلاث طرق وتعرف متى تستخدم كلاً منها.</li><li>تكتب صنف طلب مخصّص يجمع التحقّق والصلاحية.</li><li>تعرف أهمّ القواعد وتستخدمها في مواضعها الصحيحة.</li><li>تخصّص رسائل الخطأ بالعربية وتسمّي الحقول.</li><li>ترفع الملفات وتتحقّق منها بأمان.</li><li>تكتب قواعد تحقّق مخصّصة لمنطق عملك.</li></ul></div>
+      <h2 id="sec-1">ثلاث طرق للتحقّق</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// 1) في المتحكّم مباشرة — للحالات البسيطة</span>
+<span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">store</span><span class="tok-punct">(</span><span class="tok-prop">Request</span> <span class="tok-attr">$request</span><span class="tok-punct">)</span>
+<span class="tok-punct">{</span>
+    <span class="tok-attr">$validated</span> <span class="tok-punct">=</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">validate</span><span class="tok-punct">([</span>
+        <span class="tok-string">&#39;title&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:160&#39;</span><span class="tok-punct">],</span>
+        <span class="tok-string">&#39;body&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:20&#39;</span><span class="tok-punct">],</span>
+    <span class="tok-punct">]);</span>
+
+    <span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">create</span><span class="tok-punct">(</span><span class="tok-attr">$validated</span><span class="tok-punct">);</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// 2) صنف طلب مخصّص — الأفضل للنماذج الحقيقية</span>
+<span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">store</span><span class="tok-punct">(</span><span class="tok-prop">StorePostRequest</span> <span class="tok-attr">$request</span><span class="tok-punct">)</span>
+<span class="tok-punct">{</span>
+    <span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">create</span><span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">validated</span><span class="tok-punct">());</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// 3) Validator يدوياً — حين تحتاج تحكّماً كاملاً</span>
+<span class="tok-attr">$validator</span> <span class="tok-punct">=</span> <span class="tok-prop">Validator</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span><span class="tok-attr">$data</span><span class="tok-punct">,</span> <span class="tok-attr">$rules</span><span class="tok-punct">,</span> <span class="tok-attr">$messages</span><span class="tok-punct">);</span>
+
+<span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$validator</span><span class="tok-punct">-&gt;</span><span class="tok-func">fails</span><span class="tok-punct">())</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-func">back</span><span class="tok-punct">()-&gt;</span><span class="tok-func">withErrors</span><span class="tok-punct">(</span><span class="tok-attr">$validator</span><span class="tok-punct">)-&gt;</span><span class="tok-func">withInput</span><span class="tok-punct">();</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-attr">$validated</span> <span class="tok-punct">=</span> <span class="tok-attr">$validator</span><span class="tok-punct">-&gt;</span><span class="tok-func">validated</span><span class="tok-punct">();</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p>عند فشل التحقّق في <code>validate()</code> أو صنف الطلب، يعيد Laravel التوجيه تلقائياً مع الأخطاء والمدخلات القديمة — أو يُرجع JSON بحالة 422 إن كان الطلب يتوقّع JSON.</p></div><h2 id="sec-2">صنف الطلب المخصّص</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>php artisan make:request StorePostRequest</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">namespace</span> <span class="tok-prop">App</span>\<span class="tok-prop">Http</span>\<span class="tok-prop">Requests</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Foundation</span>\<span class="tok-prop">Http</span>\<span class="tok-prop">FormRequest</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Validation</span>\<span class="tok-prop">Rule</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Support</span>\<span class="tok-prop">Str</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">StorePostRequest</span> <span class="tok-keyword">extends</span> <span class="tok-prop">FormRequest</span>
+<span class="tok-punct">{</span>
+    <span class="tok-comment">/** الصلاحية — تُفحص قبل التحقّق */</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">authorize</span><span class="tok-punct">():</span> bool
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">user</span><span class="tok-punct">()-&gt;</span><span class="tok-func">can</span><span class="tok-punct">(</span><span class="tok-string">&#39;create&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-keyword">class</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/** تنظيف المدخلات قبل التحقّق */</span>
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">prepareForValidation</span><span class="tok-punct">():</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">merge</span><span class="tok-punct">([</span>
+            <span class="tok-string">&#39;slug&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">slug</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>title <span class="tok-punct">??</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;title&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">trim</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>title <span class="tok-punct">??</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;tags&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-func">array_filter</span><span class="tok-punct">((</span><span class="tok-keyword">array</span><span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>tags<span class="tok-punct">),</span>
+        <span class="tok-punct">]);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">rules</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$postId</span> <span class="tok-punct">=</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;post&#39;</span><span class="tok-punct">)?-&gt;</span>id<span class="tok-punct">;</span>
+
+        <span class="tok-keyword">return</span> <span class="tok-punct">[</span>
+            <span class="tok-string">&#39;title&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:5&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:160&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;slug&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">unique</span><span class="tok-punct">(</span><span class="tok-string">&#39;posts&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">ignore</span><span class="tok-punct">(</span><span class="tok-attr">$postId</span><span class="tok-punct">)],</span>
+            <span class="tok-string">&#39;body&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:50&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;excerpt&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:300&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;category_id&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">exists</span><span class="tok-punct">(</span><span class="tok-string">&#39;categories&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;id&#39;</span><span class="tok-punct">)],</span>
+            <span class="tok-string">&#39;status&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-keyword">enum</span><span class="tok-punct">(</span><span class="tok-prop">PostStatus</span><span class="tok-punct">::</span><span class="tok-keyword">class</span><span class="tok-punct">)],</span>
+            <span class="tok-string">&#39;published_at&#39;</span><span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;date&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;after_or_equal:today&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;cover&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;image&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;mimes:jpg,jpeg,png,webp&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:2048&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;dimensions:min_width=800&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;tags&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;array&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:5&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;tags.*&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">exists</span><span class="tok-punct">(</span><span class="tok-string">&#39;tags&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;id&#39;</span><span class="tok-punct">)],</span>
+        <span class="tok-punct">];</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/** رسائل مخصّصة */</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">messages</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-punct">[</span>
+            <span class="tok-string">&#39;title.required&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;العنوان مطلوب.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;title.min&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;العنوان قصير جداً — خمسة أحرف على الأقل.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;body.min&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;المحتوى يجب أن يكون خمسين حرفاً على الأقل.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;cover.max&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;حجم الصورة يتجاوز ٢ ميغابايت.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;tags.max&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;لا يمكن اختيار أكثر من خمسة وسوم.&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">];</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/** أسماء الحقول في الرسائل الافتراضية */</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">attributes</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-punct">[</span>
+            <span class="tok-string">&#39;title&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;العنوان&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;body&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;المحتوى&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;category_id&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;التصنيف&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;cover&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;صورة الغلاف&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">];</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/** تحقّق إضافي بعد نجاح القواعد */</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">withValidator</span><span class="tok-punct">(</span><span class="tok-attr">$validator</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$validator</span><span class="tok-punct">-&gt;</span><span class="tok-func">after</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">(</span><span class="tok-attr">$validator</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>status <span class="tok-punct">===</span> <span class="tok-string">&#39;published&#39;</span> <span class="tok-punct">&amp;&amp;</span> <span class="tok-func">blank</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>excerpt<span class="tok-punct">))</span> <span class="tok-punct">{</span>
+                <span class="tok-attr">$validator</span><span class="tok-punct">-&gt;</span><span class="tok-func">errors</span><span class="tok-punct">()-&gt;</span><span class="tok-func">add</span><span class="tok-punct">(</span><span class="tok-string">&#39;excerpt&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;المقتطف مطلوب عند النشر.&#39;</span><span class="tok-punct">);</span>
+            <span class="tok-punct">}</span>
+        <span class="tok-punct">});</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>صنف الطلب يجمع <strong>الصلاحية والتنظيف والتحقّق والرسائل</strong> في مكان واحد قابل للاختبار وإعادة الاستخدام في <code>store</code> و <code>update</code>. هذا هو الأسلوب المتّبع في أي مشروع Laravel جادّ.</p></div><h2 id="sec-3">أهمّ القواعد</h2><div class="table-wrap"><table class="data"><thead><tr><th>الفئة</th><th>القواعد</th></tr></thead><tbody><tr><td><strong>الوجود</strong></td><td><code>required</code>, <code>nullable</code>, <code>filled</code>, <code>present</code>, <code>sometimes</code></td></tr><tr><td><strong>الشرطية</strong></td><td><code>required_if</code>, <code>required_unless</code>, <code>required_with</code>, <code>required_without</code>, <code>prohibited_if</code></td></tr><tr><td><strong>النوع</strong></td><td><code>string</code>, <code>integer</code>, <code>numeric</code>, <code>boolean</code>, <code>array</code>, <code>date</code>, <code>file</code>, <code>image</code></td></tr><tr><td><strong>الحجم</strong></td><td><code>min</code>, <code>max</code>, <code>size</code>, <code>between</code>, <code>digits</code>, <code>digits_between</code></td></tr><tr><td><strong>الصيغة</strong></td><td><code>email</code>, <code>url</code>, <code>active_url</code>, <code>ip</code>, <code>uuid</code>, <code>ulid</code>, <code>json</code>, <code>regex</code>, <code>alpha</code>, <code>alpha_dash</code>, <code>alpha_num</code></td></tr><tr><td><strong>القاعدة</strong></td><td><code>unique</code>, <code>exists</code></td></tr><tr><td><strong>المقارنة</strong></td><td><code>same</code>, <code>different</code>, <code>confirmed</code>, <code>gt</code>, <code>gte</code>, <code>lt</code>, <code>lte</code>, <code>in</code>, <code>not_in</code></td></tr><tr><td><strong>التاريخ</strong></td><td><code>after</code>, <code>before</code>, <code>after_or_equal</code>, <code>date_format</code>, <code>timezone</code></td></tr><tr><td><strong>الملفات</strong></td><td><code>mimes</code>, <code>mimetypes</code>, <code>dimensions</code>, <code>max</code> (بالكيلوبايت)</td></tr><tr><td><strong>التحكّم</strong></td><td><code>bail</code>, <code>exclude</code>, <code>exclude_if</code>, <code>nullable</code></td></tr></tbody></table></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-punct">[</span>
+    <span class="tok-comment">// الوجود الشرطي</span>
+    <span class="tok-string">&#39;discount_code&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required_if:has_discount,true&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">],</span>
+    <span class="tok-string">&#39;shipping&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required_unless:pickup,true&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;array&#39;</span><span class="tok-punct">],</span>
+    <span class="tok-string">&#39;company_name&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required_with:tax_number&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">],</span>
+
+    <span class="tok-comment">// المقارنة</span>
+    <span class="tok-string">&#39;password&#39;</span>              <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;confirmed&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Password</span><span class="tok-punct">::</span><span class="tok-func">defaults</span><span class="tok-punct">()],</span>
+    <span class="tok-string">&#39;password_confirmation&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[],</span>                    <span class="tok-comment">// موجود تلقائياً مع confirmed</span>
+    <span class="tok-string">&#39;end_date&#39;</span>              <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;date&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;after:start_date&#39;</span><span class="tok-punct">],</span>
+    <span class="tok-string">&#39;max_price&#39;</span>             <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;numeric&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;gte:min_price&#39;</span><span class="tok-punct">],</span>
+
+    <span class="tok-comment">// فريد مع استثناء (مهمّ في التعديل)</span>
+    <span class="tok-string">&#39;email&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;email&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">unique</span><span class="tok-punct">(</span><span class="tok-string">&#39;users&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">ignore</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">user</span><span class="tok-punct">()-&gt;</span>id<span class="tok-punct">)],</span>
+    <span class="tok-string">&#39;slug&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">unique</span><span class="tok-punct">(</span><span class="tok-string">&#39;posts&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;site_id&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$siteId</span><span class="tok-punct">)],</span>
+
+    <span class="tok-comment">// موجود مع شرط</span>
+    <span class="tok-string">&#39;category_id&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">exists</span><span class="tok-punct">(</span><span class="tok-string">&#39;categories&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;id&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">where</span><span class="tok-punct">(</span><span class="tok-string">&#39;is_active&#39;</span><span class="tok-punct">,</span> <span class="tok-bool">true</span><span class="tok-punct">)],</span>
+
+    <span class="tok-comment">// قيم محدودة</span>
+    <span class="tok-string">&#39;role&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">in</span><span class="tok-punct">([</span><span class="tok-string">&#39;user&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;editor&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;admin&#39;</span><span class="tok-punct">])],</span>
+    <span class="tok-string">&#39;status&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-keyword">enum</span><span class="tok-punct">(</span><span class="tok-prop">OrderStatus</span><span class="tok-punct">::</span><span class="tok-keyword">class</span><span class="tok-punct">)],</span>
+
+    <span class="tok-comment">// مصفوفات</span>
+    <span class="tok-string">&#39;items&#39;</span>            <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;array&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:1&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:20&#39;</span><span class="tok-punct">],</span>
+    <span class="tok-string">&#39;items.*.id&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;exists:products,id&#39;</span><span class="tok-punct">],</span>
+    <span class="tok-string">&#39;items.*.quantity&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:1&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:99&#39;</span><span class="tok-punct">],</span>
+
+    <span class="tok-comment">// كائنات</span>
+    <span class="tok-string">&#39;address&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;array:city,street,postal_code&#39;</span><span class="tok-punct">],</span>
+    <span class="tok-string">&#39;address.city&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:60&#39;</span><span class="tok-punct">],</span>
+
+    <span class="tok-comment">// تعبير نمطي</span>
+    <span class="tok-string">&#39;phone&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;regex:/^05[0-9]{8}$/&#39;</span><span class="tok-punct">],</span>
+
+    <span class="tok-comment">// bail: توقّف عند أول خطأ في هذا الحقل</span>
+    <span class="tok-string">&#39;email&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;bail&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;email&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;unique:users&#39;</span><span class="tok-punct">],</span>
+<span class="tok-punct">]</span></code></pre></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> انتبه لترتيب `nullable`</div><p>ضع <code>nullable</code> <strong>أولاً</strong> دائماً. <code>[&#39;date&#39;, &#39;nullable&#39;]</code> قد يفشل على <code>null</code> لأن قاعدة <code>date</code> تُفحص قبل معرفة أن الحقل اختياري.</p></div><h2 id="sec-4">كلمات المرور</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Validation</span>\<span class="tok-prop">Rules</span>\<span class="tok-prop">Password</span><span class="tok-punct">;</span>
+
+<span class="tok-string">&#39;password&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+    <span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&#39;confirmed&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-prop">Password</span><span class="tok-punct">::</span><span class="tok-func">min</span><span class="tok-punct">(</span><span class="tok-number">10</span><span class="tok-punct">)</span>
+        <span class="tok-punct">-&gt;</span><span class="tok-func">letters</span><span class="tok-punct">()</span>
+        <span class="tok-punct">-&gt;</span><span class="tok-func">mixedCase</span><span class="tok-punct">()</span>
+        <span class="tok-punct">-&gt;</span><span class="tok-func">numbers</span><span class="tok-punct">()</span>
+        <span class="tok-punct">-&gt;</span><span class="tok-func">symbols</span><span class="tok-punct">()</span>
+        <span class="tok-punct">-&gt;</span><span class="tok-func">uncompromised</span><span class="tok-punct">(),</span>        <span class="tok-comment">// يفحص قواعد كلمات المرور المسرّبة</span>
+<span class="tok-punct">],</span>
+
+<span class="tok-comment">// أو عرّف الافتراضي مرة واحدة في AppServiceProvider</span>
+<span class="tok-prop">Password</span><span class="tok-punct">::</span><span class="tok-func">defaults</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-func">app</span><span class="tok-punct">()-&gt;</span><span class="tok-func">isProduction</span><span class="tok-punct">()</span>
+        <span class="tok-punct">?</span> <span class="tok-prop">Password</span><span class="tok-punct">::</span><span class="tok-func">min</span><span class="tok-punct">(</span><span class="tok-number">10</span><span class="tok-punct">)-&gt;</span><span class="tok-func">mixedCase</span><span class="tok-punct">()-&gt;</span><span class="tok-func">numbers</span><span class="tok-punct">()-&gt;</span><span class="tok-func">uncompromised</span><span class="tok-punct">()</span>
+        <span class="tok-punct">:</span> <span class="tok-prop">Password</span><span class="tok-punct">::</span><span class="tok-func">min</span><span class="tok-punct">(</span><span class="tok-number">6</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-comment">// ثم في كل مكان</span>
+<span class="tok-string">&#39;password&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;confirmed&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Password</span><span class="tok-punct">::</span><span class="tok-func">defaults</span><span class="tok-punct">()],</span></code></pre></div><div class="callout callout-note"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> معلومة</div><p><code>uncompromised()</code> يستعلم قاعدة بيانات Have I Been Pwned بطريقة آمنة (لا تُرسَل كلمة المرور، بل أول خمسة أحرف من تجزئتها) ليرفض كلمات المرور التي ظهرت في تسريبات معروفة.</p></div><h2 id="sec-5">رفع الملفات</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// القواعد</span>
+<span class="tok-punct">[</span>
+    <span class="tok-string">&#39;avatar&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+        <span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;image&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;mimes:jpg,jpeg,png,webp&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;max:2048&#39;</span><span class="tok-punct">,</span>                                  <span class="tok-comment">// بالكيلوبايت = 2 ميغابايت</span>
+        <span class="tok-string">&#39;dimensions:min_width=200,min_height=200,ratio=1/1&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-punct">],</span>
+    <span class="tok-string">&#39;document&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;file&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;mimes:pdf,docx&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:10240&#39;</span><span class="tok-punct">],</span>
+    <span class="tok-string">&#39;gallery&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;array&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:8&#39;</span><span class="tok-punct">],</span>
+    <span class="tok-string">&#39;gallery.*&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;image&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:2048&#39;</span><span class="tok-punct">],</span>
+<span class="tok-punct">]</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">store</span><span class="tok-punct">(</span><span class="tok-prop">StoreProductRequest</span> <span class="tok-attr">$request</span><span class="tok-punct">)</span>
+<span class="tok-punct">{</span>
+    <span class="tok-attr">$data</span> <span class="tok-punct">=</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">validated</span><span class="tok-punct">();</span>
+
+    <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">hasFile</span><span class="tok-punct">(</span><span class="tok-string">&#39;image&#39;</span><span class="tok-punct">))</span> <span class="tok-punct">{</span>
+        <span class="tok-comment">// التخزين — يولّد اسماً فريداً تلقائياً</span>
+        <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;image_path&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">file</span><span class="tok-punct">(</span><span class="tok-string">&#39;image&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">store</span><span class="tok-punct">(</span><span class="tok-string">&#39;products&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;public&#39;</span><span class="tok-punct">);</span>
+
+        <span class="tok-comment">// أو باسم مخصّص</span>
+        <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;image_path&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">=</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">file</span><span class="tok-punct">(</span><span class="tok-string">&#39;image&#39;</span><span class="tok-punct">)</span>
+            <span class="tok-punct">-&gt;</span><span class="tok-func">storeAs</span><span class="tok-punct">(</span><span class="tok-string">&#39;products&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">uuid</span><span class="tok-punct">()</span> <span class="tok-punct">.</span> <span class="tok-string">&#39;.&#39;</span> <span class="tok-punct">.</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">file</span><span class="tok-punct">(</span><span class="tok-string">&#39;image&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">extension</span><span class="tok-punct">(),</span> <span class="tok-string">&#39;public&#39;</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-attr">$product</span> <span class="tok-punct">=</span> <span class="tok-prop">Product</span><span class="tok-punct">::</span><span class="tok-func">create</span><span class="tok-punct">(</span><span class="tok-attr">$data</span><span class="tok-punct">);</span>
+
+    <span class="tok-comment">// ملفات متعدّدة</span>
+    <span class="tok-keyword">foreach</span> <span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">file</span><span class="tok-punct">(</span><span class="tok-string">&#39;gallery&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[])</span> <span class="tok-keyword">as</span> <span class="tok-attr">$index</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$file</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+        <span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span><span class="tok-func">images</span><span class="tok-punct">()-&gt;</span><span class="tok-func">create</span><span class="tok-punct">([</span>
+            <span class="tok-string">&#39;path&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-attr">$file</span><span class="tok-punct">-&gt;</span><span class="tok-func">store</span><span class="tok-punct">(</span><span class="tok-string">&#39;products/gallery&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;public&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;sort_order&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$index</span><span class="tok-punct">,</span>
+        <span class="tok-punct">]);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">return</span> <span class="tok-func">to_route</span><span class="tok-punct">(</span><span class="tok-string">&#39;products.show&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$product</span><span class="tok-punct">);</span>
+<span class="tok-punct">}</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> لا تثق بامتداد الملف ولا بنوع MIME المُرسَل</div><p>قاعدة <code>mimes</code> تفحص المحتوى الفعلي لا الاسم، وهذا هو الصحيح. لكن <strong>لا تخزّن الملفات المرفوعة في <code>public/</code> مباشرة</strong>: استخدم قرص <code>public</code> عبر <code>storage/</code> مع رابط رمزي (<code>php artisan storage:link</code>)، ولا تسمح أبداً برفع <code>.php</code> أو <code>.phtml</code> أو <code>.htaccess</code>.</p></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// عرض الصورة</span>
+<span class="tok-func">asset</span><span class="tok-punct">(</span><span class="tok-string">&#39;storage/&#39;</span> <span class="tok-punct">.</span> <span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span>image_path<span class="tok-punct">);</span>
+<span class="tok-prop">Storage</span><span class="tok-punct">::</span><span class="tok-func">disk</span><span class="tok-punct">(</span><span class="tok-string">&#39;public&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">url</span><span class="tok-punct">(</span><span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span>image_path<span class="tok-punct">);</span>
+
+<span class="tok-comment">// الحذف</span>
+<span class="tok-prop">Storage</span><span class="tok-punct">::</span><span class="tok-func">disk</span><span class="tok-punct">(</span><span class="tok-string">&#39;public&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">delete</span><span class="tok-punct">(</span><span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span>image_path<span class="tok-punct">);</span>
+
+<span class="tok-comment">// التحقّق من الوجود والحجم</span>
+<span class="tok-prop">Storage</span><span class="tok-punct">::</span><span class="tok-func">disk</span><span class="tok-punct">(</span><span class="tok-string">&#39;public&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">exists</span><span class="tok-punct">(</span><span class="tok-attr">$path</span><span class="tok-punct">);</span>
+<span class="tok-prop">Storage</span><span class="tok-punct">::</span><span class="tok-func">disk</span><span class="tok-punct">(</span><span class="tok-string">&#39;public&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">size</span><span class="tok-punct">(</span><span class="tok-attr">$path</span><span class="tok-punct">);</span></code></pre></div><h2 id="sec-6">القواعد المخصّصة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>php artisan make:rule ValidSaudiPhone</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-keyword">namespace</span> <span class="tok-prop">App</span>\<span class="tok-prop">Rules</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">use</span> <span class="tok-prop">Closure</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Contracts</span>\<span class="tok-prop">Validation</span>\<span class="tok-prop">ValidationRule</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">ValidSaudiPhone</span> <span class="tok-keyword">implements</span> <span class="tok-prop">ValidationRule</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">validate</span><span class="tok-punct">(</span>string <span class="tok-attr">$attribute</span><span class="tok-punct">,</span> mixed <span class="tok-attr">$value</span><span class="tok-punct">,</span> <span class="tok-prop">Closure</span> <span class="tok-attr">$fail</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$normalized</span> <span class="tok-punct">=</span> <span class="tok-func">preg_replace</span><span class="tok-punct">(</span><span class="tok-string">&#39;/\D/&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>string<span class="tok-punct">)</span> <span class="tok-attr">$value</span><span class="tok-punct">);</span>
+
+        <span class="tok-attr">$valid</span> <span class="tok-punct">=</span> <span class="tok-func">preg_match</span><span class="tok-punct">(</span><span class="tok-string">&#39;/^(966|0)?5[0-9]{8}$/&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$normalized</span><span class="tok-punct">);</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(!</span> <span class="tok-attr">$valid</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&#39;حقل :attribute يجب أن يكون رقم جوّال سعودي صحيح.&#39;</span><span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// الاستخدام</span>
+<span class="tok-string">&#39;phone&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">new</span> <span class="tok-func">ValidSaudiPhone</span><span class="tok-punct">()],</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// قاعدة تحتاج اعتماديات</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">HasEnoughStock</span> <span class="tok-keyword">implements</span> <span class="tok-prop">ValidationRule</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">__construct</span><span class="tok-punct">(</span><span class="tok-keyword">private</span> <span class="tok-keyword">readonly</span> int <span class="tok-attr">$productId</span><span class="tok-punct">)</span>
+    <span class="tok-punct">{</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">validate</span><span class="tok-punct">(</span>string <span class="tok-attr">$attribute</span><span class="tok-punct">,</span> mixed <span class="tok-attr">$value</span><span class="tok-punct">,</span> <span class="tok-prop">Closure</span> <span class="tok-attr">$fail</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$product</span> <span class="tok-punct">=</span> <span class="tok-prop">Product</span><span class="tok-punct">::</span><span class="tok-func">find</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>productId<span class="tok-punct">);</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(!</span> <span class="tok-attr">$product</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&#39;المنتج غير موجود.&#39;</span><span class="tok-punct">);</span>
+            <span class="tok-keyword">return</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$product</span><span class="tok-punct">-&gt;</span>stock <span class="tok-punct">&lt;</span> <span class="tok-punct">(</span>int<span class="tok-punct">)</span> <span class="tok-attr">$value</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&quot;الكمية المطلوبة غير متوفّرة — المتاح {$product-&gt;stock} فقط.&quot;</span><span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// قاعدة مضمّنة سريعة</span>
+<span class="tok-string">&#39;title&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+    <span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-keyword">function</span> <span class="tok-punct">(</span>string <span class="tok-attr">$attribute</span><span class="tok-punct">,</span> mixed <span class="tok-attr">$value</span><span class="tok-punct">,</span> <span class="tok-prop">Closure</span> <span class="tok-attr">$fail</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-func">str_contains</span><span class="tok-punct">(</span><span class="tok-func">strtolower</span><span class="tok-punct">(</span><span class="tok-attr">$value</span><span class="tok-punct">),</span> <span class="tok-string">&#39;spam&#39;</span><span class="tok-punct">))</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&#39;العنوان يحتوي كلمات ممنوعة.&#39;</span><span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+    <span class="tok-punct">},</span>
+<span class="tok-punct">],</span></code></pre></div><h2 id="sec-7">الترجمة والرسائل</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// lang/ar/validation.php</span>
+<span class="tok-keyword">return</span> <span class="tok-punct">[</span>
+    <span class="tok-string">&#39;required&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;حقل :attribute مطلوب.&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&#39;email&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;حقل :attribute يجب أن يكون بريداً إلكترونياً صحيحاً.&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&#39;min&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+        <span class="tok-string">&#39;string&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;حقل :attribute يجب ألّا يقلّ عن :min أحرف.&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;numeric&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;حقل :attribute يجب ألّا يقلّ عن :min.&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;array&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;حقل :attribute يجب أن يحوي :min عناصر على الأقل.&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-punct">],</span>
+    <span class="tok-string">&#39;unique&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;قيمة :attribute مستخدمة من قبل.&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-string">&#39;confirmed&#39;</span><span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;تأكيد :attribute غير مطابق.&#39;</span><span class="tok-punct">,</span>
+
+    <span class="tok-comment">// رسائل لحقل معيّن</span>
+    <span class="tok-string">&#39;custom&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+        <span class="tok-string">&#39;password&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+            <span class="tok-string">&#39;min&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;كلمة المرور قصيرة جداً — ١٠ أحرف على الأقل.&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">],</span>
+    <span class="tok-punct">],</span>
+
+    <span class="tok-comment">// أسماء الحقول</span>
+    <span class="tok-string">&#39;attributes&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+        <span class="tok-string">&#39;name&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الاسم&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;email&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;البريد الإلكتروني&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;password&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;كلمة المرور&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;title&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;العنوان&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;body&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;المحتوى&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-punct">],</span>
+<span class="tok-punct">];</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># .env</span>
+APP_LOCALE=ar
+APP_FALLBACK_LOCALE=en
+
+<span class="tok-comment"># نزّل ملفات الترجمة العربية الجاهزة</span>
+composer require laravel-lang/common <span class="tok-attr">--dev</span>
+php artisan lang:add ar</code></pre></div><h2 id="sec-8">عرض الأخطاء</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">blade</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-punct">{{--</span> خطأ حقل واحد <span class="tok-punct">--}}</span>
+<span class="tok-keyword">@error</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">&lt;</span>p <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;error&quot;</span><span class="tok-punct">&gt;{{</span> <span class="tok-attr">$message</span> <span class="tok-punct">}}&lt;/</span>p<span class="tok-punct">&gt;</span>
+<span class="tok-keyword">@enderror</span>
+
+<span class="tok-punct">{{--</span> كل الأخطاء <span class="tok-punct">--}}</span>
+<span class="tok-keyword">@if</span> <span class="tok-punct">(</span><span class="tok-attr">$errors</span><span class="tok-punct">-&gt;</span><span class="tok-func">any</span><span class="tok-punct">())</span>
+    <span class="tok-punct">&lt;</span>div <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;errors&quot;</span><span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>ul<span class="tok-punct">&gt;</span>
+            <span class="tok-keyword">@foreach</span> <span class="tok-punct">(</span><span class="tok-attr">$errors</span><span class="tok-punct">-&gt;</span><span class="tok-func">all</span><span class="tok-punct">()</span> <span class="tok-keyword">as</span> <span class="tok-attr">$error</span><span class="tok-punct">)</span>
+                <span class="tok-punct">&lt;</span>li<span class="tok-punct">&gt;{{</span> <span class="tok-attr">$error</span> <span class="tok-punct">}}&lt;/</span>li<span class="tok-punct">&gt;</span>
+            <span class="tok-keyword">@endforeach</span>
+        <span class="tok-punct">&lt;/</span>ul<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;/</span>div<span class="tok-punct">&gt;</span>
+<span class="tok-keyword">@endif</span>
+
+<span class="tok-punct">{{--</span> استعلامات <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{</span> <span class="tok-attr">$errors</span><span class="tok-punct">-&gt;</span><span class="tok-func">has</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">?</span> <span class="tok-string">&#39;حقل به خطأ&#39;</span> <span class="tok-punct">:</span> <span class="tok-string">&#39;&#39;</span> <span class="tok-punct">}}</span>
+<span class="tok-punct">{{</span> <span class="tok-attr">$errors</span><span class="tok-punct">-&gt;</span><span class="tok-func">first</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">}}</span>
+<span class="tok-punct">{{</span> <span class="tok-attr">$errors</span><span class="tok-punct">-&gt;</span><span class="tok-func">get</span><span class="tok-punct">(</span><span class="tok-string">&#39;items.*&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">}}</span>
+<span class="tok-punct">{{</span> <span class="tok-attr">$errors</span><span class="tok-punct">-&gt;</span><span class="tok-func">count</span><span class="tok-punct">()</span> <span class="tok-punct">}}</span>
+
+<span class="tok-punct">{{--</span> أخطاء من نموذج مسمّى <span class="tok-punct">--}}</span>
+<span class="tok-keyword">@error</span><span class="tok-punct">(</span><span class="tok-string">&#39;email&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;login&#39;</span><span class="tok-punct">)</span>  <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;{{</span> <span class="tok-attr">$message</span> <span class="tok-punct">}}&lt;/</span>p<span class="tok-punct">&gt;</span>  <span class="tok-keyword">@enderror</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// نماذج متعدّدة في صفحة واحدة</span>
+<span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">validateWithBag</span><span class="tok-punct">(</span><span class="tok-string">&#39;newsletter&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>
+    <span class="tok-string">&#39;email&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;email&#39;</span><span class="tok-punct">],</span>
+<span class="tok-punct">]);</span>
+
+<span class="tok-comment">// في العرض: @error(&#39;email&#39;, &#39;newsletter&#39;)</span></code></pre></div><h2 id="sec-9">استجابة API</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">json</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-punct">{</span>
+  <span class="tok-prop">&quot;message&quot;</span><span class="tok-punct">:</span> <span class="tok-string">&quot;حقل العنوان مطلوب. (و ١ خطأ آخر)&quot;</span><span class="tok-punct">,</span>
+  <span class="tok-prop">&quot;errors&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">&quot;title&quot;</span><span class="tok-punct">:</span> <span class="tok-punct">[</span><span class="tok-string">&quot;حقل العنوان مطلوب.&quot;</span><span class="tok-punct">]</span><span class="tok-punct">,</span>
+    <span class="tok-prop">&quot;body&quot;</span><span class="tok-punct">:</span>  <span class="tok-punct">[</span><span class="tok-string">&quot;حقل المحتوى يجب ألّا يقلّ عن ٥٠ أحرف.&quot;</span><span class="tok-punct">]</span>
+  <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// تخصيص استجابة الفشل في صنف الطلب</span>
+<span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">failedValidation</span><span class="tok-punct">(</span><span class="tok-prop">Validator</span> <span class="tok-attr">$validator</span><span class="tok-punct">):</span> void
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">throw</span> <span class="tok-keyword">new</span> <span class="tok-func">HttpResponseException</span><span class="tok-punct">(</span>
+        <span class="tok-func">response</span><span class="tok-punct">()-&gt;</span><span class="tok-func">json</span><span class="tok-punct">([</span>
+            <span class="tok-string">&#39;status&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;error&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;message&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;البيانات المُرسَلة غير صالحة.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;errors&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-attr">$validator</span><span class="tok-punct">-&gt;</span><span class="tok-func">errors</span><span class="tok-punct">(),</span>
+        <span class="tok-punct">],</span> <span class="tok-number">422</span><span class="tok-punct">)</span>
+    <span class="tok-punct">);</span>
+<span class="tok-punct">}</span></code></pre></div><h2 id="sec-10">تمرين</h2><section class="exercise" id="sec-11"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>نظام تحقّق كامل لتسجيل مقدّم خدمة</h3></header><div class="exercise-body"><p>ابنِ نموذج تسجيل معقّداً بتحقّق شامل ورسائل عربية وقواعد مخصّصة ورفع ملفات.</p><p><strong>المطلوب:</strong></p><ul><li><strong>البيانات الشخصية</strong>: اسم كامل (عربي فقط)، بريد فريد، جوّال سعودي، كلمة مرور قوية مؤكّدة، تاريخ ميلاد (18 سنة فأكثر).</li><li><strong>بيانات النشاط</strong>: اسم النشاط، رقم السجلّ التجاري (10 أرقام)، الرقم الضريبي (15 رقماً يبدأ بـ 3)، نوع النشاط من قائمة، المدينة، وصف (50–1000 حرف).</li><li><strong>الخدمات</strong>: مصفوفة من 1 إلى 10 خدمات، كل خدمة: اسم، سعر (يجب أن يكون أقلّ من سعر السقف)، مدّة بالدقائق، وصف اختياري.</li><li><strong>الملفات</strong>: شعار (صورة مربّعة 400×400 على الأقل)، صورة غلاف، ونسخة من السجلّ التجاري (PDF ≤ 5 ميغابايت)، ومعرض من 8 صور كحدّ أقصى.</li><li><strong>شروط</strong>: الموافقة على الشروط إلزامية، والحقول البنكية مطلوبة فقط إن اختار &quot;استقبال المدفوعات&quot;.</li><li>اكتب قواعد مخصّصة: <code>SaudiPhone</code>, <code>CommercialRegister</code>, <code>VatNumber</code>, <code>ArabicText</code>, <code>NotDisposableEmail</code>.</li><li>نظّف المدخلات في <code>prepareForValidation</code>: إزالة الفراغات، توحيد الأرقام العربية إلى إنجليزية، تطبيع رقم الجوّال.</li><li>أضف تحقّقاً بعدياً في <code>withValidator</code>: مجموع مدد الخدمات لا يتجاوز 8 ساعات، ولا تتكرّر أسماء الخدمات.</li><li>رسائل عربية كاملة وأسماء حقول عربية، وترتيب <code>bail</code> حيث يفيد.</li><li>اكتب المتحكّم الذي يستقبل الطلب، يخزّن الملفات بأمان، وينشئ السجلّات في معاملة واحدة.</li><li>اكتب اختبارات تغطّي: النجاح، وكل قاعدة مخصّصة، والحالات الحدّية.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>preg_replace(&#39;/[٠-٩]/u&#39;, ...)</code> لتحويل الأرقام العربية.</li><li>💡 <code>Rule::unique(&#39;users&#39;)-&gt;ignore($id)</code> مهمّة في التعديل.</li><li>💡 <code>before_or_equal:-18 years</code> للتحقّق من العمر.</li><li>💡 <code>$validator-&gt;after(...)</code> للتحقّق الذي يحتاج عدة حقول معاً.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// app/Rules/SaudiPhone.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">namespace</span> <span class="tok-prop">App</span>\<span class="tok-prop">Rules</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">use</span> <span class="tok-prop">Closure</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Contracts</span>\<span class="tok-prop">Validation</span>\<span class="tok-prop">ValidationRule</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">SaudiPhone</span> <span class="tok-keyword">implements</span> <span class="tok-prop">ValidationRule</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">validate</span><span class="tok-punct">(</span>string <span class="tok-attr">$attribute</span><span class="tok-punct">,</span> mixed <span class="tok-attr">$value</span><span class="tok-punct">,</span> <span class="tok-prop">Closure</span> <span class="tok-attr">$fail</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$digits</span> <span class="tok-punct">=</span> <span class="tok-func">preg_replace</span><span class="tok-punct">(</span><span class="tok-string">&#39;/\D/&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>string<span class="tok-punct">)</span> <span class="tok-attr">$value</span><span class="tok-punct">);</span>
+        <span class="tok-attr">$digits</span> <span class="tok-punct">=</span> <span class="tok-func">preg_replace</span><span class="tok-punct">(</span><span class="tok-string">&#39;/^(966|00966)/&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;0&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$digits</span><span class="tok-punct">);</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(!</span> <span class="tok-func">preg_match</span><span class="tok-punct">(</span><span class="tok-string">&#39;/^05[0-9]{8}$/&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$digits</span><span class="tok-punct">))</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&#39;حقل :attribute يجب أن يكون رقم جوّال سعودي صحيح يبدأ بـ 05.&#39;</span><span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// app/Rules/CommercialRegister.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">CommercialRegister</span> <span class="tok-keyword">implements</span> <span class="tok-prop">ValidationRule</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">validate</span><span class="tok-punct">(</span>string <span class="tok-attr">$attribute</span><span class="tok-punct">,</span> mixed <span class="tok-attr">$value</span><span class="tok-punct">,</span> <span class="tok-prop">Closure</span> <span class="tok-attr">$fail</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$digits</span> <span class="tok-punct">=</span> <span class="tok-func">preg_replace</span><span class="tok-punct">(</span><span class="tok-string">&#39;/\D/&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>string<span class="tok-punct">)</span> <span class="tok-attr">$value</span><span class="tok-punct">);</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-func">strlen</span><span class="tok-punct">(</span><span class="tok-attr">$digits</span><span class="tok-punct">)</span> <span class="tok-punct">!==</span> <span class="tok-number">10</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&#39;رقم السجلّ التجاري يجب أن يتكوّن من ١٠ أرقام.&#39;</span><span class="tok-punct">);</span>
+            <span class="tok-keyword">return</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(!</span> <span class="tok-func">in_array</span><span class="tok-punct">(</span><span class="tok-attr">$digits</span><span class="tok-punct">[</span><span class="tok-number">0</span><span class="tok-punct">],</span> <span class="tok-punct">[</span><span class="tok-string">&#39;1&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;2&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;3&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;4&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;7&#39;</span><span class="tok-punct">],</span> <span class="tok-bool">true</span><span class="tok-punct">))</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&#39;رقم السجلّ التجاري غير صالح — بداية غير معروفة.&#39;</span><span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// app/Rules/VatNumber.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">VatNumber</span> <span class="tok-keyword">implements</span> <span class="tok-prop">ValidationRule</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">validate</span><span class="tok-punct">(</span>string <span class="tok-attr">$attribute</span><span class="tok-punct">,</span> mixed <span class="tok-attr">$value</span><span class="tok-punct">,</span> <span class="tok-prop">Closure</span> <span class="tok-attr">$fail</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$digits</span> <span class="tok-punct">=</span> <span class="tok-func">preg_replace</span><span class="tok-punct">(</span><span class="tok-string">&#39;/\D/&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>string<span class="tok-punct">)</span> <span class="tok-attr">$value</span><span class="tok-punct">);</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-func">strlen</span><span class="tok-punct">(</span><span class="tok-attr">$digits</span><span class="tok-punct">)</span> <span class="tok-punct">!==</span> <span class="tok-number">15</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&#39;الرقم الضريبي يجب أن يتكوّن من ١٥ رقماً.&#39;</span><span class="tok-punct">);</span>
+            <span class="tok-keyword">return</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(!</span> <span class="tok-func">str_starts_with</span><span class="tok-punct">(</span><span class="tok-attr">$digits</span><span class="tok-punct">,</span> <span class="tok-string">&#39;3&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">||</span> <span class="tok-punct">!</span> <span class="tok-func">str_ends_with</span><span class="tok-punct">(</span><span class="tok-attr">$digits</span><span class="tok-punct">,</span> <span class="tok-string">&#39;3&#39;</span><span class="tok-punct">))</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&#39;الرقم الضريبي يجب أن يبدأ وينتهي بالرقم ٣.&#39;</span><span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// app/Rules/ArabicText.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">ArabicText</span> <span class="tok-keyword">implements</span> <span class="tok-prop">ValidationRule</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">__construct</span><span class="tok-punct">(</span><span class="tok-keyword">private</span> <span class="tok-keyword">readonly</span> bool <span class="tok-attr">$allowNumbers</span> <span class="tok-punct">=</span> <span class="tok-bool">false</span><span class="tok-punct">)</span>
+    <span class="tok-punct">{</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">validate</span><span class="tok-punct">(</span>string <span class="tok-attr">$attribute</span><span class="tok-punct">,</span> mixed <span class="tok-attr">$value</span><span class="tok-punct">,</span> <span class="tok-prop">Closure</span> <span class="tok-attr">$fail</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$pattern</span> <span class="tok-punct">=</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>allowNumbers
+            <span class="tok-punct">?</span> <span class="tok-string">&#39;/^[\p{Arabic}\s0-9\-\.]+$/u&#39;</span>
+            <span class="tok-punct">:</span> <span class="tok-string">&#39;/^[\p{Arabic}\s]+$/u&#39;</span><span class="tok-punct">;</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(!</span> <span class="tok-func">preg_match</span><span class="tok-punct">(</span><span class="tok-attr">$pattern</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>string<span class="tok-punct">)</span> <span class="tok-attr">$value</span><span class="tok-punct">))</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&#39;حقل :attribute يجب أن يُكتب بالعربية فقط.&#39;</span><span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// app/Rules/NotDisposableEmail.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">class</span> <span class="tok-prop">NotDisposableEmail</span> <span class="tok-keyword">implements</span> <span class="tok-prop">ValidationRule</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">private</span> <span class="tok-keyword">const</span> <span class="tok-prop">BLOCKED</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+        <span class="tok-string">&#39;mailinator.com&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;tempmail.com&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;10minutemail.com&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;guerrillamail.com&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;yopmail.com&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;throwaway.email&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-punct">];</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">validate</span><span class="tok-punct">(</span>string <span class="tok-attr">$attribute</span><span class="tok-punct">,</span> mixed <span class="tok-attr">$value</span><span class="tok-punct">,</span> <span class="tok-prop">Closure</span> <span class="tok-attr">$fail</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$domain</span> <span class="tok-punct">=</span> <span class="tok-func">strtolower</span><span class="tok-punct">((</span>string<span class="tok-punct">)</span> <span class="tok-func">substr</span><span class="tok-punct">(</span><span class="tok-func">strrchr</span><span class="tok-punct">((</span>string<span class="tok-punct">)</span> <span class="tok-attr">$value</span><span class="tok-punct">,</span> <span class="tok-string">&#39;@&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">?:</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">));</span>
+
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-func">in_array</span><span class="tok-punct">(</span><span class="tok-attr">$domain</span><span class="tok-punct">,</span> self<span class="tok-punct">::</span><span class="tok-prop">BLOCKED</span><span class="tok-punct">,</span> <span class="tok-bool">true</span><span class="tok-punct">))</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$fail</span><span class="tok-punct">(</span><span class="tok-string">&#39;لا نقبل التسجيل ببريد مؤقّت — استخدم بريداً دائماً.&#39;</span><span class="tok-punct">);</span>
+        <span class="tok-punct">}</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// app/Http/Requests/RegisterProviderRequest.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">namespace</span> <span class="tok-prop">App</span>\<span class="tok-prop">Http</span>\<span class="tok-prop">Requests</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">use</span> <span class="tok-prop">App</span>\<span class="tok-prop">Rules</span>\<span class="tok-punct">{</span><span class="tok-prop">SaudiPhone</span><span class="tok-punct">,</span> <span class="tok-prop">CommercialRegister</span><span class="tok-punct">,</span> <span class="tok-prop">VatNumber</span><span class="tok-punct">,</span> <span class="tok-prop">ArabicText</span><span class="tok-punct">,</span> <span class="tok-prop">NotDisposableEmail</span><span class="tok-punct">};</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Foundation</span>\<span class="tok-prop">Http</span>\<span class="tok-prop">FormRequest</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Validation</span>\<span class="tok-prop">Rule</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Validation</span>\<span class="tok-prop">Rules</span>\<span class="tok-prop">Password</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Validation</span>\<span class="tok-prop">Validator</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">RegisterProviderRequest</span> <span class="tok-keyword">extends</span> <span class="tok-prop">FormRequest</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">private</span> <span class="tok-keyword">const</span> <span class="tok-prop">MAX_TOTAL_MINUTES</span> <span class="tok-punct">=</span> <span class="tok-number">480</span><span class="tok-punct">;</span>   <span class="tok-comment">// 8 ساعات</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">authorize</span><span class="tok-punct">():</span> bool
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-bool">true</span><span class="tok-punct">;</span>   <span class="tok-comment">// التسجيل مفتوح للجميع</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">protected</span> <span class="tok-keyword">function</span> <span class="tok-func">prepareForValidation</span><span class="tok-punct">():</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">merge</span><span class="tok-punct">([</span>
+            <span class="tok-string">&#39;name&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">cleanText</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>name<span class="tok-punct">),</span>
+            <span class="tok-string">&#39;business_name&#39;</span><span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">cleanText</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>business_name<span class="tok-punct">),</span>
+            <span class="tok-string">&#39;email&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-func">strtolower</span><span class="tok-punct">(</span><span class="tok-func">trim</span><span class="tok-punct">((</span>string<span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>email<span class="tok-punct">)),</span>
+            <span class="tok-string">&#39;phone&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">normalizeDigits</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>phone<span class="tok-punct">),</span>
+            <span class="tok-string">&#39;cr_number&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">normalizeDigits</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>cr_number<span class="tok-punct">),</span>
+            <span class="tok-string">&#39;vat_number&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">normalizeDigits</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>vat_number<span class="tok-punct">),</span>
+            <span class="tok-string">&#39;iban&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-func">strtoupper</span><span class="tok-punct">(</span><span class="tok-func">str_replace</span><span class="tok-punct">(</span><span class="tok-string">&#39; &#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">(</span>string<span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>iban<span class="tok-punct">)),</span>
+            <span class="tok-string">&#39;services&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">normalizeServices</span><span class="tok-punct">(),</span>
+        <span class="tok-punct">]);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">rules</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-punct">[</span>
+            <span class="tok-comment">/* ── البيانات الشخصية ── */</span>
+            <span class="tok-string">&#39;name&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;bail&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:5&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:80&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">new</span> <span class="tok-func">ArabicText</span><span class="tok-punct">()],</span>
+            <span class="tok-string">&#39;email&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+                <span class="tok-string">&#39;bail&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;email:rfc,dns&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:120&#39;</span><span class="tok-punct">,</span>
+                <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">unique</span><span class="tok-punct">(</span><span class="tok-string">&#39;users&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;email&#39;</span><span class="tok-punct">),</span>
+                <span class="tok-keyword">new</span> <span class="tok-func">NotDisposableEmail</span><span class="tok-punct">(),</span>
+            <span class="tok-punct">],</span>
+            <span class="tok-string">&#39;phone&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+                <span class="tok-string">&#39;bail&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">new</span> <span class="tok-func">SaudiPhone</span><span class="tok-punct">(),</span>
+                <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">unique</span><span class="tok-punct">(</span><span class="tok-string">&#39;users&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;phone&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-punct">],</span>
+            <span class="tok-string">&#39;password&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;confirmed&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Password</span><span class="tok-punct">::</span><span class="tok-func">defaults</span><span class="tok-punct">()],</span>
+            <span class="tok-string">&#39;birthdate&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+                <span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;date&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;before_or_equal:&#39;</span> <span class="tok-punct">.</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">subYears</span><span class="tok-punct">(</span><span class="tok-number">18</span><span class="tok-punct">)-&gt;</span><span class="tok-func">toDateString</span><span class="tok-punct">(),</span>
+                <span class="tok-string">&#39;after:&#39;</span> <span class="tok-punct">.</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">subYears</span><span class="tok-punct">(</span><span class="tok-number">100</span><span class="tok-punct">)-&gt;</span><span class="tok-func">toDateString</span><span class="tok-punct">(),</span>
+            <span class="tok-punct">],</span>
+
+            <span class="tok-comment">/* ── بيانات النشاط ── */</span>
+            <span class="tok-string">&#39;business_name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:3&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:120&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;cr_number&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;bail&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">new</span> <span class="tok-func">CommercialRegister</span><span class="tok-punct">(),</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">unique</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;cr_number&#39;</span><span class="tok-punct">)],</span>
+            <span class="tok-string">&#39;vat_number&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">new</span> <span class="tok-func">VatNumber</span><span class="tok-punct">()],</span>
+            <span class="tok-string">&#39;business_type&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">in</span><span class="tok-punct">([</span><span class="tok-string">&#39;salon&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;clinic&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;gym&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;spa&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;training&#39;</span><span class="tok-punct">])],</span>
+            <span class="tok-string">&#39;city&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:60&#39;</span><span class="tok-punct">,</span> <span class="tok-prop">Rule</span><span class="tok-punct">::</span><span class="tok-func">exists</span><span class="tok-punct">(</span><span class="tok-string">&#39;cities&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;name&#39;</span><span class="tok-punct">)],</span>
+            <span class="tok-string">&#39;district&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:80&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;description&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:50&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:1000&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;website&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;url&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:200&#39;</span><span class="tok-punct">],</span>
+
+            <span class="tok-comment">/* ── الخدمات ── */</span>
+            <span class="tok-string">&#39;services&#39;</span>               <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;array&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:1&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:10&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;services.*.name&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:3&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:80&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;services.*.price&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;numeric&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:1&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:50000&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;services.*.duration&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;integer&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;min:15&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:480&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;services.*.description&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:300&#39;</span><span class="tok-punct">],</span>
+
+            <span class="tok-comment">/* ── الملفات ── */</span>
+            <span class="tok-string">&#39;logo&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+                <span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;image&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;mimes:jpg,jpeg,png,webp&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:2048&#39;</span><span class="tok-punct">,</span>
+                <span class="tok-string">&#39;dimensions:min_width=400,min_height=400,ratio=1/1&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-punct">],</span>
+            <span class="tok-string">&#39;cover&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+                <span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;image&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;mimes:jpg,jpeg,png,webp&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:4096&#39;</span><span class="tok-punct">,</span>
+                <span class="tok-string">&#39;dimensions:min_width=1200,min_height=400&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-punct">],</span>
+            <span class="tok-string">&#39;cr_document&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;file&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;mimes:pdf&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:5120&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;gallery&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;array&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:8&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;gallery.*&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;image&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;mimes:jpg,jpeg,png,webp&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:3072&#39;</span><span class="tok-punct">],</span>
+
+            <span class="tok-comment">/* ── المدفوعات ── */</span>
+            <span class="tok-string">&#39;accepts_payments&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;boolean&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;bank_name&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required_if:accepts_payments,true&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:80&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;iban&#39;</span>             <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required_if:accepts_payments,true&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;regex:/^SA\d{22}$/&#39;</span><span class="tok-punct">],</span>
+            <span class="tok-string">&#39;account_holder&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required_if:accepts_payments,true&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;nullable&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;string&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;max:80&#39;</span><span class="tok-punct">],</span>
+
+            <span class="tok-comment">/* ── الشروط ── */</span>
+            <span class="tok-string">&#39;terms_accepted&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span><span class="tok-string">&#39;required&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;accepted&#39;</span><span class="tok-punct">],</span>
+        <span class="tok-punct">];</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">withValidator</span><span class="tok-punct">(</span><span class="tok-prop">Validator</span> <span class="tok-attr">$validator</span><span class="tok-punct">):</span> void
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$validator</span><span class="tok-punct">-&gt;</span><span class="tok-func">after</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">(</span><span class="tok-prop">Validator</span> <span class="tok-attr">$validator</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-attr">$services</span> <span class="tok-punct">=</span> <span class="tok-punct">(</span><span class="tok-keyword">array</span><span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>services<span class="tok-punct">;</span>
+
+            <span class="tok-comment">// 1) مجموع المدد</span>
+            <span class="tok-attr">$total</span> <span class="tok-punct">=</span> <span class="tok-func">array_sum</span><span class="tok-punct">(</span><span class="tok-func">array_column</span><span class="tok-punct">(</span><span class="tok-attr">$services</span><span class="tok-punct">,</span> <span class="tok-string">&#39;duration&#39;</span><span class="tok-punct">));</span>
+
+            <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$total</span> <span class="tok-punct">&gt;</span> self<span class="tok-punct">::</span><span class="tok-prop">MAX_TOTAL_MINUTES</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+                <span class="tok-attr">$hours</span> <span class="tok-punct">=</span> <span class="tok-func">round</span><span class="tok-punct">(</span><span class="tok-attr">$total</span> <span class="tok-punct">/</span> <span class="tok-number">60</span><span class="tok-punct">,</span> <span class="tok-number">1</span><span class="tok-punct">);</span>
+                <span class="tok-attr">$validator</span><span class="tok-punct">-&gt;</span><span class="tok-func">errors</span><span class="tok-punct">()-&gt;</span><span class="tok-func">add</span><span class="tok-punct">(</span>
+                    <span class="tok-string">&#39;services&#39;</span><span class="tok-punct">,</span>
+                    <span class="tok-string">&quot;مجموع مدد الخدمات {$hours} ساعة — الحدّ الأقصى ٨ ساعات.&quot;</span>
+                <span class="tok-punct">);</span>
+            <span class="tok-punct">}</span>
+
+            <span class="tok-comment">// 2) تكرار الأسماء</span>
+            <span class="tok-attr">$names</span> <span class="tok-punct">=</span> <span class="tok-func">array_map</span><span class="tok-punct">(</span>
+                <span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$s</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">mb_strtolower</span><span class="tok-punct">(</span><span class="tok-func">trim</span><span class="tok-punct">((</span>string<span class="tok-punct">)</span> <span class="tok-punct">(</span><span class="tok-attr">$s</span><span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">))),</span>
+                <span class="tok-attr">$services</span>
+            <span class="tok-punct">);</span>
+
+            <span class="tok-keyword">foreach</span> <span class="tok-punct">(</span><span class="tok-func">array_count_values</span><span class="tok-punct">(</span><span class="tok-func">array_filter</span><span class="tok-punct">(</span><span class="tok-attr">$names</span><span class="tok-punct">))</span> <span class="tok-keyword">as</span> <span class="tok-attr">$name</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$count</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+                <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$count</span> <span class="tok-punct">&gt;</span> <span class="tok-number">1</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+                    <span class="tok-attr">$validator</span><span class="tok-punct">-&gt;</span><span class="tok-func">errors</span><span class="tok-punct">()-&gt;</span><span class="tok-func">add</span><span class="tok-punct">(</span><span class="tok-string">&#39;services&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;اسم الخدمة «{$name}» مكرّر.&quot;</span><span class="tok-punct">);</span>
+                <span class="tok-punct">}</span>
+            <span class="tok-punct">}</span>
+
+            <span class="tok-comment">// 3) الرقم الضريبي إلزامي لمن يستقبل المدفوعات</span>
+            <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">boolean</span><span class="tok-punct">(</span><span class="tok-string">&#39;accepts_payments&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">&amp;&amp;</span> <span class="tok-func">blank</span><span class="tok-punct">(</span><span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>vat_number<span class="tok-punct">))</span> <span class="tok-punct">{</span>
+                <span class="tok-attr">$validator</span><span class="tok-punct">-&gt;</span><span class="tok-func">errors</span><span class="tok-punct">()-&gt;</span><span class="tok-func">add</span><span class="tok-punct">(</span>
+                    <span class="tok-string">&#39;vat_number&#39;</span><span class="tok-punct">,</span>
+                    <span class="tok-string">&#39;الرقم الضريبي مطلوب لاستقبال المدفوعات.&#39;</span>
+                <span class="tok-punct">);</span>
+            <span class="tok-punct">}</span>
+        <span class="tok-punct">});</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">messages</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-punct">[</span>
+            <span class="tok-string">&#39;name.min&#39;</span>                <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الاسم الكامل قصير جداً.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;email.unique&#39;</span>            <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;هذا البريد مسجَّل لدينا — سجّل الدخول بدلاً من ذلك.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;phone.unique&#39;</span>            <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;رقم الجوّال مسجَّل لدينا مسبقاً.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;birthdate.before_or_equal&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;يجب أن يكون عمرك ١٨ سنة فأكثر للتسجيل.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;description.min&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;وصف النشاط يجب ألّا يقلّ عن ٥٠ حرفاً.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;services.min&#39;</span>            <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;أضف خدمة واحدة على الأقل.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;services.max&#39;</span>            <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الحدّ الأقصى عشر خدمات في التسجيل الأوّلي.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;logo.dimensions&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الشعار يجب أن يكون مربّعاً وبأبعاد ٤٠٠×٤٠٠ على الأقل.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;cover.dimensions&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;صورة الغلاف يجب ألّا تقلّ عن ١٢٠٠×٤٠٠ بكسل.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;cr_document.mimes&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;السجلّ التجاري يجب أن يكون بصيغة PDF.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;iban.regex&#39;</span>              <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الآيبان يجب أن يبدأ بـ SA يليه ٢٢ رقماً.&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;terms_accepted.accepted&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;يجب الموافقة على الشروط والأحكام للمتابعة.&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">];</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">attributes</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-punct">[</span>
+            <span class="tok-string">&#39;name&#39;</span>           <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الاسم الكامل&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;email&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;البريد الإلكتروني&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;phone&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;رقم الجوّال&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;password&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;كلمة المرور&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;birthdate&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;تاريخ الميلاد&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;business_name&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;اسم النشاط&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;cr_number&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;السجلّ التجاري&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;vat_number&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الرقم الضريبي&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;business_type&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;نوع النشاط&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;city&#39;</span>           <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;المدينة&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;description&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;وصف النشاط&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;services&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الخدمات&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;logo&#39;</span>           <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الشعار&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;cover&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;صورة الغلاف&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;cr_document&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;وثيقة السجلّ التجاري&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;gallery&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;معرض الصور&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;iban&#39;</span>           <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الآيبان&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;terms_accepted&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الشروط والأحكام&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-punct">];</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-comment">/* ══════════════ أدوات التنظيف ══════════════ */</span>
+
+    <span class="tok-keyword">private</span> <span class="tok-keyword">function</span> <span class="tok-func">cleanText</span><span class="tok-punct">(?</span>string <span class="tok-attr">$value</span><span class="tok-punct">):</span> <span class="tok-punct">?</span>string
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-attr">$value</span> <span class="tok-punct">===</span> <span class="tok-bool">null</span> <span class="tok-punct">?</span> <span class="tok-bool">null</span> <span class="tok-punct">:</span> <span class="tok-func">preg_replace</span><span class="tok-punct">(</span><span class="tok-string">&#39;/\s+/u&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39; &#39;</span><span class="tok-punct">,</span> <span class="tok-func">trim</span><span class="tok-punct">(</span><span class="tok-attr">$value</span><span class="tok-punct">));</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">private</span> <span class="tok-keyword">function</span> <span class="tok-func">normalizeDigits</span><span class="tok-punct">(?</span>string <span class="tok-attr">$value</span><span class="tok-punct">):</span> <span class="tok-punct">?</span>string
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">if</span> <span class="tok-punct">(</span><span class="tok-attr">$value</span> <span class="tok-punct">===</span> <span class="tok-bool">null</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-keyword">return</span> <span class="tok-bool">null</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+
+        <span class="tok-attr">$arabic</span>  <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&#39;٠&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;١&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;٢&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;٣&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;٤&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;٥&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;٦&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;٧&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;٨&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;٩&#39;</span><span class="tok-punct">];</span>
+        <span class="tok-attr">$persian</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&#39;۰&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;۱&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;۲&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;۳&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;۴&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;۵&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;۶&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;۷&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;۸&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;۹&#39;</span><span class="tok-punct">];</span>
+        <span class="tok-attr">$english</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span><span class="tok-string">&#39;0&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;1&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;2&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;3&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;4&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;5&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;6&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;7&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;8&#39;</span><span class="tok-punct">,</span><span class="tok-string">&#39;9&#39;</span><span class="tok-punct">];</span>
+
+        <span class="tok-attr">$value</span> <span class="tok-punct">=</span> <span class="tok-func">str_replace</span><span class="tok-punct">(</span><span class="tok-attr">$arabic</span><span class="tok-punct">,</span> <span class="tok-attr">$english</span><span class="tok-punct">,</span> <span class="tok-attr">$value</span><span class="tok-punct">);</span>
+        <span class="tok-attr">$value</span> <span class="tok-punct">=</span> <span class="tok-func">str_replace</span><span class="tok-punct">(</span><span class="tok-attr">$persian</span><span class="tok-punct">,</span> <span class="tok-attr">$english</span><span class="tok-punct">,</span> <span class="tok-attr">$value</span><span class="tok-punct">);</span>
+
+        <span class="tok-keyword">return</span> <span class="tok-func">preg_replace</span><span class="tok-punct">(</span><span class="tok-string">&#39;/[\s\-()]/&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">,</span> <span class="tok-attr">$value</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+
+    <span class="tok-keyword">private</span> <span class="tok-keyword">function</span> <span class="tok-func">normalizeServices</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-func">collect</span><span class="tok-punct">((</span><span class="tok-keyword">array</span><span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span>services<span class="tok-punct">)</span>
+            <span class="tok-punct">-&gt;</span><span class="tok-func">filter</span><span class="tok-punct">(</span><span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$s</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">filled</span><span class="tok-punct">(</span><span class="tok-attr">$s</span><span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">))</span>
+            <span class="tok-punct">-&gt;</span><span class="tok-func">map</span><span class="tok-punct">(</span><span class="tok-keyword">fn</span> <span class="tok-punct">(</span><span class="tok-attr">$s</span><span class="tok-punct">)</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+                <span class="tok-string">&#39;name&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">cleanText</span><span class="tok-punct">(</span><span class="tok-attr">$s</span><span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-string">&#39;&#39;</span><span class="tok-punct">),</span>
+                <span class="tok-string">&#39;price&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-punct">(</span>float<span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">normalizeDigits</span><span class="tok-punct">((</span>string<span class="tok-punct">)</span> <span class="tok-punct">(</span><span class="tok-attr">$s</span><span class="tok-punct">[</span><span class="tok-string">&#39;price&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-number">0</span><span class="tok-punct">)),</span>
+                <span class="tok-string">&#39;duration&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-punct">(</span>int<span class="tok-punct">)</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">normalizeDigits</span><span class="tok-punct">((</span>string<span class="tok-punct">)</span> <span class="tok-punct">(</span><span class="tok-attr">$s</span><span class="tok-punct">[</span><span class="tok-string">&#39;duration&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-number">0</span><span class="tok-punct">)),</span>
+                <span class="tok-string">&#39;description&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">cleanText</span><span class="tok-punct">(</span><span class="tok-attr">$s</span><span class="tok-punct">[</span><span class="tok-string">&#39;description&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">),</span>
+            <span class="tok-punct">])</span>
+            <span class="tok-punct">-&gt;</span><span class="tok-func">values</span><span class="tok-punct">()</span>
+            <span class="tok-punct">-&gt;</span><span class="tok-func">all</span><span class="tok-punct">();</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// app/Http/Controllers/ProviderRegistrationController.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">namespace</span> <span class="tok-prop">App</span>\<span class="tok-prop">Http</span>\<span class="tok-prop">Controllers</span><span class="tok-punct">;</span>
+
+<span class="tok-keyword">use</span> <span class="tok-prop">App</span>\<span class="tok-prop">Http</span>\<span class="tok-prop">Requests</span>\<span class="tok-prop">RegisterProviderRequest</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">App</span>\<span class="tok-prop">Models</span>\<span class="tok-punct">{</span><span class="tok-prop">User</span><span class="tok-punct">,</span> <span class="tok-prop">Provider</span><span class="tok-punct">,</span> <span class="tok-prop">Service</span><span class="tok-punct">};</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Http</span>\<span class="tok-prop">RedirectResponse</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Support</span>\<span class="tok-prop">Facades</span>\<span class="tok-punct">{</span><span class="tok-prop">DB</span><span class="tok-punct">,</span> <span class="tok-prop">Hash</span><span class="tok-punct">,</span> <span class="tok-prop">Storage</span><span class="tok-punct">};</span>
+
+<span class="tok-keyword">class</span> <span class="tok-prop">ProviderRegistrationController</span> <span class="tok-keyword">extends</span> <span class="tok-prop">Controller</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">public</span> <span class="tok-keyword">function</span> <span class="tok-func">store</span><span class="tok-punct">(</span><span class="tok-prop">RegisterProviderRequest</span> <span class="tok-attr">$request</span><span class="tok-punct">):</span> <span class="tok-prop">RedirectResponse</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-attr">$data</span> <span class="tok-punct">=</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">validated</span><span class="tok-punct">();</span>
+
+        <span class="tok-attr">$provider</span> <span class="tok-punct">=</span> <span class="tok-prop">DB</span><span class="tok-punct">::</span><span class="tok-func">transaction</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-keyword">use</span> <span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">,</span> <span class="tok-attr">$data</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+            <span class="tok-comment">// 1) المستخدم</span>
+            <span class="tok-attr">$user</span> <span class="tok-punct">=</span> <span class="tok-prop">User</span><span class="tok-punct">::</span><span class="tok-func">create</span><span class="tok-punct">([</span>
+                <span class="tok-string">&#39;name&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span><span class="tok-punct">],</span>
+                <span class="tok-string">&#39;email&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;email&#39;</span><span class="tok-punct">],</span>
+                <span class="tok-string">&#39;phone&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;phone&#39;</span><span class="tok-punct">],</span>
+                <span class="tok-string">&#39;password&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-prop">Hash</span><span class="tok-punct">::</span><span class="tok-func">make</span><span class="tok-punct">(</span><span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;password&#39;</span><span class="tok-punct">]),</span>
+                <span class="tok-string">&#39;birthdate&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;birthdate&#39;</span><span class="tok-punct">],</span>
+                <span class="tok-string">&#39;role&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;provider&#39;</span><span class="tok-punct">,</span>
+            <span class="tok-punct">]);</span>
+
+            <span class="tok-comment">// 2) الملفات — على قرص public عبر storage، لا في public/ مباشرة</span>
+            <span class="tok-attr">$paths</span> <span class="tok-punct">=</span> <span class="tok-punct">[</span>
+                <span class="tok-string">&#39;logo_path&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">file</span><span class="tok-punct">(</span><span class="tok-string">&#39;logo&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">store</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers/logos&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;public&#39;</span><span class="tok-punct">),</span>
+                <span class="tok-string">&#39;cover_path&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">file</span><span class="tok-punct">(</span><span class="tok-string">&#39;cover&#39;</span><span class="tok-punct">)?-&gt;</span><span class="tok-func">store</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers/covers&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;public&#39;</span><span class="tok-punct">),</span>
+                <span class="tok-string">&#39;cr_path&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">file</span><span class="tok-punct">(</span><span class="tok-string">&#39;cr_document&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">store</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers/documents&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;private&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-punct">];</span>
+
+            <span class="tok-comment">// 3) النشاط</span>
+            <span class="tok-attr">$provider</span> <span class="tok-punct">=</span> <span class="tok-attr">$user</span><span class="tok-punct">-&gt;</span><span class="tok-func">provider</span><span class="tok-punct">()-&gt;</span><span class="tok-func">create</span><span class="tok-punct">([</span>
+                <span class="tok-string">&#39;business_name&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;business_name&#39;</span><span class="tok-punct">],</span>
+                <span class="tok-string">&#39;cr_number&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;cr_number&#39;</span><span class="tok-punct">],</span>
+                <span class="tok-string">&#39;vat_number&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;vat_number&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">,</span>
+                <span class="tok-string">&#39;business_type&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;business_type&#39;</span><span class="tok-punct">],</span>
+                <span class="tok-string">&#39;city&#39;</span>             <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;city&#39;</span><span class="tok-punct">],</span>
+                <span class="tok-string">&#39;district&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;district&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">,</span>
+                <span class="tok-string">&#39;description&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;description&#39;</span><span class="tok-punct">],</span>
+                <span class="tok-string">&#39;website&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;website&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">,</span>
+                <span class="tok-string">&#39;accepts_payments&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;accepts_payments&#39;</span><span class="tok-punct">],</span>
+                <span class="tok-string">&#39;bank_name&#39;</span>        <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;bank_name&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">,</span>
+                <span class="tok-string">&#39;iban&#39;</span>             <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;iban&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">,</span>
+                <span class="tok-string">&#39;account_holder&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;account_holder&#39;</span><span class="tok-punct">]</span> <span class="tok-punct">??</span> <span class="tok-bool">null</span><span class="tok-punct">,</span>
+                <span class="tok-string">&#39;status&#39;</span>           <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;pending_review&#39;</span><span class="tok-punct">,</span>
+                <span class="tok-punct">...</span><span class="tok-attr">$paths</span><span class="tok-punct">,</span>
+            <span class="tok-punct">]);</span>
+
+            <span class="tok-comment">// 4) الخدمات</span>
+            <span class="tok-attr">$provider</span><span class="tok-punct">-&gt;</span><span class="tok-func">services</span><span class="tok-punct">()-&gt;</span><span class="tok-func">createMany</span><span class="tok-punct">(</span><span class="tok-attr">$data</span><span class="tok-punct">[</span><span class="tok-string">&#39;services&#39;</span><span class="tok-punct">]);</span>
+
+            <span class="tok-comment">// 5) المعرض</span>
+            <span class="tok-keyword">foreach</span> <span class="tok-punct">(</span><span class="tok-attr">$request</span><span class="tok-punct">-&gt;</span><span class="tok-func">file</span><span class="tok-punct">(</span><span class="tok-string">&#39;gallery&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[])</span> <span class="tok-keyword">as</span> <span class="tok-attr">$index</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$file</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+                <span class="tok-attr">$provider</span><span class="tok-punct">-&gt;</span><span class="tok-func">images</span><span class="tok-punct">()-&gt;</span><span class="tok-func">create</span><span class="tok-punct">([</span>
+                    <span class="tok-string">&#39;path&#39;</span>       <span class="tok-punct">=&gt;</span> <span class="tok-attr">$file</span><span class="tok-punct">-&gt;</span><span class="tok-func">store</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers/gallery&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;public&#39;</span><span class="tok-punct">),</span>
+                    <span class="tok-string">&#39;sort_order&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$index</span><span class="tok-punct">,</span>
+                <span class="tok-punct">]);</span>
+            <span class="tok-punct">}</span>
+
+            <span class="tok-keyword">return</span> <span class="tok-attr">$provider</span><span class="tok-punct">;</span>
+        <span class="tok-punct">});</span>
+
+        <span class="tok-keyword">return</span> <span class="tok-func">to_route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.pending&#39;</span><span class="tok-punct">)</span>
+            <span class="tok-punct">-&gt;</span><span class="tok-func">with</span><span class="tok-punct">(</span><span class="tok-string">&#39;success&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;تمّ استلام طلبك بنجاح — سنراجعه خلال ٤٨ ساعة.&#39;</span><span class="tok-punct">);</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// tests/Feature/ProviderRegistrationTest.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">App</span>\<span class="tok-prop">Models</span>\<span class="tok-prop">User</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Http</span>\<span class="tok-prop">UploadedFile</span><span class="tok-punct">;</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Support</span>\<span class="tok-prop">Facades</span>\<span class="tok-prop">Storage</span><span class="tok-punct">;</span>
+
+<span class="tok-func">beforeEach</span><span class="tok-punct">(</span><span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-prop">Storage</span><span class="tok-punct">::</span><span class="tok-func">fake</span><span class="tok-punct">(</span><span class="tok-string">&#39;public&#39;</span><span class="tok-punct">);</span>
+    <span class="tok-prop">Storage</span><span class="tok-punct">::</span><span class="tok-func">fake</span><span class="tok-punct">(</span><span class="tok-string">&#39;private&#39;</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-keyword">function</span> <span class="tok-func">validPayload</span><span class="tok-punct">(</span><span class="tok-keyword">array</span> <span class="tok-attr">$overrides</span> <span class="tok-punct">=</span> <span class="tok-punct">[]):</span> <span class="tok-keyword">array</span>
+<span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-func">array_merge</span><span class="tok-punct">([</span>
+        <span class="tok-string">&#39;name&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;عبدالله محمد القحطاني&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;email&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;provider@example.com&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;phone&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;0551234567&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;password&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;SecurePass123!&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;password_confirmation&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;SecurePass123!&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;birthdate&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;1995-05-20&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;business_name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;صالون النخبة&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;cr_number&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;1010123456&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;vat_number&#39;</span>    <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;300012345678903&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;business_type&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;salon&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;city&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;الرياض&#39;</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;description&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-func">str_repeat</span><span class="tok-punct">(</span><span class="tok-string">&#39;وصف تفصيلي للنشاط التجاري وخدماته المقدّمة. &#39;</span><span class="tok-punct">,</span> <span class="tok-number">3</span><span class="tok-punct">),</span>
+        <span class="tok-string">&#39;services&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+            <span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;قصّ شعر&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;price&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">80</span><span class="tok-punct">,</span>  <span class="tok-string">&#39;duration&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">45</span><span class="tok-punct">],</span>
+            <span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;صبغة&#39;</span><span class="tok-punct">,</span>    <span class="tok-string">&#39;price&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">250</span><span class="tok-punct">,</span> <span class="tok-string">&#39;duration&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">120</span><span class="tok-punct">],</span>
+        <span class="tok-punct">],</span>
+        <span class="tok-string">&#39;logo&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-prop">UploadedFile</span><span class="tok-punct">::</span><span class="tok-func">fake</span><span class="tok-punct">()-&gt;</span><span class="tok-func">image</span><span class="tok-punct">(</span><span class="tok-string">&#39;logo.jpg&#39;</span><span class="tok-punct">,</span> <span class="tok-number">500</span><span class="tok-punct">,</span> <span class="tok-number">500</span><span class="tok-punct">),</span>
+        <span class="tok-string">&#39;cr_document&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-prop">UploadedFile</span><span class="tok-punct">::</span><span class="tok-func">fake</span><span class="tok-punct">()-&gt;</span><span class="tok-func">create</span><span class="tok-punct">(</span><span class="tok-string">&#39;cr.pdf&#39;</span><span class="tok-punct">,</span> <span class="tok-number">1000</span><span class="tok-punct">,</span> <span class="tok-string">&#39;application/pdf&#39;</span><span class="tok-punct">),</span>
+        <span class="tok-string">&#39;accepts_payments&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-bool">false</span><span class="tok-punct">,</span>
+        <span class="tok-string">&#39;terms_accepted&#39;</span>   <span class="tok-punct">=&gt;</span> <span class="tok-bool">true</span><span class="tok-punct">,</span>
+    <span class="tok-punct">],</span> <span class="tok-attr">$overrides</span><span class="tok-punct">);</span>
+<span class="tok-punct">}</span>
+
+<span class="tok-func">it</span><span class="tok-punct">(</span><span class="tok-string">&#39;يسجّل مقدّم خدمة ببيانات صحيحة&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$response</span> <span class="tok-punct">=</span> <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">post</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.register&#39;</span><span class="tok-punct">),</span> <span class="tok-func">validPayload</span><span class="tok-punct">());</span>
+
+    <span class="tok-attr">$response</span><span class="tok-punct">-&gt;</span><span class="tok-func">assertRedirect</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.pending&#39;</span><span class="tok-punct">));</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">assertDatabaseHas</span><span class="tok-punct">(</span><span class="tok-string">&#39;users&#39;</span><span class="tok-punct">,</span>     <span class="tok-punct">[</span><span class="tok-string">&#39;email&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;provider@example.com&#39;</span><span class="tok-punct">]);</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">assertDatabaseHas</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-string">&#39;cr_number&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;1010123456&#39;</span><span class="tok-punct">]);</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">assertDatabaseCount</span><span class="tok-punct">(</span><span class="tok-string">&#39;services&#39;</span><span class="tok-punct">,</span> <span class="tok-number">2</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-func">it</span><span class="tok-punct">(</span><span class="tok-string">&#39;يرفض رقم جوّال غير سعودي&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">post</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.register&#39;</span><span class="tok-punct">),</span> <span class="tok-func">validPayload</span><span class="tok-punct">([</span><span class="tok-string">&#39;phone&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;0712345678&#39;</span><span class="tok-punct">]))</span>
+         <span class="tok-punct">-&gt;</span><span class="tok-func">assertSessionHasErrors</span><span class="tok-punct">(</span><span class="tok-string">&#39;phone&#39;</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-func">it</span><span class="tok-punct">(</span><span class="tok-string">&#39;يرفض سجلاً تجارياً بعدد أرقام خاطئ&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">post</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.register&#39;</span><span class="tok-punct">),</span> <span class="tok-func">validPayload</span><span class="tok-punct">([</span><span class="tok-string">&#39;cr_number&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;12345&#39;</span><span class="tok-punct">]))</span>
+         <span class="tok-punct">-&gt;</span><span class="tok-func">assertSessionHasErrors</span><span class="tok-punct">(</span><span class="tok-string">&#39;cr_number&#39;</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-func">it</span><span class="tok-punct">(</span><span class="tok-string">&#39;يرفض البريد المؤقّت&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">post</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.register&#39;</span><span class="tok-punct">),</span> <span class="tok-func">validPayload</span><span class="tok-punct">([</span><span class="tok-string">&#39;email&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;x@mailinator.com&#39;</span><span class="tok-punct">]))</span>
+         <span class="tok-punct">-&gt;</span><span class="tok-func">assertSessionHasErrors</span><span class="tok-punct">(</span><span class="tok-string">&#39;email&#39;</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-func">it</span><span class="tok-punct">(</span><span class="tok-string">&#39;يرفض من هو دون الثامنة عشرة&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">post</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.register&#39;</span><span class="tok-punct">),</span> <span class="tok-func">validPayload</span><span class="tok-punct">([</span>
+        <span class="tok-string">&#39;birthdate&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">subYears</span><span class="tok-punct">(</span><span class="tok-number">16</span><span class="tok-punct">)-&gt;</span><span class="tok-func">toDateString</span><span class="tok-punct">(),</span>
+    <span class="tok-punct">]))-&gt;</span><span class="tok-func">assertSessionHasErrors</span><span class="tok-punct">(</span><span class="tok-string">&#39;birthdate&#39;</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-func">it</span><span class="tok-punct">(</span><span class="tok-string">&#39;يرفض تجاوز مجموع مدد الخدمات ثماني ساعات&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">post</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.register&#39;</span><span class="tok-punct">),</span> <span class="tok-func">validPayload</span><span class="tok-punct">([</span>
+        <span class="tok-string">&#39;services&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+            <span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;خدمة أولى&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;price&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">100</span><span class="tok-punct">,</span> <span class="tok-string">&#39;duration&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">300</span><span class="tok-punct">],</span>
+            <span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;خدمة ثانية&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;price&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">100</span><span class="tok-punct">,</span> <span class="tok-string">&#39;duration&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">300</span><span class="tok-punct">],</span>
+        <span class="tok-punct">],</span>
+    <span class="tok-punct">]))-&gt;</span><span class="tok-func">assertSessionHasErrors</span><span class="tok-punct">(</span><span class="tok-string">&#39;services&#39;</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-func">it</span><span class="tok-punct">(</span><span class="tok-string">&#39;يرفض تكرار أسماء الخدمات&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">post</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.register&#39;</span><span class="tok-punct">),</span> <span class="tok-func">validPayload</span><span class="tok-punct">([</span>
+        <span class="tok-string">&#39;services&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-punct">[</span>
+            <span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;قصّ شعر&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;price&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">80</span><span class="tok-punct">,</span> <span class="tok-string">&#39;duration&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">45</span><span class="tok-punct">],</span>
+            <span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;قصّ شعر&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;price&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">90</span><span class="tok-punct">,</span> <span class="tok-string">&#39;duration&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-number">45</span><span class="tok-punct">],</span>
+        <span class="tok-punct">],</span>
+    <span class="tok-punct">]))-&gt;</span><span class="tok-func">assertSessionHasErrors</span><span class="tok-punct">(</span><span class="tok-string">&#39;services&#39;</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-func">it</span><span class="tok-punct">(</span><span class="tok-string">&#39;يطلب الآيبان عند اختيار استقبال المدفوعات&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">post</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.register&#39;</span><span class="tok-punct">),</span> <span class="tok-func">validPayload</span><span class="tok-punct">([</span>
+        <span class="tok-string">&#39;accepts_payments&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-bool">true</span><span class="tok-punct">,</span>
+    <span class="tok-punct">]))-&gt;</span><span class="tok-func">assertSessionHasErrors</span><span class="tok-punct">([</span><span class="tok-string">&#39;iban&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;bank_name&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;account_holder&#39;</span><span class="tok-punct">]);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-func">it</span><span class="tok-punct">(</span><span class="tok-string">&#39;يرفض شعاراً غير مربّع&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">post</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.register&#39;</span><span class="tok-punct">),</span> <span class="tok-func">validPayload</span><span class="tok-punct">([</span>
+        <span class="tok-string">&#39;logo&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-prop">UploadedFile</span><span class="tok-punct">::</span><span class="tok-func">fake</span><span class="tok-punct">()-&gt;</span><span class="tok-func">image</span><span class="tok-punct">(</span><span class="tok-string">&#39;logo.jpg&#39;</span><span class="tok-punct">,</span> <span class="tok-number">800</span><span class="tok-punct">,</span> <span class="tok-number">400</span><span class="tok-punct">),</span>
+    <span class="tok-punct">]))-&gt;</span><span class="tok-func">assertSessionHasErrors</span><span class="tok-punct">(</span><span class="tok-string">&#39;logo&#39;</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-func">it</span><span class="tok-punct">(</span><span class="tok-string">&#39;يحوّل الأرقام العربية في رقم الجوّال&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-attr">$this</span><span class="tok-punct">-&gt;</span><span class="tok-func">post</span><span class="tok-punct">(</span><span class="tok-func">route</span><span class="tok-punct">(</span><span class="tok-string">&#39;providers.register&#39;</span><span class="tok-punct">),</span> <span class="tok-func">validPayload</span><span class="tok-punct">([</span>
+        <span class="tok-string">&#39;phone&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;٠٥٥١٢٣٤٥٦٨&#39;</span><span class="tok-punct">,</span>
+    <span class="tok-punct">]))-&gt;</span><span class="tok-func">assertSessionDoesntHaveErrors</span><span class="tok-punct">(</span><span class="tok-string">&#39;phone&#39;</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span></code></pre></div></details></div></section><h2 id="sec-12">اختبر نفسك</h2><section class="quiz"><h2 id="sec-13"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. ما ميزة صنف الطلب على <code>$request-&gt;validate()</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>يجمع الصلاحية والتنظيف والتحقّق والرسائل في مكان واحد قابل لإعادة الاستخدام والاختبار</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>إلزامي</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>يقبل قواعد أكثر</span></label></div><div class="q-explain"><strong>الشرح:</strong> ويُستخدم في <code>store</code> و <code>update</code> معاً، ويبقي المتحكّم نظيفاً.</div></div><div class="q-item"><p class="q-text">2. لماذا نضع <code>nullable</code> أولاً في مصفوفة القواعد؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>اصطلاح</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>لأن القواعد تُفحص بالترتيب، فقاعدة مثل <code>date</code> قد تفشل على null قبل معرفة أنه اختياري</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>أسرع</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>لا يهمّ</span></label></div><div class="q-explain"><strong>الشرح:</strong> وترتيب <code>bail</code> أولاً يوقف بقيّة قواعد الحقل عند أول فشل.</div></div><div class="q-item"><p class="q-text">3. ما وظيفة <code>Rule::unique(&#39;users&#39;)-&gt;ignore($id)</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يتجاهل التحقّق</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>يتحقّق من التفرّد مع استثناء السجلّ الحالي — ضروري في التعديل</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يحذف المكرّر</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>يعطّل القاعدة</span></label></div><div class="q-explain"><strong>الشرح:</strong> بدونه يفشل تعديل المستخدم لأن بريده «مستخدم من قبل» — من قِبله هو.</div></div><div class="q-item"><p class="q-text">4. ما فائدة <code>prepareForValidation()</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يعرض الأخطاء</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>ينظّف ويطبّع المدخلات قبل تطبيق القواعد</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يحفظ البيانات</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>يفحص الصلاحية</span></label></div><div class="q-explain"><strong>الشرح:</strong> مثالي لتوحيد الأرقام العربية وتنظيف الفراغات وتوليد slug.</div></div><div class="q-item"><p class="q-text">5. ما الفرق بين <code>messages()</code> و <code>attributes()</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>لا فرق</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span><code>messages</code> تخصّص نصّ الرسالة كاملاً، و<code>attributes</code> تترجم اسم الحقل داخل الرسائل الافتراضية</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>العكس</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>الثانية للأخطاء</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>attributes</code> أوفر: تكتب اسم الحقل مرة واحدة فيظهر عربياً في كل رسائله.</div></div><div class="q-item"><p class="q-text">6. أين تخزّن الملفات المرفوعة؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>في <code>public/</code> مباشرة</span></label><label class="q-option"><input type="radio" name="q1_5" value="correct"><span>في <code>storage/app/public</code> مع رابط رمزي، أو قرص خاص للوثائق الحسّاسة</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>في قاعدة البيانات</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>في <code>resources/</code></span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>php artisan storage:link</code> ينشئ الرابط، والوثائق الحسّاسة تُخزَّن على قرص غير عام تماماً.</div></div><div class="q-item"><p class="q-text">7. متى تستخدم <code>$validator-&gt;after()</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>دائماً</span></label><label class="q-option"><input type="radio" name="q1_6" value="correct"><span>للتحقّق الذي يحتاج عدة حقول معاً أو منطق عمل لا تعبّر عنه قاعدة واحدة</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>للرسائل</span></label><label class="q-option"><input type="radio" name="q1_6" value="wrong"><span>للملفات</span></label></div><div class="q-explain"><strong>الشرح:</strong> مثل التأكّد أن مجموع القيم لا يتجاوز حدّاً، أو أن الحقول لا تتعارض.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="laravel/07-validation" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="06-relationships.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>الدرس السابق</small><b>العلاقات في Eloquent</b></span></a>
+  <a class="next" href="08-auth.html"><span><small>الدرس التالي</small><b>المصادقة والصلاحيات</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Laravel</h3>
+        <div class="ring-wrap" data-ring data-track="laravel" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">ثلاث طرق للتحقّق</a></li><li><a href="#sec-2">صنف الطلب المخصّص</a></li><li><a href="#sec-3">أهمّ القواعد</a></li><li><a href="#sec-4">كلمات المرور</a></li><li><a href="#sec-5">رفع الملفات</a></li><li><a href="#sec-6">القواعد المخصّصة</a></li><li><a href="#sec-7">الترجمة والرسائل</a></li><li><a href="#sec-8">عرض الأخطاء</a></li><li><a href="#sec-9">استجابة API</a></li><li><a href="#sec-10">تمرين</a></li><li><a href="#sec-11">نظام تحقّق كامل لتسجيل مقدّم خدمة</a></li><li><a href="#sec-12">اختبر نفسك</a></li><li><a href="#sec-13">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>$request-&gt;validate([...])</code><small>تحقّق مباشر</small></div><div class="ref-item"><code>make:request</code><small>صنف طلب</small></div><div class="ref-item"><code>required|string|max:255</code><small>صيغة نصّية</small></div><div class="ref-item"><code>[&#39;required&#39;, &#39;string&#39;]</code><small>صيغة مصفوفة — الأفضل</small></div><div class="ref-item"><code>Rule::unique()-&gt;ignore()</code><small>فريد مع استثناء</small></div><div class="ref-item"><code>$request-&gt;validated()</code><small>البيانات المتحقّقة</small></div><div class="ref-item"><code>sometimes</code><small>تحقّق إن وُجد</small></div><div class="ref-item"><code>bail</code><small>أوقف عند أول خطأ</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="08-auth.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>المصادقة والصلاحيات<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>

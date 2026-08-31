@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-track="laravel">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مقدمة في Laravel وتهيئة البيئة — مسار Laravel | CodeWay Web</title>
+<meta name="description" content="ما هو Laravel ولماذا يتصدّر عالم PHP، تثبيته بـ Composer، بنية المشروع، وأدوات Artisan.">
+<meta name="author" content="CodeWay Web">
+<meta property="og:title" content="مقدمة في Laravel وتهيئة البيئة — مسار Laravel | CodeWay Web">
+<meta property="og:description" content="ما هو Laravel ولماذا يتصدّر عالم PHP، تثبيته بـ Composer، بنية المشروع، وأدوات Artisan.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white' font-family='monospace'%3E%26lt;%2F%26gt;%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/theme.css">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/lesson.css">
+<script>
+/* منع وميض الثيم قبل تحميل السكربت الرئيسي */
+(function(){try{var t=JSON.parse(localStorage.getItem('cw:theme'));if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">تخطّي إلى المحتوى</a>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="التنقّل الرئيسي"><a href="../../index.html">الرئيسية</a><a href="../../tracks.html" aria-current="page">المسارات</a><a href="../../roadmap.html">خريطة الطريق</a><a href="../../about.html">عن المنصة</a></nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="icon-sun"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<div class="read-progress"></div>
+<div class="container">
+  <nav class="breadcrumb" aria-label="مسار التنقّل">
+    <ol>
+      <li><a href="../../index.html">الرئيسية</a></li>
+      <li><a href="../../tracks.html">المسارات</a></li>
+      <li><a href="index.html">Laravel</a></li>
+      <li aria-current="page">مقدمة في Laravel وتهيئة البيئة</li>
+    </ol>
+  </nav>
+
+  <header class="lesson-hero">
+    <div class="kicker">
+      <span class="badge badge-brand"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> الدرس 1 من 10</span>
+      <span class="badge level-مبتدئ">مبتدئ</span>
+      <span class="badge">مقدمة</span><span class="badge">تهيئة</span><span class="badge">Artisan</span>
+    </div>
+    <h1>مقدمة في Laravel وتهيئة البيئة</h1>
+    <p class="summary">ما هو Laravel ولماذا يتصدّر عالم PHP، تثبيته بـ Composer، بنية المشروع، وأدوات Artisan.</p>
+    <div class="lesson-facts">
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 45 دقيقة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> مسار Laravel</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 6 أسئلة</span>
+      <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 1 تمرين</span>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <article class="lesson-main">
+      <div class="objectives"><h2><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> ماذا ستتعلّم في هذا الدرس؟</h2><ul><li>تعرف ما يقدّمه Laravel ومتى تختاره.</li><li>تثبّت PHP و Composer وتنشئ مشروعاً جديداً.</li><li>تفهم بنية مجلّدات المشروع ودور كلٍّ منها.</li><li>تستخدم Artisan لتوليد الملفات وتشغيل المهام.</li><li>تضبط ملف <code>.env</code> وتفهم لماذا لا يُرفع لـ Git.</li><li>تشغّل أول صفحة وتفهم مسار الطلب.</li></ul></div>
+      <h2 id="sec-1">ما هو Laravel؟</h2><p>إطار عمل PHP كامل أنشأه Taylor Otwell عام 2011، وهو اليوم الأكثر استخداماً في عالم PHP بفارق كبير. فلسفته قريبة من Rails: <strong>صياغة أنيقة</strong> و<strong>اتفاقات ذكية</strong> و<strong>أدوات جاهزة لكل شيء</strong>.</p><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// مثال يوضّح فلسفة Laravel — كل ما يلزم لواجهة برمجية كاملة</span>
+
+<span class="tok-prop">Route</span><span class="tok-punct">::</span><span class="tok-func">get</span><span class="tok-punct">(</span><span class="tok-string">&#39;/posts&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">published</span><span class="tok-punct">()</span>
+        <span class="tok-punct">-&gt;</span><span class="tok-func">with</span><span class="tok-punct">(</span><span class="tok-string">&#39;author&#39;</span><span class="tok-punct">)</span>
+        <span class="tok-punct">-&gt;</span><span class="tok-func">latest</span><span class="tok-punct">()</span>
+        <span class="tok-punct">-&gt;</span><span class="tok-func">paginate</span><span class="tok-punct">(</span><span class="tok-number">15</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span></code></pre></div><p>ثلاثة أسطر تُنتج: استعلاماً محسّناً، وتحميلاً مسبقاً للعلاقة، وترتيباً، وترقيم صفحات، وتحويلاً تلقائياً إلى JSON مع روابط الصفحات.</p><h2 id="sec-2">ما الذي يأتي جاهزاً؟</h2><div class="feature-grid"><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h4>Eloquent ORM</h4><p>تتعامل مع الجداول ككائنات PHP، والعلاقات بسطر واحد.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><h4>قوالب Blade</h4><p>محرّك قوالب سريع مع وراثة ومكوّنات وهروب تلقائي.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>مصادقة وصلاحيات</h4><p>تسجيل ودخول وإعادة تعيين كلمة المرور وسياسات صلاحيات.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div><h4>Artisan</h4><p>سطر أوامر يولّد الملفات ويشغّل الهجرات والمهام.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div><h4>الطوابير والجدولة</h4><p>مهام خلفية ومهام مجدولة بلا إعداد معقّد.</p></div><div class="feature"><div class="fi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h4>اختبارات مدمجة</h4><p>PHPUnit و Pest مع مساعدات اختبار HTTP وقاعدة البيانات.</p></div></div><div class="table-wrap"><table class="data"><thead><tr><th>المعيار</th><th>Laravel</th><th>ملاحظة</th></tr></thead><tbody><tr><td><strong>سرعة التطوير</strong></td><td>ممتازة</td><td>أدوات جاهزة لكل مهمة شائعة</td></tr><tr><td><strong>منحنى التعلّم</strong></td><td>متوسّط</td><td>كثير من «السحر» يحتاج فهماً</td></tr><tr><td><strong>المجتمع</strong></td><td>ضخم</td><td>أكبر نظام بيئي في PHP</td></tr><tr><td><strong>الاستضافة</strong></td><td>الأسهل</td><td>PHP مدعوم في كل مكان وبأرخص الأسعار</td></tr><tr><td><strong>الأنسب لـ</strong></td><td>تطبيقات الويب ولوحات الإدارة والواجهات البرمجية</td><td>ليس خياراً للحوسبة الفورية أو الأنظمة المدمجة</td></tr></tbody></table></div><h2 id="sec-3">المتطلّبات والتثبيت</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># 1) تحقّق من PHP — Laravel 11 يحتاج 8.2 فأحدث</span>
+php <span class="tok-attr">-v</span>
+
+<span class="tok-comment"># ماك</span>
+brew install php composer
+
+<span class="tok-comment"># أوبنتو</span>
+<span class="tok-keyword">sudo</span> apt install php8.<span class="tok-number">3</span> php8.<span class="tok-number">3</span>-{cli,mbstring,xml,<span class="tok-keyword">curl</span>,zip,mysql,sqlite3} composer
+
+<span class="tok-comment"># ويندوز: ثبّت Laravel Herd من herd.laravel.com — يشمل كل شيء</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># إنشاء مشروع</span>
+composer create-project laravel/laravel blog
+<span class="tok-keyword">cd</span> blog
+
+<span class="tok-comment"># أو عبر مثبّت Laravel</span>
+composer global require laravel/installer
+laravel new blog
+
+<span class="tok-comment"># التشغيل</span>
+php artisan serve        <span class="tok-comment"># http://localhost:8000</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>على ماك وويندوز، <strong>Laravel Herd</strong> هو أسرع طريق: يثبّت PHP و Composer و Nginx و قواعد البيانات في نقرة، ويمنح كل مشروع نطاقاً محلياً مثل <code>blog.test</code> تلقائياً.</p></div><h2 id="sec-4">بنية المشروع</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">text</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>blog/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/      ← المتحكّمات
+│   │   ├── Middleware/       ← الوسطاء
+│   │   └── Requests/         ← تحقّق النماذج
+│   ├── Models/               ← نماذج Eloquent
+│   ├── Providers/            ← مزوّدو الخدمات
+│   └── Policies/             ← سياسات الصلاحيات
+├── bootstrap/
+│   └── app.php               ← نقطة الإقلاع والإعداد (Laravel 11)
+├── config/                   ← ملفات الإعداد
+├── database/
+│   ├── migrations/           ← الهجرات
+│   ├── factories/            ← مصانع البيانات الوهمية
+│   └── seeders/              ← البذور
+├── public/                   ← جذر الويب — index.php والأصول
+├── resources/
+│   ├── views/                ← قوالب Blade
+│   ├── css/  js/             ← الأصول المصدرية
+├── routes/
+│   ├── web.php               ← مسارات الويب
+│   └── console.php           ← أوامر Artisan
+├── storage/                  ← السجلّات والملفات المرفوعة والذاكرة المؤقّتة
+├── tests/
+├── .env                      ← إعدادات البيئة (لا يُرفع لـ Git!)
+├── composer.json
+└── artisan</code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> جذر الويب هو `public/` لا مجلّد المشروع</div><p>عند النشر، وجّه الخادم إلى <code>public/</code> فقط. توجيهه لمجلّد المشروع يجعل <code>.env</code> وكل شيفرتك متاحة للتحميل عبر المتصفّح — ثغرة أمنية كاملة.</p></div><h2 id="sec-5">ملف .env</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>APP_NAME=<span class="tok-string">&quot;مدوّنتي&quot;</span>
+APP_ENV=local
+APP_KEY=base64:xxxxx          <span class="tok-comment"># يُولَّد بـ php artisan key:generate</span>
+APP_DEBUG=true                <span class="tok-comment"># ⚠️ اجعله false في الإنتاج!</span>
+APP_URL=http://localhost:<span class="tok-number">8000</span>
+
+DB_CONNECTION=mysql
+DB_HOST=<span class="tok-number">127</span>.<span class="tok-number">0</span>.<span class="tok-number">0</span>.<span class="tok-number">1</span>
+DB_PORT=<span class="tok-number">3306</span>
+DB_DATABASE=blog
+DB_USERNAME=root
+DB_PASSWORD=
+
+MAIL_MAILER=log
+QUEUE_CONNECTION=database
+SESSION_DRIVER=database
+CACHE_STORE=database</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// قراءة الإعدادات</span>
+<span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;app.name&#39;</span><span class="tok-punct">);</span>            <span class="tok-comment">// ✅ الطريقة الصحيحة</span>
+<span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;database.default&#39;</span><span class="tok-punct">);</span>
+<span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;app.debug&#39;</span><span class="tok-punct">);</span>
+
+<span class="tok-func">env</span><span class="tok-punct">(</span><span class="tok-string">&#39;APP_NAME&#39;</span><span class="tok-punct">);</span>               <span class="tok-comment">// ⚠️ يعمل في ملفات config فقط</span></code></pre></div><div class="callout callout-danger"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> لا تستخدم `env()` خارج ملفات `config/`</div><p>عند تخزين الإعدادات مؤقّتاً في الإنتاج بـ <code>config:cache</code>، تُرجع <code>env()</code> قيمة <code>null</code> في كل مكان آخر. اقرأ دائماً عبر <code>config()</code>، وضع أيّ قيمة تحتاجها في ملف إعداد أولاً.</p></div><div class="callout callout-warn"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> `.env` لا يُرفع لـ Git أبداً</div><p>يحتوي كلمات مرور قاعدة البيانات ومفاتيح الواجهات البرمجية. الملف مُدرَج في <code>.gitignore</code> افتراضياً — لا تُخرجه منه. شارك البنية عبر <code>.env.example</code> بقيم فارغة.</p></div><h2 id="sec-6">Artisan</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>php artisan list                    <span class="tok-comment"># كل الأوامر</span>
+php artisan help make:model
+
+<span class="tok-comment"># التوليد</span>
+php artisan make:model Post <span class="tok-attr">-mfsc</span>   <span class="tok-comment"># نموذج + هجرة + مصنع + بذرة + متحكّم</span>
+php artisan make:controller PostController <span class="tok-attr">--resource</span>
+php artisan make:migration create_posts_table
+php artisan make:request StorePostRequest
+php artisan make:middleware EnsureUserIsAdmin
+php artisan make:policy PostPolicy <span class="tok-attr">--model</span>=Post
+php artisan make:seeder PostSeeder
+php artisan make:test PostTest
+
+<span class="tok-comment"># قاعدة البيانات</span>
+php artisan migrate
+php artisan migrate:rollback
+php artisan migrate:fresh <span class="tok-attr">--seed</span>     <span class="tok-comment"># يمسح كل شيء ويعيد البناء</span>
+php artisan db:seed
+
+<span class="tok-comment"># التشخيص</span>
+php artisan route:list
+php artisan tinker                   <span class="tok-comment"># صدفة تفاعلية</span>
+php artisan about                    <span class="tok-comment"># معلومات المشروع</span>
+
+<span class="tok-comment"># الذاكرة المؤقّتة</span>
+php artisan optimize:clear           <span class="tok-comment"># يمسح الكل</span>
+php artisan config:cache             <span class="tok-comment"># للإنتاج فقط</span></code></pre></div><h3 id="sec-7">Tinker — مختبرك التفاعلي</h3><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code>php artisan tinker
+
+<span class="tok-punct">&gt;&gt;&gt;</span> <span class="tok-prop">User</span><span class="tok-punct">::</span><span class="tok-func">count</span><span class="tok-punct">()</span>
+<span class="tok-punct">=&gt;</span> <span class="tok-number">5</span>
+
+<span class="tok-punct">&gt;&gt;&gt;</span> <span class="tok-attr">$user</span> <span class="tok-punct">=</span> <span class="tok-prop">User</span><span class="tok-punct">::</span><span class="tok-func">factory</span><span class="tok-punct">()-&gt;</span><span class="tok-func">create</span><span class="tok-punct">([</span><span class="tok-string">&#39;name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;سارة&#39;</span><span class="tok-punct">]);</span>
+<span class="tok-punct">&gt;&gt;&gt;</span> <span class="tok-attr">$user</span><span class="tok-punct">-&gt;</span><span class="tok-func">posts</span><span class="tok-punct">()-&gt;</span><span class="tok-func">create</span><span class="tok-punct">([</span><span class="tok-string">&#39;title&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;أول مقال&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;body&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-string">&#39;…&#39;</span><span class="tok-punct">]);</span>
+
+<span class="tok-punct">&gt;&gt;&gt;</span> <span class="tok-prop">Post</span><span class="tok-punct">::</span><span class="tok-func">with</span><span class="tok-punct">(</span><span class="tok-string">&#39;user&#39;</span><span class="tok-punct">)-&gt;</span><span class="tok-func">latest</span><span class="tok-punct">()-&gt;</span><span class="tok-func">first</span><span class="tok-punct">()-&gt;</span><span class="tok-func">toArray</span><span class="tok-punct">()</span>
+
+<span class="tok-punct">&gt;&gt;&gt;</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">addDays</span><span class="tok-punct">(</span><span class="tok-number">7</span><span class="tok-punct">)-&gt;</span><span class="tok-func">format</span><span class="tok-punct">(</span><span class="tok-string">&#39;Y-m-d&#39;</span><span class="tok-punct">)</span>
+<span class="tok-punct">=&gt;</span> <span class="tok-string">&quot;2026-09-03&quot;</span>
+
+<span class="tok-punct">&gt;&gt;&gt;</span> <span class="tok-prop">Str</span><span class="tok-punct">::</span><span class="tok-func">slug</span><span class="tok-punct">(</span><span class="tok-string">&#39;مرحبا بالعالم&#39;</span><span class="tok-punct">)</span></code></pre></div><div class="callout callout-tip"><div class="callout-title"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> نصيحة</div><p>Tinker هو أسرع طريقة لاستكشاف نماذجك وتجربة الاستعلامات. استخدمه بدل كتابة مسار مؤقّت لتجربة شيء.</p></div><h2 id="sec-8">أول مسار وأول صفحة</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// routes/web.php</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Support</span>\<span class="tok-prop">Facades</span>\<span class="tok-prop">Route</span><span class="tok-punct">;</span>
+
+<span class="tok-prop">Route</span><span class="tok-punct">::</span><span class="tok-func">get</span><span class="tok-punct">(</span><span class="tok-string">&#39;/&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-func">view</span><span class="tok-punct">(</span><span class="tok-string">&#39;welcome&#39;</span><span class="tok-punct">);</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-prop">Route</span><span class="tok-punct">::</span><span class="tok-func">get</span><span class="tok-punct">(</span><span class="tok-string">&#39;/hello&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-string">&#39;مرحباً بالعالم&#39;</span><span class="tok-punct">;</span>
+<span class="tok-punct">});</span>
+
+<span class="tok-prop">Route</span><span class="tok-punct">::</span><span class="tok-func">get</span><span class="tok-punct">(</span><span class="tok-string">&#39;/hello/{name}&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">(</span>string <span class="tok-attr">$name</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-func">view</span><span class="tok-punct">(</span><span class="tok-string">&#39;hello&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$name</span><span class="tok-punct">]);</span>
+<span class="tok-punct">});</span></code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">blade</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-punct">{{--</span> resources<span class="tok-punct">/</span>views<span class="tok-punct">/</span>hello<span class="tok-punct">.</span>blade<span class="tok-punct">.</span>php <span class="tok-punct">--}}</span>
+<span class="tok-punct">&lt;!</span><span class="tok-prop">DOCTYPE</span> html<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;</span>html lang<span class="tok-punct">=</span><span class="tok-string">&quot;ar&quot;</span> dir<span class="tok-punct">=</span><span class="tok-string">&quot;rtl&quot;</span><span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;</span>head<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>meta charset<span class="tok-punct">=</span><span class="tok-string">&quot;utf-8&quot;</span><span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>title<span class="tok-punct">&gt;{{</span> <span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;app.name&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">}}&lt;/</span>title<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;/</span>head<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;</span>body<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>h1<span class="tok-punct">&gt;</span>مرحباً يا <span class="tok-punct">{{</span> <span class="tok-attr">$name</span> <span class="tok-punct">}}!&lt;/</span>h1<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;</span>اليوم<span class="tok-punct">:</span> <span class="tok-punct">{{</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">format</span><span class="tok-punct">(</span><span class="tok-string">&#39;Y-m-d&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">}}&lt;/</span>p<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;/</span>body<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;/</span>html<span class="tok-punct">&gt;</span></code></pre></div><h2 id="sec-9">مسار الطلب في Laravel</h2><div class="demo"><div class="demo-head"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> دورة حياة الطلب</div><iframe title="دورة حياة الطلب" loading="lazy" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;style&gt;*{box-sizing:border-box}body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;margin:0;padding:18px;line-height:1.8;color:#0f172a;background:#fff}body{font-family:system-ui;margin:0;padding:14px;background:#fff}.flow{display:flex;flex-direction:column;gap:7px}.step{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc}.n{width:25px;height:25px;border-radius:50%;background:#ff2d20;color:#fff;display:grid;place-items:center;font-weight:700;font-size:.78em;flex-shrink:0}.t{font-weight:700;font-size:.85em;margin-bottom:1px}.d{font-size:.76em;color:#64748b}.arr{text-align:center;color:#cbd5e1;font-size:.85em;line-height:1}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;flow&quot;&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;1&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;public/index.php&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;نقطة الدخول الوحيدة لكل الطلبات&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;2&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;bootstrap/app.php&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;إقلاع التطبيق وتحميل مزوّدي الخدمات&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;3&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;الوسطاء العامّون&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;الجلسة، رمز CSRF، التشفير&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;4&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;الموجّه — routes/web.php&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;يطابق المسار ويحدّد المتحكّم&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;5&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;وسطاء المسار&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;auth، الصلاحيات، تحديد المعدّل&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;6&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;المتحكّم&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;ينسّق: النموذج ← البيانات ← العرض&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;arr&quot;&gt;▼&lt;/div&gt;&lt;div class=&quot;step&quot;&gt;&lt;div class=&quot;n&quot;&gt;7&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;t&quot;&gt;الاستجابة&lt;/div&gt;&lt;div class=&quot;d&quot;&gt;HTML أو JSON تعود عبر الوسطاء نفسها&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;script&gt;(function(){function s(){try{parent.postMessage({cwHeight:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},&quot;*&quot;)}catch(e){}}window.addEventListener(&quot;load&quot;,s);setTimeout(s,60);setTimeout(s,400);if(window.ResizeObserver){new ResizeObserver(s).observe(document.body)}})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="height:400px"></iframe></div><h2 id="sec-10">أدوات التطوير الأساسية</h2><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">bash</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-comment"># تنسيق الشيفرة — مضمّن في Laravel</span>
+./vendor/bin/pint
+
+<span class="tok-comment"># تحليل ساكن</span>
+composer require <span class="tok-attr">--dev</span> larastan/larastan
+./vendor/bin/phpstan analyse
+
+<span class="tok-comment"># شريط تنقيح في المتصفّح</span>
+composer require <span class="tok-attr">--dev</span> barryvdh/laravel-debugbar
+
+<span class="tok-comment"># مساعدات IDE للإكمال التلقائي</span>
+composer require <span class="tok-attr">--dev</span> barryvdh/laravel-ide-helper
+php artisan ide-helper:generate</code></pre></div><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// التنقيح</span>
+<span class="tok-func">dd</span><span class="tok-punct">(</span><span class="tok-attr">$variable</span><span class="tok-punct">);</span>          <span class="tok-comment">// اطبع وأوقف التنفيذ</span>
+<span class="tok-func">dump</span><span class="tok-punct">(</span><span class="tok-attr">$variable</span><span class="tok-punct">);</span>        <span class="tok-comment">// اطبع وأكمل</span>
+<span class="tok-func">ray</span><span class="tok-punct">(</span><span class="tok-attr">$variable</span><span class="tok-punct">);</span>         <span class="tok-comment">// مع تطبيق Ray</span>
+<span class="tok-func">logger</span><span class="tok-punct">()-&gt;</span><span class="tok-func">info</span><span class="tok-punct">(</span><span class="tok-string">&#39;رسالة&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-string">&#39;context&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$data</span><span class="tok-punct">]);</span>
+<span class="tok-prop">Log</span><span class="tok-punct">::</span><span class="tok-func">error</span><span class="tok-punct">(</span><span class="tok-string">&#39;خطأ&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-string">&#39;exception&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$e</span><span class="tok-punct">]);</span></code></pre></div><h2 id="sec-11">تمرين</h2><section class="exercise" id="sec-12"><header><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><h3>تهيئة مشروع وصفحة تعريف</h3></header><div class="exercise-body"><p>أنشئ مشروع Laravel جديداً واضبطه وابنِ صفحة تعريف ديناميكية.</p><p><strong>المطلوب:</strong></p><ul><li>أنشئ مشروعاً باسم <code>codeway</code> وشغّله على <code>http://localhost:8000</code>.</li><li>اضبط <code>.env</code>: اسم التطبيق بالعربية، والمنطقة الزمنية <code>Asia/Riyadh</code> في <code>config/app.php</code>.</li><li>أنشئ مسار <code>/</code> يعرض صفحة رئيسية، و <code>/about</code> يعرض صفحة تعريف.</li><li>أنشئ مسار <code>/greet/{name}</code> يمرّر الاسم للعرض، ويستخدم &quot;زائر&quot; إن لم يُمرَّر.</li><li>أنشئ قالباً أساسياً <code>layouts/app.blade.php</code> بـ RTL وخطّ عربي، وورّث منه الصفحتين.</li><li>اعرض في صفحة التعريف: اسم التطبيق من <code>config()</code>، إصدار Laravel، إصدار PHP، والتاريخ الهجري والميلادي.</li><li>أضف شريط تنقّل مشتركاً يبرز الصفحة الحالية.</li><li>أنشئ مسار <code>/api/info</code> يُرجع نفس المعلومات بصيغة JSON.</li><li>أضف صفحة خطأ 404 مخصّصة بالعربية.</li></ul><p><strong>تلميحات:</strong></p><ul class="hint-list"><li>💡 <code>Route::get(&#39;/greet/{name?}&#39;, ...)</code> مع <code>?</code> يجعل المعامل اختيارياً.</li><li>💡 <code>app()-&gt;version()</code> و <code>PHP_VERSION</code> للإصدارات.</li><li>💡 <code>request()-&gt;routeIs(&#39;about&#39;)</code> لمعرفة المسار الحالي.</li><li>💡 صفحة 404 المخصّصة: <code>resources/views/errors/404.blade.php</code>.</li></ul><details class="solution"><summary>عرض الحل المقترح</summary><div class="code-block"><div class="code-head"><span class="code-dots"><i></i><i></i><i></i></span><span class="code-title">الحل</span><span class="code-lang">php</span><button type="button" class="copy-btn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ</button></div><pre><code><span class="tok-keyword">&lt;?php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// routes/web.php</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">use</span> <span class="tok-prop">Illuminate</span>\<span class="tok-prop">Support</span>\<span class="tok-prop">Facades</span>\<span class="tok-prop">Route</span><span class="tok-punct">;</span>
+
+<span class="tok-prop">Route</span><span class="tok-punct">::</span><span class="tok-func">get</span><span class="tok-punct">(</span><span class="tok-string">&#39;/&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">()</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">view</span><span class="tok-punct">(</span><span class="tok-string">&#39;home&#39;</span><span class="tok-punct">))-&gt;</span><span class="tok-func">name</span><span class="tok-punct">(</span><span class="tok-string">&#39;home&#39;</span><span class="tok-punct">);</span>
+
+<span class="tok-prop">Route</span><span class="tok-punct">::</span><span class="tok-func">get</span><span class="tok-punct">(</span><span class="tok-string">&#39;/about&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">()</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-func">view</span><span class="tok-punct">(</span><span class="tok-string">&#39;about&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[</span>
+        <span class="tok-string">&#39;info&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">app_info</span><span class="tok-punct">(),</span>
+    <span class="tok-punct">]);</span>
+<span class="tok-punct">})-&gt;</span><span class="tok-func">name</span><span class="tok-punct">(</span><span class="tok-string">&#39;about&#39;</span><span class="tok-punct">);</span>
+
+<span class="tok-prop">Route</span><span class="tok-punct">::</span><span class="tok-func">get</span><span class="tok-punct">(</span><span class="tok-string">&#39;/greet/{name?}&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">function</span> <span class="tok-punct">(?</span>string <span class="tok-attr">$name</span> <span class="tok-punct">=</span> <span class="tok-bool">null</span><span class="tok-punct">)</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">return</span> <span class="tok-func">view</span><span class="tok-punct">(</span><span class="tok-string">&#39;greet&#39;</span><span class="tok-punct">,</span> <span class="tok-punct">[</span><span class="tok-string">&#39;name&#39;</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$name</span> <span class="tok-punct">?:</span> <span class="tok-string">&#39;زائر&#39;</span><span class="tok-punct">]);</span>
+<span class="tok-punct">})-&gt;</span><span class="tok-func">name</span><span class="tok-punct">(</span><span class="tok-string">&#39;greet&#39;</span><span class="tok-punct">);</span>
+
+<span class="tok-prop">Route</span><span class="tok-punct">::</span><span class="tok-func">get</span><span class="tok-punct">(</span><span class="tok-string">&#39;/api/info&#39;</span><span class="tok-punct">,</span> <span class="tok-keyword">fn</span> <span class="tok-punct">()</span> <span class="tok-punct">=&gt;</span> <span class="tok-func">response</span><span class="tok-punct">()-&gt;</span><span class="tok-func">json</span><span class="tok-punct">(</span><span class="tok-func">app_info</span><span class="tok-punct">()));</span>
+
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-comment">// app/helpers.php  (سجّله في composer.json → autoload.files)</span>
+<span class="tok-comment">// ═══════════════════════════════════════════════</span>
+<span class="tok-keyword">if</span> <span class="tok-punct">(!</span> <span class="tok-func">function_exists</span><span class="tok-punct">(</span><span class="tok-string">&#39;app_info&#39;</span><span class="tok-punct">))</span> <span class="tok-punct">{</span>
+    <span class="tok-keyword">function</span> <span class="tok-func">app_info</span><span class="tok-punct">():</span> <span class="tok-keyword">array</span>
+    <span class="tok-punct">{</span>
+        <span class="tok-keyword">return</span> <span class="tok-punct">[</span>
+            <span class="tok-string">&#39;app&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;app.name&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;environment&#39;</span>  <span class="tok-punct">=&gt;</span> <span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;app.environment&#39;</span><span class="tok-punct">,</span> <span class="tok-func">app</span><span class="tok-punct">()-&gt;</span><span class="tok-func">environment</span><span class="tok-punct">()),</span>
+            <span class="tok-string">&#39;laravel&#39;</span>      <span class="tok-punct">=&gt;</span> <span class="tok-func">app</span><span class="tok-punct">()-&gt;</span><span class="tok-func">version</span><span class="tok-punct">(),</span>
+            <span class="tok-string">&#39;php&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-prop">PHP_VERSION</span><span class="tok-punct">,</span>
+            <span class="tok-string">&#39;timezone&#39;</span>     <span class="tok-punct">=&gt;</span> <span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;app.timezone&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;date&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">format</span><span class="tok-punct">(</span><span class="tok-string">&#39;Y-m-d&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;time&#39;</span>         <span class="tok-punct">=&gt;</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">format</span><span class="tok-punct">(</span><span class="tok-string">&#39;H:i&#39;</span><span class="tok-punct">),</span>
+            <span class="tok-string">&#39;day&#39;</span>          <span class="tok-punct">=&gt;</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">translatedFormat</span><span class="tok-punct">(</span><span class="tok-string">&#39;l&#39;</span><span class="tok-punct">),</span>
+        <span class="tok-punct">];</span>
+    <span class="tok-punct">}</span>
+<span class="tok-punct">}</span>
+<span class="tok-keyword">?&gt;</span>
+
+<span class="tok-punct">{{--</span> ═══════════════════════════════════════════════ <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{--</span> resources<span class="tok-punct">/</span>views<span class="tok-punct">/</span>layouts<span class="tok-punct">/</span>app<span class="tok-punct">.</span>blade<span class="tok-punct">.</span>php <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{--</span> ═══════════════════════════════════════════════ <span class="tok-punct">--}}</span>
+<span class="tok-punct">&lt;!</span><span class="tok-prop">DOCTYPE</span> html<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;</span>html lang<span class="tok-punct">=</span><span class="tok-string">&quot;ar&quot;</span> dir<span class="tok-punct">=</span><span class="tok-string">&quot;rtl&quot;</span><span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;</span>head<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>meta charset<span class="tok-punct">=</span><span class="tok-string">&quot;utf-8&quot;</span><span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>meta name<span class="tok-punct">=</span><span class="tok-string">&quot;viewport&quot;</span> content<span class="tok-punct">=</span><span class="tok-string">&quot;width=device-width, initial-scale=1&quot;</span><span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>title<span class="tok-punct">&gt;</span><span class="tok-keyword">@yield</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;الرئيسية&#39;</span><span class="tok-punct">)</span> — <span class="tok-punct">{{</span> <span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;app.name&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">}}&lt;/</span>title<span class="tok-punct">&gt;</span>
+
+    <span class="tok-punct">&lt;</span>link rel<span class="tok-punct">=</span><span class="tok-string">&quot;preconnect&quot;</span> href<span class="tok-punct">=</span><span class="tok-string">&quot;https://fonts.googleapis.com&quot;</span><span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>link href<span class="tok-punct">=</span><span class="tok-string">&quot;https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&amp;display=swap&quot;</span> rel<span class="tok-punct">=</span><span class="tok-string">&quot;stylesheet&quot;</span><span class="tok-punct">&gt;</span>
+
+    <span class="tok-punct">&lt;</span>style<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">:</span>root <span class="tok-punct">{</span> <span class="tok-punct">--</span>brand<span class="tok-punct">:</span> <span class="tok-comment">#ff2d20; --ink: #1e293b; --muted: #64748b; --line: #e2e8f0; }</span>
+        <span class="tok-punct">*</span> <span class="tok-punct">{</span> box<span class="tok-punct">-</span>sizing<span class="tok-punct">:</span> border<span class="tok-punct">-</span>box<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+        body <span class="tok-punct">{</span>
+            font<span class="tok-punct">-</span>family<span class="tok-punct">:</span> <span class="tok-prop">Cairo</span><span class="tok-punct">,</span> system<span class="tok-punct">-</span>ui<span class="tok-punct">,</span> sans<span class="tok-punct">-</span>serif<span class="tok-punct">;</span>
+            margin<span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">;</span> color<span class="tok-punct">:</span> <span class="tok-keyword">var</span><span class="tok-punct">(--</span>ink<span class="tok-punct">);</span> background<span class="tok-punct">:</span> <span class="tok-comment">#f8fafc; line-height: 1.7;</span>
+        <span class="tok-punct">}</span>
+        <span class="tok-punct">.</span>wrap <span class="tok-punct">{</span> max<span class="tok-punct">-</span>width<span class="tok-punct">:</span> 820px<span class="tok-punct">;</span> margin<span class="tok-punct">:</span> <span class="tok-number">0</span> auto<span class="tok-punct">;</span> padding<span class="tok-punct">:</span> 24px<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+        nav <span class="tok-punct">{</span> background<span class="tok-punct">:</span> <span class="tok-comment">#fff; border-bottom: 1px solid var(--line); }</span>
+        nav <span class="tok-punct">.</span>wrap <span class="tok-punct">{</span> display<span class="tok-punct">:</span> flex<span class="tok-punct">;</span> gap<span class="tok-punct">:</span> 8px<span class="tok-punct">;</span> align<span class="tok-punct">-</span>items<span class="tok-punct">:</span> center<span class="tok-punct">;</span> padding<span class="tok-punct">:</span> 14px 24px<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+        nav a <span class="tok-punct">{</span>
+            color<span class="tok-punct">:</span> <span class="tok-keyword">var</span><span class="tok-punct">(--</span>muted<span class="tok-punct">);</span> text<span class="tok-punct">-</span>decoration<span class="tok-punct">:</span> none<span class="tok-punct">;</span> padding<span class="tok-punct">:</span> 7px 14px<span class="tok-punct">;</span>
+            border<span class="tok-punct">-</span>radius<span class="tok-punct">:</span> 8px<span class="tok-punct">;</span> font<span class="tok-punct">-</span>size<span class="tok-punct">:</span> <span class="tok-punct">.</span>92rem<span class="tok-punct">;</span> font<span class="tok-punct">-</span>weight<span class="tok-punct">:</span> <span class="tok-number">600</span><span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+        nav a<span class="tok-punct">:</span>hover <span class="tok-punct">{</span> background<span class="tok-punct">:</span> <span class="tok-comment">#f1f5f9; color: var(--ink); }</span>
+        nav a<span class="tok-punct">.</span>active <span class="tok-punct">{</span> background<span class="tok-punct">:</span> <span class="tok-keyword">var</span><span class="tok-punct">(--</span>brand<span class="tok-punct">);</span> color<span class="tok-punct">:</span> <span class="tok-comment">#fff; }</span>
+        nav <span class="tok-punct">.</span>brand <span class="tok-punct">{</span> font<span class="tok-punct">-</span>weight<span class="tok-punct">:</span> <span class="tok-number">700</span><span class="tok-punct">;</span> color<span class="tok-punct">:</span> <span class="tok-keyword">var</span><span class="tok-punct">(--</span>ink<span class="tok-punct">);</span> margin<span class="tok-punct">-</span>inline<span class="tok-punct">-</span>end<span class="tok-punct">:</span> auto<span class="tok-punct">;</span> font<span class="tok-punct">-</span>size<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">.</span>05rem<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+        h1 <span class="tok-punct">{</span> font<span class="tok-punct">-</span>size<span class="tok-punct">:</span> <span class="tok-number">1</span><span class="tok-punct">.</span>9rem<span class="tok-punct">;</span> margin<span class="tok-punct">:</span> <span class="tok-number">0</span> <span class="tok-number">0</span> 8px<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+        <span class="tok-punct">.</span>card <span class="tok-punct">{</span>
+            background<span class="tok-punct">:</span> <span class="tok-comment">#fff; border: 1px solid var(--line);</span>
+            border<span class="tok-punct">-</span>radius<span class="tok-punct">:</span> 14px<span class="tok-punct">;</span> padding<span class="tok-punct">:</span> 22px<span class="tok-punct">;</span> margin<span class="tok-punct">-</span>top<span class="tok-punct">:</span> 18px<span class="tok-punct">;</span>
+        <span class="tok-punct">}</span>
+        table <span class="tok-punct">{</span> width<span class="tok-punct">:</span> <span class="tok-number">100</span><span class="tok-punct">%;</span> border<span class="tok-punct">-</span>collapse<span class="tok-punct">:</span> collapse<span class="tok-punct">;</span> <span class="tok-punct">}</span>
+        td <span class="tok-punct">{</span> padding<span class="tok-punct">:</span> 10px 4px<span class="tok-punct">;</span> border<span class="tok-punct">-</span>bottom<span class="tok-punct">:</span> 1px solid <span class="tok-keyword">var</span><span class="tok-punct">(--</span>line<span class="tok-punct">);</span> <span class="tok-punct">}</span>
+        td<span class="tok-punct">:</span>first<span class="tok-punct">-</span>child <span class="tok-punct">{</span> color<span class="tok-punct">:</span> <span class="tok-keyword">var</span><span class="tok-punct">(--</span>muted<span class="tok-punct">);</span> width<span class="tok-punct">:</span> <span class="tok-number">40</span><span class="tok-punct">%;</span> <span class="tok-punct">}</span>
+        td<span class="tok-punct">:</span>last<span class="tok-punct">-</span>child <span class="tok-punct">{</span> font<span class="tok-punct">-</span>weight<span class="tok-punct">:</span> <span class="tok-number">600</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+        tr<span class="tok-punct">:</span>last<span class="tok-punct">-</span>child td <span class="tok-punct">{</span> border<span class="tok-punct">-</span>bottom<span class="tok-punct">:</span> <span class="tok-number">0</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+        footer <span class="tok-punct">{</span> text<span class="tok-punct">-</span>align<span class="tok-punct">:</span> center<span class="tok-punct">;</span> color<span class="tok-punct">:</span> <span class="tok-keyword">var</span><span class="tok-punct">(--</span>muted<span class="tok-punct">);</span> font<span class="tok-punct">-</span>size<span class="tok-punct">:</span> <span class="tok-punct">.</span>85rem<span class="tok-punct">;</span> padding<span class="tok-punct">:</span> 28px <span class="tok-number">0</span><span class="tok-punct">;</span> <span class="tok-punct">}</span>
+    <span class="tok-punct">&lt;/</span>style<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;/</span>head<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;</span>body<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>nav<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>div <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;wrap&quot;</span><span class="tok-punct">&gt;</span>
+            <span class="tok-punct">&lt;</span>span <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;brand&quot;</span><span class="tok-punct">&gt;{{</span> <span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;app.name&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">}}&lt;/</span>span<span class="tok-punct">&gt;</span>
+            <span class="tok-punct">&lt;</span>a href<span class="tok-punct">=</span><span class="tok-string">&quot;{{ route(&#39;home&#39;) }}&quot;</span>  <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;{{ request()-&gt;routeIs(&#39;home&#39;)  ? &#39;active&#39; : &#39;&#39; }}&quot;</span><span class="tok-punct">&gt;</span>الرئيسية<span class="tok-punct">&lt;/</span>a<span class="tok-punct">&gt;</span>
+            <span class="tok-punct">&lt;</span>a href<span class="tok-punct">=</span><span class="tok-string">&quot;{{ route(&#39;about&#39;) }}&quot;</span> <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;{{ request()-&gt;routeIs(&#39;about&#39;) ? &#39;active&#39; : &#39;&#39; }}&quot;</span><span class="tok-punct">&gt;</span>عن المنصّة<span class="tok-punct">&lt;/</span>a<span class="tok-punct">&gt;</span>
+            <span class="tok-punct">&lt;</span>a href<span class="tok-punct">=</span><span class="tok-string">&quot;{{ route(&#39;greet&#39;) }}&quot;</span> <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;{{ request()-&gt;routeIs(&#39;greet&#39;) ? &#39;active&#39; : &#39;&#39; }}&quot;</span><span class="tok-punct">&gt;</span>ترحيب<span class="tok-punct">&lt;/</span>a<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;/</span>div<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;/</span>nav<span class="tok-punct">&gt;</span>
+
+    <span class="tok-punct">&lt;</span>main <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;wrap&quot;</span><span class="tok-punct">&gt;</span>
+        <span class="tok-keyword">@yield</span><span class="tok-punct">(</span><span class="tok-string">&#39;content&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">&lt;/</span>main<span class="tok-punct">&gt;</span>
+
+    <span class="tok-punct">&lt;</span>footer<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&amp;</span>copy<span class="tok-punct">;</span> <span class="tok-punct">{{</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span>year <span class="tok-punct">}}</span> <span class="tok-punct">{{</span> <span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;app.name&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">}}</span> — بُنيت بـ <span class="tok-prop">Laravel</span> <span class="tok-punct">{{</span> <span class="tok-func">app</span><span class="tok-punct">()-&gt;</span><span class="tok-func">version</span><span class="tok-punct">()</span> <span class="tok-punct">}}</span>
+    <span class="tok-punct">&lt;/</span>footer<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;/</span>body<span class="tok-punct">&gt;</span>
+<span class="tok-punct">&lt;/</span>html<span class="tok-punct">&gt;</span>
+
+<span class="tok-punct">{{--</span> ═══════════════════════════════════════════════ <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{--</span> resources<span class="tok-punct">/</span>views<span class="tok-punct">/</span>home<span class="tok-punct">.</span>blade<span class="tok-punct">.</span>php <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{--</span> ═══════════════════════════════════════════════ <span class="tok-punct">--}}</span>
+<span class="tok-keyword">@extends</span><span class="tok-punct">(</span><span class="tok-string">&#39;layouts.app&#39;</span><span class="tok-punct">)</span>
+<span class="tok-keyword">@section</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;الرئيسية&#39;</span><span class="tok-punct">)</span>
+
+<span class="tok-keyword">@section</span><span class="tok-punct">(</span><span class="tok-string">&#39;content&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">&lt;</span>h1<span class="tok-punct">&gt;</span>أهلاً بك في <span class="tok-punct">{{</span> <span class="tok-func">config</span><span class="tok-punct">(</span><span class="tok-string">&#39;app.name&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">}}&lt;/</span>h1<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;</span>منصّة تعليمية لتعلّم تطوير الويب باللغة العربية<span class="tok-punct">.&lt;/</span>p<span class="tok-punct">&gt;</span>
+
+    <span class="tok-punct">&lt;</span>div <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;card&quot;</span><span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;</span>جرّب صفحة الترحيب بتمرير اسمك في الرابط<span class="tok-punct">:&lt;/</span>p<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;&lt;</span>code<span class="tok-punct">&gt;/</span>greet<span class="tok-punct">/</span>سارة<span class="tok-punct">&lt;/</span>code<span class="tok-punct">&gt;&lt;/</span>p<span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>a href<span class="tok-punct">=</span><span class="tok-string">&quot;{{ route(&#39;greet&#39;, [&#39;name&#39; =&gt; &#39;سارة&#39;]) }}&quot;</span><span class="tok-punct">&gt;</span>جرّب الآن ←<span class="tok-punct">&lt;/</span>a<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;/</span>div<span class="tok-punct">&gt;</span>
+<span class="tok-keyword">@endsection</span>
+
+<span class="tok-punct">{{--</span> ═══════════════════════════════════════════════ <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{--</span> resources<span class="tok-punct">/</span>views<span class="tok-punct">/</span>about<span class="tok-punct">.</span>blade<span class="tok-punct">.</span>php <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{--</span> ═══════════════════════════════════════════════ <span class="tok-punct">--}}</span>
+<span class="tok-keyword">@extends</span><span class="tok-punct">(</span><span class="tok-string">&#39;layouts.app&#39;</span><span class="tok-punct">)</span>
+<span class="tok-keyword">@section</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;عن المنصّة&#39;</span><span class="tok-punct">)</span>
+
+<span class="tok-keyword">@section</span><span class="tok-punct">(</span><span class="tok-string">&#39;content&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">&lt;</span>h1<span class="tok-punct">&gt;</span>عن المنصّة<span class="tok-punct">&lt;/</span>h1<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;</span>معلومات البيئة التقنية التي يعمل عليها هذا التطبيق<span class="tok-punct">.&lt;/</span>p<span class="tok-punct">&gt;</span>
+
+    <span class="tok-punct">&lt;</span>div <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;card&quot;</span><span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>table<span class="tok-punct">&gt;</span>
+            <span class="tok-keyword">@foreach</span> <span class="tok-punct">(</span><span class="tok-attr">$info</span> <span class="tok-keyword">as</span> <span class="tok-attr">$key</span> <span class="tok-punct">=&gt;</span> <span class="tok-attr">$value</span><span class="tok-punct">)</span>
+                <span class="tok-punct">&lt;</span>tr<span class="tok-punct">&gt;</span>
+                    <span class="tok-punct">&lt;</span>td<span class="tok-punct">&gt;{{</span> <span class="tok-func">__</span><span class="tok-punct">(</span><span class="tok-func">ucfirst</span><span class="tok-punct">(</span><span class="tok-attr">$key</span><span class="tok-punct">))</span> <span class="tok-punct">}}&lt;/</span>td<span class="tok-punct">&gt;</span>
+                    <span class="tok-punct">&lt;</span>td<span class="tok-punct">&gt;{{</span> <span class="tok-attr">$value</span> <span class="tok-punct">}}&lt;/</span>td<span class="tok-punct">&gt;</span>
+                <span class="tok-punct">&lt;/</span>tr<span class="tok-punct">&gt;</span>
+            <span class="tok-keyword">@endforeach</span>
+        <span class="tok-punct">&lt;/</span>table<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;/</span>div<span class="tok-punct">&gt;</span>
+<span class="tok-keyword">@endsection</span>
+
+<span class="tok-punct">{{--</span> ═══════════════════════════════════════════════ <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{--</span> resources<span class="tok-punct">/</span>views<span class="tok-punct">/</span>greet<span class="tok-punct">.</span>blade<span class="tok-punct">.</span>php <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{--</span> ═══════════════════════════════════════════════ <span class="tok-punct">--}}</span>
+<span class="tok-keyword">@extends</span><span class="tok-punct">(</span><span class="tok-string">&#39;layouts.app&#39;</span><span class="tok-punct">)</span>
+<span class="tok-keyword">@section</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&quot;ترحيب بـ {$name}&quot;</span><span class="tok-punct">)</span>
+
+<span class="tok-keyword">@section</span><span class="tok-punct">(</span><span class="tok-string">&#39;content&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">&lt;</span>h1<span class="tok-punct">&gt;</span>مرحباً يا <span class="tok-punct">{{</span> <span class="tok-attr">$name</span> <span class="tok-punct">}}</span> 👋<span class="tok-punct">&lt;/</span>h1<span class="tok-punct">&gt;</span>
+
+    <span class="tok-punct">&lt;</span>div <span class="tok-keyword">class</span><span class="tok-punct">=</span><span class="tok-string">&quot;card&quot;</span><span class="tok-punct">&gt;</span>
+        <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;</span>سعدنا بزيارتك يوم <span class="tok-punct">{{</span> <span class="tok-func">now</span><span class="tok-punct">()-&gt;</span><span class="tok-func">translatedFormat</span><span class="tok-punct">(</span><span class="tok-string">&#39;l، j F Y&#39;</span><span class="tok-punct">)</span> <span class="tok-punct">}}.&lt;/</span>p<span class="tok-punct">&gt;</span>
+        <span class="tok-keyword">@if</span> <span class="tok-punct">(</span><span class="tok-attr">$name</span> <span class="tok-punct">===</span> <span class="tok-string">&#39;زائر&#39;</span><span class="tok-punct">)</span>
+            <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;</span>مرّر اسمك في الرابط لترحيب شخصي<span class="tok-punct">:</span> <span class="tok-punct">&lt;</span>code<span class="tok-punct">&gt;/</span>greet<span class="tok-punct">/</span>اسمك<span class="tok-punct">&lt;/</span>code<span class="tok-punct">&gt;&lt;/</span>p<span class="tok-punct">&gt;</span>
+        <span class="tok-keyword">@endif</span>
+    <span class="tok-punct">&lt;/</span>div<span class="tok-punct">&gt;</span>
+<span class="tok-keyword">@endsection</span>
+
+<span class="tok-punct">{{--</span> ═══════════════════════════════════════════════ <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{--</span> resources<span class="tok-punct">/</span>views<span class="tok-punct">/</span>errors<span class="tok-punct">/</span><span class="tok-number">404</span><span class="tok-punct">.</span>blade<span class="tok-punct">.</span>php <span class="tok-punct">--}}</span>
+<span class="tok-punct">{{--</span> ═══════════════════════════════════════════════ <span class="tok-punct">--}}</span>
+<span class="tok-keyword">@extends</span><span class="tok-punct">(</span><span class="tok-string">&#39;layouts.app&#39;</span><span class="tok-punct">)</span>
+<span class="tok-keyword">@section</span><span class="tok-punct">(</span><span class="tok-string">&#39;title&#39;</span><span class="tok-punct">,</span> <span class="tok-string">&#39;الصفحة غير موجودة&#39;</span><span class="tok-punct">)</span>
+
+<span class="tok-keyword">@section</span><span class="tok-punct">(</span><span class="tok-string">&#39;content&#39;</span><span class="tok-punct">)</span>
+    <span class="tok-punct">&lt;</span>h1<span class="tok-punct">&gt;</span>٤٠٤ — الصفحة غير موجودة<span class="tok-punct">&lt;/</span>h1<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;</span>الرابط الذي طلبته غير متاح، ربما حُذف أو تغيّر عنوانه<span class="tok-punct">.&lt;/</span>p<span class="tok-punct">&gt;</span>
+    <span class="tok-punct">&lt;</span>p<span class="tok-punct">&gt;&lt;</span>a href<span class="tok-punct">=</span><span class="tok-string">&quot;{{ route(&#39;home&#39;) }}&quot;</span><span class="tok-punct">&gt;</span>العودة للرئيسية ←<span class="tok-punct">&lt;/</span>a<span class="tok-punct">&gt;&lt;/</span>p<span class="tok-punct">&gt;</span>
+<span class="tok-keyword">@endsection</span></code></pre></div></details></div></section><h2 id="sec-13">اختبر نفسك</h2><section class="quiz"><h2 id="sec-14"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> اختبر فهمك</h2><div class="q-item"><p class="q-text">1. لماذا يجب توجيه خادم الويب إلى <code>public/</code> لا لمجلّد المشروع؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>للأداء</span></label><label class="q-option"><input type="radio" name="q1_0" value="correct"><span>لأن توجيهه للمجلّد الأعلى يتيح تحميل <code>.env</code> وكل الشيفرة عبر المتصفّح</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>اصطلاح فقط</span></label><label class="q-option"><input type="radio" name="q1_0" value="wrong"><span>لتقليل المسارات</span></label></div><div class="q-explain"><strong>الشرح:</strong> ثغرة أمنية كاملة: كلمات مرور قاعدة البيانات ومفاتيح الواجهات كلها تصبح متاحة للتحميل.</div></div><div class="q-item"><p class="q-text">2. لماذا لا نستخدم <code>env()</code> خارج ملفات <code>config/</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>بطيئة</span></label><label class="q-option"><input type="radio" name="q1_1" value="correct"><span>تُرجع null عند تخزين الإعدادات مؤقّتاً بـ <code>config:cache</code> في الإنتاج</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>ممنوعة</span></label><label class="q-option"><input type="radio" name="q1_1" value="wrong"><span>غير آمنة</span></label></div><div class="q-explain"><strong>الشرح:</strong> اقرأ دائماً عبر <code>config()</code>، وضع القيمة في ملف إعداد أولاً.</div></div><div class="q-item"><p class="q-text">3. ما فائدة <code>php artisan tinker</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>تشغيل الخادم</span></label><label class="q-option"><input type="radio" name="q1_2" value="correct"><span>صدفة تفاعلية لتجربة النماذج والاستعلامات مباشرة</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>توليد ملفات</span></label><label class="q-option"><input type="radio" name="q1_2" value="wrong"><span>مسح الذاكرة</span></label></div><div class="q-explain"><strong>الشرح:</strong> أسرع من كتابة مسار مؤقّت لتجربة استعلام أو دالة.</div></div><div class="q-item"><p class="q-text">4. ماذا يولّد <code>php artisan make:model Post -mfsc</code>؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>النموذج فقط</span></label><label class="q-option"><input type="radio" name="q1_3" value="correct"><span>نموذج + هجرة + مصنع + بذرة + متحكّم</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>نموذج وهجرة</span></label><label class="q-option"><input type="radio" name="q1_3" value="wrong"><span>نموذج ومتحكّم</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>m</code> هجرة، <code>f</code> مصنع، <code>s</code> بذرة، <code>c</code> متحكّم — اختصار مفيد جداً.</div></div><div class="q-item"><p class="q-text">5. ما دور <code>bootstrap/app.php</code> في Laravel 11؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>ملف الأنماط</span></label><label class="q-option"><input type="radio" name="q1_4" value="correct"><span>نقطة الإقلاع وإعداد الوسطاء والاستثناءات والمسارات</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>الاتصال بقاعدة البيانات</span></label><label class="q-option"><input type="radio" name="q1_4" value="wrong"><span>مسارات الويب</span></label></div><div class="q-explain"><strong>الشرح:</strong> حلّ في Laravel 11 محلّ ملفات Kernel المتعدّدة في الإصدارات السابقة.</div></div><div class="q-item"><p class="q-text">6. كيف تشارك بنية <code>.env</code> مع فريقك؟</p><div class="q-options"><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>ترفعه لـ Git</span></label><label class="q-option"><input type="radio" name="q1_5" value="correct"><span>عبر <code>.env.example</code> بقيم فارغة أو تجريبية</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>ترسله بالبريد</span></label><label class="q-option"><input type="radio" name="q1_5" value="wrong"><span>لا تشاركها</span></label></div><div class="q-explain"><strong>الشرح:</strong> <code>.env</code> نفسه في <code>.gitignore</code> دائماً لأنه يحمل أسراراً حقيقية.</div></div><div style="display:flex;gap:.7rem;flex-wrap:wrap"><button type="button" class="btn btn-primary" data-quiz-check><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> تحقّق من الإجابات</button><button type="button" class="btn btn-ghost" data-quiz-reset><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> إعادة</button></div><div class="quiz-result" role="status"></div></section>
+      <div class="complete-box">
+        <p><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> أنهيت قراءة الدرس؟ علّمه كمكتمل ليُحتسب في تقدّمك.</p>
+        <button type="button" class="btn btn-primary mark-done" data-lesson-id="laravel/01-introduction" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> <span data-label>تعليم الدرس كمكتمل</span>
+        </button>
+      </div>
+      <nav class="lesson-nav" aria-label="التنقّل بين الدروس">
+  <a class="prev" href="index.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span><small>العودة إلى</small><b>صفحة المسار</b></span></a>
+  <a class="next" href="02-routing.html"><span><small>الدرس التالي</small><b>التوجيه والمتحكّمات</b></span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</nav>
+    </article>
+
+    <aside class="lesson-side">
+      <div class="side-card">
+        <h3>تقدّمك في مسار Laravel</h3>
+        <div class="ring-wrap" data-ring data-track="laravel" data-total="10">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient></defs>
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fg" cx="65" cy="65" r="55" stroke-dasharray="345" stroke-dashoffset="345"/>
+          </svg>
+          <span class="ring-label">0٪</span>
+        </div>
+        <p class="text-center muted" style="font-size:.9rem" data-ring-text>لم تبدأ بعد</p>
+        <a class="btn btn-ghost btn-block btn-sm" href="index.html" style="margin-top:.8rem"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> كل دروس المسار</a>
+      </div>
+      <div class="side-card toc">
+        <h3>محتويات الدرس</h3>
+        <ol><li><a href="#sec-1">ما هو Laravel؟</a></li><li><a href="#sec-2">ما الذي يأتي جاهزاً؟</a></li><li><a href="#sec-3">المتطلّبات والتثبيت</a></li><li><a href="#sec-4">بنية المشروع</a></li><li><a href="#sec-5">ملف .env</a></li><li><a href="#sec-6">Artisan</a></li><li class="sub"><a href="#sec-7">Tinker — مختبرك التفاعلي</a></li><li><a href="#sec-8">أول مسار وأول صفحة</a></li><li><a href="#sec-9">مسار الطلب في Laravel</a></li><li><a href="#sec-10">أدوات التطوير الأساسية</a></li><li><a href="#sec-11">تمرين</a></li><li><a href="#sec-12">تهيئة مشروع وصفحة تعريف</a></li><li><a href="#sec-13">اختبر نفسك</a></li><li><a href="#sec-14">اختبر فهمك</a></li></ol>
+      </div>
+      <div class="side-card"><h3>مرجع سريع</h3><div class="ref-item"><code>composer create-project laravel/laravel app</code><small>مشروع جديد</small></div><div class="ref-item"><code>php artisan serve</code><small>تشغيل الخادم</small></div><div class="ref-item"><code>php artisan list</code><small>كل الأوامر</small></div><div class="ref-item"><code>php artisan make:controller X</code><small>توليد متحكّم</small></div><div class="ref-item"><code>php artisan migrate</code><small>تطبيق الهجرات</small></div><div class="ref-item"><code>php artisan tinker</code><small>صدفة تفاعلية</small></div><div class="ref-item"><code>.env</code><small>إعدادات البيئة</small></div><div class="ref-item"><code>php artisan optimize:clear</code><small>مسح الذاكرة المؤقّتة</small></div></div>
+      <div class="side-card">
+        <h3>خطوتك التالية</h3>
+        <div class="side-links">
+          <a class="side-link" href="02-routing.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></i><span>التوجيه والمتحكّمات<small>الدرس التالي</small></span></a>
+          <a class="side-link" href="../../roadmap.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></i><span>خريطة الطريق<small>أين أنت من الصورة الكاملة</small></span></a>
+          <a class="side-link" href="../../tracks.html"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></i><span>كل المسارات<small>20 مساراً</small></span></a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="brand-name">CodeWay<small>WEB DEVELOPMENT</small></span>
+        </a>
+        <p>منصة عربية متكاملة لتعلّم تطوير الويب من الصفر إلى الاحتراف. محتوى عربي مفتوح المصدر، يعمل بلا إنترنت وبدون أي اعتماد خارجي.</p>
+      </div>
+      <div class="footer-col">
+        <h4>المسارات المنشورة</h4>
+        <ul><li><a href="../../tracks/html/index.html">HTML</a></li><li><a href="../../tracks/angular/index.html">Angular</a></li><li><a href="../../tracks/sass/index.html">Sass</a></li><li><a href="../../tracks/tailwind/index.html">Tailwind CSS</a></li><li><a href="../../tracks/ruby/index.html">Ruby</a></li><li><a href="../../tracks/laravel/index.html">Laravel</a></li><li><a href="../../tracks/sql/index.html">SQL</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>قريباً</h4>
+        <ul><li><a href="../../tracks.html#css">CSS</a></li><li><a href="../../tracks.html#javascript">JavaScript</a></li><li><a href="../../tracks.html#react">React</a></li><li><a href="../../tracks.html#vue">Vue.js</a></li><li><a href="../../tracks.html#typescript">TypeScript</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="../../roadmap.html">خريطة الطريق</a></li>
+          <li><a href="../../about.html">عن المنصة</a></li>
+          <li><a href="../../tracks.html">كل المسارات</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> CodeWay Web — محتوى تعليمي عربي مفتوح المصدر.</p>
+    </div>
+  </div>
+</footer>
+<button type="button" class="to-top" aria-label="العودة إلى الأعلى"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+<script src="../../assets/js/app.js"></script>
+<script src="../../assets/js/lesson.js"></script>
+</body>
+</html>
