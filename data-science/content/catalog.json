@@ -3670,7 +3670,8 @@
         "Python",
         "Pandas",
         "Matplotlib"
-      ]
+      ],
+      "status": "published"
     },
     {
       "number": 2,
@@ -3686,7 +3687,8 @@
         "Pandas",
         "Data Cleaning",
         "Seaborn"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 3,
@@ -3702,7 +3704,8 @@
         "Pandas",
         "EDA",
         "Seaborn"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 4,
@@ -3718,7 +3721,8 @@
         "Pandas",
         "Statistics",
         "Seaborn"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 5,
@@ -3734,7 +3738,8 @@
         "SQL",
         "Window Functions",
         "Pandas"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 6,
@@ -3750,7 +3755,8 @@
         "Plotly",
         "Storytelling",
         "Dashboard Design"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 7,
@@ -3767,7 +3773,8 @@
         "NumPy",
         "Statistics",
         "Matplotlib"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 8,
@@ -3783,7 +3790,8 @@
         "Scikit-learn",
         "Pipelines",
         "ROC-AUC"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 9,
@@ -3799,7 +3807,8 @@
         "Scikit-learn",
         "Feature Engineering",
         "RMSE"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 10,
@@ -3816,7 +3825,8 @@
         "Imbalanced Data",
         "PR-AUC",
         "SHAP"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 11,
@@ -3832,7 +3842,8 @@
         "Scikit-learn",
         "Recall",
         "Interpretability"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 12,
@@ -3847,7 +3858,8 @@
       "tools": [
         "Collaborative Filtering",
         "Matrix Factorization"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 13,
@@ -3864,7 +3876,8 @@
         "ARIMA",
         "Lag Features",
         "MAE"
-      ]
+      ],
+      "status": "planned"
     },
     {
       "number": 14,
@@ -3878,7 +3891,8 @@
       "level": 10,
       "tools": [
         "كل أدوات المسار"
-      ]
+      ],
+      "status": "planned"
     }
   ],
   "technologies": [

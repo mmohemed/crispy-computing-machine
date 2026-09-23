@@ -19,7 +19,7 @@ class LocalProgressStore {
     }
 
     _empty() {
-        return { version: 1, lessons: {}, exercises: {}, quizzes: {}, code: {}, last: null };
+        return { version: 1, lessons: {}, exercises: {}, quizzes: {}, projects: {}, code: {}, last: null };
     }
 
     _load() {
@@ -81,6 +81,31 @@ class LocalProgressStore {
 
     getQuiz(quiz) {
         return this.state.quizzes[quiz] || null;
+    }
+
+    getProject(project) {
+        return this.state.projects[project] || { steps: {}, checkpoints: {}, completedAt: null };
+    }
+
+    setProjectStep(project, step, done) {
+        const p = this.getProject(project);
+        p.steps = { ...p.steps, [step]: done };
+        this.state.projects[project] = p;
+        this._save();
+    }
+
+    setProjectCheckpoint(project, checkpoint, passed) {
+        const p = this.getProject(project);
+        p.checkpoints = { ...p.checkpoints, [checkpoint]: p.checkpoints?.[checkpoint] || passed };
+        this.state.projects[project] = p;
+        this._save();
+    }
+
+    completeProject(project, done = true) {
+        const p = this.getProject(project);
+        p.completedAt = done ? new Date().toISOString() : null;
+        this.state.projects[project] = p;
+        this._save();
     }
 
     saveCode(key, code) {

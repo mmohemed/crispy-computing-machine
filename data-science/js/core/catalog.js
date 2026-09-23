@@ -20,6 +20,7 @@ export const loadCatalog = () => loadJSON('catalog.json');
 export const loadCourseDetails = (course) => loadJSON(`courses/${course}.json`);
 export const loadLesson = (course, lesson) => loadJSON(`lessons/${course}/${lesson}.json`);
 export const loadQuiz = (quiz) => loadJSON(`quizzes/${quiz}.json`);
+export const loadProject = (project) => loadJSON(`projects/${project}.json`);
 
 export const isPublished = (item) => item && item.status === 'published';
 

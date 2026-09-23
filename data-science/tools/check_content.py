@@ -28,7 +28,7 @@ REQUIRED_SECTIONS = ['concept', 'why', 'when', 'example', 'notes', 'mistakes']
 FORBIDDEN = ['lorem ipsum', 'coming soon', 'سيتم إضافة', 'سيُضاف لاحقاً', 'درس تجريبي', 'هذا مثال فقط', 'todo', 'tbd']
 
 errors = []
-checked = {'lessons': 0, 'examples': 0, 'exercises': 0, 'mistakes': 0, 'questions': 0}
+checked = {'lessons': 0, 'examples': 0, 'exercises': 0, 'mistakes': 0, 'questions': 0, 'projects': 0}
 
 
 def fail(where, msg):
@@ -207,6 +207,46 @@ def check_quiz(cwhere, quiz, seen):
         fail(cwhere, f'صفحة الاختبار exercises/quiz-{quiz["slug"]}.html غير موجودة')
 
 
+def check_project(meta):
+    where = f'project {meta["slug"]}'
+    rel = f'content/projects/{meta["slug"]}.json'
+    if not os.path.exists(os.path.join(ROOT, rel)):
+        fail(where, f'منشور لكن {rel} غير موجود')
+        return
+    if not os.path.exists(os.path.join(ROOT, f'projects/project-{meta["slug"]}.html')):
+        fail(where, 'صفحة المشروع غير موجودة (شغّل build-pages)')
+    p = load(rel)
+    checked['projects'] += 1
+    scan_placeholders(where, p)
+    for key in ['title', 'idea', 'problem', 'questions', 'dataset', 'requirements', 'tools', 'skills',
+                'lifecycle', 'checkpoints', 'deliverables', 'guidance', 'rubric', 'starter_code']:
+        if not p.get(key):
+            fail(where, f'الحقل {key} مفقود أو فارغ')
+    if sum(r['weight'] for r in p.get('rubric', [])) != 100:
+        fail(where, 'مجموع أوزان معايير التقييم يجب أن يكون 100')
+    files = [p['dataset']['file']]
+    prelude = lines(p.get('solution_prelude')) or ''
+    for s in p.get('lifecycle', []):
+        sol = s.get('solution')
+        if not sol:
+            continue
+        checked['examples'] += 1
+        res = run(prelude + '\n\n' + lines(sol['code']), files=files)
+        if res['error']:
+            fail(f'{where} stage {s["key"]}', f'الحل يسبب خطأ: {res["error"]}')
+            continue
+        if sol.get('expects_chart') and not res.get('images'):
+            fail(f'{where} stage {s["key"]}', 'الحل يجب أن ينتج رسماً')
+        expected = (lines(sol.get('expected_output')) or '').rstrip('\n')
+        if expected != res['stdout'].rstrip('\n'):
+            fail(f'{where} stage {s["key"]}', 'الناتج الفعلي لا يطابق المتوقع')
+    for cp in p.get('checkpoints', []):
+        check_code_task(f'{where} checkpoint {cp["key"]}', cp.get('starter_code'), cp.get('tests'), cp.get('solution'), files=files)
+    res = run(lines(p['starter_code']), files=files)
+    if res['error']:
+        fail(f'{where} starter', f'كود البداية يسبب خطأ: {res["error"]}')
+
+
 def main():
     catalog = load('content/catalog.json')
     scan_placeholders('catalog', catalog)
@@ -251,6 +291,10 @@ def main():
                 for key in ['intro', 'description', 'objectives', 'prerequisites', 'audience', 'skills', 'assessment', 'projects']:
                     if not details.get(key):
                         fail(cwhere, f'تفاصيل الكورس ينقصها {key}')
+
+    for meta in catalog['projects']:
+        if meta.get('status') == 'published':
+            check_project(meta)
 
     # كل ملف درس موجود يجب أن يكون منشوراً في الكتالوج
     lessons_dir = os.path.join(ROOT, 'content', 'lessons')

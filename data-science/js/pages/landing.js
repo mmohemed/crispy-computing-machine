@@ -4,7 +4,7 @@
 import { boot } from './boot.js';
 import { catalogStats, courseCounts, getCourse, isCoursePublished, publishedLessons } from '../core/catalog.js';
 import { $, $all, escapeHtml, inline } from '../core/dom.js';
-import { coursePage, lessonPage, roadmapPage } from '../core/paths.js';
+import { coursePage, lessonPage, projectPage, roadmapPage } from '../core/paths.js';
 import { courseProgress, currentLesson, progress, progressBar } from '../core/progress-store.js';
 
 const DIFF_CLASS = { 'مبتدئ': '', 'متوسط': '', 'متقدم': 'advanced', 'ختامي': 'capstone' };
@@ -123,7 +123,7 @@ function renderTech(catalog) {
 
 function renderProjects(catalog) {
     $('#projects-grid').innerHTML = catalog.projects.map((p) => `
-        <article class="project-card">
+        <${p.status === 'published' ? `a href="${projectPage(p.slug)}"` : 'article'} class="project-card">
             <div class="project-header">
                 <div class="project-icon"><i class="${escapeHtml(p.icon)}"></i></div>
                 <span class="project-level ${DIFF_CLASS[p.difficulty] || ''}">${escapeHtml(p.difficulty)}</span>
@@ -133,7 +133,8 @@ function renderProjects(catalog) {
             <div class="project-meta"><i class="fas fa-database"></i>${inline(p.dataset)}</div>
             <div class="project-meta"><i class="fas fa-flag"></i>بعد: ${escapeHtml(p.after)}</div>
             <div class="project-tech">${p.tools.map((t) => `<span class="tech-tag">${escapeHtml(t)}</span>`).join('')}</div>
-        </article>`).join('');
+            ${p.status === 'published' ? '<div style="margin-top:16px"><span class="lang-tag ok"><i class="fas fa-door-open"></i> المشروع متاح: ادخل لتنفيذه</span></div>' : ''}
+        </${p.status === 'published' ? 'a' : 'article'}>`).join('');
 }
 
 function bindTabs() {

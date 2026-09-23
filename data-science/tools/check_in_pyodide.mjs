@@ -114,6 +114,25 @@ for (const course of catalog.courses) {
     }
 }
 
+for (const meta of catalog.projects) {
+    if (meta.status !== 'published' || onlyCourse) continue;
+    const p = JSON.parse(readFileSync(join(ROOT, 'content/projects', `${meta.slug}.json`), 'utf8'));
+    const files = [p.dataset.file];
+    const prelude = lines(p.solution_prelude) || '';
+    for (const s of p.lifecycle) {
+        if (!s.solution) continue;
+        counts.examples += 1;
+        const res = await run(`${prelude}\n\n${lines(s.solution.code)}`, { files });
+        checkOutput(`project ${p.slug} stage ${s.key}`, s.solution.expected_output, res);
+        if (s.solution.expects_chart && !(res.images || []).length) errors.push(`project ${p.slug} stage ${s.key}: لم يُنتج رسماً في Pyodide`);
+    }
+    for (const cp of p.checkpoints) {
+        counts.solutions += 1;
+        const res = await run(lines(cp.solution), { tests: lines(cp.tests), files });
+        if (res.error || !res.tests?.passed) errors.push(`project ${p.slug} checkpoint ${cp.key}: ${JSON.stringify(res.error || res.tests)}`);
+    }
+}
+
 const summary = Object.entries(counts).map(([k, v]) => `${v} ${k}`).join(', ');
 if (errors.length) {
     console.log(`✗ ${errors.length} اختلاف في Pyodide (${summary}):\n`);

@@ -18,6 +18,7 @@ CodeWay Python harness.
 import base64
 import builtins
 import io
+import logging
 import os
 import sys
 import traceback
@@ -27,6 +28,8 @@ import warnings
 os.environ['MPLBACKEND'] = 'Agg'
 warnings.filterwarnings('ignore', message='.*non-interactive.*')
 warnings.filterwarnings('ignore', message='.*Glyph.*missing from.*font.*')
+# رسالة "Matplotlib is building the font cache" تظهر في أول استيراد داخل المتصفح؛ لا تخص كود الطالب
+logging.getLogger('matplotlib').setLevel(logging.ERROR)
 
 USER_FILENAME = '<main.py>'
 TESTS_FILENAME = '<tests>'

@@ -1,0 +1,659 @@
+{
+  "slug": "store-sales",
+  "number": 1,
+  "title": "تحليل مبيعات متجر",
+  "title_en": "Store Sales Analysis",
+  "difficulty": "مبتدئ",
+  "level": 2,
+  "after": "Pandas",
+  "hours": 8,
+  "related_course": "pandas",
+  "idea": "متجر إلكتروني سعودي يبيع الإلكترونيات والملابس والأغذية ومستلزمات المنزل والكتب في ست مدن. أنهى عام 2025 ويريد أن يفهم أداءه قبل التخطيط لعام 2026. أنت محلل البيانات الذي سيجيب عن أسئلة الإدارة.",
+  "problem": [
+    "لدى المتجر سجل كامل لطلبات 2025، لكن لا أحد في الإدارة يعرف بدقة من أين يأتي الإيراد، ومتى تكون الذروة، وأين الضعف. قرارات المخزون والتسويق للعام القادم تُتخذ حالياً بالتخمين.",
+    "**المطلوب منك**: تحليل البيانات وتقديم تقرير من صفحة واحدة يحتوي المؤشرات الرئيسية، ورسمين، وخمسة استنتاجات مدعومة بالأرقام، وثلاث توصيات قابلة للتنفيذ."
+  ],
+  "questions": [
+    "كم الإيراد الإجمالي؟ وكم طلباً؟ وما متوسط قيمة الطلب؟",
+    "كيف يتوزع الإيراد على أشهر السنة؟ وما أقوى الأشهر وأضعفها؟ وهل توجد مواسم واضحة؟",
+    "ما الفئات والمنتجات التي تقود الإيراد؟",
+    "كيف يتوزع الإيراد على المدن والمناطق؟",
+    "هل يختلف إنفاق العميل الجديد عن العائد؟",
+    "هل العملاء راضون؟ وهل يختلف التقييم بين الفئات؟"
+  ],
+  "dataset": {
+    "file": "datasets/store_sales.csv",
+    "rows": 1700,
+    "description": [
+      "كل صف طلب واحد لمنتج واحد خلال عام 2025، وعددها 1,700 طلب في 11 عموداً. الإيراد غير موجود ويجب حسابه."
+    ],
+    "columns": [
+      {
+        "name": "order_id",
+        "type": "نص",
+        "description": "رقم الطلب الفريد"
+      },
+      {
+        "name": "order_date",
+        "type": "تاريخ",
+        "description": "تاريخ الطلب `YYYY-MM-DD`"
+      },
+      {
+        "name": "city",
+        "type": "فئة",
+        "description": "الرياض، جدة، الدمام، مكة، المدينة، أبها"
+      },
+      {
+        "name": "category",
+        "type": "فئة",
+        "description": "إلكترونيات، ملابس، المنزل، أغذية، كتب"
+      },
+      {
+        "name": "product",
+        "type": "فئة",
+        "description": "اسم المنتج (15 منتجاً)"
+      },
+      {
+        "name": "unit_price",
+        "type": "عدد صحيح",
+        "description": "سعر الوحدة بالريال قبل الخصم"
+      },
+      {
+        "name": "quantity",
+        "type": "عدد صحيح",
+        "description": "الكمية من 1 إلى 5"
+      },
+      {
+        "name": "discount",
+        "type": "عشري",
+        "description": "نسبة الخصم: 0 أو 0.05 أو 0.1 أو 0.2"
+      },
+      {
+        "name": "payment_method",
+        "type": "فئة",
+        "description": "بطاقة، محفظة إلكترونية، الدفع عند الاستلام، تحويل بنكي"
+      },
+      {
+        "name": "customer_type",
+        "type": "فئة",
+        "description": "جديد أو عائد"
+      },
+      {
+        "name": "rating",
+        "type": "عدد صحيح أو فارغ",
+        "description": "تقييم من 1 إلى 5، **فارغ إذا لم يقيّم العميل**"
+      }
+    ],
+    "source": "بيانات تعليمية مولّدة بـ `tools/generate_datasets.py` تحاكي متجراً حقيقياً، ومفتوحة للاستخدام التعليمي ضمن CodeWay. ليست بيانات شركة حقيقية."
+  },
+  "requirements": [
+    "حساب المؤشرات الرئيسية: الإيراد، وعدد الطلبات، ومتوسط قيمة الطلب، ومتوسط التقييم.",
+    "تحليل الإيراد حسب الشهر والفئة والمنتج والمدينة ونوع العميل.",
+    "رسمان بيانيان على الأقل بعناوين تقول الاستنتاج.",
+    "خمسة استنتاجات، كل منها مدعوم برقم.",
+    "ثلاث توصيات قابلة للتنفيذ، وفقرة عن حدود التحليل.",
+    "كود نظيف يمكن إعادة تشغيله من البداية للنهاية ويعطي نفس النتائج."
+  ],
+  "tools": [
+    "Python",
+    "Pandas",
+    "Matplotlib",
+    "Jupyter"
+  ],
+  "skills": [
+    "قراءة CSV مع تحويل التواريخ، وفحص البيانات (كورس Pandas، الدروس 3 و 4).",
+    "التصفية والترتيب وإنشاء الأعمدة المشتقة (الدروس 6 إلى 9).",
+    "التجميع بـ `groupby` (مشروح داخل المشروع، وتفصيله في الوحدة الثانية من Pandas).",
+    "رسوم أساسية بـ Matplotlib (الكود مشروح في الحل النموذجي).",
+    "كتابة استنتاجات مدعومة بالأرقام (مشروع Python الخالص، الوحدة 3)."
+  ],
+  "prerequisite_note": "إذا لم تكن قد درست `groupby` بعد فلا مشكلة: المرحلة الخامسة تشرح الصيغة التي تحتاجها، ويمكنك أيضاً استخدام التصفية كما في دالة `revenue_by` من مشروع Python.",
+  "solution_prelude": [
+    "import pandas as pd",
+    "import matplotlib.pyplot as plt",
+    "",
+    "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+    "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+    "df[\"month\"] = df[\"order_date\"].dt.month"
+  ],
+  "lifecycle": [
+    {
+      "key": "question",
+      "stage": "Dataset",
+      "title": "فهم البيانات وصياغة الأسئلة",
+      "goal": "أن تعرف ماذا يمثل كل صف وعمود، وأن تحوّل طلب الإدارة إلى أسئلة يمكن الإجابة عنها بالبيانات.",
+      "tasks": [
+        "اقرأ قاموس البيانات أعلاه، واكتب بكلماتك ماذا يمثل الصف الواحد.",
+        "حمّل الملف واعرض أبعاده وأنواع أعمدته وأول صفوفه.",
+        "لكل سؤال من أسئلة العمل حدد الأعمدة التي تحتاجها، وما العمود المشتق الذي يجب حسابه (مثل الإيراد)."
+      ],
+      "hint": "العمود الأهم (الإيراد) غير موجود في الملف. لاحظ ذلك من البداية.",
+      "solution": {
+        "explanation": [
+          "كل صف طلب لمنتج واحد. الإيراد يُحسب من ثلاثة أعمدة، والشهر من التاريخ، وكلاهما في الكود المشترك."
+        ],
+        "code": [
+          "print(df.shape)",
+          "print(df.dtypes)",
+          "print(df[[\"order_date\", \"city\", \"product\", \"unit_price\", \"quantity\", \"discount\", \"revenue\"]].head(3))"
+        ],
+        "expected_output": [
+          "(1700, 13)",
+          "order_id                  object",
+          "order_date        datetime64[ns]",
+          "city                      object",
+          "category                  object",
+          "product                   object",
+          "unit_price                 int64",
+          "quantity                   int64",
+          "discount                 float64",
+          "payment_method            object",
+          "customer_type             object",
+          "rating                   float64",
+          "revenue                  float64",
+          "month                      int32",
+          "dtype: object",
+          "  order_date city      product  unit_price  quantity  discount  revenue",
+          "0 2025-01-01  جدة    قميص قطني          79         1       0.0     79.0",
+          "1 2025-01-01  جدة  لوحة مفاتيح         129         1       0.0    129.0",
+          "2 2025-01-02  جدة    شاحن سريع          59         4       0.1    212.4"
+        ]
+      }
+    },
+    {
+      "key": "collection",
+      "stage": "Data Collection",
+      "title": "مصدر البيانات وقراءتها بشكل صحيح",
+      "goal": "أن تتأكد أن البيانات تغطي الفترة المطلوبة كاملة وأن كل عمود قُرئ بنوعه الصحيح.",
+      "tasks": [
+        "وثّق مصدر البيانات (هنا: ملف مولّد تعليمياً يحاكي نظام المبيعات). في الواقع تأتي من نظام المتجر أو قاعدة بيانات بـ SQL.",
+        "اقرأ الملف مع تحويل `order_date` إلى تاريخ.",
+        "تحقق من أول وآخر تاريخ، وعدد الأيام التي فيها طلبات، وعدد الأشهر."
+      ],
+      "hint": "`parse_dates` عند القراءة أفضل من التحويل لاحقاً.",
+      "solution": {
+        "explanation": [
+          "البيانات تغطي سنة 2025 كاملة بكل أشهرها، فالمقارنة بين الأشهر عادلة."
+        ],
+        "code": [
+          "print(\"من\", df[\"order_date\"].min().date(), \"إلى\", df[\"order_date\"].max().date())",
+          "print(\"أيام فيها طلبات:\", df[\"order_date\"].dt.date.nunique())",
+          "print(\"عدد الأشهر:\", df[\"month\"].nunique())"
+        ],
+        "expected_output": [
+          "من 2025-01-01 إلى 2025-12-31",
+          "أيام فيها طلبات: 365",
+          "عدد الأشهر: 12"
+        ]
+      }
+    },
+    {
+      "key": "cleaning",
+      "stage": "Data Cleaning",
+      "title": "فحص الجودة والتنظيف",
+      "goal": "أن تكتشف أي مشكلة قد تفسد التحليل، وأن تتخذ قراراً موثقاً لكل مشكلة.",
+      "tasks": [
+        "احسب القيم المفقودة في كل عمود.",
+        "تحقق من تكرار أرقام الطلبات.",
+        "تحقق من النطاقات المنطقية: لا أسعار أو كميات صفرية أو سالبة، والخصم بين 0 و 0.5.",
+        "تحقق من توحيد القيم النصية (المدن والفئات بدون أشكال مختلفة).",
+        "اكتب قرارك للتقييمات المفقودة وبرّره."
+      ],
+      "hint": "القيم المفقودة في التقييم ليست خطأ إدخال؛ العميل لم يقيّم. لا تحذف هذه الطلبات لأن إيرادها حقيقي.",
+      "solution": {
+        "explanation": [
+          "البيانات نظيفة إلا من التقييمات المفقودة (نحو 12%). **القرار**: نبقي كل الطلبات في حسابات الإيراد، ونحسب متوسط التقييم من الطلبات المقيّمة فقط مع ذكر عددها.",
+          "في مشاريع لاحقة (المشروع 2) ستواجه بيانات فيها أخطاء إدخال حقيقية تحتاج تنظيفاً أعمق."
+        ],
+        "code": [
+          "print(df.isna().sum()[lambda s: s > 0])",
+          "print(\"أرقام طلبات مكررة:\", df[\"order_id\"].duplicated().sum())",
+          "print(\"أسعار أو كميات غير منطقية:\", ((df[\"unit_price\"] <= 0) | (df[\"quantity\"] <= 0)).sum())",
+          "print(\"الخصم ضمن 0 إلى 0.5:\", df[\"discount\"].between(0, 0.5).all())",
+          "print(sorted(df[\"city\"].unique()))",
+          "print(sorted(df[\"category\"].unique()))"
+        ],
+        "expected_output": [
+          "rating    205",
+          "dtype: int64",
+          "أرقام طلبات مكررة: 0",
+          "أسعار أو كميات غير منطقية: 0",
+          "الخصم ضمن 0 إلى 0.5: True",
+          "['أبها', 'الدمام', 'الرياض', 'المدينة', 'جدة', 'مكة']",
+          "['أغذية', 'إلكترونيات', 'المنزل', 'كتب', 'ملابس']"
+        ]
+      }
+    },
+    {
+      "key": "features",
+      "stage": "Feature Engineering",
+      "title": "إنشاء الأعمدة التي يحتاجها التحليل",
+      "goal": "أن تضيف أعمدة مشتقة تجعل أسئلة العمل سهلة الإجابة.",
+      "tasks": [
+        "`revenue` و `month` (موجودان في الكود المشترك).",
+        "`season`: رمضان للشهر 3، والجمعة البيضاء للشهر 11، وعادي لغيرهما.",
+        "`weekday`: اسم يوم الأسبوع.",
+        "`region`: المنطقة من المدينة باستخدام `map`، ثم تحقق أنه لا توجد قيم مفقودة."
+      ],
+      "hint": "`np.select` لعدة شروط، و `.dt.dayofweek` يعطي 0 للاثنين حتى 6 للأحد.",
+      "solution": {
+        "explanation": [
+          "كل عمود جديد يجيب عن سؤال: الموسم لسؤال الموسمية، واليوم لسؤال أيام الذروة، والمنطقة للتحليل الجغرافي."
+        ],
+        "code": [
+          "import numpy as np",
+          "",
+          "df[\"season\"] = np.select([df[\"month\"] == 3, df[\"month\"] == 11], [\"رمضان\", \"الجمعة البيضاء\"], default=\"عادي\")",
+          "days = [\"الاثنين\", \"الثلاثاء\", \"الأربعاء\", \"الخميس\", \"الجمعة\", \"السبت\", \"الأحد\"]",
+          "df[\"weekday\"] = df[\"order_date\"].dt.dayofweek.map(dict(enumerate(days)))",
+          "regions = {\"الرياض\": \"الوسطى\", \"جدة\": \"الغربية\", \"مكة\": \"الغربية\", \"المدينة\": \"الغربية\",",
+          "           \"الدمام\": \"الشرقية\", \"أبها\": \"الجنوبية\"}",
+          "df[\"region\"] = df[\"city\"].map(regions)",
+          "",
+          "print(df[\"season\"].value_counts())",
+          "print(df[\"weekday\"].value_counts().head(3))",
+          "print(\"مناطق مفقودة:\", df[\"region\"].isna().sum())"
+        ],
+        "expected_output": [
+          "season",
+          "عادي              1296",
+          "الجمعة البيضاء     209",
+          "رمضان              195",
+          "Name: count, dtype: int64",
+          "weekday",
+          "الجمعة    282",
+          "الخميس    276",
+          "الأحد     246",
+          "Name: count, dtype: int64",
+          "مناطق مفقودة: 0"
+        ]
+      }
+    },
+    {
+      "key": "eda",
+      "stage": "EDA",
+      "title": "التحليل الاستكشافي والإجابة عن الأسئلة",
+      "goal": "أن تحسب المؤشرات الرئيسية وتجيب عن كل سؤال عمل برقم.",
+      "tasks": [
+        "المؤشرات الإجمالية: الإيراد، وعدد الطلبات، ومتوسط قيمة الطلب AOV، ومتوسط التقييم.",
+        "الإيراد حسب الشهر، وحدد الأعلى والأدنى.",
+        "حصة كل فئة من الإيراد، وأعلى 5 منتجات.",
+        "الإيراد وعدد الطلبات حسب المدينة.",
+        "متوسط قيمة الطلب للعملاء الجدد مقابل العائدين.",
+        "متوسط التقييم لكل فئة."
+      ],
+      "hint": "`df.groupby(\"col\")[\"revenue\"].sum()` تجمع الإيراد لكل قيمة في العمود، مثل دالة `revenue_by` التي كتبتها في مشروع Python. ستتعلمها بالتفصيل في الوحدة الثانية من Pandas، وتكفيك هذه الصيغة الآن.",
+      "solution": {
+        "explanation": [
+          "`groupby(col)[\"revenue\"].sum()` تجميع حسب عمود. و `agg(name=(column, function))` تحسب عدة مؤشرات دفعة واحدة.",
+          "كل رقم هنا يجيب عن سؤال عمل محدد، وسيظهر في الاستنتاجات."
+        ],
+        "code": [
+          "total = df[\"revenue\"].sum()",
+          "print(f\"الإيراد: {total:,.0f} | الطلبات: {len(df):,} | AOV: {total / len(df):.2f} | التقييم: {df['rating'].mean():.2f}\")",
+          "",
+          "by_month = df.groupby(\"month\")[\"revenue\"].sum()",
+          "print(\"أعلى شهر:\", by_month.idxmax(), f\"({by_month.max():,.0f})\", \"| أدنى شهر:\", by_month.idxmin(), f\"({by_month.min():,.0f})\")",
+          "",
+          "share = (df.groupby(\"category\")[\"revenue\"].sum() / total * 100).sort_values(ascending=False).round(1)",
+          "print(share)",
+          "print(df.groupby(\"product\")[\"revenue\"].sum().nlargest(5).round(0))",
+          "",
+          "city = df.groupby(\"city\").agg(revenue=(\"revenue\", \"sum\"), orders=(\"order_id\", \"count\")).sort_values(\"revenue\", ascending=False)",
+          "print(city.round(0))",
+          "",
+          "print(df.groupby(\"customer_type\")[\"revenue\"].mean().round(2))",
+          "print(df.groupby(\"category\")[\"rating\"].mean().round(2).sort_values())"
+        ],
+        "expected_output": [
+          "الإيراد: 429,719 | الطلبات: 1,700 | AOV: 252.78 | التقييم: 4.02",
+          "أعلى شهر: 11 (53,225) | أدنى شهر: 2 (24,449)",
+          "category",
+          "إلكترونيات    32.3",
+          "ملابس         24.5",
+          "أغذية         18.9",
+          "المنزل        18.5",
+          "كتب            5.8",
+          "Name: revenue, dtype: float64",
+          "product",
+          "ساعة ذكية     77047.0",
+          "حذاء رياضي    52390.0",
+          "طقم أواني     43056.0",
+          "جاكيت         38198.0",
+          "عسل سدر       34596.0",
+          "Name: revenue, dtype: float64",
+          "          revenue  orders",
+          "city                     ",
+          "الرياض   137118.0     555",
+          "جدة      100333.0     398",
+          "الدمام    61883.0     247",
+          "مكة       47789.0     174",
+          "المدينة   42505.0     163",
+          "أبها      40092.0     163",
+          "customer_type",
+          "جديد    252.49",
+          "عائد    252.99",
+          "Name: revenue, dtype: float64",
+          "category",
+          "المنزل        3.92",
+          "كتب           3.94",
+          "أغذية         4.03",
+          "ملابس         4.06",
+          "إلكترونيات    4.09",
+          "Name: rating, dtype: float64"
+        ]
+      }
+    },
+    {
+      "key": "visualization",
+      "stage": "Visualization",
+      "title": "الرسوم البيانية",
+      "goal": "أن تعرض أهم نتيجتين برسمين واضحين: الموسمية وتوزيع الإيراد على الفئات.",
+      "tasks": [
+        "رسم خطي للإيراد الشهري بعنوان يقول الاستنتاج، مع تسمية المحاور.",
+        "رسم أعمدة أفقي لإيراد الفئات مرتباً.",
+        "احفظ الرسمين كملفات PNG لتضعهما في التقرير."
+      ],
+      "hint": "استخدم عناوين إنجليزية داخل الرسوم: Matplotlib لا يدعم تشكيل الحروف العربية افتراضياً (يحتاج مكتبتي `arabic_reshaper` و `python-bidi`). وستتعلم تصميم الرسوم بالتفصيل في مستوى التصور.",
+      "solution": {
+        "explanation": [
+          "العنوان الجيد يقول الاستنتاج وليس وصف الرسم فقط. الرسوم تظهر أسفل المخرجات عند التشغيل في مساحة العمل."
+        ],
+        "code": [
+          "by_month = df.groupby(\"month\")[\"revenue\"].sum() / 1000",
+          "",
+          "fig, ax = plt.subplots(figsize=(8, 4))",
+          "ax.plot(by_month.index, by_month.values, marker=\"o\", color=\"#0e7490\")",
+          "ax.set_title(\"Revenue peaks in November (White Friday) and March (Ramadan)\")",
+          "ax.set_xlabel(\"Month\")",
+          "ax.set_ylabel(\"Revenue (thousand SAR)\")",
+          "ax.set_xticks(range(1, 13))",
+          "ax.grid(alpha=0.3)",
+          "fig.savefig(\"monthly_revenue.png\", dpi=120, bbox_inches=\"tight\")",
+          "",
+          "cat_names = {\"إلكترونيات\": \"Electronics\", \"ملابس\": \"Clothing\", \"أغذية\": \"Food\", \"المنزل\": \"Home\", \"كتب\": \"Books\"}",
+          "by_cat = df.groupby(\"category\")[\"revenue\"].sum().rename(index=cat_names).sort_values() / 1000",
+          "",
+          "fig2, ax2 = plt.subplots(figsize=(7, 3.5))",
+          "ax2.barh(by_cat.index, by_cat.values, color=\"#a21caf\")",
+          "ax2.set_title(\"Electronics bring one third of revenue\")",
+          "ax2.set_xlabel(\"Revenue (thousand SAR)\")",
+          "fig2.savefig(\"category_revenue.png\", dpi=120, bbox_inches=\"tight\")",
+          "",
+          "print(\"تم حفظ الرسمين\")"
+        ],
+        "expected_output": [
+          "تم حفظ الرسمين"
+        ],
+        "expects_chart": true
+      }
+    },
+    {
+      "key": "modeling",
+      "stage": "Modeling",
+      "title": "النمذجة: لماذا لا تنطبق هنا؟",
+      "goal": "أن تميّز بين مشروع تحليلي ومشروع تنبؤي، وتعرف متى يحتاج السؤال نموذجاً.",
+      "tasks": [
+        "راجع أسئلة العمل: كلها أسئلة وصفية عما حدث في 2025، والإجابة عنها لا تحتاج نموذج تعلم آلة.",
+        "اكتب سؤالين إضافيين كانا سيحتاجان نموذجاً، مثل: كم سنبيع في نوفمبر 2026؟ (تنبؤ بسلسلة زمنية: المشروع 13)، أو أي العملاء لن يعودوا؟ (تصنيف: المشروع 8).",
+        "علّم هذه المرحلة كمنجزة بعد كتابة السؤالين."
+      ],
+      "hint": "ليس كل مشروع بيانات يحتاج Machine Learning. استخدام نموذج لسؤال وصفي تعقيد بلا فائدة."
+    },
+    {
+      "key": "evaluation",
+      "stage": "Evaluation",
+      "title": "التحقق من صحة النتائج",
+      "goal": "أن تتأكد أن أرقامك صحيحة ومتسقة قبل أن تصل إلى صاحب القرار.",
+      "tasks": [
+        "تحقق أن مجموع إيراد الفئات يساوي الإيراد الإجمالي، وكذلك مجموع المدن ومجموع الأشهر.",
+        "قارن الإيراد الإجمالي بما حسبته في مشروع Python الخالص (الوحدة 3): 429,719.05 ريال.",
+        "تحقق أن مجموع الحصص المئوية للفئات 100%."
+      ],
+      "hint": "التحقق المتقاطع بطريقتين مختلفتين من أقوى طرق كشف الأخطاء.",
+      "solution": {
+        "explanation": [
+          "كل الفحوصات يجب أن تنجح. إذا فشل أحدها فابحث عن السبب (صفوف مكررة، أو تصفية نسيتها، أو خصم لم يُطبّق) قبل كتابة أي استنتاج."
+        ],
+        "code": [
+          "import numpy as np",
+          "",
+          "total = df[\"revenue\"].sum()",
+          "checks = {",
+          "    \"الفئات = الإجمالي\": np.isclose(df.groupby(\"category\")[\"revenue\"].sum().sum(), total),",
+          "    \"المدن = الإجمالي\": np.isclose(df.groupby(\"city\")[\"revenue\"].sum().sum(), total),",
+          "    \"الأشهر = الإجمالي\": np.isclose(df.groupby(\"month\")[\"revenue\"].sum().sum(), total),",
+          "    \"مطابق لمشروع Python\": round(total, 2) == 429719.05,",
+          "}",
+          "for name, ok in checks.items():",
+          "    print(name, \"✓\" if ok else \"✗\")"
+        ],
+        "expected_output": [
+          "الفئات = الإجمالي ✓",
+          "المدن = الإجمالي ✓",
+          "الأشهر = الإجمالي ✓",
+          "مطابق لمشروع Python ✓"
+        ]
+      }
+    },
+    {
+      "key": "conclusion",
+      "stage": "Conclusion",
+      "title": "الاستنتاجات والتوصيات",
+      "goal": "أن تكتب للإدارة ما وجدته وماذا يجب أن تفعل، بلغة واضحة وكل جملة مدعومة برقم.",
+      "tasks": [
+        "اكتب 5 استنتاجات، كل منها جملة فيها رقم.",
+        "اكتب 3 توصيات قابلة للتنفيذ مبنية على الاستنتاجات.",
+        "اذكر حدود التحليل: بيانات سنة واحدة، بدون تكلفة المنتجات (لا نعرف الربح)، والتقييمات المفقودة."
+      ],
+      "hint": "ابدأ بأهم نتيجة. صاحب القرار قد لا يقرأ أكثر من ثلاثة أسطر.",
+      "solution": {
+        "explanation": [
+          "**توصيات مقترحة**: (1) رفع مخزون الإلكترونيات قبل نوفمبر بستة أسابيع، ومراجعة عمق الخصومات لأن أغلب طلبات الشهر بخصم. (2) تجهيز مخزون التمور والأغذية قبل رمضان. (3) حملة صيفية موجهة لرفع الأشهر الأضعف.",
+          "**حدود التحليل**: سنة واحدة فقط، ولا توجد تكلفة المنتجات فلا نعرف الربح الحقيقي، والتقييم مفقود في 12% من الطلبات."
+        ],
+        "code": [
+          "total = df[\"revenue\"].sum()",
+          "by_month = df.groupby(\"month\")[\"revenue\"].sum()",
+          "by_cat = df.groupby(\"category\")[\"revenue\"].sum()",
+          "food = df[df[\"category\"] == \"أغذية\"].groupby(\"month\")[\"revenue\"].sum()",
+          "nov = df[df[\"month\"] == 11]",
+          "",
+          "insights = [",
+          "    f\"نوفمبر أعلى شهر بإيراد {by_month[11]:,.0f} ريال، أي {by_month[11] / by_month.mean() - 1:.0%} فوق متوسط الأشهر.\",",
+          "    f\"الإلكترونيات {by_cat['إلكترونيات'] / total:.0%} من الإيراد، و {(nov['discount'] > 0).mean():.0%} من طلبات نوفمبر كانت بخصم.\",",
+          "    f\"مبيعات الأغذية في مارس (رمضان) {food[3]:,.0f} ريال مقابل {food.median():,.0f} في الشهر المعتاد.\",",
+          "    f\"الرياض وحدها {df.loc[df['city'] == 'الرياض', 'revenue'].sum() / total:.0%} من الإيراد.\",",
+          "    f\"الصيف (يونيو إلى أغسطس) أضعف فترة بمتوسط {by_month[[6, 7, 8]].mean():,.0f} ريال شهرياً.\",",
+          "]",
+          "for i, text in enumerate(insights, 1):",
+          "    print(f\"{i}. {text}\")"
+        ],
+        "expected_output": [
+          "1. نوفمبر أعلى شهر بإيراد 53,225 ريال، أي 49% فوق متوسط الأشهر.",
+          "2. الإلكترونيات 32% من الإيراد، و 67% من طلبات نوفمبر كانت بخصم.",
+          "3. مبيعات الأغذية في مارس (رمضان) 12,670 ريال مقابل 5,994 في الشهر المعتاد.",
+          "4. الرياض وحدها 32% من الإيراد.",
+          "5. الصيف (يونيو إلى أغسطس) أضعف فترة بمتوسط 29,112 ريال شهرياً."
+        ]
+      }
+    }
+  ],
+  "checkpoints": [
+    {
+      "key": "total",
+      "title": "نقطة تحقق 1: الإيراد الإجمالي",
+      "prompt": "احسب `total_revenue`: مجموع الإيراد (السعر × الكمية × (1 − الخصم)) لكل الطلبات، مقرباً لمنزلتين كـ `float`.",
+      "starter_code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "total_revenue = 0.0",
+        "print(total_revenue)"
+      ],
+      "tests": [
+        "assert isinstance(total_revenue, float), \"total_revenue يجب أن يكون float\"",
+        "assert total_revenue == 429719.05, f\"الإيراد الإجمالي غير صحيح: {total_revenue}. هل طبّقت الخصم؟\""
+      ],
+      "solution": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "total_revenue = round(float((df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])).sum()), 2)",
+        "print(total_revenue)"
+      ]
+    },
+    {
+      "key": "best_month",
+      "title": "نقطة تحقق 2: الشهر الأعلى",
+      "prompt": "خزّن في `best_month` رقم الشهر الأعلى إيراداً (int)، وفي `best_month_revenue` إيراده مقرباً لعدد صحيح (int).",
+      "starter_code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+        "best_month = 0",
+        "best_month_revenue = 0"
+      ],
+      "tests": [
+        "assert best_month == 11 and isinstance(best_month, int), f\"best_month يجب أن يكون 11 (int)، والموجود {best_month!r}\"",
+        "assert best_month_revenue == 53225 and isinstance(best_month_revenue, int), f\"best_month_revenue يجب أن يكون 53225، والموجود {best_month_revenue!r}\""
+      ],
+      "solution": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "by_month = df.groupby(df[\"order_date\"].dt.month)[\"revenue\"].sum()",
+        "best_month = int(by_month.idxmax())",
+        "best_month_revenue = round(float(by_month.max()))",
+        "print(best_month, best_month_revenue)"
+      ]
+    },
+    {
+      "key": "category_share",
+      "title": "نقطة تحقق 3: حصص الفئات",
+      "prompt": "خزّن في `category_share` قاموساً: الفئة ← حصتها من الإيراد الإجمالي كنسبة مئوية مقربة لمنزلة واحدة (float).",
+      "starter_code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "category_share = {}"
+      ],
+      "tests": [
+        "import pandas as _pd",
+        "_d = _pd.read_csv(\"store_sales.csv\")",
+        "_r = _d[\"unit_price\"] * _d[\"quantity\"] * (1 - _d[\"discount\"])",
+        "_exp = {k: round(float(v), 1) for k, v in (_r.groupby(_d[\"category\"]).sum() / _r.sum() * 100).items()}",
+        "assert category_share == _exp, f\"category_share غير صحيح. المتوقع: {_exp}\""
+      ],
+      "solution": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "share = df.groupby(\"category\")[\"revenue\"].sum() / df[\"revenue\"].sum() * 100",
+        "category_share = {cat: round(float(value), 1) for cat, value in share.items()}",
+        "print(category_share)"
+      ]
+    },
+    {
+      "key": "aov_type",
+      "title": "نقطة تحقق 4: العملاء الجدد والعائدون",
+      "prompt": "خزّن في `aov_by_type` قاموساً: نوع العميل (`جديد` أو `عائد`) ← متوسط قيمة الطلب مقرباً لمنزلتين (float).",
+      "starter_code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "aov_by_type = {}"
+      ],
+      "tests": [
+        "import pandas as _pd",
+        "_d = _pd.read_csv(\"store_sales.csv\")",
+        "_r = _d[\"unit_price\"] * _d[\"quantity\"] * (1 - _d[\"discount\"])",
+        "_exp = {k: round(float(v), 2) for k, v in _r.groupby(_d[\"customer_type\"]).mean().items()}",
+        "assert aov_by_type == _exp, f\"aov_by_type غير صحيح. المتوقع: {_exp}\""
+      ],
+      "solution": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "aov_by_type = {t: round(float(v), 2) for t, v in df.groupby(\"customer_type\")[\"revenue\"].mean().items()}",
+        "print(aov_by_type)"
+      ]
+    }
+  ],
+  "starter_code": [
+    "import pandas as pd",
+    "import matplotlib.pyplot as plt",
+    "",
+    "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+    "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+    "df[\"month\"] = df[\"order_date\"].dt.month",
+    "",
+    "# 1. افحص البيانات: الأبعاد والأنواع والقيم المفقودة",
+    "",
+    "# 2. المؤشرات الرئيسية: الإيراد، الطلبات، متوسط قيمة الطلب، متوسط التقييم",
+    "",
+    "# 3. الإيراد حسب الشهر والفئة والمدينة",
+    "",
+    "# 4. رسم الإيراد الشهري"
+  ],
+  "deliverables": [
+    "ملف تحليل كامل (`analysis.ipynb` أو `analysis.py`) يعمل من البداية للنهاية.",
+    "رسمان على الأقل محفوظان كصور PNG.",
+    "تقرير من صفحة واحدة (Markdown أو PDF): المؤشرات، والرسوم، وخمسة استنتاجات، وثلاث توصيات، وحدود التحليل.",
+    "ملف `README.md` يشرح المشروع وكيفية تشغيله، إذا رفعته إلى GitHub."
+  ],
+  "guidance": [
+    "لا تقرّب الأرقام أثناء الحساب؛ قرّب عند العرض فقط.",
+    "وثّق كل قرار في التنظيف (مثل التعامل مع التقييمات المفقودة) في تعليق أو في التقرير.",
+    "كل رسم يجب أن يكون له عنوان يقول الاستنتاج، ومحاور مسماة بالوحدة.",
+    "اختبر أرقامك بطريقتين (مرحلة التحقق) قبل كتابة الاستنتاجات.",
+    "اكتب التقرير لشخص غير تقني: أرقام قليلة واضحة، وجمل قصيرة، وتوصية محددة."
+  ],
+  "rubric": [
+    {
+      "criterion": "صحة الحسابات",
+      "weight": 25,
+      "excellent": "كل المؤشرات صحيحة ومتحقق منها بطريقتين، ونقاط التحقق الأربع ناجحة.",
+      "acceptable": "المؤشرات الرئيسية صحيحة مع خطأ بسيط في مؤشر ثانوي.",
+      "needs_work": "خطأ في الإيراد (مثل نسيان الخصم) أو في المتوسطات."
+    },
+    {
+      "criterion": "فحص الجودة والتنظيف",
+      "weight": 15,
+      "excellent": "فحص المفقود والمكرر والنطاقات، مع قرارات موثقة ومبررة.",
+      "acceptable": "فحص المفقود مع قرار غير مبرر بالكامل.",
+      "needs_work": "لا يوجد فحص، أو حذف الطلبات بلا تقييم من حساب الإيراد."
+    },
+    {
+      "criterion": "عمق التحليل",
+      "weight": 20,
+      "excellent": "إجابة كل أسئلة العمل مع تفكيك الأرقام اللافتة (الموسم ثم الفئة).",
+      "acceptable": "إجابة معظم الأسئلة بأرقام إجمالية.",
+      "needs_work": "مؤشرات عامة دون ربطها بأسئلة العمل."
+    },
+    {
+      "criterion": "الرسوم البيانية",
+      "weight": 15,
+      "excellent": "رسمان أو أكثر بنوع مناسب، وعناوين تقول الاستنتاج، ومحاور بوحداتها.",
+      "acceptable": "رسوم صحيحة بعناوين وصفية فقط.",
+      "needs_work": "رسوم بلا عناوين أو محاور، أو نوع رسم غير مناسب."
+    },
+    {
+      "criterion": "الاستنتاجات والتوصيات",
+      "weight": 20,
+      "excellent": "خمسة استنتاجات بأرقام، وثلاث توصيات قابلة للتنفيذ، وذكر حدود التحليل.",
+      "acceptable": "استنتاجات بأرقام وتوصيات عامة.",
+      "needs_work": "وصف للأرقام دون استنتاج أو توصية."
+    },
+    {
+      "criterion": "جودة الكود وقابلية التكرار",
+      "weight": 5,
+      "excellent": "كود مرتب بأسماء واضحة يعمل من البداية ويعطي نفس النتائج.",
+      "acceptable": "يعمل لكن بتكرار أو ترتيب غير واضح.",
+      "needs_work": "لا يعمل من البداية أو يعتمد على خطوات يدوية."
+    }
+  ]
+}

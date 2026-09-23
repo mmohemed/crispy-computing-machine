@@ -94,6 +94,19 @@ ${editorScripts}    <script type="module" src="${root}js/pages/quiz.js"></script
 `;
 }
 
+function projectPageHtml(project) {
+    const root = '../';
+    return `${head({ title: `${project.title} | مشاريع CodeWay`, description: project.problem, root, editor: true })}
+<body data-page="project" data-root="${root}" data-project="${project.slug}">
+    <header class="header" id="cw-header"></header>
+    <main class="container" id="project-main">${noscript}</main>
+    <footer class="footer" id="cw-footer"></footer>
+${editorScripts}    <script type="module" src="${root}js/pages/project.js"></script>
+</body>
+</html>
+`;
+}
+
 function write(rel, html, generated) {
     const path = join(ROOT, rel);
     mkdirSync(dirname(path), { recursive: true });
@@ -117,9 +130,13 @@ for (const course of catalog.courses) {
     }
 }
 
+for (const project of catalog.projects) {
+    if (project.status === 'published') write(`projects/project-${project.slug}.html`, projectPageHtml(project), generated);
+}
+
 // حذف صفحات قديمة لم تعد منشورة
 let removed = 0;
-for (const dir of ['courses', 'exercises']) {
+for (const dir of ['courses', 'exercises', 'projects']) {
     const abs = join(ROOT, dir);
     if (!existsSync(abs)) continue;
     for (const f of readdirSync(abs)) {

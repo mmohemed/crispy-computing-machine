@@ -12,6 +12,8 @@ export const lessonPage = (course, lesson) => url(`lessons/${course}/lesson-${le
 
 export const quizPage = (quiz) => url(`exercises/quiz-${quiz}.html`);
 
+export const projectPage = (project) => url(`projects/project-${project}.html`);
+
 export const roadmapPage = (anchor = '') => url(`roadmap.html${anchor ? '#' + anchor : ''}`);
 
 export const homePage = (anchor = '') => url(`index.html${anchor ? '#' + anchor : ''}`);
