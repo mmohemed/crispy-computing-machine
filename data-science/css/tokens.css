@@ -1,0 +1,70 @@
+/* ==========================================================================
+   CodeWay · Data Science — Design Tokens
+   الهوية البصرية الرسمية لمسار علم البيانات (مستخرجة من التصميم الأصلي).
+   أي صفحة جديدة يجب أن تستخدم هذه المتغيرات بدلاً من كتابة الألوان مباشرة.
+   ========================================================================== */
+:root {
+    /* الألوان الأساسية */
+    --cw-cyan: #00ffff;
+    --cw-magenta: #ff00ff;
+    --cw-gold: #ffd700;
+    --cw-bg: #0a0f1f;
+
+    /* الأسطح الزجاجية Glassmorphism */
+    --cw-glass: rgba(10, 15, 31, 0.95);
+    --cw-surface: rgba(255, 255, 255, 0.05);
+    --cw-surface-2: rgba(255, 255, 255, 0.03);
+    --cw-surface-hover: rgba(0, 255, 255, 0.06);
+    --cw-blur: blur(10px);
+
+    /* الحدود */
+    --cw-border-soft: rgba(0, 255, 255, 0.1);
+    --cw-border: rgba(0, 255, 255, 0.2);
+    --cw-border-strong: rgba(0, 255, 255, 0.3);
+
+    /* النصوص */
+    --cw-text: #ffffff;
+    --cw-text-2: #cbd5e1;
+    --cw-muted: #94a3b8;
+    --cw-dim: #62748c;
+
+    /* الحالات (للتمارين والتقدم) */
+    --cw-ok: #34d399;
+    --cw-ok-bg: rgba(52, 211, 153, 0.1);
+    --cw-err: #fb7185;
+    --cw-err-bg: rgba(251, 113, 133, 0.1);
+    --cw-warn: #ffd700;
+    --cw-warn-bg: rgba(255, 215, 0, 0.08);
+
+    /* التدرجات */
+    --cw-grad: linear-gradient(135deg, #00ffff, #ff00ff);
+    --cw-grad-3: linear-gradient(135deg, #00ffff, #ff00ff, #ffd700);
+    --cw-grad-line: linear-gradient(90deg, #00ffff, #ff00ff, #ffd700);
+
+    /* الظلال والتوهج */
+    --cw-glow-cyan: 0 20px 40px rgba(0, 255, 255, 0.3);
+    --cw-glow-magenta: 0 20px 40px rgba(255, 0, 255, 0.2);
+    --cw-glow-gold: 0 20px 40px rgba(255, 215, 0, 0.2);
+    --cw-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+
+    /* الزوايا */
+    --cw-r-xl: 50px;
+    --cw-r-lg: 40px;
+    --cw-r-md: 30px;
+    --cw-r-sm: 25px;
+    --cw-r-xs: 18px;
+    --cw-r-pill: 60px;
+
+    /* الخطوط */
+    --cw-font: 'Tajawal', 'Segoe UI', sans-serif;
+    /* JetBrains Mono لا يحتوي حروفاً عربية، فتُعرض النصوص العربية داخل الكود بخط Tajawal المتصل */
+    --cw-mono: 'JetBrains Mono', 'Tajawal', Consolas, monospace;
+
+    /* الحركة */
+    --cw-t: all 0.3s;
+
+    /* التخطيط */
+    --cw-max: 1400px;
+    --cw-gutter: 5%;
+    --cw-header-h: 110px;
+}

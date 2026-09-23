@@ -1,0 +1,4030 @@
+{
+  "version": 1,
+  "track": {
+    "slug": "data-science",
+    "title": "علم البيانات",
+    "title_en": "Data Science",
+    "description": "مسار CodeWay لتعلم علم البيانات من الصفر حتى المستوى المتقدم."
+  },
+  "learning_path": [
+    {
+      "key": "foundations",
+      "level": 0,
+      "icon": "fas fa-seedling",
+      "title": "التأسيس",
+      "title_en": "Foundations",
+      "courses": [
+        "intro-data-science",
+        "math-foundations"
+      ],
+      "summary": "المجال، بيئة العمل، والرياضيات بالحدس."
+    },
+    {
+      "key": "python",
+      "level": 1,
+      "icon": "fab fa-python",
+      "title": "Python",
+      "title_en": "Python",
+      "courses": [
+        "python-basics"
+      ],
+      "summary": "لغة المسار من الصفر: متغيرات، شروط، حلقات، دوال، هياكل بيانات، ملفات."
+    },
+    {
+      "key": "numpy",
+      "level": 1,
+      "icon": "fas fa-calculator",
+      "title": "NumPy",
+      "title_en": "NumPy",
+      "courses": [
+        "numpy"
+      ],
+      "summary": "مصفوفات سريعة وحسابات متجهة."
+    },
+    {
+      "key": "pandas",
+      "level": 2,
+      "icon": "fas fa-table",
+      "title": "Pandas",
+      "title_en": "Pandas",
+      "courses": [
+        "pandas"
+      ],
+      "summary": "قراءة البيانات وتصفيتها وتجميعها ودمجها."
+    },
+    {
+      "key": "cleaning",
+      "level": 2,
+      "icon": "fas fa-broom",
+      "title": "تنظيف البيانات",
+      "title_en": "Data Cleaning",
+      "courses": [
+        "data-cleaning"
+      ],
+      "summary": "القيم المفقودة، المكررات، الأنواع، القيم الشاذة."
+    },
+    {
+      "key": "eda",
+      "level": 2,
+      "icon": "fas fa-magnifying-glass-chart",
+      "title": "التحليل الاستكشافي",
+      "title_en": "EDA",
+      "courses": [
+        "eda"
+      ],
+      "summary": "أسئلة، توزيعات، علاقات، ثم Insights."
+    },
+    {
+      "key": "statistics",
+      "level": 3,
+      "icon": "fas fa-chart-simple",
+      "title": "الإحصاء",
+      "title_en": "Statistics",
+      "courses": [
+        "statistics-descriptive",
+        "probability",
+        "inferential-statistics",
+        "correlation-regression"
+      ],
+      "summary": "الوصف، الاحتمالات، الاستدلال، A/B Testing، الانحدار."
+    },
+    {
+      "key": "sql",
+      "level": 4,
+      "icon": "fas fa-database",
+      "title": "SQL",
+      "title_en": "SQL",
+      "courses": [
+        "sql"
+      ],
+      "summary": "من SELECT إلى Window Functions."
+    },
+    {
+      "key": "visualization",
+      "level": 5,
+      "icon": "fas fa-chart-pie",
+      "title": "التصور",
+      "title_en": "Visualization",
+      "courses": [
+        "data-visualization"
+      ],
+      "summary": "رسوم واضحة وقصة ولوحة تحكم."
+    },
+    {
+      "key": "ml",
+      "level": 6,
+      "icon": "fas fa-robot",
+      "title": "تعلم الآلة",
+      "title_en": "Machine Learning",
+      "courses": [
+        "ml-foundations",
+        "supervised-learning",
+        "model-evaluation",
+        "feature-engineering",
+        "unsupervised-learning"
+      ],
+      "summary": "النماذج، التقييم، هندسة الخصائص."
+    },
+    {
+      "key": "advanced-ml",
+      "level": 7,
+      "icon": "fas fa-rocket",
+      "title": "تعلم الآلة المتقدم",
+      "title_en": "Advanced ML",
+      "courses": [
+        "advanced-ml"
+      ],
+      "summary": "Boosting، التفسير، النشر."
+    },
+    {
+      "key": "deep-learning",
+      "level": 8,
+      "icon": "fas fa-network-wired",
+      "title": "التعلم العميق",
+      "title_en": "Deep Learning",
+      "courses": [
+        "deep-learning"
+      ],
+      "summary": "شبكات عصبية، CNN، LSTM."
+    },
+    {
+      "key": "specialization",
+      "level": 9,
+      "icon": "fas fa-code-branch",
+      "title": "تخصص تختاره",
+      "title_en": "Specialization",
+      "courses": [
+        "nlp",
+        "computer-vision",
+        "time-series",
+        "recommender-systems",
+        "big-data",
+        "data-engineering",
+        "genai-data-science"
+      ],
+      "summary": "NLP أو Vision أو Time Series أو غيرها."
+    },
+    {
+      "key": "projects",
+      "level": 10,
+      "icon": "fas fa-trophy",
+      "title": "المشاريع والـ Portfolio",
+      "title_en": "Projects",
+      "courses": [
+        "portfolio",
+        "capstone"
+      ],
+      "summary": "مشروع ختامي و Portfolio جاهز للعمل."
+    }
+  ],
+  "levels": [
+    {
+      "number": 0,
+      "slug": "foundations",
+      "icon": "fas fa-seedling",
+      "title": "التأسيس",
+      "title_en": "Foundations",
+      "elective": false,
+      "courses": [
+        "intro-data-science",
+        "math-foundations"
+      ],
+      "summary": "افهم المجال وجهّز أدواتك والرياضيات التي ستحتاجها.",
+      "description": "قبل كتابة الكود تحتاج صورة واضحة: ماذا يفعل عالم البيانات، كيف يسير المشروع، وما الرياضيات التي تحتاجها فعلاً (بالحدس وليس بالبراهين).",
+      "outcome": "تعرف ما هو علم البيانات وأدواره، وجهازك جاهز، وتفهم المتجهات والدوال وفكرة الميل التي سيقوم عليها تعلم الآلة."
+    },
+    {
+      "number": 1,
+      "slug": "programming",
+      "icon": "fab fa-python",
+      "title": "أساسيات البرمجة والبيانات",
+      "title_en": "Programming Fundamentals",
+      "elective": false,
+      "courses": [
+        "python-basics",
+        "numpy"
+      ],
+      "summary": "Python من الصفر ثم NumPy للحسابات العددية.",
+      "description": "Python هي لغة المسار. تتعلمها بأمثلة من عالم البيانات، ثم تنتقل إلى NumPy التي تقوم عليها كل مكتبات التحليل.",
+      "outcome": "تكتب برامج Python نظيفة تقرأ الملفات وتعالج البيانات، وتستخدم مصفوفات NumPy للحسابات السريعة."
+    },
+    {
+      "number": 2,
+      "slug": "analysis",
+      "icon": "fas fa-table",
+      "title": "تحليل البيانات",
+      "title_en": "Data Analysis",
+      "elective": false,
+      "courses": [
+        "pandas",
+        "data-cleaning",
+        "eda"
+      ],
+      "summary": "Pandas، تنظيف البيانات، والتحليل الاستكشافي.",
+      "description": "هنا تصبح محلل بيانات: تقرأ البيانات، تنظفها بقرارات مبررة، وتستكشفها لتخرج باستنتاجات مكتوبة بوضوح.",
+      "outcome": "تستطيع أخذ ملف بيانات حقيقي غير نظيف وتحويله إلى تقرير EDA يجيب عن أسئلة العمل."
+    },
+    {
+      "number": 3,
+      "slug": "statistics",
+      "icon": "fas fa-chart-simple",
+      "title": "الإحصاء والاحتمالات",
+      "title_en": "Statistics & Probability",
+      "elective": false,
+      "courses": [
+        "statistics-descriptive",
+        "probability",
+        "inferential-statistics",
+        "correlation-regression"
+      ],
+      "summary": "من المتوسط والانحراف المعياري إلى اختبار الفرضيات و A/B Testing والانحدار.",
+      "description": "الإحصاء هو ما يفصل التحليل الصادق عن التخمين. كل مفهوم يُحسب يدوياً أولاً ثم بالكود ثم يُطبّق على بيانات.",
+      "outcome": "تلخّص البيانات بمقاييس صحيحة، تفهم التوزيعات، تبني فترات ثقة، تصمم وتحلل تجربة A/B، وتفسر نموذج انحدار."
+    },
+    {
+      "number": 4,
+      "slug": "sql",
+      "icon": "fas fa-database",
+      "title": "SQL وقواعد البيانات",
+      "title_en": "SQL & Databases",
+      "elective": false,
+      "courses": [
+        "sql"
+      ],
+      "summary": "استخراج البيانات وتحليلها من قواعد البيانات مباشرة.",
+      "description": "أغلب بيانات الشركات تعيش في قواعد بيانات. تتعلم SQL من الاستعلام البسيط حتى Window Functions، ثم ربطها مع Python.",
+      "outcome": "تكتب استعلامات تحليلية متقدمة (JOIN، CTE، Window Functions) وتنقل النتائج إلى Pandas."
+    },
+    {
+      "number": 5,
+      "slug": "visualization",
+      "icon": "fas fa-chart-pie",
+      "title": "تصور البيانات",
+      "title_en": "Data Visualization",
+      "elective": false,
+      "courses": [
+        "data-visualization"
+      ],
+      "summary": "Matplotlib و Seaborn و Plotly و Data Storytelling.",
+      "description": "الرسم الجيد يختصر صفحة من الأرقام. تتعلم اختيار الرسم المناسب وبناءه وتحويل النتائج إلى قصة ولوحة تحكم.",
+      "outcome": "تبني رسوماً ولوحات تحكم واضحة، وتعرض نتائج تحليلك بطريقة تقود إلى قرار."
+    },
+    {
+      "number": 6,
+      "slug": "machine-learning",
+      "icon": "fas fa-robot",
+      "title": "تعلم الآلة",
+      "title_en": "Machine Learning",
+      "elective": false,
+      "courses": [
+        "ml-foundations",
+        "supervised-learning",
+        "model-evaluation",
+        "feature-engineering",
+        "unsupervised-learning"
+      ],
+      "summary": "الخوارزميات الأساسية، التقييم، هندسة الخصائص، والتعلم غير الموجّه.",
+      "description": "تنتقل من وصف ما حدث إلى التنبؤ بما سيحدث. تتعلم الخوارزميات وتقييمها بشكل صحيح وتجهيز البيانات لها.",
+      "outcome": "تبني نموذج تنبؤ كامل بـ scikit-learn داخل Pipeline، وتقيّمه بالمقياس المناسب للمشكلة."
+    },
+    {
+      "number": 7,
+      "slug": "advanced-ml",
+      "icon": "fas fa-rocket",
+      "title": "تعلم الآلة المتقدم",
+      "title_en": "Advanced Machine Learning",
+      "elective": false,
+      "courses": [
+        "advanced-ml"
+      ],
+      "summary": "Boosting، البيانات غير المتوازنة، التفسير، والنشر.",
+      "description": "الأدوات التي تصنع الفرق في المشاريع الحقيقية: النماذج الأقوى، التعامل مع عدم التوازن، شرح قرارات النموذج، ونشره.",
+      "outcome": "تبني نماذج Boosting قوية، تفسرها، وتنشرها كـ API قابل للاستخدام."
+    },
+    {
+      "number": 8,
+      "slug": "deep-learning",
+      "icon": "fas fa-network-wired",
+      "title": "التعلم العميق",
+      "title_en": "Deep Learning",
+      "elective": false,
+      "courses": [
+        "deep-learning"
+      ],
+      "summary": "الشبكات العصبية من الصفر ثم Keras و PyTorch و CNN و LSTM.",
+      "description": "تفهم الشبكات العصبية من الداخل بكتابتها بـ NumPy، ثم تستخدم الأطر الاحترافية للصور والتسلسلات.",
+      "outcome": "تفهم كيف تتعلم الشبكة العصبية، وتدرّب نماذج CNN و LSTM وتستخدم Transfer Learning."
+    },
+    {
+      "number": 9,
+      "slug": "specializations",
+      "icon": "fas fa-code-branch",
+      "title": "التخصصات",
+      "title_en": "Specializations",
+      "elective": true,
+      "courses": [
+        "nlp",
+        "computer-vision",
+        "time-series",
+        "recommender-systems",
+        "big-data",
+        "data-engineering",
+        "genai-data-science"
+      ],
+      "summary": "مسارات اختيارية: يكفي تخصص واحد لإكمال المسار.",
+      "description": "بعد الأساسيات تختار اتجاهك. **لا تحتاج دراسة كل التخصصات** لإكمال المسار: اختر واحداً على الأقل حسب نوع العمل الذي تستهدفه.",
+      "outcome": "عمق حقيقي في مجال واحد على الأقل (NLP أو الرؤية أو السلاسل الزمنية أو غيرها) مع مشروع فيه."
+    },
+    {
+      "number": 10,
+      "slug": "projects",
+      "icon": "fas fa-trophy",
+      "title": "المشاريع والـ Portfolio",
+      "title_en": "Projects & Portfolio",
+      "elective": false,
+      "courses": [
+        "portfolio",
+        "capstone"
+      ],
+      "summary": "Portfolio مقنع ومشروع ختامي متكامل.",
+      "description": "تجمع كل ما تعلمته في مشروع ختامي متكامل، وتعرض أعمالك بشكل احترافي وتستعد للمقابلات.",
+      "outcome": "لديك Portfolio من 5 مشاريع على الأقل ومشروع ختامي منشور، وجاهز للتقديم على وظائف البيانات."
+    }
+  ],
+  "courses": [
+    {
+      "slug": "intro-data-science",
+      "code": "C00",
+      "level": 0,
+      "icon": "fas fa-compass",
+      "title": "مدخل إلى علم البيانات",
+      "title_en": "Introduction to Data Science",
+      "difficulty": "مبتدئ",
+      "hours": 6,
+      "prerequisites": [],
+      "summary": "صورة كاملة عن المجال قبل كتابة أي كود: ما هو علم البيانات، من يعمل فيه، كيف يسير مشروع البيانات من السؤال إلى القرار، وكيف تجهّز بيئة العمل.",
+      "modules": [
+        {
+          "slug": "ds-what",
+          "title": "ما هو علم البيانات؟",
+          "title_en": "What is Data Science",
+          "lessons": [
+            {
+              "slug": "ds-definition",
+              "title": "علم البيانات، تحليل البيانات، ML و AI: ما الفرق؟",
+              "title_en": "DS vs DA vs ML vs AI",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "ds-roles",
+              "title": "أدوار فريق البيانات",
+              "title_en": "Data Roles",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "ds-lifecycle",
+              "title": "دورة حياة مشروع البيانات",
+              "title_en": "Data Science Lifecycle",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "ds-data-types",
+              "title": "أنواع البيانات",
+              "title_en": "Types of Data",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "ds-questions",
+              "title": "من سؤال العمل إلى سؤال البيانات",
+              "title_en": "Framing Data Questions",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "ds-ethics",
+              "title": "أخلاقيات البيانات والخصوصية والتحيّز",
+              "title_en": "Data Ethics & Bias",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-ds-what",
+            "title": "اختبار الوحدة: ما هو علم البيانات؟",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "ds-setup",
+          "title": "بيئة العمل",
+          "title_en": "Your Workspace",
+          "lessons": [
+            {
+              "slug": "setup-anaconda",
+              "title": "تثبيت Python و Anaconda",
+              "title_en": "Installing Anaconda",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "setup-jupyter",
+              "title": "العمل في Jupyter Notebook",
+              "title_en": "Jupyter Notebook",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "setup-vscode",
+              "title": "VS Code لعلم البيانات",
+              "title_en": "VS Code for DS",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "setup-git",
+              "title": "Git و GitHub للمبتدئ",
+              "title_en": "Git & GitHub Basics",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "setup-codeway-editor",
+              "title": "كيف تستخدم محرر CodeWay",
+              "title_en": "Using the CodeWay Editor",
+              "minutes": 10,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-ds-setup",
+            "title": "اختبار الوحدة: بيئة العمل",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "math-foundations",
+      "code": "C01",
+      "level": 0,
+      "icon": "fas fa-square-root-variable",
+      "title": "الرياضيات اللازمة لعلم البيانات",
+      "title_en": "Math Foundations for Data Science",
+      "difficulty": "مبتدئ",
+      "hours": 8,
+      "prerequisites": [],
+      "summary": "الرياضيات التي ستحتاجها فعلاً، مشروحة بالحدس والأمثلة وكود NumPy: الدوال، اللوغاريتمات، المتجهات والمصفوفات، وفكرة المشتقة التي يقوم عليها تدريب النماذج.",
+      "modules": [
+        {
+          "slug": "math-algebra",
+          "title": "الجبر والدوال",
+          "title_en": "Algebra & Functions",
+          "lessons": [
+            {
+              "slug": "math-variables-equations",
+              "title": "المتغيرات والمعادلات",
+              "title_en": "Variables & Equations",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "math-functions",
+              "title": "الدوال ورسمها",
+              "title_en": "Functions & Graphs",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "math-exp-log",
+              "title": "الأسس واللوغاريتمات",
+              "title_en": "Exponents & Logarithms",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "math-summation",
+              "title": "رمز المجموع Σ ورمز الضرب Π",
+              "title_en": "Summation Notation",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-math-algebra",
+            "title": "اختبار الوحدة: الجبر والدوال",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "math-linear-algebra",
+          "title": "المتجهات والمصفوفات",
+          "title_en": "Vectors & Matrices",
+          "lessons": [
+            {
+              "slug": "math-vectors",
+              "title": "المتجهات Vectors",
+              "title_en": "Vectors",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "math-vector-ops",
+              "title": "عمليات المتجهات والطول والمسافة",
+              "title_en": "Vector Operations & Distance",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "math-dot-product",
+              "title": "الضرب النقطي Dot Product",
+              "title_en": "Dot Product",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "math-matrices",
+              "title": "المصفوفات وضربها",
+              "title_en": "Matrices & Multiplication",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "math-transpose-inverse",
+              "title": "المنقول والمعكوس",
+              "title_en": "Transpose & Inverse",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-math-linear-algebra",
+            "title": "اختبار الوحدة: المتجهات والمصفوفات",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "math-calculus",
+          "title": "حدس التفاضل",
+          "title_en": "Calculus Intuition",
+          "lessons": [
+            {
+              "slug": "math-derivative",
+              "title": "المشتقة كميل ومعدل تغيّر",
+              "title_en": "Derivative as Slope",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "math-partial-gradient",
+              "title": "المشتقات الجزئية و Gradient",
+              "title_en": "Partial Derivatives & Gradient",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "math-gradient-descent",
+              "title": "فكرة Gradient Descent",
+              "title_en": "Gradient Descent Intuition",
+              "minutes": 30,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-math-calculus",
+            "title": "اختبار الوحدة: حدس التفاضل",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "python-basics",
+      "code": "C10",
+      "level": 1,
+      "icon": "fab fa-python",
+      "title": "Python لعلم البيانات",
+      "title_en": "Python for Data Science",
+      "difficulty": "مبتدئ",
+      "hours": 25,
+      "prerequisites": [],
+      "summary": "أساس المسار كله: تتعلم Python من الصفر بأمثلة مأخوذة من عالم البيانات (مبيعات، درجات، عملاء)، ثم الأسلوب الاحترافي في كتابة الكود، وتنهي بتحليل ملف مبيعات حقيقي بـ Python خالص.",
+      "modules": [
+        {
+          "slug": "python-fundamentals",
+          "title": "أساسيات Python",
+          "title_en": "Python Fundamentals",
+          "lessons": [
+            {
+              "slug": "python-intro",
+              "title": "ما هي Python؟",
+              "title_en": "What is Python?",
+              "minutes": 15,
+              "status": "published"
+            },
+            {
+              "slug": "python-install",
+              "title": "تثبيت Python وتشغيل أول برنامج",
+              "title_en": "Installing Python",
+              "minutes": 20,
+              "status": "published"
+            },
+            {
+              "slug": "python-variables",
+              "title": "المتغيرات",
+              "title_en": "Variables",
+              "minutes": 20,
+              "status": "published"
+            },
+            {
+              "slug": "python-data-types",
+              "title": "أنواع البيانات",
+              "title_en": "Data Types",
+              "minutes": 25,
+              "status": "published"
+            },
+            {
+              "slug": "python-operators",
+              "title": "العمليات",
+              "title_en": "Operators",
+              "minutes": 25,
+              "status": "published"
+            },
+            {
+              "slug": "python-conditions",
+              "title": "الشروط",
+              "title_en": "Conditions",
+              "minutes": 25,
+              "status": "published"
+            },
+            {
+              "slug": "python-loops",
+              "title": "الحلقات",
+              "title_en": "Loops",
+              "minutes": 30,
+              "status": "published"
+            },
+            {
+              "slug": "python-functions",
+              "title": "الدوال",
+              "title_en": "Functions",
+              "minutes": 30,
+              "status": "published"
+            },
+            {
+              "slug": "python-lists",
+              "title": "القوائم",
+              "title_en": "Lists",
+              "minutes": 30,
+              "status": "published"
+            },
+            {
+              "slug": "python-tuples",
+              "title": "الصفوف",
+              "title_en": "Tuples",
+              "minutes": 20,
+              "status": "published"
+            },
+            {
+              "slug": "python-dictionaries",
+              "title": "القواميس",
+              "title_en": "Dictionaries",
+              "minutes": 30,
+              "status": "published"
+            },
+            {
+              "slug": "python-sets",
+              "title": "المجموعات",
+              "title_en": "Sets",
+              "minutes": 20,
+              "status": "published"
+            },
+            {
+              "slug": "python-strings",
+              "title": "النصوص",
+              "title_en": "Strings",
+              "minutes": 30,
+              "status": "published"
+            },
+            {
+              "slug": "python-files",
+              "title": "التعامل مع الملفات",
+              "title_en": "File Handling",
+              "minutes": 25,
+              "status": "published"
+            },
+            {
+              "slug": "python-exceptions",
+              "title": "معالجة الأخطاء",
+              "title_en": "Exceptions",
+              "minutes": 25,
+              "status": "published"
+            },
+            {
+              "slug": "python-modules",
+              "title": "الوحدات والمكتبات",
+              "title_en": "Modules",
+              "minutes": 20,
+              "status": "published"
+            }
+          ],
+          "description": "كل ما تحتاجه لكتابة برامج Python حقيقية: من المتغيرات إلى الملفات والأخطاء والمكتبات، بأمثلة من بيانات المبيعات والطلاب.",
+          "quiz": {
+            "slug": "python-fundamentals",
+            "title": "اختبار الوحدة: أساسيات Python",
+            "status": "published"
+          }
+        },
+        {
+          "slug": "python-pro",
+          "title": "Python بأسلوب محترف",
+          "title_en": "Pythonic Python",
+          "lessons": [
+            {
+              "slug": "python-comprehensions",
+              "title": "List و Dict Comprehensions",
+              "title_en": "Comprehensions",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "python-lambda-map-filter",
+              "title": "lambda و map و filter و sorted(key)",
+              "title_en": "Lambda, map, filter",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "python-args-kwargs",
+              "title": "*args و **kwargs",
+              "title_en": "*args & **kwargs",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "python-scope",
+              "title": "نطاق المتغيرات Scope",
+              "title_en": "Scope",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "python-oop",
+              "title": "الأصناف والكائنات Classes & Objects",
+              "title_en": "Classes & Objects",
+              "minutes": 35,
+              "status": "planned"
+            },
+            {
+              "slug": "python-iterators-generators",
+              "title": "Iterators و Generators",
+              "title_en": "Iterators & Generators",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "python-datetime",
+              "title": "التواريخ والأوقات datetime",
+              "title_en": "Dates & Times",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "python-csv-json",
+              "title": "ملفات CSV و JSON",
+              "title_en": "CSV & JSON Files",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "python-venv-pip",
+              "title": "pip والبيئات الافتراضية",
+              "title_en": "pip & Virtual Environments",
+              "minutes": 15,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "python-pro",
+            "title": "اختبار الوحدة: Python بأسلوب محترف",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "python-project",
+          "title": "تطبيق: تحليل مبيعات بـ Python خالص",
+          "title_en": "Mini Project: Pure-Python Sales Analysis",
+          "lessons": [
+            {
+              "slug": "python-project-load",
+              "title": "قراءة ملف المبيعات وتنظيمه",
+              "title_en": "Loading the Sales File",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "python-project-analyze",
+              "title": "حساب المؤشرات: الإيراد، أفضل المنتجات، المبيعات الشهرية",
+              "title_en": "Computing KPIs",
+              "minutes": 40,
+              "status": "planned"
+            },
+            {
+              "slug": "python-project-report",
+              "title": "كتابة تقرير نصي ولماذا نحتاج Pandas",
+              "title_en": "Writing the Report",
+              "minutes": 30,
+              "status": "planned"
+            }
+          ],
+          "quiz": null
+        }
+      ],
+      "final_exam": {
+        "slug": "python-basics-final",
+        "title": "الاختبار النهائي: Python لعلم البيانات",
+        "status": "planned"
+      }
+    },
+    {
+      "slug": "numpy",
+      "code": "C11",
+      "level": 1,
+      "icon": "fas fa-calculator",
+      "title": "NumPy: الحسابات العددية",
+      "title_en": "NumPy for Numerical Computing",
+      "difficulty": "مبتدئ - متوسط",
+      "hours": 8,
+      "prerequisites": [
+        "python-basics"
+      ],
+      "summary": "المصفوفات ndarray التي تقوم عليها Pandas و Scikit-learn: الإنشاء، الفهرسة، Broadcasting، الحسابات المتجهة، والمحاكاة العشوائية.",
+      "modules": [
+        {
+          "slug": "numpy-arrays",
+          "title": "المصفوفات ndarray",
+          "title_en": "Working with Arrays",
+          "lessons": [
+            {
+              "slug": "numpy-why",
+              "title": "لماذا NumPy؟ القوائم مقابل المصفوفات",
+              "title_en": "Why NumPy",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "numpy-create",
+              "title": "إنشاء المصفوفات",
+              "title_en": "Creating Arrays",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "numpy-shape-dtype",
+              "title": "shape و dtype و reshape",
+              "title_en": "Shape, dtype, reshape",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "numpy-indexing",
+              "title": "Indexing و Slicing",
+              "title_en": "Indexing & Slicing",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "numpy-masking",
+              "title": "Boolean Masking و Fancy Indexing",
+              "title_en": "Boolean Masking",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-numpy-arrays",
+            "title": "اختبار الوحدة: المصفوفات",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "numpy-compute",
+          "title": "الحسابات",
+          "title_en": "Computing with NumPy",
+          "lessons": [
+            {
+              "slug": "numpy-vectorization",
+              "title": "Vectorization و ufuncs",
+              "title_en": "Vectorization",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "numpy-broadcasting",
+              "title": "Broadcasting",
+              "title_en": "Broadcasting",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "numpy-aggregations",
+              "title": "التجميع والمحور axis",
+              "title_en": "Aggregations & axis",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "numpy-linear-algebra",
+              "title": "الجبر الخطي في NumPy",
+              "title_en": "Linear Algebra",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "numpy-random",
+              "title": "الأرقام العشوائية والمحاكاة",
+              "title_en": "Random & Simulation",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "numpy-performance",
+              "title": "مقارنة الأداء وأفضل الممارسات",
+              "title_en": "Performance",
+              "minutes": 15,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-numpy-compute",
+            "title": "اختبار الوحدة: الحسابات",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "pandas",
+      "code": "C20",
+      "level": 2,
+      "icon": "fas fa-table",
+      "title": "Pandas: تحليل البيانات",
+      "title_en": "Data Analysis with Pandas",
+      "difficulty": "متوسط",
+      "hours": 15,
+      "prerequisites": [
+        "numpy"
+      ],
+      "summary": "الأداة اليومية لمحلل البيانات: قراءة الملفات، اختيار البيانات وتصفيتها، التجميع، الدمج، إعادة التشكيل، والتعامل مع النصوص والتواريخ.",
+      "modules": [
+        {
+          "slug": "pandas-basics",
+          "title": "Series و DataFrame",
+          "title_en": "Series & DataFrame",
+          "lessons": [
+            {
+              "slug": "pandas-series",
+              "title": "Series",
+              "title_en": "Series",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-dataframe",
+              "title": "DataFrame: ما هو وكيف ننشئه",
+              "title_en": "The DataFrame",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-read",
+              "title": "قراءة CSV و Excel و JSON",
+              "title_en": "Reading Files",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-inspect",
+              "title": "head و info و describe و shape",
+              "title_en": "Inspecting Data",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-select-columns",
+              "title": "اختيار الأعمدة",
+              "title_en": "Selecting Columns",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-loc-iloc",
+              "title": "loc و iloc",
+              "title_en": "loc & iloc",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-filter",
+              "title": "تصفية الصفوف",
+              "title_en": "Filtering Rows",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-sort",
+              "title": "الترتيب",
+              "title_en": "Sorting",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-new-columns",
+              "title": "إضافة الأعمدة وتعديلها",
+              "title_en": "Creating Columns",
+              "minutes": 30,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-pandas-basics",
+            "title": "اختبار الوحدة: Series و DataFrame",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "pandas-transform",
+          "title": "التجميع والدمج وإعادة التشكيل",
+          "title_en": "Aggregate, Merge & Reshape",
+          "lessons": [
+            {
+              "slug": "pandas-groupby",
+              "title": "groupby",
+              "title_en": "GroupBy",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-agg",
+              "title": "التجميع المتعدد agg",
+              "title_en": "Multiple Aggregations",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-pivot",
+              "title": "pivot_table و crosstab",
+              "title_en": "Pivot Tables",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-merge",
+              "title": "merge و join و concat",
+              "title_en": "Merging Data",
+              "minutes": 35,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-reshape",
+              "title": "melt و pivot و stack",
+              "title_en": "Reshaping",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-strings",
+              "title": "النصوص .str",
+              "title_en": "String Methods",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-dates",
+              "title": "التواريخ .dt",
+              "title_en": "Datetime",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-resample",
+              "title": "resample والتجميع الزمني",
+              "title_en": "Resampling",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-categoricals",
+              "title": "Categoricals",
+              "title_en": "Categoricals",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "pandas-performance",
+              "title": "الأداء والذاكرة",
+              "title_en": "Performance & Memory",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-pandas-transform",
+            "title": "اختبار الوحدة: التجميع والدمج",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "data-cleaning",
+      "code": "C21",
+      "level": 2,
+      "icon": "fas fa-broom",
+      "title": "تنظيف البيانات",
+      "title_en": "Data Cleaning",
+      "difficulty": "متوسط",
+      "hours": 10,
+      "prerequisites": [
+        "pandas"
+      ],
+      "summary": "البيانات الحقيقية ليست نظيفة أبداً. تتعلم كيف تكتشف المشاكل وتعالجها بقرارات مبررة وموثقة، وتبني Pipeline تنظيف قابل لإعادة الاستخدام.",
+      "modules": [
+        {
+          "slug": "cleaning-core",
+          "title": "مشاكل البيانات ومعالجتها",
+          "title_en": "Data Problems",
+          "lessons": [
+            {
+              "slug": "cleaning-missing-detect",
+              "title": "اكتشاف القيم المفقودة",
+              "title_en": "Detecting Missing Values",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "cleaning-missing-handle",
+              "title": "معالجة القيم المفقودة: الحذف أم التعويض؟",
+              "title_en": "Handling Missing Values",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "cleaning-duplicates",
+              "title": "المكررات",
+              "title_en": "Duplicates",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "cleaning-types",
+              "title": "تصحيح أنواع البيانات",
+              "title_en": "Fixing Data Types",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "cleaning-text",
+              "title": "توحيد النصوص والفئات",
+              "title_en": "Standardizing Text & Categories",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "cleaning-outliers",
+              "title": "القيم الشاذة: IQR و z-score",
+              "title_en": "Outliers",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "cleaning-dates",
+              "title": "تحويل التواريخ غير المنتظمة",
+              "title_en": "Parsing Messy Dates",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-cleaning-core",
+            "title": "اختبار الوحدة: مشاكل البيانات",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "cleaning-workflow",
+          "title": "سير عمل التنظيف",
+          "title_en": "Cleaning Workflow",
+          "lessons": [
+            {
+              "slug": "cleaning-validation",
+              "title": "قواعد التحقق Validation",
+              "title_en": "Validation Rules",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "cleaning-merge-sources",
+              "title": "دمج مصادر غير نظيفة",
+              "title_en": "Merging Messy Sources",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "cleaning-pipeline",
+              "title": "بناء Pipeline تنظيف من الدوال",
+              "title_en": "Cleaning Pipeline",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "cleaning-documentation",
+              "title": "توثيق قرارات التنظيف",
+              "title_en": "Documenting Decisions",
+              "minutes": 15,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-cleaning-workflow",
+            "title": "اختبار الوحدة: سير العمل",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "eda",
+      "code": "C22",
+      "level": 2,
+      "icon": "fas fa-magnifying-glass-chart",
+      "title": "التحليل الاستكشافي للبيانات",
+      "title_en": "Exploratory Data Analysis (EDA)",
+      "difficulty": "متوسط",
+      "hours": 8,
+      "prerequisites": [
+        "data-cleaning"
+      ],
+      "summary": "منهجية منظمة لفهم أي Dataset: أسئلة، توزيعات، علاقات، شرائح، ثم كتابة Insights واضحة يفهمها صاحب القرار.",
+      "modules": [
+        {
+          "slug": "eda-method",
+          "title": "منهجية EDA",
+          "title_en": "EDA Method",
+          "lessons": [
+            {
+              "slug": "eda-intro",
+              "title": "ما هو EDA ولماذا يسبق النمذجة؟",
+              "title_en": "What is EDA",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "eda-univariate",
+              "title": "تحليل متغير واحد Univariate",
+              "title_en": "Univariate Analysis",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "eda-bivariate",
+              "title": "تحليل متغيرين Bivariate",
+              "title_en": "Bivariate Analysis",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "eda-multivariate",
+              "title": "تحليل متعدد المتغيرات",
+              "title_en": "Multivariate Analysis",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "eda-categorical-numeric",
+              "title": "الفئوي مقابل الرقمي",
+              "title_en": "Categorical vs Numerical",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-eda-method",
+            "title": "اختبار الوحدة: منهجية EDA",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "eda-insights",
+          "title": "من التحليل إلى الاستنتاج",
+          "title_en": "From Analysis to Insight",
+          "lessons": [
+            {
+              "slug": "eda-correlation-first-look",
+              "title": "نظرة أولى على الارتباط",
+              "title_en": "Correlation First Look",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "eda-segments",
+              "title": "تقسيم البيانات إلى شرائح",
+              "title_en": "Segmentation",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "eda-questions",
+              "title": "طرح الأسئلة الصحيحة",
+              "title_en": "Asking Good Questions",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "eda-insights",
+              "title": "كتابة Insight واضح",
+              "title_en": "Writing Insights",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "eda-report",
+              "title": "نموذج تقرير EDA",
+              "title_en": "EDA Report Template",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-eda-insights",
+            "title": "اختبار الوحدة: من التحليل إلى الاستنتاج",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "statistics-descriptive",
+      "code": "C30",
+      "level": 3,
+      "icon": "fas fa-chart-simple",
+      "title": "الإحصاء الوصفي",
+      "title_en": "Descriptive Statistics",
+      "difficulty": "مبتدئ - متوسط",
+      "hours": 6,
+      "prerequisites": [
+        "pandas"
+      ],
+      "summary": "كيف تلخّص آلاف الأرقام في مقاييس قليلة صادقة: المتوسط والوسيط والمنوال، التباين والانحراف المعياري، المئينات، الالتواء، و z-score.",
+      "modules": [
+        {
+          "slug": "stats-center-spread",
+          "title": "النزعة المركزية والتشتت",
+          "title_en": "Center & Spread",
+          "lessons": [
+            {
+              "slug": "stats-mean-median-mode",
+              "title": "Mean و Median و Mode ومتى يضلّل كل منها",
+              "title_en": "Mean, Median, Mode",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "stats-variance-std",
+              "title": "المدى والتباين والانحراف المعياري",
+              "title_en": "Range, Variance, Std",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "stats-percentiles",
+              "title": "Percentiles و Quartiles و IQR",
+              "title_en": "Percentiles & IQR",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "stats-shape",
+              "title": "Skewness و Kurtosis",
+              "title_en": "Skewness & Kurtosis",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "stats-boxplot",
+              "title": "قراءة Boxplot",
+              "title_en": "Reading a Boxplot",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "stats-zscore",
+              "title": "z-score والتوحيد Standardization",
+              "title_en": "z-scores",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-stats-descriptive",
+            "title": "اختبار الوحدة: الإحصاء الوصفي",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "probability",
+      "code": "C31",
+      "level": 3,
+      "icon": "fas fa-dice",
+      "title": "الاحتمالات والتوزيعات",
+      "title_en": "Probability & Distributions",
+      "difficulty": "متوسط",
+      "hours": 10,
+      "prerequisites": [
+        "statistics-descriptive"
+      ],
+      "summary": "لغة عدم اليقين: الاحتمال الشرطي، نظرية Bayes بمثال فحص طبي، المتغيرات العشوائية، التوزيعات الأساسية، ونظرية النهاية المركزية بالمحاكاة.",
+      "modules": [
+        {
+          "slug": "prob-basics",
+          "title": "أساسيات الاحتمال",
+          "title_en": "Probability Basics",
+          "lessons": [
+            {
+              "slug": "prob-intro",
+              "title": "ما هو الاحتمال؟",
+              "title_en": "What is Probability",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "prob-rules",
+              "title": "قاعدتا الجمع والضرب",
+              "title_en": "Addition & Multiplication Rules",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "prob-conditional",
+              "title": "الاحتمال الشرطي",
+              "title_en": "Conditional Probability",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "prob-bayes",
+              "title": "نظرية Bayes",
+              "title_en": "Bayes' Theorem",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "prob-random-variables",
+              "title": "المتغير العشوائي",
+              "title_en": "Random Variables",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "prob-expected-value",
+              "title": "القيمة المتوقعة والتباين",
+              "title_en": "Expected Value & Variance",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-prob-basics",
+            "title": "اختبار الوحدة: أساسيات الاحتمال",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "prob-distributions",
+          "title": "التوزيعات",
+          "title_en": "Distributions",
+          "lessons": [
+            {
+              "slug": "prob-bernoulli-binomial",
+              "title": "Bernoulli و Binomial",
+              "title_en": "Bernoulli & Binomial",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "prob-poisson",
+              "title": "Poisson",
+              "title_en": "Poisson",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "prob-uniform",
+              "title": "Uniform",
+              "title_en": "Uniform",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "prob-normal",
+              "title": "Normal Distribution",
+              "title_en": "Normal Distribution",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "prob-empirical-rule",
+              "title": "القاعدة التجريبية 68-95-99.7",
+              "title_en": "Empirical Rule",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "prob-clt",
+              "title": "نظرية النهاية المركزية بالمحاكاة",
+              "title_en": "Central Limit Theorem",
+              "minutes": 30,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-prob-distributions",
+            "title": "اختبار الوحدة: التوزيعات",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "inferential-statistics",
+      "code": "C32",
+      "level": 3,
+      "icon": "fas fa-scale-balanced",
+      "title": "الإحصاء الاستدلالي و A/B Testing",
+      "title_en": "Inferential Statistics & A/B Testing",
+      "difficulty": "متوسط",
+      "hours": 12,
+      "prerequisites": [
+        "probability"
+      ],
+      "summary": "كيف تستنتج من عينة شيئاً عن المجتمع كله بثقة محسوبة: Sampling، Confidence Intervals، Hypothesis Testing، واختبارات A/B كاملة من التصميم إلى القرار.",
+      "modules": [
+        {
+          "slug": "infer-sampling",
+          "title": "العينات والتقدير",
+          "title_en": "Sampling & Estimation",
+          "lessons": [
+            {
+              "slug": "infer-population-sample",
+              "title": "المجتمع والعينة",
+              "title_en": "Population vs Sample",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "infer-sampling-methods",
+              "title": "طرق Sampling وتحيّزها",
+              "title_en": "Sampling Methods & Bias",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "infer-standard-error",
+              "title": "Sampling Distribution و Standard Error",
+              "title_en": "Standard Error",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "infer-confidence-intervals",
+              "title": "Confidence Intervals",
+              "title_en": "Confidence Intervals",
+              "minutes": 30,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-infer-sampling",
+            "title": "اختبار الوحدة: العينات والتقدير",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "infer-testing",
+          "title": "اختبار الفرضيات",
+          "title_en": "Hypothesis Testing",
+          "lessons": [
+            {
+              "slug": "infer-hypothesis",
+              "title": "H0 و H1 و p-value و α",
+              "title_en": "Hypotheses & p-values",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "infer-errors",
+              "title": "خطأ النوع الأول والثاني",
+              "title_en": "Type I & II Errors",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "infer-t-tests",
+              "title": "t-tests",
+              "title_en": "t-tests",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "infer-chi-square",
+              "title": "Chi-square",
+              "title_en": "Chi-square Test",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "infer-anova",
+              "title": "ANOVA",
+              "title_en": "ANOVA",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "infer-power",
+              "title": "Power وحجم العينة",
+              "title_en": "Power & Sample Size",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-infer-testing",
+            "title": "اختبار الوحدة: اختبار الفرضيات",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "infer-ab",
+          "title": "A/B Testing",
+          "title_en": "A/B Testing",
+          "lessons": [
+            {
+              "slug": "ab-design",
+              "title": "تصميم تجربة A/B",
+              "title_en": "Designing an A/B Test",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "ab-analysis",
+              "title": "تحليل النتائج واتخاذ القرار",
+              "title_en": "Analyzing & Deciding",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "ab-pitfalls",
+              "title": "فخاخ شائعة: Peeking والاختبارات المتعددة",
+              "title_en": "Common Pitfalls",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-infer-ab",
+            "title": "اختبار الوحدة: A/B Testing",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "correlation-regression",
+      "code": "C33",
+      "level": 3,
+      "icon": "fas fa-chart-line",
+      "title": "الارتباط والانحدار",
+      "title_en": "Correlation & Regression",
+      "difficulty": "متوسط",
+      "hours": 7,
+      "prerequisites": [
+        "inferential-statistics"
+      ],
+      "summary": "قياس العلاقة بين المتغيرات وتفسيرها بحذر: Covariance و Correlation، الفرق بين الارتباط والسببية، والانحدار الخطي البسيط والمتعدد مع تحليل البواقي.",
+      "modules": [
+        {
+          "slug": "corr",
+          "title": "الارتباط",
+          "title_en": "Correlation",
+          "lessons": [
+            {
+              "slug": "corr-covariance",
+              "title": "Covariance",
+              "title_en": "Covariance",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "corr-pearson-spearman",
+              "title": "Pearson و Spearman",
+              "title_en": "Pearson & Spearman",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "corr-causation",
+              "title": "الارتباط ليس سببية",
+              "title_en": "Correlation vs Causation",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-corr",
+            "title": "اختبار الوحدة: الارتباط",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "regression",
+          "title": "الانحدار",
+          "title_en": "Regression",
+          "lessons": [
+            {
+              "slug": "reg-simple",
+              "title": "الانحدار الخطي البسيط OLS",
+              "title_en": "Simple Linear Regression",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "reg-interpret",
+              "title": "تفسير المعاملات و R²",
+              "title_en": "Coefficients & R²",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "reg-residuals",
+              "title": "تحليل البواقي Residuals",
+              "title_en": "Residual Analysis",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "reg-multiple",
+              "title": "الانحدار المتعدد",
+              "title_en": "Multiple Regression",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "reg-statsmodels",
+              "title": "الانحدار باستخدام statsmodels",
+              "title_en": "statsmodels",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-regression",
+            "title": "اختبار الوحدة: الانحدار",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "sql",
+      "code": "C40",
+      "level": 4,
+      "icon": "fas fa-database",
+      "title": "SQL لعلم البيانات",
+      "title_en": "SQL for Data Science",
+      "difficulty": "مبتدئ - متقدم",
+      "hours": 22,
+      "prerequisites": [
+        "python-basics"
+      ],
+      "summary": "استخراج البيانات وتحليلها من قواعد البيانات مباشرة على قاعدة \"متجر CodeWay\": من SELECT إلى الربط، CTE و Window Functions، ثم ربط SQL مع Python.",
+      "modules": [
+        {
+          "slug": "sql-basics",
+          "title": "أساسيات الاستعلام",
+          "title_en": "Querying Basics",
+          "lessons": [
+            {
+              "slug": "sql-relational",
+              "title": "قواعد البيانات العلائقية والمفاتيح",
+              "title_en": "Relational Databases",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-select",
+              "title": "SELECT",
+              "title_en": "SELECT",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-where",
+              "title": "WHERE و AND و OR و IN و BETWEEN و LIKE و NULL",
+              "title_en": "Filtering with WHERE",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-order-limit",
+              "title": "ORDER BY و LIMIT",
+              "title_en": "ORDER BY & LIMIT",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-distinct",
+              "title": "DISTINCT",
+              "title_en": "DISTINCT",
+              "minutes": 10,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-aliases",
+              "title": "الأسماء المستعارة Aliases",
+              "title_en": "Aliases",
+              "minutes": 10,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-calculated",
+              "title": "الأعمدة المحسوبة",
+              "title_en": "Calculated Columns",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-sql-basics",
+            "title": "اختبار الوحدة: أساسيات الاستعلام",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "sql-aggregation",
+          "title": "التجميع",
+          "title_en": "Aggregation",
+          "lessons": [
+            {
+              "slug": "sql-aggregate-functions",
+              "title": "Aggregate Functions",
+              "title_en": "Aggregate Functions",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-group-by",
+              "title": "GROUP BY",
+              "title_en": "GROUP BY",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-having",
+              "title": "HAVING",
+              "title_en": "HAVING",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-case",
+              "title": "CASE WHEN",
+              "title_en": "CASE WHEN",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-case-aggregate",
+              "title": "CASE داخل التجميع",
+              "title_en": "Conditional Aggregation",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-sql-aggregation",
+            "title": "اختبار الوحدة: التجميع",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "sql-joins",
+          "title": "الربط بين الجداول",
+          "title_en": "Joins",
+          "lessons": [
+            {
+              "slug": "sql-relations",
+              "title": "العلاقات بين الجداول",
+              "title_en": "Table Relationships",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-inner-join",
+              "title": "INNER JOIN",
+              "title_en": "INNER JOIN",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-left-join",
+              "title": "LEFT JOIN",
+              "title_en": "LEFT JOIN",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-right-full-join",
+              "title": "RIGHT JOIN و FULL JOIN",
+              "title_en": "RIGHT & FULL JOIN",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-self-join",
+              "title": "SELF JOIN",
+              "title_en": "SELF JOIN",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-multi-join",
+              "title": "ربط عدة جداول",
+              "title_en": "Multi-table Joins",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-union",
+              "title": "UNION",
+              "title_en": "UNION",
+              "minutes": 15,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-sql-joins",
+            "title": "اختبار الوحدة: الربط",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "sql-advanced",
+          "title": "SQL متقدم",
+          "title_en": "Advanced SQL",
+          "lessons": [
+            {
+              "slug": "sql-subqueries",
+              "title": "Subqueries",
+              "title_en": "Subqueries",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-correlated-subqueries",
+              "title": "Correlated Subqueries",
+              "title_en": "Correlated Subqueries",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-cte",
+              "title": "CTE",
+              "title_en": "Common Table Expressions",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-recursive-cte",
+              "title": "Recursive CTE",
+              "title_en": "Recursive CTE",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-window-ranking",
+              "title": "Window Functions: ROW_NUMBER و RANK و DENSE_RANK",
+              "title_en": "Ranking Functions",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-window-running",
+              "title": "المجاميع التراكمية SUM() OVER",
+              "title_en": "Running Totals",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-lag-lead",
+              "title": "LAG و LEAD",
+              "title_en": "LAG & LEAD",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-date-functions",
+              "title": "Date Functions",
+              "title_en": "Date Functions",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-string-functions",
+              "title": "String Functions",
+              "title_en": "String Functions",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-null-handling",
+              "title": "التعامل مع NULL و COALESCE",
+              "title_en": "NULL Handling",
+              "minutes": 15,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-sql-advanced",
+            "title": "اختبار الوحدة: SQL متقدم",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "sql-python",
+          "title": "SQL مع Python",
+          "title_en": "SQL with Python",
+          "lessons": [
+            {
+              "slug": "sql-sqlite3-pandas",
+              "title": "sqlite3 و pandas.read_sql",
+              "title_en": "sqlite3 & read_sql",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-indexes",
+              "title": "الفهارس Indexes وأساسيات الأداء",
+              "title_en": "Indexes & Performance",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "sql-normalization",
+              "title": "تصميم الجداول و Normalization",
+              "title_en": "Schema Design",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-sql-python",
+            "title": "اختبار الوحدة: SQL مع Python",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "data-visualization",
+      "code": "C50",
+      "level": 5,
+      "icon": "fas fa-chart-pie",
+      "title": "تصور البيانات",
+      "title_en": "Data Visualization & Storytelling",
+      "difficulty": "متوسط",
+      "hours": 16,
+      "prerequisites": [
+        "pandas"
+      ],
+      "summary": "اختيار الرسم المناسب للسؤال، بناء الرسوم بـ Matplotlib و Seaborn و Plotly، ثم تحويل الرسوم إلى قصة واضحة ولوحة تحكم يفهمها صاحب القرار.",
+      "modules": [
+        {
+          "slug": "viz-principles",
+          "title": "مبادئ التصور",
+          "title_en": "Principles",
+          "lessons": [
+            {
+              "slug": "viz-choosing-chart",
+              "title": "اختيار الرسم المناسب للسؤال",
+              "title_en": "Choosing the Right Chart",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "viz-perception",
+              "title": "كيف يقرأ الإنسان الرسوم",
+              "title_en": "Visual Perception",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-viz-principles",
+            "title": "اختبار الوحدة: مبادئ التصور",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "viz-matplotlib",
+          "title": "Matplotlib",
+          "title_en": "Matplotlib",
+          "lessons": [
+            {
+              "slug": "mpl-figure-axes",
+              "title": "Figure و Axes",
+              "title_en": "Figure & Axes",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "mpl-basic-charts",
+              "title": "line و bar و hist و scatter",
+              "title_en": "Basic Charts",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "mpl-subplots",
+              "title": "Subplots",
+              "title_en": "Subplots",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "mpl-styling",
+              "title": "التنسيق والتعليقات التوضيحية",
+              "title_en": "Styling & Annotations",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-viz-matplotlib",
+            "title": "اختبار الوحدة: Matplotlib",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "viz-seaborn",
+          "title": "Seaborn",
+          "title_en": "Seaborn",
+          "lessons": [
+            {
+              "slug": "sns-distributions",
+              "title": "رسوم التوزيع",
+              "title_en": "Distribution Plots",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sns-categorical",
+              "title": "الرسوم الفئوية",
+              "title_en": "Categorical Plots",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sns-relational",
+              "title": "الرسوم العلائقية",
+              "title_en": "Relational Plots",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "sns-heatmap-pairplot",
+              "title": "Heatmap و Pairplot",
+              "title_en": "Heatmap & Pairplot",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sns-facetgrid",
+              "title": "FacetGrid",
+              "title_en": "FacetGrid",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-viz-seaborn",
+            "title": "اختبار الوحدة: Seaborn",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "viz-interactive-story",
+          "title": "التفاعل والقصة",
+          "title_en": "Interactive & Storytelling",
+          "lessons": [
+            {
+              "slug": "plotly-express",
+              "title": "رسوم تفاعلية بـ Plotly",
+              "title_en": "Plotly Express",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "viz-storytelling",
+              "title": "Data Storytelling",
+              "title_en": "Data Storytelling",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "viz-dashboard-design",
+              "title": "تصميم Dashboard",
+              "title_en": "Dashboard Design",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-viz-story",
+            "title": "اختبار الوحدة: التفاعل والقصة",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "viz-bi-tools",
+          "title": "أدوات BI (اختيارية)",
+          "title_en": "BI Tools (Optional)",
+          "lessons": [
+            {
+              "slug": "excel-for-analysts",
+              "title": "Excel للمحلل و Pivot Tables",
+              "title_en": "Excel for Analysts",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "powerbi-tableau-concepts",
+              "title": "مفاهيم Power BI و Tableau",
+              "title_en": "Power BI & Tableau Concepts",
+              "minutes": 30,
+              "status": "planned"
+            }
+          ],
+          "quiz": null
+        }
+      ]
+    },
+    {
+      "slug": "ml-foundations",
+      "code": "C60",
+      "level": 6,
+      "icon": "fas fa-robot",
+      "title": "أسس تعلم الآلة",
+      "title_en": "Machine Learning Foundations",
+      "difficulty": "متوسط",
+      "hours": 6,
+      "prerequisites": [
+        "correlation-regression",
+        "data-visualization"
+      ],
+      "summary": "ما هو تعلم الآلة فعلاً، أنواعه، سير عمل مشروع ML، مشكلة Overfitting، وواجهة scikit-learn الموحدة.",
+      "modules": [
+        {
+          "slug": "ml-intro",
+          "title": "مدخل إلى ML",
+          "title_en": "Introduction to ML",
+          "lessons": [
+            {
+              "slug": "ml-what",
+              "title": "ما هو تعلم الآلة؟",
+              "title_en": "What is ML",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "ml-types",
+              "title": "Supervised و Unsupervised و Reinforcement",
+              "title_en": "Types of ML",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "ml-workflow",
+              "title": "سير عمل مشروع ML",
+              "title_en": "ML Workflow",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "ml-train-test",
+              "title": "Train/Test Split",
+              "title_en": "Train/Test Split",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "ml-overfitting",
+              "title": "Overfitting و Underfitting و Bias-Variance",
+              "title_en": "Overfitting & Bias-Variance",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "ml-sklearn-api",
+              "title": "واجهة scikit-learn: fit و predict و transform",
+              "title_en": "The scikit-learn API",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "ml-baselines",
+              "title": "النماذج المرجعية Baselines",
+              "title_en": "Baselines",
+              "minutes": 15,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-ml-intro",
+            "title": "اختبار الوحدة: مدخل إلى ML",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "supervised-learning",
+      "code": "C61",
+      "level": 6,
+      "icon": "fas fa-diagram-project",
+      "title": "التعلم الموجّه",
+      "title_en": "Supervised Learning",
+      "difficulty": "متوسط - متقدم",
+      "hours": 14,
+      "prerequisites": [
+        "ml-foundations"
+      ],
+      "summary": "الخوارزميات الأساسية للانحدار والتصنيف: كيف تعمل، متى تستخدم كلاً منها، وكيف تطبقها بـ scikit-learn على بيانات حقيقية.",
+      "modules": [
+        {
+          "slug": "sup-regression",
+          "title": "الانحدار",
+          "title_en": "Regression Models",
+          "lessons": [
+            {
+              "slug": "sup-linear-regression",
+              "title": "Linear Regression",
+              "title_en": "Linear Regression",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "sup-regularization",
+              "title": "Ridge و Lasso",
+              "title_en": "Regularization",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-sup-regression",
+            "title": "اختبار الوحدة: نماذج الانحدار",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "sup-classification",
+          "title": "التصنيف",
+          "title_en": "Classification Models",
+          "lessons": [
+            {
+              "slug": "sup-logistic-regression",
+              "title": "Logistic Regression",
+              "title_en": "Logistic Regression",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "sup-knn",
+              "title": "KNN",
+              "title_en": "K-Nearest Neighbors",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "sup-decision-trees",
+              "title": "Decision Trees",
+              "title_en": "Decision Trees",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "sup-random-forest",
+              "title": "Random Forest",
+              "title_en": "Random Forest",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "sup-svm",
+              "title": "SVM",
+              "title_en": "Support Vector Machines",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "sup-naive-bayes",
+              "title": "Naive Bayes",
+              "title_en": "Naive Bayes",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-sup-classification",
+            "title": "اختبار الوحدة: نماذج التصنيف",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "model-evaluation",
+      "code": "C62",
+      "level": 6,
+      "icon": "fas fa-bullseye",
+      "title": "تقييم النماذج وضبطها",
+      "title_en": "Model Evaluation & Tuning",
+      "difficulty": "متوسط - متقدم",
+      "hours": 10,
+      "prerequisites": [
+        "supervised-learning"
+      ],
+      "summary": "كيف تعرف أن نموذجك جيد فعلاً: مقاييس الانحدار والتصنيف، اختيار العتبة، Cross Validation، وضبط Hyperparameters.",
+      "modules": [
+        {
+          "slug": "eval-metrics",
+          "title": "المقاييس",
+          "title_en": "Metrics",
+          "lessons": [
+            {
+              "slug": "eval-regression-metrics",
+              "title": "MAE و MSE و RMSE و R²",
+              "title_en": "Regression Metrics",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "eval-confusion-matrix",
+              "title": "Confusion Matrix",
+              "title_en": "Confusion Matrix",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "eval-accuracy-precision-recall",
+              "title": "Accuracy و Precision و Recall و F1",
+              "title_en": "Accuracy, Precision, Recall, F1",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "eval-roc-auc",
+              "title": "ROC-AUC و PR Curve",
+              "title_en": "ROC-AUC & PR Curve",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "eval-threshold",
+              "title": "اختيار العتبة Threshold",
+              "title_en": "Choosing a Threshold",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-eval-metrics",
+            "title": "اختبار الوحدة: المقاييس",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "eval-tuning",
+          "title": "التحقق والضبط",
+          "title_en": "Validation & Tuning",
+          "lessons": [
+            {
+              "slug": "eval-cross-validation",
+              "title": "Cross Validation",
+              "title_en": "Cross Validation",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "eval-grid-search",
+              "title": "GridSearch و RandomizedSearch",
+              "title_en": "Hyperparameter Tuning",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "eval-learning-curves",
+              "title": "Learning Curves",
+              "title_en": "Learning Curves",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-eval-tuning",
+            "title": "اختبار الوحدة: التحقق والضبط",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "feature-engineering",
+      "code": "C63",
+      "level": 6,
+      "icon": "fas fa-gears",
+      "title": "هندسة الخصائص",
+      "title_en": "Feature Engineering & Pipelines",
+      "difficulty": "متوسط - متقدم",
+      "hours": 9,
+      "prerequisites": [
+        "supervised-learning"
+      ],
+      "summary": "تجهيز البيانات للنموذج بشكل صحيح: الترميز، التحجيم، التعويض، إنشاء الخصائص واختيارها، و Pipelines تمنع تسرّب البيانات.",
+      "modules": [
+        {
+          "slug": "fe-prepare",
+          "title": "تجهيز الخصائص",
+          "title_en": "Preparing Features",
+          "lessons": [
+            {
+              "slug": "fe-encoding",
+              "title": "الترميز Encoding",
+              "title_en": "Encoding",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "fe-scaling",
+              "title": "التحجيم Scaling",
+              "title_en": "Scaling",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "fe-imputation",
+              "title": "التعويض Imputation",
+              "title_en": "Imputation",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "fe-creation",
+              "title": "إنشاء خصائص جديدة",
+              "title_en": "Feature Creation",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "fe-dates-text",
+              "title": "خصائص التواريخ والنصوص",
+              "title_en": "Date & Text Features",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-fe-prepare",
+            "title": "اختبار الوحدة: تجهيز الخصائص",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "fe-select-pipeline",
+          "title": "الاختيار والـ Pipelines",
+          "title_en": "Selection & Pipelines",
+          "lessons": [
+            {
+              "slug": "fe-selection",
+              "title": "Feature Selection",
+              "title_en": "Feature Selection",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "fe-pipelines",
+              "title": "Pipelines و ColumnTransformer",
+              "title_en": "Pipelines",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "fe-leakage",
+              "title": "تسرّب البيانات Data Leakage",
+              "title_en": "Data Leakage",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-fe-pipelines",
+            "title": "اختبار الوحدة: الاختيار والـ Pipelines",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "unsupervised-learning",
+      "code": "C64",
+      "level": 6,
+      "icon": "fas fa-circle-nodes",
+      "title": "التعلم غير الموجّه",
+      "title_en": "Unsupervised Learning",
+      "difficulty": "متوسط - متقدم",
+      "hours": 7,
+      "prerequisites": [
+        "feature-engineering"
+      ],
+      "summary": "اكتشاف البنية في البيانات بدون تسميات: التجميع K-Means و DBSCAN و Hierarchical، وتقليل الأبعاد PCA، مع تطبيق تقسيم العملاء.",
+      "modules": [
+        {
+          "slug": "unsup",
+          "title": "التجميع وتقليل الأبعاد",
+          "title_en": "Clustering & Dimensionality Reduction",
+          "lessons": [
+            {
+              "slug": "unsup-kmeans",
+              "title": "K-Means",
+              "title_en": "K-Means",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "unsup-choosing-k",
+              "title": "اختيار k: Elbow و Silhouette",
+              "title_en": "Choosing k",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "unsup-hierarchical",
+              "title": "Hierarchical Clustering",
+              "title_en": "Hierarchical Clustering",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "unsup-dbscan",
+              "title": "DBSCAN",
+              "title_en": "DBSCAN",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "unsup-pca",
+              "title": "PCA",
+              "title_en": "Principal Component Analysis",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "unsup-segmentation",
+              "title": "تطبيق: تقسيم العملاء",
+              "title_en": "Customer Segmentation",
+              "minutes": 35,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-unsup",
+            "title": "اختبار الوحدة: التعلم غير الموجّه",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "advanced-ml",
+      "code": "C70",
+      "level": 7,
+      "icon": "fas fa-rocket",
+      "title": "تعلم الآلة المتقدم",
+      "title_en": "Advanced Machine Learning",
+      "difficulty": "متقدم",
+      "hours": 14,
+      "prerequisites": [
+        "model-evaluation",
+        "feature-engineering"
+      ],
+      "summary": "النماذج الأقوى في البيانات الجدولية، البيانات غير المتوازنة، تفسير النماذج، ثم نقل النموذج من الـ Notebook إلى الإنتاج.",
+      "modules": [
+        {
+          "slug": "adv-ensembles",
+          "title": "Ensembles و Boosting",
+          "title_en": "Ensembles & Boosting",
+          "lessons": [
+            {
+              "slug": "adv-bagging-boosting",
+              "title": "Bagging مقابل Boosting",
+              "title_en": "Bagging vs Boosting",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "adv-gradient-boosting",
+              "title": "Gradient Boosting",
+              "title_en": "Gradient Boosting",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "adv-xgboost-lightgbm",
+              "title": "XGBoost و LightGBM",
+              "title_en": "XGBoost & LightGBM",
+              "minutes": 30,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-adv-ensembles",
+            "title": "اختبار الوحدة: Ensembles",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "adv-real-world",
+          "title": "مشاكل العالم الحقيقي",
+          "title_en": "Real-world Problems",
+          "lessons": [
+            {
+              "slug": "adv-imbalanced",
+              "title": "البيانات غير المتوازنة",
+              "title_en": "Imbalanced Data",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "adv-interpretability",
+              "title": "تفسير النماذج: Permutation و SHAP",
+              "title_en": "Model Interpretability",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "adv-anomaly-detection",
+              "title": "كشف الشذوذ Isolation Forest",
+              "title_en": "Anomaly Detection",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-adv-real-world",
+            "title": "اختبار الوحدة: مشاكل العالم الحقيقي",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "adv-production",
+          "title": "من الـ Notebook إلى الإنتاج",
+          "title_en": "From Notebook to Production",
+          "lessons": [
+            {
+              "slug": "adv-model-saving",
+              "title": "حفظ النموذج وتحميله",
+              "title_en": "Saving Models",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "adv-fastapi",
+              "title": "نشر النموذج عبر API بـ FastAPI",
+              "title_en": "Serving with FastAPI",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "adv-monitoring",
+              "title": "مراقبة الأداء و Data Drift",
+              "title_en": "Monitoring & Drift",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "adv-mlops",
+              "title": "نظرة على MLOps",
+              "title_en": "MLOps Overview",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-adv-production",
+            "title": "اختبار الوحدة: الإنتاج",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "deep-learning",
+      "code": "C80",
+      "level": 8,
+      "icon": "fas fa-network-wired",
+      "title": "التعلم العميق",
+      "title_en": "Deep Learning",
+      "difficulty": "متقدم",
+      "hours": 24,
+      "prerequisites": [
+        "ml-foundations",
+        "math-foundations"
+      ],
+      "summary": "تبني شبكة عصبية من الصفر بـ NumPy لتفهم ما يحدث في الداخل، ثم تنتقل إلى Keras و PyTorch، و CNN للصور، و RNN/LSTM للتسلسلات، و Transfer Learning.",
+      "modules": [
+        {
+          "slug": "dl-from-scratch",
+          "title": "الشبكات العصبية من الصفر",
+          "title_en": "Neural Networks from Scratch",
+          "lessons": [
+            {
+              "slug": "dl-perceptron",
+              "title": "Perceptron",
+              "title_en": "Perceptron",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-neural-networks",
+              "title": "الشبكات والطبقات",
+              "title_en": "Neural Networks & Layers",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-forward",
+              "title": "Forward Propagation",
+              "title_en": "Forward Propagation",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-activations",
+              "title": "Activation Functions",
+              "title_en": "Activation Functions",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-loss",
+              "title": "Loss Functions",
+              "title_en": "Loss Functions",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-backprop",
+              "title": "Gradient Descent و Backpropagation",
+              "title_en": "Backpropagation",
+              "minutes": 40,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-optimizers",
+              "title": "Optimizers: SGD و Momentum و Adam",
+              "title_en": "Optimizers",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-regularization",
+              "title": "Dropout و Early Stopping و Batch Normalization",
+              "title_en": "Regularization in DL",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-dl-scratch",
+            "title": "اختبار الوحدة: الشبكات من الصفر",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "dl-frameworks",
+          "title": "الأطر",
+          "title_en": "Frameworks",
+          "lessons": [
+            {
+              "slug": "dl-keras",
+              "title": "Keras",
+              "title_en": "Keras",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-pytorch",
+              "title": "PyTorch: Tensors و Autograd وحلقة التدريب",
+              "title_en": "PyTorch Basics",
+              "minutes": 35,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-dl-frameworks",
+            "title": "اختبار الوحدة: الأطر",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "dl-cnn",
+          "title": "الشبكات الالتفافية CNN",
+          "title_en": "Convolutional Networks",
+          "lessons": [
+            {
+              "slug": "dl-convolution",
+              "title": "Convolution و Pooling",
+              "title_en": "Convolution & Pooling",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-cnn-architecture",
+              "title": "بنية CNN",
+              "title_en": "CNN Architecture",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-cnn-project",
+              "title": "تصنيف صور Fashion-MNIST",
+              "title_en": "Fashion-MNIST Classifier",
+              "minutes": 40,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-dl-cnn",
+            "title": "اختبار الوحدة: CNN",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "dl-sequences",
+          "title": "التسلسلات",
+          "title_en": "Sequence Models",
+          "lessons": [
+            {
+              "slug": "dl-rnn",
+              "title": "RNN",
+              "title_en": "Recurrent Neural Networks",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-lstm-gru",
+              "title": "LSTM و GRU",
+              "title_en": "LSTM & GRU",
+              "minutes": 30,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-dl-sequences",
+            "title": "اختبار الوحدة: التسلسلات",
+            "status": "planned"
+          }
+        },
+        {
+          "slug": "dl-transfer",
+          "title": "Transfer Learning",
+          "title_en": "Transfer Learning",
+          "lessons": [
+            {
+              "slug": "dl-pretrained",
+              "title": "النماذج المدرّبة مسبقاً",
+              "title_en": "Pretrained Models",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "dl-fine-tuning",
+              "title": "Fine-tuning",
+              "title_en": "Fine-tuning",
+              "minutes": 30,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-dl-transfer",
+            "title": "اختبار الوحدة: Transfer Learning",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "nlp",
+      "code": "C90",
+      "level": 9,
+      "icon": "fas fa-language",
+      "title": "معالجة اللغة الطبيعية NLP",
+      "title_en": "Natural Language Processing",
+      "difficulty": "متقدم",
+      "hours": 16,
+      "prerequisites": [
+        "supervised-learning"
+      ],
+      "summary": "تحويل النص إلى بيانات يفهمها النموذج، مع اهتمام خاص بخصوصيات اللغة العربية، حتى مدخل Transformers.",
+      "modules": [
+        {
+          "slug": "nlp-core",
+          "title": "معالجة اللغة الطبيعية NLP",
+          "title_en": "Natural Language Processing",
+          "lessons": [
+            {
+              "slug": "nlp-preprocessing",
+              "title": "تنظيف النص ومعالجة العربية: توحيد الألف والتشكيل",
+              "title_en": "Text Preprocessing (Arabic)",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "nlp-tokenization",
+              "title": "Tokenization",
+              "title_en": "Tokenization",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "nlp-bow-tfidf",
+              "title": "Bag of Words و TF-IDF",
+              "title_en": "BoW & TF-IDF",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "nlp-sentiment",
+              "title": "تصنيف المشاعر",
+              "title_en": "Sentiment Classification",
+              "minutes": 35,
+              "status": "planned"
+            },
+            {
+              "slug": "nlp-embeddings",
+              "title": "Word Embeddings",
+              "title_en": "Word Embeddings",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "nlp-transformers",
+              "title": "مدخل إلى Transformers",
+              "title_en": "Intro to Transformers",
+              "minutes": 35,
+              "status": "planned"
+            },
+            {
+              "slug": "nlp-project",
+              "title": "تطبيق: تصنيف مراجعات عربية",
+              "title_en": "Arabic Reviews Classifier",
+              "minutes": 40,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-nlp",
+            "title": "اختبار التخصص: معالجة اللغة الطبيعية NLP",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "computer-vision",
+      "code": "C91",
+      "level": 9,
+      "icon": "fas fa-eye",
+      "title": "الرؤية الحاسوبية",
+      "title_en": "Computer Vision",
+      "difficulty": "متقدم",
+      "hours": 14,
+      "prerequisites": [
+        "deep-learning"
+      ],
+      "summary": "الصور كمصفوفات، المعالجة الأساسية بـ OpenCV، Data Augmentation، التصنيف، ومفاهيم Object Detection.",
+      "modules": [
+        {
+          "slug": "computer-vision-core",
+          "title": "الرؤية الحاسوبية",
+          "title_en": "Computer Vision",
+          "lessons": [
+            {
+              "slug": "cv-images-arrays",
+              "title": "الصورة كمصفوفة أرقام",
+              "title_en": "Images as Arrays",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "cv-opencv",
+              "title": "أساسيات OpenCV",
+              "title_en": "OpenCV Basics",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "cv-augmentation",
+              "title": "Data Augmentation",
+              "title_en": "Data Augmentation",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "cv-classification",
+              "title": "تصنيف الصور",
+              "title_en": "Image Classification",
+              "minutes": 35,
+              "status": "planned"
+            },
+            {
+              "slug": "cv-detection",
+              "title": "مفاهيم Object Detection",
+              "title_en": "Object Detection Concepts",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "cv-project",
+              "title": "تطبيق: مصنف صور بـ Transfer Learning",
+              "title_en": "Transfer Learning Classifier",
+              "minutes": 40,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-computer-vision",
+            "title": "اختبار التخصص: الرؤية الحاسوبية",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "time-series",
+      "code": "C92",
+      "level": 9,
+      "icon": "fas fa-chart-area",
+      "title": "السلاسل الزمنية",
+      "title_en": "Time Series Analysis & Forecasting",
+      "difficulty": "متقدم",
+      "hours": 16,
+      "prerequisites": [
+        "supervised-learning"
+      ],
+      "summary": "تحليل البيانات المرتبطة بالزمن والتنبؤ بها: المكونات، الاستقرارية، ARIMA، وخصائص Lag مع نماذج ML، وتقييم التنبؤ بشكل صحيح.",
+      "modules": [
+        {
+          "slug": "time-series-core",
+          "title": "السلاسل الزمنية",
+          "title_en": "Time Series Analysis & Forecasting",
+          "lessons": [
+            {
+              "slug": "ts-components",
+              "title": "مكونات السلسلة: الاتجاه والموسمية والضجيج",
+              "title_en": "Components",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "ts-datetime-index",
+              "title": "Datetime Index و Resampling",
+              "title_en": "Datetime Index",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "ts-moving-averages",
+              "title": "المتوسطات المتحركة",
+              "title_en": "Moving Averages",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "ts-stationarity",
+              "title": "الاستقرارية Stationarity",
+              "title_en": "Stationarity",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "ts-arima",
+              "title": "ARIMA",
+              "title_en": "ARIMA",
+              "minutes": 35,
+              "status": "planned"
+            },
+            {
+              "slug": "ts-ml-lag-features",
+              "title": "خصائص Lag ونماذج ML",
+              "title_en": "Lag Features & ML",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "ts-validation",
+              "title": "التحقق الزمني",
+              "title_en": "Time Series Validation",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "ts-evaluation",
+              "title": "تقييم التنبؤ",
+              "title_en": "Forecast Evaluation",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-time-series",
+            "title": "اختبار التخصص: السلاسل الزمنية",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "recommender-systems",
+      "code": "C93",
+      "level": 9,
+      "icon": "fas fa-thumbs-up",
+      "title": "أنظمة التوصية",
+      "title_en": "Recommendation Systems",
+      "difficulty": "متقدم",
+      "hours": 10,
+      "prerequisites": [
+        "unsupervised-learning"
+      ],
+      "summary": "كيف تقترح المنصات المنتجات والأفلام: التوصية حسب الشعبية، حسب المحتوى، Collaborative Filtering، و Matrix Factorization.",
+      "modules": [
+        {
+          "slug": "recommender-systems-core",
+          "title": "أنظمة التوصية",
+          "title_en": "Recommendation Systems",
+          "lessons": [
+            {
+              "slug": "rec-popularity",
+              "title": "التوصية حسب الشعبية",
+              "title_en": "Popularity-based",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "rec-content-based",
+              "title": "Content-based",
+              "title_en": "Content-based Filtering",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "rec-collaborative",
+              "title": "Collaborative Filtering",
+              "title_en": "Collaborative Filtering",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "rec-matrix-factorization",
+              "title": "Matrix Factorization",
+              "title_en": "Matrix Factorization",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "rec-evaluation",
+              "title": "تقييم أنظمة التوصية",
+              "title_en": "Evaluating Recommenders",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-recommender-systems",
+            "title": "اختبار التخصص: أنظمة التوصية",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "big-data",
+      "code": "C94",
+      "level": 9,
+      "icon": "fas fa-server",
+      "title": "البيانات الضخمة",
+      "title_en": "Big Data with Spark",
+      "difficulty": "متقدم",
+      "hours": 10,
+      "prerequisites": [
+        "sql",
+        "pandas"
+      ],
+      "summary": "متى لا تكفي Pandas، وكيف تعالج بيانات أكبر من ذاكرة جهازك باستخدام Spark و PySpark وصيغة Parquet.",
+      "modules": [
+        {
+          "slug": "big-data-core",
+          "title": "البيانات الضخمة",
+          "title_en": "Big Data with Spark",
+          "lessons": [
+            {
+              "slug": "bd-why",
+              "title": "لماذا Big Data؟",
+              "title_en": "Why Big Data",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "bd-spark-concepts",
+              "title": "مفاهيم Spark",
+              "title_en": "Spark Concepts",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "bd-pyspark-dataframes",
+              "title": "PySpark DataFrames",
+              "title_en": "PySpark DataFrames",
+              "minutes": 35,
+              "status": "planned"
+            },
+            {
+              "slug": "bd-spark-sql",
+              "title": "Spark SQL",
+              "title_en": "Spark SQL",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "bd-parquet",
+              "title": "صيغة Parquet والتخزين العمودي",
+              "title_en": "Parquet",
+              "minutes": 20,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-big-data",
+            "title": "اختبار التخصص: البيانات الضخمة",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "data-engineering",
+      "code": "C95",
+      "level": 9,
+      "icon": "fas fa-diagram-successor",
+      "title": "أساسيات هندسة البيانات",
+      "title_en": "Data Engineering Basics",
+      "difficulty": "متقدم",
+      "hours": 10,
+      "prerequisites": [
+        "sql"
+      ],
+      "summary": "من أين تأتي البيانات النظيفة: ETL و ELT، خطوط البيانات، مستودعات البيانات، مفاهيم Airflow، وجودة البيانات.",
+      "modules": [
+        {
+          "slug": "data-engineering-core",
+          "title": "أساسيات هندسة البيانات",
+          "title_en": "Data Engineering Basics",
+          "lessons": [
+            {
+              "slug": "de-etl-elt",
+              "title": "ETL و ELT",
+              "title_en": "ETL vs ELT",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "de-pipelines",
+              "title": "خطوط البيانات Pipelines",
+              "title_en": "Data Pipelines",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "de-warehouse",
+              "title": "Data Warehouse و Star Schema",
+              "title_en": "Data Warehouse",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "de-airflow",
+              "title": "مفاهيم Airflow والجدولة",
+              "title_en": "Airflow Concepts",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "de-quality",
+              "title": "جودة البيانات ومراقبتها",
+              "title_en": "Data Quality",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-data-engineering",
+            "title": "اختبار التخصص: أساسيات هندسة البيانات",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "genai-data-science",
+      "code": "C96",
+      "level": 9,
+      "icon": "fas fa-wand-magic-sparkles",
+      "title": "الذكاء الاصطناعي التوليدي لعلم البيانات",
+      "title_en": "Generative AI for Data Science",
+      "difficulty": "متقدم",
+      "hours": 10,
+      "prerequisites": [
+        "supervised-learning"
+      ],
+      "summary": "كيف يستفيد عالم البيانات من النماذج اللغوية الكبيرة بشكل مسؤول: التحليل بمساعدة LLM، Embeddings والبحث الدلالي، RAG، والمخاطر.",
+      "modules": [
+        {
+          "slug": "genai-data-science-core",
+          "title": "الذكاء الاصطناعي التوليدي لعلم البيانات",
+          "title_en": "Generative AI for Data Science",
+          "lessons": [
+            {
+              "slug": "genai-llms",
+              "title": "النماذج اللغوية الكبيرة للمحلل",
+              "title_en": "LLMs for Analysts",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "genai-prompting",
+              "title": "صياغة الطلبات للتحليل",
+              "title_en": "Prompting for Analysis",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "genai-embeddings",
+              "title": "Embeddings والبحث الدلالي",
+              "title_en": "Embeddings & Semantic Search",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "genai-rag",
+              "title": "RAG: الإجابة من مستنداتك",
+              "title_en": "Retrieval-Augmented Generation",
+              "minutes": 30,
+              "status": "planned"
+            },
+            {
+              "slug": "genai-risks",
+              "title": "المخاطر: الهلوسة والخصوصية والتقييم",
+              "title_en": "Risks & Evaluation",
+              "minutes": 25,
+              "status": "planned"
+            }
+          ],
+          "quiz": {
+            "slug": "quiz-genai-data-science",
+            "title": "اختبار التخصص: الذكاء الاصطناعي التوليدي لعلم البيانات",
+            "status": "planned"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "portfolio",
+      "code": "C100",
+      "level": 10,
+      "icon": "fas fa-briefcase",
+      "title": "بناء الـ Portfolio والاستعداد للعمل",
+      "title_en": "Portfolio & Career",
+      "difficulty": "متوسط",
+      "hours": 6,
+      "prerequisites": [
+        "eda"
+      ],
+      "summary": "كيف تعرض مشاريعك بشكل يقنع جهة التوظيف: بنية المستودع، README، التقرير، ملف GitHub، وأسئلة المقابلات في SQL والإحصاء و ML.",
+      "modules": [
+        {
+          "slug": "portfolio-core",
+          "title": "عرض عملك",
+          "title_en": "Presenting Your Work",
+          "lessons": [
+            {
+              "slug": "pf-repo-structure",
+              "title": "بنية مستودع مشروع بيانات",
+              "title_en": "Project Repository Structure",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "pf-readme",
+              "title": "README يشرح القيمة",
+              "title_en": "A README that Sells",
+              "minutes": 20,
+              "status": "planned"
+            },
+            {
+              "slug": "pf-notebook-to-report",
+              "title": "من Notebook إلى تقرير",
+              "title_en": "Notebook to Report",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "pf-github-profile",
+              "title": "ملف GitHub الشخصي",
+              "title_en": "GitHub Profile",
+              "minutes": 15,
+              "status": "planned"
+            },
+            {
+              "slug": "pf-presenting",
+              "title": "عرض النتائج لغير المختصين",
+              "title_en": "Presenting Results",
+              "minutes": 25,
+              "status": "planned"
+            },
+            {
+              "slug": "pf-interviews",
+              "title": "السيرة الذاتية وأسئلة المقابلات",
+              "title_en": "CV & Interview Prep",
+              "minutes": 35,
+              "status": "planned"
+            }
+          ],
+          "quiz": null
+        }
+      ]
+    },
+    {
+      "slug": "capstone",
+      "code": "C101",
+      "level": 10,
+      "icon": "fas fa-trophy",
+      "title": "المشروع الختامي Capstone",
+      "title_en": "Capstone Project",
+      "difficulty": "ختامي",
+      "hours": 40,
+      "prerequisites": [
+        "advanced-ml"
+      ],
+      "summary": "مشروع متكامل تختاره وتنفذه من السؤال حتى النموذج المنشور والتقرير، بمعايير تقييم واضحة ومراجعة لكل مرحلة.",
+      "modules": [
+        {
+          "slug": "capstone-stages",
+          "title": "مراحل المشروع",
+          "title_en": "Project Stages",
+          "lessons": [
+            {
+              "slug": "cap-proposal",
+              "title": "مقترح المشروع والسؤال",
+              "title_en": "Proposal",
+              "minutes": 60,
+              "status": "planned"
+            },
+            {
+              "slug": "cap-data",
+              "title": "جمع البيانات وتنظيفها",
+              "title_en": "Data Collection & Cleaning",
+              "minutes": 120,
+              "status": "planned"
+            },
+            {
+              "slug": "cap-eda",
+              "title": "EDA والنتائج الأولية",
+              "title_en": "EDA",
+              "minutes": 120,
+              "status": "planned"
+            },
+            {
+              "slug": "cap-modeling",
+              "title": "النمذجة والتقييم",
+              "title_en": "Modeling & Evaluation",
+              "minutes": 180,
+              "status": "planned"
+            },
+            {
+              "slug": "cap-deploy",
+              "title": "النشر: API أو Dashboard",
+              "title_en": "Deployment",
+              "minutes": 120,
+              "status": "planned"
+            },
+            {
+              "slug": "cap-report",
+              "title": "التقرير النهائي والعرض",
+              "title_en": "Final Report & Presentation",
+              "minutes": 120,
+              "status": "planned"
+            }
+          ],
+          "quiz": null
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "number": 1,
+      "slug": "store-sales",
+      "icon": "fas fa-store",
+      "difficulty": "مبتدئ",
+      "title": "تحليل مبيعات متجر",
+      "problem": "متجر إلكتروني صغير يريد معرفة أكثر المنتجات والأشهر ربحاً، وأين تنخفض المبيعات.",
+      "dataset": "store_sales.csv: بيانات تعليمية مولّدة (سنة من الطلبات)",
+      "after": "Pandas",
+      "level": 2,
+      "tools": [
+        "Python",
+        "Pandas",
+        "Matplotlib"
+      ]
+    },
+    {
+      "number": 2,
+      "slug": "employees",
+      "icon": "fas fa-id-badge",
+      "difficulty": "مبتدئ",
+      "title": "تحليل بيانات الموظفين",
+      "problem": "قسم الموارد البشرية يريد فهم فروق الرواتب بين الأقسام والخبرة وأسباب ترك الموظفين، والبيانات فيها أخطاء إدخال.",
+      "dataset": "employees.csv: بيانات تعليمية مولّدة بمشاكل تنظيف مقصودة",
+      "after": "تنظيف البيانات",
+      "level": 2,
+      "tools": [
+        "Pandas",
+        "Data Cleaning",
+        "Seaborn"
+      ]
+    },
+    {
+      "number": 3,
+      "slug": "students",
+      "icon": "fas fa-user-graduate",
+      "difficulty": "مبتدئ",
+      "title": "تحليل بيانات الطلاب",
+      "problem": "مدرسة تريد معرفة العوامل المرتبطة بتحسّن الأداء: ساعات الدراسة، الحضور، والأنشطة.",
+      "dataset": "students.csv: بيانات تعليمية مولّدة",
+      "after": "EDA",
+      "level": 2,
+      "tools": [
+        "Pandas",
+        "EDA",
+        "Seaborn"
+      ]
+    },
+    {
+      "number": 4,
+      "slug": "customers-rfm",
+      "icon": "fas fa-users",
+      "difficulty": "متوسط",
+      "title": "تحليل بيانات العملاء (RFM)",
+      "problem": "تقسيم العملاء حسب حداثة الشراء وتكراره وقيمته لتوجيه حملات تسويق مختلفة لكل شريحة.",
+      "dataset": "customers.csv + orders.csv: قاعدة متجر CodeWay",
+      "after": "الإحصاء",
+      "level": 3,
+      "tools": [
+        "Pandas",
+        "Statistics",
+        "Seaborn"
+      ]
+    },
+    {
+      "number": 5,
+      "slug": "ecommerce-sql",
+      "icon": "fas fa-cart-shopping",
+      "difficulty": "متوسط",
+      "title": "تحليل تجارة إلكترونية",
+      "problem": "الإجابة عن أسئلة الإدارة (الاحتفاظ بالعملاء، سلة الشراء، نمو المبيعات) باستعلامات SQL ثم تحليلها في Python.",
+      "dataset": "codeway_store.sql: قاعدة بيانات SQLite من 4 جداول",
+      "after": "SQL",
+      "level": 4,
+      "tools": [
+        "SQL",
+        "Window Functions",
+        "Pandas"
+      ]
+    },
+    {
+      "number": 6,
+      "slug": "sales-dashboard",
+      "icon": "fas fa-gauge-high",
+      "difficulty": "متوسط",
+      "title": "Dashboard للمبيعات",
+      "problem": "بناء لوحة تحكم تفاعلية تعرض المؤشرات الأساسية وتسمح بالتصفية حسب المنطقة والفئة والفترة.",
+      "dataset": "store_sales.csv",
+      "after": "التصور",
+      "level": 5,
+      "tools": [
+        "Plotly",
+        "Storytelling",
+        "Dashboard Design"
+      ]
+    },
+    {
+      "number": 7,
+      "slug": "financial-analysis",
+      "icon": "fas fa-sack-dollar",
+      "difficulty": "متوسط",
+      "title": "تحليل بيانات مالية",
+      "problem": "تحليل عوائد ومخاطر مجموعة أصول: التذبذب، أسوأ تراجع، الارتباط بين الأصول، ومقارنة المحافظ.",
+      "dataset": "prices.csv: أسعار يومية مولّدة بنموذج إحصائي",
+      "after": "الإحصاء + التصور",
+      "level": 5,
+      "tools": [
+        "Pandas",
+        "NumPy",
+        "Statistics",
+        "Matplotlib"
+      ]
+    },
+    {
+      "number": 8,
+      "slug": "churn-prediction",
+      "icon": "fas fa-user-minus",
+      "difficulty": "متقدم",
+      "title": "Customer Churn Prediction",
+      "problem": "التنبؤ بالعملاء المتوقع أن يلغوا اشتراكهم، وتحديد العتبة التي توازن بين تكلفة الحملة وخسارة العميل.",
+      "dataset": "churn.csv: بيانات اشتراكات مولّدة",
+      "after": "تعلم الآلة",
+      "level": 6,
+      "tools": [
+        "Scikit-learn",
+        "Pipelines",
+        "ROC-AUC"
+      ]
+    },
+    {
+      "number": 9,
+      "slug": "house-prices",
+      "icon": "fas fa-house",
+      "difficulty": "متقدم",
+      "title": "House Price Prediction",
+      "problem": "تقدير سعر المنزل من خصائصه وموقعه، وشرح أهم العوامل المؤثرة في السعر.",
+      "dataset": "California Housing (مرفقة مع scikit-learn)",
+      "after": "تعلم الآلة",
+      "level": 6,
+      "tools": [
+        "Scikit-learn",
+        "Feature Engineering",
+        "RMSE"
+      ]
+    },
+    {
+      "number": 10,
+      "slug": "fraud-detection",
+      "icon": "fas fa-shield-halved",
+      "difficulty": "متقدم",
+      "title": "Fraud Detection",
+      "problem": "كشف المعاملات الاحتيالية النادرة (أقل من 1%) دون إزعاج العملاء بإنذارات خاطئة كثيرة.",
+      "dataset": "transactions.csv: معاملات مولّدة غير متوازنة",
+      "after": "تعلم الآلة المتقدم",
+      "level": 7,
+      "tools": [
+        "XGBoost",
+        "Imbalanced Data",
+        "PR-AUC",
+        "SHAP"
+      ]
+    },
+    {
+      "number": 11,
+      "slug": "medical-analysis",
+      "icon": "fas fa-hospital",
+      "difficulty": "متقدم",
+      "title": "Medical Data Analysis",
+      "problem": "بناء نموذج يساعد في تصنيف الأورام إلى حميدة وخبيثة، مع التركيز على Recall وتفسير القرار.",
+      "dataset": "Breast Cancer Wisconsin (مرفقة مع scikit-learn)",
+      "after": "تعلم الآلة",
+      "level": 6,
+      "tools": [
+        "Scikit-learn",
+        "Recall",
+        "Interpretability"
+      ]
+    },
+    {
+      "number": 12,
+      "slug": "recommendation-system",
+      "icon": "fas fa-film",
+      "difficulty": "متقدم",
+      "title": "Recommendation System",
+      "problem": "اقتراح أفلام لكل مستخدم بناءً على تقييماته وتقييمات مستخدمين يشبهونه.",
+      "dataset": "MovieLens (رابط تحميل رسمي، لا يُعاد توزيعه)",
+      "after": "تخصص أنظمة التوصية",
+      "level": 9,
+      "tools": [
+        "Collaborative Filtering",
+        "Matrix Factorization"
+      ]
+    },
+    {
+      "number": 13,
+      "slug": "time-series-forecasting",
+      "icon": "fas fa-chart-line",
+      "difficulty": "متقدم",
+      "title": "Time Series Forecasting",
+      "problem": "التنبؤ بالمبيعات اليومية لثلاثة أشهر قادمة لتخطيط المخزون، مع قياس دقة التنبؤ.",
+      "dataset": "daily_sales.csv: مبيعات يومية مولّدة بموسمية أسبوعية وسنوية",
+      "after": "تخصص السلاسل الزمنية",
+      "level": 9,
+      "tools": [
+        "Pandas",
+        "ARIMA",
+        "Lag Features",
+        "MAE"
+      ]
+    },
+    {
+      "number": 14,
+      "slug": "capstone",
+      "icon": "fas fa-trophy",
+      "difficulty": "ختامي",
+      "title": "المشروع الختامي Capstone",
+      "problem": "مشروع متكامل تختاره: سؤال حقيقي، بيانات تجمعها، تنظيف، EDA، نموذج، نشر كـ API أو Dashboard، وتقرير نهائي.",
+      "dataset": "من اختيارك (بموافقة على المقترح)",
+      "after": "المسار الأساسي",
+      "level": 10,
+      "tools": [
+        "كل أدوات المسار"
+      ]
+    }
+  ],
+  "technologies": [
+    {
+      "name": "Python",
+      "icon": "fab fa-python",
+      "level": 1,
+      "core": true,
+      "role": "لغة المسار: التحليل والنمذجة والأتمتة.",
+      "where": "المستوى 1: Python لعلم البيانات"
+    },
+    {
+      "name": "NumPy",
+      "icon": "fas fa-calculator",
+      "level": 1,
+      "core": true,
+      "role": "مصفوفات وحسابات عددية سريعة، أساس بقية المكتبات.",
+      "where": "المستوى 1: NumPy"
+    },
+    {
+      "name": "Pandas",
+      "icon": "fas fa-table",
+      "level": 2,
+      "core": true,
+      "role": "قراءة البيانات الجدولية وتنظيفها وتحليلها.",
+      "where": "المستوى 2: Pandas وتنظيف البيانات"
+    },
+    {
+      "name": "SQL",
+      "icon": "fas fa-database",
+      "level": 4,
+      "core": true,
+      "role": "استخراج البيانات من قواعد البيانات وتحليلها.",
+      "where": "المستوى 4: SQL لعلم البيانات"
+    },
+    {
+      "name": "SciPy و statsmodels",
+      "icon": "fas fa-square-root-variable",
+      "level": 3,
+      "core": true,
+      "role": "الاختبارات الإحصائية ونماذج الانحدار مع تفسيرها.",
+      "where": "المستوى 3: الإحصاء"
+    },
+    {
+      "name": "Matplotlib",
+      "icon": "fas fa-chart-line",
+      "level": 5,
+      "core": true,
+      "role": "بناء أي رسم بتحكم كامل في تفاصيله.",
+      "where": "المستوى 5: تصور البيانات"
+    },
+    {
+      "name": "Seaborn",
+      "icon": "fas fa-chart-area",
+      "level": 5,
+      "core": true,
+      "role": "رسوم إحصائية جميلة بسطر واحد.",
+      "where": "المستوى 5: تصور البيانات"
+    },
+    {
+      "name": "Plotly",
+      "icon": "fas fa-chart-column",
+      "level": 5,
+      "core": true,
+      "role": "رسوم تفاعلية ولوحات تحكم على الويب.",
+      "where": "المستوى 5: تصور البيانات"
+    },
+    {
+      "name": "Scikit-learn",
+      "icon": "fas fa-brain",
+      "level": 6,
+      "core": true,
+      "role": "خوارزميات تعلم الآلة والتقييم والـ Pipelines.",
+      "where": "المستوى 6: تعلم الآلة"
+    },
+    {
+      "name": "XGBoost و LightGBM",
+      "icon": "fas fa-rocket",
+      "level": 7,
+      "core": true,
+      "role": "أقوى النماذج للبيانات الجدولية.",
+      "where": "المستوى 7: تعلم الآلة المتقدم"
+    },
+    {
+      "name": "TensorFlow / Keras",
+      "icon": "fas fa-network-wired",
+      "level": 8,
+      "core": true,
+      "role": "بناء الشبكات العصبية وتدريبها.",
+      "where": "المستوى 8: التعلم العميق"
+    },
+    {
+      "name": "PyTorch",
+      "icon": "fas fa-fire",
+      "level": 8,
+      "core": true,
+      "role": "إطار التعلم العميق الأكثر مرونة في البحث.",
+      "where": "المستوى 8: التعلم العميق"
+    },
+    {
+      "name": "Jupyter",
+      "icon": "fas fa-book",
+      "level": 0,
+      "core": true,
+      "role": "دفتر تفاعلي يجمع الكود والنتائج والشرح.",
+      "where": "المستوى 0: بيئة العمل"
+    },
+    {
+      "name": "Git و GitHub",
+      "icon": "fab fa-github",
+      "level": 0,
+      "core": true,
+      "role": "حفظ نسخ عملك ومشاركته وبناء الـ Portfolio.",
+      "where": "المستوى 0 و 10"
+    },
+    {
+      "name": "Excel",
+      "icon": "fas fa-file-excel",
+      "level": 5,
+      "core": false,
+      "role": "تحليل سريع و Pivot Tables في بيئات العمل.",
+      "where": "المستوى 5: وحدة أدوات BI"
+    },
+    {
+      "name": "Power BI و Tableau",
+      "icon": "fas fa-chart-bar",
+      "level": 5,
+      "core": false,
+      "role": "لوحات تحكم للأعمال بدون برمجة كثيرة.",
+      "where": "المستوى 5: وحدة أدوات BI"
+    },
+    {
+      "name": "Apache Spark",
+      "icon": "fas fa-server",
+      "level": 9,
+      "core": false,
+      "role": "معالجة بيانات أكبر من ذاكرة جهاز واحد.",
+      "where": "المستوى 9: تخصص البيانات الضخمة"
+    },
+    {
+      "name": "R و Julia و Scala",
+      "icon": "fas fa-code",
+      "level": 9,
+      "core": false,
+      "role": "لغات بديلة: R للإحصاء الأكاديمي، Julia للحسابات عالية الأداء، Scala مع Spark. غير مطلوبة لإكمال المسار.",
+      "where": "اختيارية: Python تغطي احتياجات المسار كله"
+    }
+  ]
+}

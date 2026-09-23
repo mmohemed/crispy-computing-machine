@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنهج الكامل | CodeWay علم البيانات</title>
+    <meta name="description" content="المنهج الكامل لمسار CodeWay لعلم البيانات: المستويات والكورسات والوحدات والدروس من التأسيس حتى المشروع الختامي.">
+    <meta name="theme-color" content="#0a0f1f">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Tajawal:wght@300;400;500;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/lesson.css">
+</head>
+<body data-page="roadmap" data-root="./">
+    <header class="header" id="cw-header"></header>
+
+    <main class="container">
+        <nav class="breadcrumb" aria-label="مسار التنقل">
+            <a href="index.html">علم البيانات</a><i class="fas fa-chevron-left sep"></i><span>المنهج الكامل</span>
+        </nav>
+
+        <section class="hero-section" style="grid-template-columns:1fr;margin-bottom:50px">
+            <div class="hero-content">
+                <h1>منهج علم البيانات</h1>
+                <p>
+                    المسار الكامل من الصفر حتى المستوى المتقدم. المستويات من 0 إلى 8 هي <strong style="color:#fff">المسار الأساسي</strong>،
+                    والمستوى 9 تخصصات اختيارية يكفي منها تخصص واحد، والمستوى 10 للمشاريع والـ Portfolio.
+                    اضغط على أي كورس لرؤية وحداته ودروسه.
+                </p>
+                <div class="tag-cloud" id="roadmap-summary"></div>
+            </div>
+        </section>
+
+        <div class="legend" aria-label="دليل الرموز">
+            <span><span class="status-icon completed"><i class="fas fa-check"></i></span> مكتمل</span>
+            <span><span class="status-icon current"><i class="fas fa-play"></i></span> الدرس الحالي</span>
+            <span><span class="status-icon locked"><i class="fas fa-lock"></i></span> مقفل حتى تُكمل ما قبله</span>
+            <span><span class="status-icon planned"><i class="far fa-circle"></i></span> ضمن المنهج، يُفتح للدراسة عند نشره</span>
+        </div>
+
+        <div id="roadmap"></div>
+    </main>
+
+    <footer class="footer" id="cw-footer"></footer>
+    <script type="module" src="js/pages/roadmap.js"></script>
+</body>
+</html>

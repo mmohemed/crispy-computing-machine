@@ -1,0 +1,402 @@
+{
+  "slug": "python-dictionaries",
+  "course": "python-basics",
+  "module": "python-fundamentals",
+  "order": 11,
+  "title": "القواميس",
+  "title_en": "Dictionaries",
+  "minutes": 30,
+  "level": "مبتدئ",
+  "objectives": [
+    "تنشئ قواميس من أزواج مفتاح وقيمة وتقرأ منها بأمان باستخدام `get`.",
+    "تضيف المفاتيح وتعدّلها وتحذفها.",
+    "تمر على القاموس باستخدام `keys` و `values` و `items`.",
+    "تطبّق نمطي العدّ والتجميع حسب فئة، وهما أساس `groupby` لاحقاً."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "القاموس: البحث بالاسم وليس بالموقع",
+      "body": [
+        "في القائمة تصل إلى القيمة بموقعها `scores[2]`. في القاموس **dict** تصل إليها **بمفتاح key** له معنى: `customer[\"city\"]`. القاموس مجموعة أزواج `مفتاح: قيمة` بين قوسين معقوفين:",
+        {
+          "code": [
+            "customer = {",
+            "    \"name\": \"ريم\",",
+            "    \"city\": \"مكة\",",
+            "    \"orders\": 7,",
+            "}"
+          ],
+          "label": "Python"
+        },
+        {
+          "table": {
+            "head": [
+              "العملية",
+              "الكود",
+              "ملاحظة"
+            ],
+            "rows": [
+              [
+                "قراءة",
+                "`d[\"city\"]`",
+                "خطأ `KeyError` إذا لم يوجد المفتاح"
+              ],
+              [
+                "قراءة آمنة",
+                "`d.get(\"email\", \"-\")`",
+                "ترجع القيمة الافتراضية إذا لم يوجد"
+              ],
+              [
+                "إضافة أو تعديل",
+                "`d[\"email\"] = \"...\"`",
+                "ينشئ المفتاح إن لم يكن موجوداً"
+              ],
+              [
+                "حذف",
+                "`del d[\"city\"]` أو `d.pop(\"city\")`",
+                "`pop` ترجع القيمة المحذوفة"
+              ],
+              [
+                "هل المفتاح موجود؟",
+                "`\"city\" in d`",
+                "تفحص المفاتيح وليس القيم"
+              ],
+              [
+                "المرور",
+                "`for key, value in d.items():`",
+                "`keys()` و `values()` و `items()`"
+              ]
+            ]
+          }
+        },
+        "المفاتيح **فريدة**: إذا أسندت قيمة لمفتاح موجود فإنها تستبدل القديمة. والمفاتيح يجب أن تكون قيماً ثابتة (نصوص، أرقام، صفوف)، أما القيم فيمكن أن تكون أي شيء: أرقاماً أو قوائم أو قواميس أخرى.",
+        "القاموس يحافظ على ترتيب الإضافة، وهو سريع جداً في البحث حتى لو احتوى ملايين المفاتيح."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "القواميس في كل مكان في عالم البيانات:",
+        {
+          "list": [
+            "**سجل واحد** بحقول مسماة، مثل عميل أو طلب، وهو بالضبط شكل البيانات في JSON وفي أغلب واجهات API.",
+            "**جداول البحث**: ربط رمز بقيمة (رمز الدولة ← اسمها، المنتج ← سعره).",
+            "**العدّ والتجميع**: كم طلباً من كل مدينة؟ كم إيراداً لكل منطقة؟"
+          ]
+        },
+        "وعندما تنشئ DataFrame في Pandas ستمرر له غالباً قاموساً: المفاتيح أسماء الأعمدة والقيم قوائم البيانات."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "عندما تبحث عن القيمة **باسم** وليس بموقع.",
+            "عندما تمثل **كياناً** له خصائص مسماة (منتج، موظف).",
+            "عندما تجمع أو تعدّ **حسب فئة**.",
+            "إذا كانت البيانات مجرد تسلسل قيم متشابهة بلا أسماء فالقائمة أبسط."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "سجل عميل",
+      "code": [
+        "customer = {\"name\": \"ريم\", \"city\": \"مكة\", \"orders\": 7, \"vip\": False}",
+        "",
+        "print(customer[\"name\"])",
+        "print(customer.get(\"email\", \"لا يوجد بريد\"))",
+        "",
+        "customer[\"orders\"] += 1",
+        "customer[\"email\"] = \"reem@example.com\"",
+        "print(customer)",
+        "print(len(customer), \"vip\" in customer)"
+      ],
+      "explanation": [
+        {
+          "code": "customer[\"name\"]",
+          "text": "القراءة بالمفتاح."
+        },
+        {
+          "code": "customer.get(\"email\", \"لا يوجد بريد\")",
+          "text": "المفتاح غير موجود، فترجع `get` القيمة الافتراضية بدلاً من الخطأ."
+        },
+        {
+          "code": "customer[\"orders\"] += 1",
+          "text": "تعديل قيمة موجودة: 7 تصبح 8."
+        },
+        {
+          "code": "customer[\"email\"] = ...",
+          "text": "مفتاح جديد يُضاف في النهاية."
+        },
+        {
+          "code": "\"vip\" in customer",
+          "text": "`in` تفحص وجود المفتاح."
+        }
+      ],
+      "expected_output": [
+        "ريم",
+        "لا يوجد بريد",
+        "{'name': 'ريم', 'city': 'مكة', 'orders': 8, 'vip': False, 'email': 'reem@example.com'}",
+        "5 True"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "المرور على القاموس",
+      "code": [
+        "prices = {\"قهوة\": 18, \"شاي\": 12, \"عصير\": 15}",
+        "",
+        "for item, price in prices.items():",
+        "    print(item, \"=>\", price)",
+        "",
+        "print(list(prices.keys()))",
+        "print(sum(prices.values()))",
+        "",
+        "cheapest = min(prices, key=prices.get)",
+        "print(\"الأرخص:\", cheapest)"
+      ],
+      "explanation": [
+        {
+          "code": "prices.items()",
+          "text": "تعطي أزواج (المفتاح، القيمة) لنفكها في الحلقة."
+        },
+        {
+          "code": "prices.keys() / prices.values()",
+          "text": "المفاتيح وحدها أو القيم وحدها."
+        },
+        {
+          "code": "min(prices, key=prices.get)",
+          "text": "ابحث عن المفتاح الذي قيمته أصغر. `key=` تخبر `min` بأن تقارن بالأسعار وليس بالأسماء."
+        }
+      ],
+      "expected_output": [
+        "قهوة => 18",
+        "شاي => 12",
+        "عصير => 15",
+        "['قهوة', 'شاي', 'عصير']",
+        "45",
+        "الأرخص: شاي"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "نمط العدّ: كم طلباً من كل مدينة؟",
+      "code": [
+        "orders = [\"الرياض\", \"جدة\", \"الرياض\", \"الدمام\", \"جدة\", \"الرياض\"]",
+        "",
+        "counts = {}",
+        "for city in orders:",
+        "    counts[city] = counts.get(city, 0) + 1",
+        "",
+        "print(counts)",
+        "print(\"طلبات الرياض:\", counts[\"الرياض\"])"
+      ],
+      "explanation": [
+        {
+          "code": "counts = {}",
+          "text": "قاموس فارغ نملؤه أثناء المرور."
+        },
+        {
+          "code": "counts.get(city, 0) + 1",
+          "text": "إذا ظهرت المدينة لأول مرة فقيمتها الحالية 0، وإلا نأخذ العدد الحالي ونزيده واحداً."
+        }
+      ],
+      "expected_output": [
+        "{'الرياض': 3, 'جدة': 2, 'الدمام': 1}",
+        "طلبات الرياض: 3"
+      ],
+      "after": [
+        "هذا النمط مهم جداً. في درس الوحدات والمكتبات سترى `Counter` التي تختصره، وفي Pandas تفعل `value_counts()` الشيء نفسه."
+      ]
+    },
+    {
+      "type": "example",
+      "title": "نمط التجميع: إيراد كل منطقة",
+      "code": [
+        "sales = [",
+        "    {\"region\": \"الوسطى\", \"amount\": 300},",
+        "    {\"region\": \"الغربية\", \"amount\": 150},",
+        "    {\"region\": \"الوسطى\", \"amount\": 200},",
+        "    {\"region\": \"الشرقية\", \"amount\": 120},",
+        "    {\"region\": \"الغربية\", \"amount\": 90},",
+        "]",
+        "",
+        "totals = {}",
+        "for row in sales:",
+        "    region = row[\"region\"]",
+        "    totals[region] = totals.get(region, 0) + row[\"amount\"]",
+        "",
+        "for region, total in totals.items():",
+        "    print(region, total)"
+      ],
+      "explanation": [
+        {
+          "code": "sales = [{...}, {...}]",
+          "text": "قائمة من القواميس: كل قاموس صف، والمفاتيح أسماء الأعمدة. هذا هو شكل البيانات في JSON."
+        },
+        {
+          "code": "totals.get(region, 0) + row[\"amount\"]",
+          "text": "مثل نمط العدّ، لكن نضيف المبلغ بدلاً من 1."
+        }
+      ],
+      "expected_output": [
+        "الوسطى 500",
+        "الغربية 240",
+        "الشرقية 120"
+      ],
+      "after": [
+        "ما فعلته هنا يدوياً هو ما تفعله `df.groupby(\"region\")[\"amount\"].sum()` في Pandas بسطر واحد."
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "استخدم `get` عندما يكون المفتاح قد لا يوجد، واستخدم `[]` عندما يجب أن يوجد (وتريد خطأً واضحاً إذا لم يوجد).",
+        "القاموس يمكن أن يحتوي قواميس: `store[\"branches\"][\"جدة\"][\"manager\"]`. هذا شائع في بيانات JSON.",
+        "لا تضف أو تحذف مفاتيح أثناء المرور على القاموس نفسه؛ مرّ على نسخة `list(d.keys())` إذا احتجت ذلك.",
+        "تكرار المفتاح عند الإنشاء لا يسبب خطأ؛ آخر قيمة تفوز بصمت."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "قراءة مفتاح غير موجود بالأقواس",
+          "wrong": [
+            "customer = {\"name\": \"ريم\"}",
+            "print(customer[\"email\"])"
+          ],
+          "error": "KeyError: 'email'",
+          "error_type": "KeyError",
+          "why": "المفتاح `email` غير موجود. استخدم `get` أو تحقق بـ `in`.",
+          "fix": [
+            "customer = {\"name\": \"ريم\"}",
+            "print(customer.get(\"email\", \"غير متوفر\"))"
+          ]
+        },
+        {
+          "title": "استخدام قائمة كمفتاح",
+          "wrong": [
+            "sales = {}",
+            "sales[[\"الرياض\", 2026]] = 540"
+          ],
+          "error": "TypeError: unhashable type: 'list'",
+          "error_type": "TypeError",
+          "why": "المفاتيح يجب أن تكون ثابتة. استخدم صفاً بدلاً من القائمة.",
+          "fix": [
+            "sales = {}",
+            "sales[(\"الرياض\", 2026)] = 540",
+            "print(sales)"
+          ]
+        },
+        {
+          "title": "حذف مفاتيح أثناء المرور",
+          "wrong": [
+            "stock = {\"قهوة\": 0, \"شاي\": 5}",
+            "for item in stock:",
+            "    if stock[item] == 0:",
+            "        del stock[item]"
+          ],
+          "error": "RuntimeError: dictionary changed size during iteration",
+          "error_type": "RuntimeError",
+          "why": "تغيير حجم القاموس أثناء المرور عليه يربك الحلقة. مرّ على نسخة من المفاتيح.",
+          "fix": [
+            "stock = {\"قهوة\": 0, \"شاي\": 5}",
+            "for item in list(stock):",
+            "    if stock[item] == 0:",
+            "        del stock[item]",
+            "print(stock)"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "إنفاق كل عميل",
+    "prompt": [
+      "لديك قائمة معاملات، وكل معاملة قاموس فيه اسم العميل والمبلغ."
+    ],
+    "requirements": [
+      "`spend`: قاموس مفاتيحه أسماء العملاء وقيمه مجموع إنفاق كل عميل.",
+      "`top_customer`: اسم العميل الأعلى إنفاقاً.",
+      "`vip`: قائمة مرتبة أبجدياً بأسماء العملاء الذين تجاوز إنفاقهم 500."
+    ],
+    "starter_code": [
+      "transactions = [",
+      "    {\"customer\": \"ليان\", \"amount\": 250},",
+      "    {\"customer\": \"ماجد\", \"amount\": 120},",
+      "    {\"customer\": \"ليان\", \"amount\": 400},",
+      "    {\"customer\": \"عبير\", \"amount\": 610},",
+      "    {\"customer\": \"ماجد\", \"amount\": 90},",
+      "    {\"customer\": \"عبير\", \"amount\": 35},",
+      "]",
+      "",
+      "spend = {}",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "assert spend == {\"ليان\": 650, \"ماجد\": 210, \"عبير\": 645}, f\"spend غير صحيح: {spend}\"",
+      "assert top_customer == \"ليان\", f\"العميل الأعلى إنفاقاً هو ليان (650)، والموجود {top_customer!r}\"",
+      "assert vip == sorted([\"ليان\", \"عبير\"]), f\"vip يجب أن تكون {sorted(['ليان', 'عبير'])}، والموجود {vip}\""
+    ],
+    "hints": [
+      "نمط التجميع: `spend[name] = spend.get(name, 0) + t[\"amount\"]`.",
+      "أكبر مفتاح حسب قيمته: `max(spend, key=spend.get)`.",
+      "مرّ على `spend.items()` وأضف الاسم إلى `vip` إذا تجاوز 500، ثم رتّب."
+    ],
+    "solution": [
+      "transactions = [",
+      "    {\"customer\": \"ليان\", \"amount\": 250},",
+      "    {\"customer\": \"ماجد\", \"amount\": 120},",
+      "    {\"customer\": \"ليان\", \"amount\": 400},",
+      "    {\"customer\": \"عبير\", \"amount\": 610},",
+      "    {\"customer\": \"ماجد\", \"amount\": 90},",
+      "    {\"customer\": \"عبير\", \"amount\": 35},",
+      "]",
+      "",
+      "spend = {}",
+      "for t in transactions:",
+      "    name = t[\"customer\"]",
+      "    spend[name] = spend.get(name, 0) + t[\"amount\"]",
+      "",
+      "top_customer = max(spend, key=spend.get)",
+      "",
+      "vip = []",
+      "for name, total in spend.items():",
+      "    if total > 500:",
+      "        vip.append(name)",
+      "vip = sorted(vip)",
+      "",
+      "print(spend)",
+      "print(top_customer, vip)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "d = {\"a\": 1}",
+      "d[\"b\"] = 2",
+      "d[\"a\"] += 5",
+      "print(d)"
+    ],
+    "options": [
+      "{'a': 1, 'b': 2}",
+      "{'a': 6, 'b': 2}",
+      "{'a': 6}",
+      "{'b': 2, 'a': 6}"
+    ],
+    "answer": 1,
+    "explanation": "`d[\"b\"] = 2` تضيف مفتاحاً جديداً في النهاية، و `d[\"a\"] += 5` تعدّل القيمة الموجودة من 1 إلى 6 دون تغيير ترتيب المفاتيح."
+  },
+  "summary": [
+    "القاموس أزواج `مفتاح: قيمة`، والمفاتيح فريدة وثابتة.",
+    "`d[key]` للقراءة الصارمة، و `d.get(key, default)` للقراءة الآمنة.",
+    "`items()` للمرور على الأزواج، و `in` لفحص وجود المفتاح.",
+    "نمطا العدّ والتجميع `d[k] = d.get(k, 0) + ...` هما أساس `groupby` في Pandas."
+  ]
+}

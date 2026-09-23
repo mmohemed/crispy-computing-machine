@@ -1,0 +1,381 @@
+{
+  "slug": "python-fundamentals",
+  "course": "python-basics",
+  "module": "python-fundamentals",
+  "title": "اختبار الوحدة: أساسيات Python",
+  "intro": [
+    "هذا الاختبار يغطي دروس الوحدة الأولى كلها. الأسئلة متنوعة: اختيار من متعدد، وصح أو خطأ، وتوقّع ناتج الكود، وكتابة كود، وتصحيح كود فيه أخطاء.",
+    "أسئلة الكود تُصحّح بتشغيل كودك فعلياً واختباره، وبعد كل إجابة يظهر لك الشرح. إذا أخطأت في سؤال فستظهر لك روابط الدروس التي تحتاج مراجعتها في النهاية."
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "prompt": "أي اسم متغير مما يلي صحيح في Python؟",
+      "options": [
+        "`2nd_total`",
+        "`total-sales`",
+        "`total_sales`",
+        "`class`"
+      ],
+      "answer": 2,
+      "explanation": "الاسم لا يبدأ برقم، ولا يحتوي `-` (تعني الطرح)، ولا يكون كلمة محجوزة مثل `class`. أسلوب `snake_case` هو المعتمد.",
+      "lesson": "python-variables"
+    },
+    {
+      "id": "q2",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "x = 10",
+        "x += 5",
+        "x = x * 2",
+        "print(x)"
+      ],
+      "options": [
+        "15",
+        "30",
+        "20",
+        "25"
+      ],
+      "answer": 1,
+      "explanation": "`x += 5` تجعلها 15، ثم `x * 2` تعطي 30.",
+      "lesson": "python-operators"
+    },
+    {
+      "id": "q3",
+      "type": "true_false",
+      "prompt": "ناتج `type(\"12\")` هو `int`.",
+      "answer": false,
+      "explanation": "أي قيمة بين علامتي تنصيص نص `str`، حتى لو كانت أرقاماً. لتحويلها استخدم `int(\"12\")`.",
+      "lesson": "python-data-types"
+    },
+    {
+      "id": "q4",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "print(17 // 5, 17 % 5)"
+      ],
+      "options": [
+        "3.4 2",
+        "3 2",
+        "2 3",
+        "3 3"
+      ],
+      "answer": 1,
+      "explanation": "`//` القسمة الصحيحة (3)، و `%` الباقي (2).",
+      "lesson": "python-operators"
+    },
+    {
+      "id": "q5",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "score = 75",
+        "if score >= 60:",
+        "    print(\"مقبول\")",
+        "elif score >= 70:",
+        "    print(\"جيد\")",
+        "else:",
+        "    print(\"راسب\")"
+      ],
+      "options": [
+        "مقبول",
+        "جيد",
+        "مقبول\nجيد",
+        "راسب"
+      ],
+      "answer": 0,
+      "explanation": "أول شرط صحيح هو `score >= 60` فيُنفّذ فرعه فقط. لهذا نرتّب الشروط من الأكثر تحديداً إلى الأعم.",
+      "lesson": "python-conditions"
+    },
+    {
+      "id": "q6",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "total = 0",
+        "for i in range(1, 5):",
+        "    total += i",
+        "print(total)"
+      ],
+      "options": [
+        "10",
+        "15",
+        "4",
+        "5"
+      ],
+      "answer": 0,
+      "explanation": "`range(1, 5)` تولّد 1 و 2 و 3 و 4 (بدون 5)، ومجموعها 10.",
+      "lesson": "python-loops"
+    },
+    {
+      "id": "q7",
+      "type": "mcq",
+      "prompt": "ماذا ترجع دالة ليس فيها `return`؟",
+      "options": [
+        "`0`",
+        "`None`",
+        "نصاً فارغاً",
+        "خطأ `NameError`"
+      ],
+      "answer": 1,
+      "explanation": "كل دالة ترجع قيمة، وإذا لم تكتب `return` ترجع `None`.",
+      "lesson": "python-functions"
+    },
+    {
+      "id": "q8",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "data = [10, 20, 30]",
+        "print(sum(data))"
+      ],
+      "options": [
+        "60",
+        "30",
+        "[10, 20, 30]",
+        "102030"
+      ],
+      "answer": 0,
+      "explanation": "`sum` تجمع عناصر القائمة الرقمية: 10 + 20 + 30 = 60.",
+      "lesson": "python-lists"
+    },
+    {
+      "id": "q9",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "nums = [4, 8, 15, 16]",
+        "nums.append(23)",
+        "print(nums[-1], len(nums))"
+      ],
+      "options": [
+        "16 4",
+        "23 5",
+        "4 5",
+        "23 4"
+      ],
+      "answer": 1,
+      "explanation": "`append` تضيف 23 في النهاية فيصبح الطول 5، و `nums[-1]` آخر عنصر.",
+      "lesson": "python-lists"
+    },
+    {
+      "id": "q10",
+      "type": "true_false",
+      "prompt": "يمكن تعديل عنصر في الصف `t = (1, 2, 3)` بكتابة `t[0] = 10`.",
+      "answer": false,
+      "explanation": "الصف غير قابل للتعديل، وهذا يسبب `TypeError`.",
+      "lesson": "python-tuples"
+    },
+    {
+      "id": "q11",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "stock = {\"قهوة\": 5}",
+        "stock[\"شاي\"] = 3",
+        "stock[\"قهوة\"] -= 2",
+        "print(stock.get(\"عصير\", 0), stock)"
+      ],
+      "options": [
+        "0 {'قهوة': 3, 'شاي': 3}",
+        "None {'قهوة': 3, 'شاي': 3}",
+        "خطأ KeyError",
+        "0 {'قهوة': 5, 'شاي': 3}"
+      ],
+      "answer": 0,
+      "explanation": "`get` ترجع القيمة الافتراضية 0 لأن المفتاح غير موجود، والقهوة أصبحت 5 − 2 = 3.",
+      "lesson": "python-dictionaries"
+    },
+    {
+      "id": "q12",
+      "type": "mcq",
+      "prompt": "ما ناتج `len(set([1, 1, 2, 3, 3, 3]))`؟",
+      "options": [
+        "6",
+        "3",
+        "4",
+        "1"
+      ],
+      "answer": 1,
+      "explanation": "المجموعة تحتفظ بالقيم الفريدة فقط: 1 و 2 و 3.",
+      "lesson": "python-sets"
+    },
+    {
+      "id": "q13",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "print(\" Data Science \".strip().lower().split())"
+      ],
+      "options": [
+        "['data', 'science']",
+        "['Data', 'Science']",
+        "data science",
+        "[' data', 'science ']"
+      ],
+      "answer": 0,
+      "explanation": "`strip` ثم `lower` ثم `split` التي ترجع قائمة كلمات.",
+      "lesson": "python-strings"
+    },
+    {
+      "id": "q14",
+      "type": "mcq",
+      "prompt": "أي نمط يفتح ملفاً موجوداً ويضيف في نهايته دون حذف محتواه؟",
+      "options": [
+        "`\"r\"`",
+        "`\"w\"`",
+        "`\"a\"`",
+        "`\"rw\"`"
+      ],
+      "answer": 2,
+      "explanation": "`\"a\"` للإضافة، أما `\"w\"` فيمسح المحتوى أولاً.",
+      "lesson": "python-files"
+    },
+    {
+      "id": "q15",
+      "type": "fix_code",
+      "prompt": "الدالة التالية يجب أن ترجع متوسط قائمة أرقام، لكن فيها خطآن. صحّحهما حتى تعمل `average([2, 4, 6])` وترجع `4.0`.",
+      "starter_code": [
+        "def average(values)",
+        "    total = 0",
+        "    for v in values:",
+        "        total += v",
+        "    return total / len(value)",
+        "",
+        "print(average([2, 4, 6]))"
+      ],
+      "tests": [
+        "assert average([2, 4, 6]) == 4.0, \"average([2, 4, 6]) يجب أن ترجع 4.0\"",
+        "assert average([10]) == 10.0, \"average([10]) يجب أن ترجع 10.0\"",
+        "assert abs(average([1, 2]) - 1.5) < 1e-9, \"average([1, 2]) يجب أن ترجع 1.5\""
+      ],
+      "solution": [
+        "def average(values):",
+        "    total = 0",
+        "    for v in values:",
+        "        total += v",
+        "    return total / len(values)",
+        "",
+        "print(average([2, 4, 6]))"
+      ],
+      "hints": [
+        "شغّل الكود واقرأ رسالة الخطأ: أي سطر وأي نوع؟",
+        "بعد إصلاح الخطأ الأول سيظهر الثاني؛ انتبه لاسم المتغير."
+      ],
+      "explanation": "الخطأ الأول: نقص النقطتين `:` بعد تعريف الدالة (SyntaxError). الثاني: `len(value)` بدلاً من `len(values)` (NameError).",
+      "lesson": "python-functions"
+    },
+    {
+      "id": "q16",
+      "type": "write_code",
+      "prompt": "اكتب دالة `count_passed(scores, threshold=60)` ترجع عدد الدرجات التي تساوي `threshold` أو تزيد عليه.",
+      "starter_code": [
+        "def count_passed(scores, threshold=60):",
+        "    # اكتب الحل هنا",
+        "    pass",
+        "",
+        "print(count_passed([55, 60, 72, 40, 90]))"
+      ],
+      "tests": [
+        "assert count_passed([55, 60, 72, 40, 90]) == 3, \"count_passed([55, 60, 72, 40, 90]) يجب أن ترجع 3\"",
+        "assert count_passed([55, 60, 72, 40, 90], threshold=70) == 2, \"مع threshold=70 يجب أن ترجع 2\"",
+        "assert count_passed([]) == 0, \"القائمة الفارغة ترجع 0\""
+      ],
+      "solution": [
+        "def count_passed(scores, threshold=60):",
+        "    count = 0",
+        "    for s in scores:",
+        "        if s >= threshold:",
+        "            count += 1",
+        "    return count",
+        "",
+        "print(count_passed([55, 60, 72, 40, 90]))"
+      ],
+      "hints": [
+        "عدّاد يبدأ بـ 0 قبل الحلقة.",
+        "لا تنسَ `return count` في النهاية."
+      ],
+      "explanation": "نمط العدّ داخل دالة: عدّاد يبدأ بصفر، وحلقة، وشرط، ثم `return` للعدد وليس `print`.",
+      "lesson": "python-functions"
+    },
+    {
+      "id": "q17",
+      "type": "write_code",
+      "prompt": "سؤال تطبيقي: لديك قائمة طلبات، وكل طلب قاموس فيه المدينة والمبلغ. أنشئ قاموساً `revenue_by_city` يجمع المبالغ لكل مدينة، ثم خزّن في `top_city` المدينة الأعلى إيراداً.",
+      "starter_code": [
+        "orders = [",
+        "    {\"city\": \"جدة\", \"amount\": 120},",
+        "    {\"city\": \"الرياض\", \"amount\": 300},",
+        "    {\"city\": \"جدة\", \"amount\": 250},",
+        "    {\"city\": \"أبها\", \"amount\": 80},",
+        "    {\"city\": \"الرياض\", \"amount\": 40},",
+        "]",
+        "",
+        "revenue_by_city = {}",
+        "# اكتب الحل هنا"
+      ],
+      "tests": [
+        "assert revenue_by_city == {\"جدة\": 370, \"الرياض\": 340, \"أبها\": 80}, f\"revenue_by_city غير صحيح: {revenue_by_city}\"",
+        "assert top_city == \"جدة\", f\"top_city يجب أن تكون جدة، والموجود {top_city!r}\""
+      ],
+      "solution": [
+        "orders = [",
+        "    {\"city\": \"جدة\", \"amount\": 120},",
+        "    {\"city\": \"الرياض\", \"amount\": 300},",
+        "    {\"city\": \"جدة\", \"amount\": 250},",
+        "    {\"city\": \"أبها\", \"amount\": 80},",
+        "    {\"city\": \"الرياض\", \"amount\": 40},",
+        "]",
+        "",
+        "revenue_by_city = {}",
+        "for order in orders:",
+        "    city = order[\"city\"]",
+        "    revenue_by_city[city] = revenue_by_city.get(city, 0) + order[\"amount\"]",
+        "",
+        "top_city = max(revenue_by_city, key=revenue_by_city.get)",
+        "print(revenue_by_city, top_city)"
+      ],
+      "hints": [
+        "`revenue_by_city[city] = revenue_by_city.get(city, 0) + order[\"amount\"]`.",
+        "أعلى مفتاح حسب القيمة: `max(revenue_by_city, key=revenue_by_city.get)`."
+      ],
+      "explanation": "نمط التجميع `d[k] = d.get(k, 0) + value`، ثم `max(d, key=d.get)` لأعلى قيمة.",
+      "lesson": "python-dictionaries"
+    },
+    {
+      "id": "q18",
+      "type": "fix_code",
+      "prompt": "الكود التالي يتوقف عند أول قيمة غير رقمية. عدّله باستخدام `try/except ValueError` ليتجاوز القيم غير الصالحة، فيصبح `total` يساوي `30`.",
+      "starter_code": [
+        "raw = [\"10\", \"abc\", \"20\", \"\"]",
+        "total = 0",
+        "for value in raw:",
+        "    total += int(value)",
+        "print(total)"
+      ],
+      "tests": [
+        "assert total == 30, f\"total يجب أن يكون 30، والموجود {total}\"",
+        "assert \"except ValueError\" in __code__, \"استخدم except ValueError\""
+      ],
+      "solution": [
+        "raw = [\"10\", \"abc\", \"20\", \"\"]",
+        "total = 0",
+        "for value in raw:",
+        "    try:",
+        "        total += int(value)",
+        "    except ValueError:",
+        "        continue",
+        "print(total)"
+      ],
+      "hints": [
+        "السطر `total += int(value)` هو الذي يفشل.",
+        "داخل `except ValueError:` يمكنك كتابة `continue` أو `pass`."
+      ],
+      "explanation": "ضع السطر الذي قد يفشل فقط داخل `try`، والتقط النوع المحدد `ValueError`.",
+      "lesson": "python-exceptions"
+    }
+  ]
+}

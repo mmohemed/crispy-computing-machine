@@ -1,0 +1,408 @@
+{
+  "slug": "python-modules",
+  "course": "python-basics",
+  "module": "python-fundamentals",
+  "order": 16,
+  "title": "الوحدات والمكتبات",
+  "title_en": "Modules",
+  "minutes": 20,
+  "level": "مبتدئ",
+  "objectives": [
+    "تستورد الوحدات بـ `import` و `from ... import` و `as`.",
+    "تستخدم وحدات المكتبة القياسية: `math` و `statistics` و `random` و `collections` و `datetime`.",
+    "تفهم كيف تُثبّت المكتبات الخارجية بـ `pip` والاختصارات المعتادة مثل `np` و `pd`.",
+    "تنظّم كودك في وحدات خاصة بك."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "لا تكتب كل شيء من الصفر",
+      "body": [
+        "**الوحدة module** ملف Python فيه دوال ومتغيرات جاهزة للاستخدام. و**المكتبة library أو الحزمة package** مجموعة وحدات. Python تأتي مع **مكتبة قياسية** ضخمة، وهناك مئات الآلاف من المكتبات الخارجية.",
+        {
+          "table": {
+            "head": [
+              "الصيغة",
+              "الاستخدام بعدها",
+              "متى"
+            ],
+            "rows": [
+              [
+                "`import math`",
+                "`math.sqrt(16)`",
+                "الأوضح: تعرف دائماً من أين جاءت الدالة"
+              ],
+              [
+                "`from math import sqrt`",
+                "`sqrt(16)`",
+                "عندما تستخدم دالة أو دالتين كثيراً"
+              ],
+              [
+                "`import pandas as pd`",
+                "`pd.read_csv(...)`",
+                "اختصار متفق عليه لاسم طويل"
+              ]
+            ]
+          }
+        },
+        {
+          "h": "المكتبة القياسية (مثبتة مع Python)"
+        },
+        {
+          "list": [
+            "`math`: الجذور، والتقريب للأعلى والأسفل، و `pi`، واللوغاريتمات.",
+            "`statistics`: المتوسط والوسيط والمنوال والانحراف المعياري.",
+            "`random`: أرقام واختيارات عشوائية، وهي مهمة في المحاكاة وأخذ العينات.",
+            "`collections`: أدوات مثل `Counter` للعدّ.",
+            "`datetime`: التواريخ والأوقات وحساب الفروق بينها.",
+            "`os` و `csv` و `json`: الملفات وتنسيقات البيانات."
+          ]
+        },
+        {
+          "h": "المكتبات الخارجية"
+        },
+        "تُثبّت من الطرفية بالأمر `pip install numpy pandas`، ثم تُستورد عادة باختصارات يستخدمها الجميع: `import numpy as np` و `import pandas as pd` و `import matplotlib.pyplot as plt`. في محرر CodeWay تُحمّل بعض هذه المكتبات تلقائياً عند استيرادها."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "علم البيانات في Python هو في الحقيقة **مكتبات**: لن تكتب خوارزمية انحدار أو رسماً بيانياً من الصفر. الاستيراد الصحيح هو البوابة إلى كل ما ستتعلمه بعد هذه الوحدة. ومعرفة المكتبة القياسية توفر عليك تثبيت مكتبات إضافية لمهام بسيطة مثل المتوسط والعدّ.",
+        "ووحداتك الخاصة تجعل مشروعك منظماً: دوال التنظيف في ملف، ودوال الحساب في آخر، والتحليل الرئيسي يستوردها."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "ابحث في المكتبة القياسية أولاً قبل أن تكتب دالة لمهمة شائعة.",
+            "استخدم `import module` في أغلب الحالات لأنها أوضح.",
+            "التزم بالاختصارات المعروفة (`np` و `pd` و `plt`) حتى يفهم الآخرون كودك فوراً.",
+            "أنشئ وحدة خاصة بك عندما تكرر نفس الدوال في أكثر من ملف أو Notebook."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "math",
+      "code": [
+        "import math",
+        "",
+        "print(math.sqrt(144))",
+        "print(math.ceil(125 / 12))",
+        "print(math.floor(7.9))",
+        "print(round(math.pi, 4))",
+        "print(math.log10(1000))"
+      ],
+      "explanation": [
+        {
+          "code": "math.sqrt(144)",
+          "text": "الجذر التربيعي. نكتب اسم الوحدة ثم نقطة ثم اسم الدالة."
+        },
+        {
+          "code": "math.ceil(125 / 12)",
+          "text": "التقريب للأعلى: 10.4 صناديق تعني أننا نحتاج 11 صندوقاً."
+        },
+        {
+          "code": "math.floor(7.9)",
+          "text": "التقريب للأسفل: 7."
+        },
+        {
+          "code": "math.log10(1000)",
+          "text": "اللوغاريتم العشري: 3.0. ستحتاجه في تحويل البيانات المنحرفة."
+        }
+      ],
+      "expected_output": [
+        "12.0",
+        "11",
+        "7",
+        "3.1416",
+        "3.0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "statistics و random",
+      "code": [
+        "from statistics import mean, median, stdev",
+        "import random as rnd",
+        "",
+        "scores = [70, 85, 90, 65, 85]",
+        "print(mean(scores), median(scores))",
+        "print(round(stdev(scores), 2))",
+        "",
+        "rnd.seed(42)",
+        "print(rnd.randint(1, 100))",
+        "print(rnd.choice([\"أحمر\", \"أخضر\", \"أزرق\"]))",
+        "sample = rnd.sample(range(1, 11), 3)",
+        "print(sample)"
+      ],
+      "explanation": [
+        {
+          "code": "from statistics import mean, median, stdev",
+          "text": "نستورد ثلاث دوال بأسمائها فنستخدمها بدون بادئة."
+        },
+        {
+          "code": "import random as rnd",
+          "text": "اسم مختصر للوحدة، للتوضيح فقط؛ في الواقع يُستخدم `random` كما هو عادة."
+        },
+        {
+          "code": "rnd.seed(42)",
+          "text": "**البذرة** تجعل الأرقام العشوائية قابلة للتكرار: نفس البذرة تعطي نفس النتائج في كل تشغيل. هذا مهم جداً لإعادة إنتاج النتائج في علم البيانات."
+        },
+        {
+          "code": "rnd.sample(range(1, 11), 3)",
+          "text": "عينة عشوائية من 3 عناصر بدون تكرار."
+        }
+      ],
+      "expected_output": [
+        "79 85",
+        "10.84",
+        "82",
+        "أحمر",
+        "[1, 5, 4]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "Counter و datetime",
+      "code": [
+        "from collections import Counter",
+        "from datetime import date",
+        "",
+        "cities = [\"جدة\", \"الرياض\", \"جدة\", \"أبها\", \"جدة\", \"الرياض\"]",
+        "counter = Counter(cities)",
+        "print(counter.most_common(2))",
+        "print(counter[\"أبها\"])",
+        "",
+        "start = date(2026, 1, 1)",
+        "end = date(2026, 3, 15)",
+        "print((end - start).days, \"يوماً\")",
+        "print(end.strftime(\"%Y/%m/%d\"))"
+      ],
+      "explanation": [
+        {
+          "code": "Counter(cities)",
+          "text": "يعدّ كل قيمة دفعة واحدة، وهو اختصار لنمط العدّ الذي كتبته يدوياً في درس القواميس."
+        },
+        {
+          "code": "most_common(2)",
+          "text": "أكثر قيمتين تكراراً مع عدد كل منهما."
+        },
+        {
+          "code": "(end - start).days",
+          "text": "طرح تاريخين يعطي مدة، و `.days` عدد الأيام."
+        },
+        {
+          "code": "strftime(\"%Y/%m/%d\")",
+          "text": "تنسيق التاريخ كنص بالشكل الذي تريده."
+        }
+      ],
+      "expected_output": [
+        "[('جدة', 3), ('الرياض', 2)]",
+        "1",
+        "73 يوماً",
+        "2026/03/15"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "استيراد مكتبات علم البيانات",
+      "code": [
+        "import numpy as np",
+        "import pandas as pd",
+        "",
+        "prices = np.array([18.5, 12.0, 35.0])",
+        "print(prices * 2)",
+        "",
+        "table = pd.DataFrame({\"product\": [\"قهوة\", \"شاي\"], \"qty\": [3, 5]})",
+        "print(table.shape)"
+      ],
+      "explanation": [
+        {
+          "code": "import numpy as np",
+          "text": "الاختصار `np` هو المعتمد عالمياً لـ NumPy."
+        },
+        {
+          "code": "prices * 2",
+          "text": "في NumPy تُطبق العملية على كل العناصر دفعة واحدة، بدون حلقة. هذا موضوع كورس NumPy."
+        },
+        {
+          "code": "pd.DataFrame({...})",
+          "text": "جدول Pandas من قاموس: المفاتيح أسماء الأعمدة. `shape` صف (عدد الصفوف، عدد الأعمدة)."
+        }
+      ],
+      "expected_output": [
+        "[37. 24. 70.]",
+        "(2, 2)"
+      ],
+      "run_note": "أول تشغيل لهذا المثال في محرر CodeWay يحمّل NumPy و Pandas داخل المتصفح، وقد يستغرق عدة ثوانٍ. على جهازك ثبّتهما أولاً بـ `pip install numpy pandas`."
+    },
+    {
+      "type": "example",
+      "title": "وحدتك الخاصة",
+      "intro": [
+        "أنشئ على جهازك ملفين في المجلد نفسه. الأول `sales_tools.py`:",
+        {
+          "code": [
+            "# ملف: sales_tools.py",
+            "VAT = 0.15",
+            "",
+            "def with_vat(amount):",
+            "    return round(amount * (1 + VAT), 2)"
+          ],
+          "label": "sales_tools.py"
+        },
+        "والثاني `main.py` يستورده:"
+      ],
+      "code": [
+        "# ملف: main.py (في نفس مجلد sales_tools.py)",
+        "import sales_tools",
+        "",
+        "print(sales_tools.with_vat(200))",
+        "print(sales_tools.VAT)"
+      ],
+      "run": false,
+      "explanation": [
+        {
+          "code": "# ملف: sales_tools.py",
+          "text": "أي ملف `.py` هو وحدة. اسم الملف (بدون `.py`) هو اسم الوحدة."
+        },
+        {
+          "code": "import sales_tools",
+          "text": "يبحث Python أولاً في مجلد الملف الحالي، ثم في المكتبات المثبتة."
+        },
+        {
+          "code": "sales_tools.with_vat(200)",
+          "text": "نستخدم الدالة التي كتبناها في الملف الآخر."
+        }
+      ],
+      "expected_output": [
+        "230.0",
+        "0.15"
+      ],
+      "run_note": "هذا المثال يحتاج ملفين على جهازك، لذلك لا يُشغّل في المحرر. شغّله بـ `python main.py`."
+    },
+    {
+      "type": "notes",
+      "items": [
+        "لا تسمِّ ملفاتك بأسماء مكتبات: ملف اسمه `random.py` في مجلدك سيُستورد بدلاً من مكتبة `random` الحقيقية، فتحصل على أخطاء محيرة.",
+        "تجنّب `from module import *`؛ تملأ برنامجك بأسماء لا تعرف مصدرها وقد تغطي أسماءك.",
+        "ضع كل جمل `import` في أعلى الملف.",
+        "`pip` يثبّت المكتبات للـ Python الذي يعمل به. إذا كان لديك أكثر من إصدار فاستخدم `python -m pip install ...` لتضمن التثبيت في الإصدار الصحيح."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "مكتبة غير مثبتة أو اسم خاطئ",
+          "wrong": [
+            "import pandaz as pd"
+          ],
+          "error": "ModuleNotFoundError: No module named 'pandaz'",
+          "error_type": "ModuleNotFoundError",
+          "why": "إما أن الاسم مكتوب خطأ (`pandaz`)، أو أن المكتبة غير مثبتة. صحّح الاسم أو ثبّتها بـ `pip install`.",
+          "fix": [
+            "import pandas as pd"
+          ]
+        },
+        {
+          "title": "نسيان اسم الوحدة قبل الدالة",
+          "wrong": [
+            "import math",
+            "print(sqrt(16))"
+          ],
+          "error": "NameError: name 'sqrt' is not defined",
+          "error_type": "NameError",
+          "why": "بعد `import math` تكون الدالة `math.sqrt` وليس `sqrt`. إما أن تكتب البادئة أو تستخدم `from math import sqrt`.",
+          "fix": [
+            "import math",
+            "print(math.sqrt(16))"
+          ]
+        },
+        {
+          "title": "استيراد دالة غير موجودة في الوحدة",
+          "wrong": [
+            "from statistics import average"
+          ],
+          "error": "ImportError: cannot import name 'average' from 'statistics'",
+          "error_type": "ImportError",
+          "why": "الوحدة `statistics` لا تحتوي دالة اسمها `average`؛ اسمها `mean`.",
+          "fix": [
+            "from statistics import mean",
+            "print(mean([1, 2, 3]))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "إحصاءات أوقات التوصيل",
+    "prompt": [
+      "لديك أوقات توصيل طلبات (بالدقائق). استخدم المكتبة القياسية بدلاً من كتابة الحسابات يدوياً:"
+    ],
+    "requirements": [
+      "`avg`: المتوسط باستخدام `statistics.mean`، مقرباً لمنزلة واحدة.",
+      "`med`: الوسيط باستخدام `statistics.median`.",
+      "`spread`: الانحراف المعياري باستخدام `statistics.stdev`، مقرباً لمنزلتين.",
+      "`boxes`: عدد الصناديق اللازمة لتعبئة `total_items` قطعة إذا كان الصندوق يسع 12، باستخدام `math.ceil`.",
+      "`most_common_time`: أكثر وقت تكراراً باستخدام `Counter`."
+    ],
+    "starter_code": [
+      "delivery_minutes = [32, 45, 28, 45, 51, 38, 45, 29, 60, 33]",
+      "total_items = 130",
+      "",
+      "# استورد ما تحتاجه ثم احسب المطلوب"
+    ],
+    "tests": [
+      "assert avg == 40.6, f\"avg يجب أن يكون 40.6، والموجود {avg}\"",
+      "assert med == 41.5, f\"med يجب أن يكون 41.5، والموجود {med}\"",
+      "assert spread == 10.41, f\"spread يجب أن يكون 10.41، والموجود {spread}\"",
+      "assert boxes == 11, f\"boxes يجب أن يكون 11، والموجود {boxes}\"",
+      "assert most_common_time == 45, f\"most_common_time يجب أن يكون 45، والموجود {most_common_time}\"",
+      "assert \"import\" in __code__ and \"ceil\" in __code__, \"استخدم math.ceil\"",
+      "assert \"Counter\" in __code__, \"استخدم Counter\""
+    ],
+    "hints": [
+      "`from statistics import mean, median, stdev` و `import math` و `from collections import Counter`.",
+      "`Counter(values).most_common(1)` ترجع قائمة فيها صف واحد `(القيمة، العدد)`، فخذ `[0][0]`."
+    ],
+    "solution": [
+      "import math",
+      "from statistics import mean, median, stdev",
+      "from collections import Counter",
+      "",
+      "delivery_minutes = [32, 45, 28, 45, 51, 38, 45, 29, 60, 33]",
+      "total_items = 130",
+      "",
+      "avg = round(mean(delivery_minutes), 1)",
+      "med = median(delivery_minutes)",
+      "spread = round(stdev(delivery_minutes), 2)",
+      "boxes = math.ceil(total_items / 12)",
+      "most_common_time = Counter(delivery_minutes).most_common(1)[0][0]",
+      "",
+      "print(avg, med, spread, boxes, most_common_time)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "بعد السطر `import math`، أي استدعاء صحيح لحساب الجذر التربيعي للعدد 25؟",
+    "options": [
+      "`sqrt(25)`",
+      "`math.sqrt(25)`",
+      "`math(sqrt(25))`",
+      "`import sqrt(25)`"
+    ],
+    "answer": 1,
+    "explanation": "مع `import math` تبقى الدوال داخل اسم الوحدة، فنكتب `math.sqrt`. لاستخدام `sqrt` مباشرة نحتاج `from math import sqrt`."
+  },
+  "summary": [
+    "`import m` ثم `m.func()`، أو `from m import func`، أو `import m as alias`.",
+    "المكتبة القياسية: `math` و `statistics` و `random` مع `seed` و `collections.Counter` و `datetime`.",
+    "المكتبات الخارجية تُثبّت بـ `pip`، والاختصارات المعتمدة `np` و `pd` و `plt`.",
+    "أي ملف `.py` وحدة يمكن استيرادها؛ لا تسمِّ ملفاتك بأسماء المكتبات."
+  ]
+}

@@ -1,0 +1,377 @@
+{
+  "slug": "python-functions",
+  "course": "python-basics",
+  "module": "python-fundamentals",
+  "order": 8,
+  "title": "الدوال",
+  "title_en": "Functions",
+  "minutes": 30,
+  "level": "مبتدئ",
+  "objectives": [
+    "تعرّف دوال خاصة بك باستخدام `def`.",
+    "تفرّق بين المعاملات Parameters والقيم الممرّرة Arguments.",
+    "تستخدم `return` لإرجاع النتائج بدلاً من طباعتها.",
+    "تستخدم القيم الافتراضية والمعاملات بالاسم وإرجاع عدة قيم."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "الدالة: كود له اسم",
+      "body": [
+        "الدالة **function** مجموعة تعليمات تعطيها اسماً، ثم تستدعيها بهذا الاسم كلما احتجتها. استخدمت دوالاً جاهزة مثل `print()` و `len()` و `round()`، والآن ستكتب دوالك.",
+        {
+          "code": [
+            "def function_name(parameter1, parameter2):",
+            "    \"\"\"وصف مختصر لما تفعله الدالة.\"\"\"",
+            "    # الخطوات",
+            "    return result"
+          ],
+          "label": "الشكل العام"
+        },
+        {
+          "list": [
+            "`def` تبدأ التعريف، ثم الاسم، ثم الأقواس، ثم `:`.",
+            "**المعاملات parameters** أسماء داخل الأقواس تستقبل القيم. والقيم التي تمررها عند الاستدعاء تسمى **arguments**.",
+            "`return` تُرجع النتيجة إلى من استدعى الدالة وتنهي تنفيذها فوراً.",
+            "النص بين ثلاث علامات تنصيص بعد التعريف يسمى **docstring** ويشرح الدالة."
+          ]
+        },
+        {
+          "h": "الفرق المهم بين print و return"
+        },
+        "`print` تعرض قيمة على الشاشة فقط، ولا يستطيع باقي البرنامج استخدامها. `return` تُرجع القيمة فتستطيع تخزينها في متغير أو استخدامها في حساب آخر. **الدوال المفيدة في تحليل البيانات تُرجع نتائج** ولا تطبعها."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        {
+          "list": [
+            "**عدم التكرار**: تكتب منطق حساب الضريبة مرة واحدة وتستخدمه في كل مكان.",
+            "**سهولة التعديل**: إذا تغيرت القاعدة تعدّل مكاناً واحداً.",
+            "**الوضوح**: `clean_price(raw)` تشرح نفسها، وتقسّم مشكلة كبيرة إلى خطوات صغيرة.",
+            "**الاختبار**: يمكنك التحقق من دالة صغيرة بمدخلات مختلفة، وهذا ما تفعله اختبارات تمارين CodeWay بالضبط."
+          ]
+        },
+        "في علم البيانات ستكتب دوالاً لتنظيف عمود، أو حساب مؤشر، أو تحويل تنسيق. ولاحقاً في Pandas ستمرر دوالك إلى `apply` لتُطبق على كل صف."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        "اكتب دالة عندما:",
+        {
+          "list": [
+            "تكرر نفس الخطوات مرتين أو أكثر.",
+            "يمكنك وصف مجموعة أسطر بجملة واحدة (\"احسب السعر النهائي\").",
+            "تريد اختبار جزء من المنطق بمدخلات مختلفة."
+          ]
+        },
+        "واجعل كل دالة تؤدي **مهمة واحدة**. الدالة التي تقرأ الملف وتنظفه وتحسب وتطبع أصعب في الفهم والاختبار من أربع دوال صغيرة."
+      ]
+    },
+    {
+      "type": "example",
+      "title": "دالة بسيطة بمعامل",
+      "code": [
+        "def greet(name):",
+        "    print(\"أهلاً\", name, \"في CodeWay\")",
+        "",
+        "greet(\"سلمى\")",
+        "greet(\"عمر\")"
+      ],
+      "explanation": [
+        {
+          "code": "def greet(name):",
+          "text": "تعريف الدالة فقط، ولا يُنفّذ شيء عند هذا السطر."
+        },
+        {
+          "code": "greet(\"سلمى\")",
+          "text": "الاستدعاء: تأخذ `name` القيمة `\"سلمى\"` ثم يُنفّذ جسم الدالة."
+        },
+        {
+          "code": "greet(\"عمر\")",
+          "text": "نفس الكود بقيمة مختلفة؛ هذه هي فائدة الدوال."
+        }
+      ],
+      "expected_output": [
+        "أهلاً سلمى في CodeWay",
+        "أهلاً عمر في CodeWay"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "return: دالة تحسب وترجع نتيجة",
+      "code": [
+        "def total_price(price, quantity):",
+        "    return price * quantity",
+        "",
+        "order1 = total_price(25, 4)",
+        "order2 = total_price(60, 2)",
+        "print(order1, order2, order1 + order2)"
+      ],
+      "explanation": [
+        {
+          "code": "return price * quantity",
+          "text": "تُرجع الناتج إلى مكان الاستدعاء."
+        },
+        {
+          "code": "order1 = total_price(25, 4)",
+          "text": "القيمة المرجعة (100) تُخزّن في متغير لنستخدمها لاحقاً."
+        },
+        {
+          "code": "order1 + order2",
+          "text": "لأن الدالة أرجعت أرقاماً استطعنا جمعها. لو كانت تطبع فقط لما استطعنا."
+        }
+      ],
+      "expected_output": [
+        "100 120 220"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "القيم الافتراضية والمعاملات بالاسم",
+      "code": [
+        "def final_price(price, discount=0, vat=0.15):",
+        "    after_discount = price - price * discount",
+        "    return round(after_discount * (1 + vat), 2)",
+        "",
+        "print(final_price(200))",
+        "print(final_price(200, discount=0.1))",
+        "print(final_price(200, vat=0))"
+      ],
+      "explanation": [
+        {
+          "code": "discount=0, vat=0.15",
+          "text": "قيم افتراضية تُستخدم إذا لم يمرر المستدعي قيمة. المعاملات ذات القيم الافتراضية تأتي بعد المعاملات الإلزامية."
+        },
+        {
+          "code": "final_price(200)",
+          "text": "خصم 0 وضريبة 15%: 230.0."
+        },
+        {
+          "code": "final_price(200, discount=0.1)",
+          "text": "تمرير معامل **باسمه** يجعل الاستدعاء واضحاً ويسمح بتجاوز معاملات أخرى."
+        },
+        {
+          "code": "final_price(200, vat=0)",
+          "text": "غيّرنا الضريبة فقط وأبقينا الخصم الافتراضي. ظهر الناتج `200` بدون `.0` لأن كل القيم في هذا الحساب أعداد صحيحة."
+        }
+      ],
+      "expected_output": [
+        "230.0",
+        "207.0",
+        "200"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "إرجاع عدة قيم",
+      "code": [
+        "def describe(values):",
+        "    \"\"\"ترجع أصغر قيمة وأكبر قيمة والمتوسط.\"\"\"",
+        "    smallest = min(values)",
+        "    largest = max(values)",
+        "    average = sum(values) / len(values)",
+        "    return smallest, largest, average",
+        "",
+        "low, high, avg = describe([12, 7, 30, 18, 23])",
+        "print(\"الأقل:\", low)",
+        "print(\"الأعلى:\", high)",
+        "print(\"المتوسط:\", avg)"
+      ],
+      "explanation": [
+        {
+          "code": "\"\"\"ترجع أصغر قيمة...\"\"\"",
+          "text": "docstring يشرح الدالة، ويظهر عند كتابة `help(describe)`."
+        },
+        {
+          "code": "return smallest, largest, average",
+          "text": "إرجاع عدة قيم مفصولة بفواصل (تُجمع في صف tuple كما ستعرف في درس الصفوف)."
+        },
+        {
+          "code": "low, high, avg = describe(...)",
+          "text": "نفكّ القيم الثلاث إلى ثلاثة متغيرات."
+        },
+        {
+          "code": "min / max / sum",
+          "text": "دوال جاهزة تعمل على القوائم. الدالة `describe` تعيد تجميعها في أداة واحدة مفيدة."
+        }
+      ],
+      "expected_output": [
+        "الأقل: 7",
+        "الأعلى: 30",
+        "المتوسط: 18.0"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "عرّف الدالة قبل أن تستدعيها في الملف.",
+        "الدالة التي لا تحتوي `return` ترجع `None` تلقائياً.",
+        "المتغيرات التي تُنشأ داخل الدالة محلية: لا تُرى خارجها. تفاصيل النطاق Scope في الوحدة القادمة.",
+        "سمِّ الدوال بأفعال تصف ما تفعله: `calculate_vat` و `clean_name` و `is_valid_email`."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "نسيان return",
+          "wrong": [
+            "def add_vat(price):",
+            "    price * 1.15",
+            "",
+            "print(add_vat(100))"
+          ],
+          "why": "الدالة حسبت القيمة لكنها لم ترجعها، فرجعت `None` تلقائياً. لا توجد رسالة خطأ، والنتيجة `None`.",
+          "fix": [
+            "def add_vat(price):",
+            "    return price * 1.15",
+            "",
+            "print(add_vat(100))"
+          ]
+        },
+        {
+          "title": "استخدام print بدل return ثم الحساب بالنتيجة",
+          "wrong": [
+            "def double(x):",
+            "    print(x * 2)",
+            "",
+            "result = double(5) + 1"
+          ],
+          "error": "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'",
+          "error_type": "TypeError",
+          "why": "الدالة طبعت القيمة لكنها أرجعت `None`، ولا يمكن جمع `None` مع رقم.",
+          "fix": [
+            "def double(x):",
+            "    return x * 2",
+            "",
+            "result = double(5) + 1",
+            "print(result)"
+          ]
+        },
+        {
+          "title": "نقص في القيم الممررة",
+          "wrong": [
+            "def total_price(price, quantity):",
+            "    return price * quantity",
+            "",
+            "print(total_price(25))"
+          ],
+          "error": "TypeError: total_price() missing 1 required positional argument: 'quantity'",
+          "error_type": "TypeError",
+          "why": "الدالة تحتاج قيمتين، ومررنا واحدة فقط.",
+          "fix": [
+            "def total_price(price, quantity):",
+            "    return price * quantity",
+            "",
+            "print(total_price(25, 4))"
+          ]
+        },
+        {
+          "title": "الاستدعاء قبل التعريف",
+          "wrong": [
+            "print(square(4))",
+            "",
+            "def square(n):",
+            "    return n * n"
+          ],
+          "error": "NameError: name 'square' is not defined",
+          "error_type": "NameError",
+          "why": "عند سطر الاستدعاء لم يكن Python قد قرأ التعريف بعد.",
+          "fix": [
+            "def square(n):",
+            "    return n * n",
+            "",
+            "print(square(4))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "دوال لتقييم الطلاب",
+    "prompt": [
+      "اكتب دالتين يمكن إعادة استخدامهما مع أي قائمة درجات:"
+    ],
+    "requirements": [
+      "`grade(score)`: ترجع `\"ممتاز\"` إذا كانت الدرجة 90 فأكثر، و `\"جيد\"` من 75 إلى أقل من 90، و `\"مقبول\"` من 60 إلى أقل من 75، و `\"راسب\"` أقل من 60.",
+      "`pass_rate(scores)`: ترجع نسبة الناجحين (60 فأكثر) كنسبة مئوية مقربة لمنزلة عشرية واحدة. مثال: 3 ناجحين من 4 ترجع `75.0`.",
+      "الدالتان **ترجعان** النتيجة بـ `return` ولا تطبعانها."
+    ],
+    "starter_code": [
+      "def grade(score):",
+      "    # اكتب الشروط هنا",
+      "    pass",
+      "",
+      "",
+      "def pass_rate(scores):",
+      "    # عدّ الناجحين ثم احسب النسبة",
+      "    pass",
+      "",
+      "",
+      "print(grade(92), grade(61))",
+      "print(pass_rate([90, 45, 72, 60]))"
+    ],
+    "tests": [
+      "assert grade(95) == \"ممتاز\" and grade(90) == \"ممتاز\", \"grade(90) يجب أن ترجع ممتاز\"",
+      "assert grade(89) == \"جيد\" and grade(75) == \"جيد\", \"الدرجات من 75 إلى 89 تقديرها جيد\"",
+      "assert grade(74) == \"مقبول\" and grade(60) == \"مقبول\", \"الدرجات من 60 إلى 74 تقديرها مقبول\"",
+      "assert grade(59) == \"راسب\" and grade(0) == \"راسب\", \"الدرجات الأقل من 60 تقديرها راسب\"",
+      "assert pass_rate([90, 45, 72, 60]) == 75.0, f\"pass_rate([90, 45, 72, 60]) يجب أن ترجع 75.0، وأعادت {pass_rate([90, 45, 72, 60])}\"",
+      "assert pass_rate([10, 20, 30]) == 0.0, \"إذا لم ينجح أحد فالنسبة 0.0\"",
+      "assert pass_rate([60, 70, 80]) == 100.0, \"إذا نجح الجميع فالنسبة 100.0\"",
+      "assert pass_rate([61, 20, 30]) == 33.3, \"النسبة يجب أن تُقرّب لمنزلة عشرية واحدة (33.3)\""
+    ],
+    "hints": [
+      "في `grade` يمكنك استخدام `return` داخل كل فرع مباشرة.",
+      "في `pass_rate`: عدّاد يبدأ بصفر، حلقة على الدرجات، ثم `passed / len(scores) * 100`.",
+      "`round(value, 1)` للتقريب لمنزلة واحدة."
+    ],
+    "solution": [
+      "def grade(score):",
+      "    if score >= 90:",
+      "        return \"ممتاز\"",
+      "    elif score >= 75:",
+      "        return \"جيد\"",
+      "    elif score >= 60:",
+      "        return \"مقبول\"",
+      "    else:",
+      "        return \"راسب\"",
+      "",
+      "",
+      "def pass_rate(scores):",
+      "    passed = 0",
+      "    for s in scores:",
+      "        if s >= 60:",
+      "            passed += 1",
+      "    return round(passed / len(scores) * 100, 1)",
+      "",
+      "",
+      "print(grade(92), grade(61))",
+      "print(pass_rate([90, 45, 72, 60]))"
+    ],
+    "solution_explanation": [
+      "احذف `pass` عندما تكتب جسم الدالة. الكلمة `pass` تعني \"لا تفعل شيئاً\" وتُستخدم مؤقتاً حتى لا تكون الدالة فارغة."
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "ماذا ترجع دالة لا تحتوي على `return`؟",
+    "options": [
+      "صفر `0`",
+      "نصاً فارغاً `\"\"`",
+      "القيمة `None`",
+      "آخر قيمة حُسبت داخلها"
+    ],
+    "answer": 2,
+    "explanation": "كل دالة في Python ترجع قيمة. إذا لم تكتب `return` ترجع `None` تلقائياً، ولهذا تظهر أخطاء مثل `NoneType` عند نسيانها."
+  },
+  "summary": [
+    "`def name(params):` لتعريف الدالة، واستدعاؤها بـ `name(args)`.",
+    "`return` ترجع النتيجة لاستخدامها لاحقاً؛ و `print` للعرض فقط.",
+    "القيم الافتراضية `param=value` والمعاملات بالاسم تجعل الاستدعاء مرناً وواضحاً.",
+    "يمكن إرجاع عدة قيم وفكّها إلى متغيرات، والدالة بدون `return` ترجع `None`."
+  ]
+}

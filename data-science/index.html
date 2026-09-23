@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeWay | علم البيانات</title>
+    <meta name="description" content="مسار CodeWay لتعلم علم البيانات من الصفر حتى المستوى المتقدم: Python، الإحصاء، SQL، التصور، تعلم الآلة، التعلم العميق، ومشاريع تطبيقية.">
+    <meta name="theme-color" content="#0a0f1f">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Tajawal:wght@300;400;500;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/lesson.css">
+</head>
+<body data-page="landing" data-root="./">
+    <header class="header" id="cw-header"></header>
+
+    <main class="container">
+        <!-- Hero -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>عالم علم البيانات</h1>
+                <p>
+                    تعلّم كيف تحوّل البيانات إلى قرارات: من أول سطر Python إلى نماذج تعلم الآلة والتعلم العميق.
+                    مسار عربي منظم في 11 مستوى، كل درس فيه شرح وكود يعمل داخل متصفحك وتمرين يُصحّح تلقائياً.
+                </p>
+                <div class="hero-stats" id="hero-stats" aria-live="polite"></div>
+                <div class="hero-actions">
+                    <a class="cw-btn primary" href="courses/course-python-basics.html"><i class="fas fa-play"></i> ابدأ من الصفر</a>
+                    <a class="cw-btn" href="roadmap.html"><i class="fas fa-layer-group"></i> المنهج الكامل</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <svg viewBox="0 0 500 400" style="width:100%; height:auto;" role="img" aria-label="رسم بياني تصاعدي">
+                    <defs>
+                        <linearGradient id="dataGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00ffff;stop-opacity:0.9" />
+                            <stop offset="50%" style="stop-color:#ff00ff;stop-opacity:0.9" />
+                            <stop offset="100%" style="stop-color:#ffd700;stop-opacity:0.9" />
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <rect width="500" height="400" fill="url(#dataGrad)" rx="40" ry="40" filter="url(#glow)"/>
+                    <rect x="80" y="250" width="40" height="120" fill="white" rx="10" opacity="0.9"/>
+                    <rect x="150" y="200" width="40" height="170" fill="white" rx="10" opacity="0.9"/>
+                    <rect x="220" y="150" width="40" height="220" fill="white" rx="10" opacity="0.9"/>
+                    <rect x="290" y="100" width="40" height="270" fill="white" rx="10" opacity="0.9"/>
+                    <rect x="360" y="180" width="40" height="190" fill="white" rx="10" opacity="0.9"/>
+                    <path d="M100 280 L170 210 L240 160 L310 110 L380 190" stroke="#0a0f1f" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    <text x="250" y="350" font-size="24" text-anchor="middle" fill="white" font-weight="bold">DATA SCIENCE</text>
+                </svg>
+                <div class="floating-badge">
+                    <i class="fas fa-chart-pie"></i> علم البيانات
+                </div>
+            </div>
+        </section>
+
+        <!-- تابع التعلم -->
+        <div id="continue"></div>
+
+        <!-- ما هو علم البيانات -->
+        <section class="content-section" id="what">
+            <h2 class="section-title">ما هو علم البيانات؟</h2>
+            <p class="section-lead">
+                علم البيانات هو استخدام البرمجة والإحصاء ومعرفة المجال للإجابة عن أسئلة حقيقية من البيانات،
+                ثم تحويل الإجابة إلى قرار أو منتج. هو ليس أداة واحدة، بل طريقة تفكير تبدأ بسؤال وتنتهي بأثر.
+            </p>
+            <div class="info-grid">
+                <article class="info-card">
+                    <div class="ic"><i class="fas fa-circle-question"></i></div>
+                    <h3>يبدأ بسؤال</h3>
+                    <p>لماذا انخفضت مبيعات فرع جدة؟ أي العملاء على وشك إلغاء اشتراكهم؟ كم وحدة سنحتاج في رمضان القادم؟ السؤال الجيد نصف الحل.</p>
+                </article>
+                <article class="info-card">
+                    <div class="ic"><i class="fas fa-broom"></i></div>
+                    <h3>يمر بالبيانات</h3>
+                    <p>جمع البيانات وتنظيفها وفهمها يأخذ أغلب وقت المشروع. قيم مفقودة وأخطاء إدخال وتنسيقات مختلفة؛ التعامل معها مهارة أساسية وليس تفصيلاً.</p>
+                </article>
+                <article class="info-card">
+                    <div class="ic"><i class="fas fa-chart-line"></i></div>
+                    <h3>يستخدم الإحصاء والنماذج</h3>
+                    <p>الإحصاء يخبرك هل الفرق حقيقي أم صدفة، ونماذج تعلم الآلة تتنبأ بما لم يحدث بعد: الطلب، أو الاحتيال، أو السعر.</p>
+                </article>
+                <article class="info-card">
+                    <div class="ic"><i class="fas fa-bullhorn"></i></div>
+                    <h3>ينتهي بقرار</h3>
+                    <p>النتيجة التي لا يفهمها صاحب القرار لا قيمة لها. عالم البيانات يعرض ما وجده برسوم واضحة وتوصية محددة.</p>
+                </article>
+            </div>
+            <div class="info-grid" style="margin-top:26px">
+                <article class="info-card">
+                    <h3><i class="fas fa-magnifying-glass-chart" style="color:var(--cw-cyan)"></i> محلل البيانات Data Analyst</h3>
+                    <p>يصف ما حدث ولماذا: تقارير، ولوحات تحكم، وتحليل استكشافي. أدواته: SQL و Python/Pandas والإحصاء والتصور. تصل إليه بعد المستوى 5.</p>
+                </article>
+                <article class="info-card">
+                    <h3><i class="fas fa-brain" style="color:var(--cw-magenta)"></i> عالم البيانات Data Scientist</h3>
+                    <p>يضيف التنبؤ والتجريب: نماذج تعلم الآلة، واختبارات A/B، وتقدير الأثر. تصل إليه بعد المستوى 7.</p>
+                </article>
+                <article class="info-card">
+                    <h3><i class="fas fa-gears" style="color:var(--cw-gold)"></i> مهندس تعلم الآلة ML Engineer</h3>
+                    <p>ينقل النماذج إلى الإنتاج ويراقبها. يبني على هذا المسار كله مع هندسة البرمجيات وتخصص MLOps.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- ماذا ستتعلم وماذا ستبني -->
+        <section class="content-section" id="outcomes">
+            <h2 class="section-title">ماذا ستتعلم، وماذا ستستطيع أن تبني؟</h2>
+            <div class="domains-grid">
+                <div class="domain-card">
+                    <div class="domain-header">
+                        <div class="domain-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <div>
+                            <h3>ما ستتعلمه</h3>
+                            <p>مهارات مرتبة من الأساس إلى التخصص</p>
+                        </div>
+                    </div>
+                    <ul class="check-list prose">
+                        <li>البرمجة بـ Python ومكتبات NumPy و Pandas.</li>
+                        <li>تنظيف البيانات الحقيقية والتحليل الاستكشافي EDA.</li>
+                        <li>الإحصاء والاحتمالات واختبار الفرضيات و A/B Testing.</li>
+                        <li>SQL من الاستعلام البسيط حتى Window Functions.</li>
+                        <li>تصور البيانات و Data Storytelling ولوحات التحكم.</li>
+                        <li>تعلم الآلة والتقييم الصحيح وهندسة الخصائص.</li>
+                        <li>التعلم العميق وتخصص واحد على الأقل تختاره.</li>
+                    </ul>
+                </div>
+                <div class="domain-card">
+                    <div class="domain-header">
+                        <div class="domain-icon"><i class="fas fa-hammer"></i></div>
+                        <div>
+                            <h3>ما ستبنيه بعد المسار</h3>
+                            <p>أعمال حقيقية في الـ Portfolio الخاص بك</p>
+                        </div>
+                    </div>
+                    <ul class="check-list prose">
+                        <li>تقرير تحليلي كامل لبيانات مبيعات يجيب عن أسئلة الإدارة.</li>
+                        <li>لوحة تحكم تفاعلية لمؤشرات الأداء.</li>
+                        <li>تحليل تجربة A/B مع توصية مبنية على الإحصاء.</li>
+                        <li>نموذج للتنبؤ بمغادرة العملاء مع اختيار عتبة مبرر.</li>
+                        <li>نموذج لكشف الاحتيال في بيانات غير متوازنة.</li>
+                        <li>نموذج منشور كـ API يستقبل البيانات ويرجع التنبؤ.</li>
+                        <li>مشروع ختامي متكامل من السؤال إلى النشر.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- المتطلبات -->
+        <section class="content-section" id="prereqs">
+            <h2 class="section-title">المتطلبات السابقة</h2>
+            <div class="info-grid">
+                <article class="info-card">
+                    <div class="ic"><i class="fas fa-laptop"></i></div>
+                    <h3>جهاز ومتصفح</h3>
+                    <p>كل دروس المستويات الأولى تعمل داخل المتصفح بدون تثبيت. لاحقاً ستحتاج جهازاً (ويندوز أو ماك أو لينكس) لتثبيت Python وأدوات العمل.</p>
+                </article>
+                <article class="info-card">
+                    <div class="ic"><i class="fas fa-code"></i></div>
+                    <h3>لا خبرة برمجية</h3>
+                    <p>نبدأ من أول سطر كود. إذا كنت تعرف البرمجة مسبقاً يمكنك تخطي الدروس التي تتقنها؛ المستويات موصى بها وليست مقفلة.</p>
+                </article>
+                <article class="info-card">
+                    <div class="ic"><i class="fas fa-square-root-variable"></i></div>
+                    <h3>رياضيات المرحلة المتوسطة</h3>
+                    <p>العمليات الأربع والنسب المئوية تكفي للبداية. الرياضيات التي يحتاجها تعلم الآلة (المتجهات، والمصفوفات، وحدس المشتقة) نشرحها في المستوى 0.</p>
+                </article>
+                <article class="info-card">
+                    <div class="ic"><i class="fas fa-clock"></i></div>
+                    <h3>وقت منتظم</h3>
+                    <p>المسار الأساسي يحتاج قرابة 300 ساعة. بمعدل 8 إلى 10 ساعات أسبوعياً تنهي المستويات 0 إلى 5 (مستوى محلل البيانات) في حوالي 5 أشهر.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- مسار التعلم -->
+        <section class="content-section" id="path">
+            <h2 class="section-title">مسار تعلم علم البيانات</h2>
+            <p class="section-lead">كل خطوة تبني على التي قبلها. المسار يعرض تقدّمك: أين أنت الآن، وما أكملته، وما ينتظرك بعد ذلك.</p>
+            <div class="learning-path" id="learning-path"></div>
+        </section>
+
+        <!-- من مبتدئ إلى محترف -->
+        <section class="content-section" id="journey">
+            <h2 class="section-title">من مبتدئ إلى محترف</h2>
+            <div class="info-grid">
+                <article class="info-card stage-card">
+                    <div class="stage-range">LEVELS 0 - 2</div>
+                    <h3>1. المبتدئ: أساس متين</h3>
+                    <p>تكتب Python بثقة، وتقرأ البيانات وتنظفها وتستكشفها بـ Pandas.</p>
+                    <ul class="check-list"><li>مشروع: تحليل مبيعات متجر</li><li>مشروع: تحليل بيانات الموظفين</li></ul>
+                </article>
+                <article class="info-card stage-card">
+                    <div class="stage-range">LEVELS 3 - 5</div>
+                    <h3>2. محلل البيانات</h3>
+                    <p>تضيف الإحصاء و SQL والتصور، فتستطيع الإجابة عن أسئلة الأعمال وعرضها بوضوح. هذا مستوى جاهز لوظيفة محلل بيانات.</p>
+                    <ul class="check-list"><li>مشروع: تحليل تجارة إلكترونية بـ SQL</li><li>مشروع: Dashboard للمبيعات</li></ul>
+                </article>
+                <article class="info-card stage-card">
+                    <div class="stage-range">LEVELS 6 - 8</div>
+                    <h3>3. عالم البيانات</h3>
+                    <p>تبني نماذج تنبؤ وتقيّمها بشكل صحيح وتفسرها وتنشرها، وتفهم الشبكات العصبية من الداخل.</p>
+                    <ul class="check-list"><li>مشروع: Customer Churn Prediction</li><li>مشروع: Fraud Detection</li></ul>
+                </article>
+                <article class="info-card stage-card">
+                    <div class="stage-range">LEVELS 9 - 10</div>
+                    <h3>4. المتخصص المحترف</h3>
+                    <p>تتعمق في تخصص (NLP أو السلاسل الزمنية أو غيرهما)، وتنفذ مشروعاً ختامياً، وتبني Portfolio مقنعاً.</p>
+                    <ul class="check-list"><li>مشروع في تخصصك</li><li>المشروع الختامي Capstone</li></ul>
+                </article>
+            </div>
+        </section>
+
+        <!-- دورة حياة المشروع -->
+        <section class="content-section" id="lifecycle">
+            <h2 class="section-title">دورة حياة مشروع علم البيانات</h2>
+            <p class="section-lead">كل مشروع في المسار يمر بهذه المراحل، وكل مرحلة لها كورس أو وحدة تعلّمك إياها.</p>
+            <div class="learning-path">
+                <div class="path-node"><span class="step-no">01</span><div class="node-head"><div class="node-icon"><i class="fas fa-circle-question"></i></div><h4>السؤال والبيانات<small>Dataset & Question</small></h4></div><p>ما القرار الذي نريد دعمه؟ وما البيانات المتاحة؟</p><i class="fas fa-arrow-left arrow"></i></div>
+                <div class="path-node"><span class="step-no">02</span><div class="node-head"><div class="node-icon"><i class="fas fa-download"></i></div><h4>جمع البيانات<small>Data Collection</small></h4></div><p>ملفات، أو قواعد بيانات بـ SQL، أو API.</p><i class="fas fa-arrow-left arrow"></i></div>
+                <div class="path-node"><span class="step-no">03</span><div class="node-head"><div class="node-icon"><i class="fas fa-broom"></i></div><h4>التنظيف<small>Data Cleaning</small></h4></div><p>القيم المفقودة، والمكررات، والأنواع، والقيم الشاذة.</p><i class="fas fa-arrow-left arrow"></i></div>
+                <div class="path-node"><span class="step-no">04</span><div class="node-head"><div class="node-icon"><i class="fas fa-magnifying-glass-chart"></i></div><h4>الاستكشاف<small>EDA</small></h4></div><p>التوزيعات والعلاقات والشرائح والأسئلة.</p><i class="fas fa-arrow-left arrow"></i></div>
+                <div class="path-node"><span class="step-no">05</span><div class="node-head"><div class="node-icon"><i class="fas fa-chart-pie"></i></div><h4>التصور<small>Visualization</small></h4></div><p>رسوم تكشف النمط وتقنع القارئ.</p><i class="fas fa-arrow-left arrow"></i></div>
+                <div class="path-node"><span class="step-no">06</span><div class="node-head"><div class="node-icon"><i class="fas fa-gears"></i></div><h4>هندسة الخصائص<small>Feature Engineering</small></h4></div><p>تحويل البيانات الخام إلى مدخلات مفيدة للنموذج.</p><i class="fas fa-arrow-left arrow"></i></div>
+                <div class="path-node"><span class="step-no">07</span><div class="node-head"><div class="node-icon"><i class="fas fa-robot"></i></div><h4>النمذجة<small>Modeling</small></h4></div><p>اختيار الخوارزمية وتدريبها داخل Pipeline.</p><i class="fas fa-arrow-left arrow"></i></div>
+                <div class="path-node"><span class="step-no">08</span><div class="node-head"><div class="node-icon"><i class="fas fa-bullseye"></i></div><h4>التقييم<small>Evaluation</small></h4></div><p>المقياس المناسب للمشكلة، والتحقق المتقاطع.</p><i class="fas fa-arrow-left arrow"></i></div>
+                <div class="path-node"><span class="step-no">09</span><div class="node-head"><div class="node-icon"><i class="fas fa-flag-checkered"></i></div><h4>الاستنتاج والقرار<small>Conclusion</small></h4></div><p>توصية واضحة، وحدود التحليل، والخطوة التالية.</p><i class="fas fa-arrow-left arrow"></i></div>
+            </div>
+        </section>
+
+        <!-- المستويات والتقنيات والمشاريع (أزرار التصفية الأصلية) -->
+        <section class="filter-section" id="explore">
+            <h2 class="filter-title">المستويات والتقنيات والمشاريع</h2>
+            <div class="filter-buttons" role="tablist">
+                <button class="filter-btn active" data-tab="levels" role="tab" aria-selected="true">
+                    <i class="fas fa-layer-group"></i> المستويات والكورسات
+                </button>
+                <button class="filter-btn" data-tab="tech" role="tab" aria-selected="false">
+                    <i class="fas fa-cubes"></i> الأدوات والتقنيات
+                </button>
+                <button class="filter-btn" data-tab="projects" role="tab" aria-selected="false">
+                    <i class="fas fa-project-diagram"></i> المشاريع
+                </button>
+                <button class="filter-btn" data-tab="method" role="tab" aria-selected="false">
+                    <i class="fas fa-chalkboard-user"></i> كيف تتعلم هنا
+                </button>
+            </div>
+        </section>
+
+        <div class="content-section" style="margin-top:0">
+            <div class="tab-panel" id="tab-levels" role="tabpanel">
+                <div class="domains-grid" id="levels-grid"></div>
+            </div>
+
+            <div class="tab-panel" id="tab-tech" role="tabpanel" hidden>
+                <p class="section-lead" style="margin-top:0">لغة المسار هي Python، ومعها SQL. الأدوات المعلّمة بـ "اختياري" مفيدة في بعض الوظائف لكنها ليست شرطاً لإكمال المسار.</p>
+                <div class="tools-grid" id="tech-grid"></div>
+            </div>
+
+            <div class="tab-panel" id="tab-projects" role="tabpanel" hidden>
+                <p class="section-lead" style="margin-top:0">14 مشروعاً متدرجاً. لكل مشروع: المشكلة، و Dataset، والمطلوب، والأدوات، وخطوات الحل، ومعايير التقييم. تبدأ المشاريع بعد إنهاء المستوى المذكور في كل بطاقة.</p>
+                <div class="projects-grid" id="projects-grid"></div>
+            </div>
+
+            <div class="tab-panel" id="tab-method" role="tabpanel" hidden>
+                <div class="info-grid">
+                    <article class="info-card">
+                        <div class="ic"><i class="fas fa-book-open"></i></div>
+                        <h3>درس مكتمل الأركان</h3>
+                        <p>كل درس فيه: شرح المفهوم، ولماذا ومتى نستخدمه، وأمثلة عملية، وشرح الكود سطراً سطراً، والنتيجة المتوقعة، وملاحظات، وأخطاء شائعة مع تصحيحها.</p>
+                    </article>
+                    <article class="info-card">
+                        <div class="ic"><i class="fas fa-terminal"></i></div>
+                        <h3>كود يعمل في متصفحك</h3>
+                        <p>محرر كود حقيقي بجانب الشرح: عدّل على الأمثلة وشغّلها وشاهد المخرجات فوراً. Python يعمل داخل المتصفح نفسه بدون إرسال كودك لأي خادم.</p>
+                    </article>
+                    <article class="info-card">
+                        <div class="ic"><i class="fas fa-dumbbell"></i></div>
+                        <h3>تمارين تُصحّح تلقائياً</h3>
+                        <p>تمرين في كل درس يُختبر كودك فيه بعدة حالات، مع تلميحات متدرجة وحل نموذجي، ثم سؤال سريع للتأكد من الفهم.</p>
+                    </article>
+                    <article class="info-card">
+                        <div class="ic"><i class="fas fa-clipboard-check"></i></div>
+                        <h3>اختبار لكل وحدة</h3>
+                        <p>خمسة أنواع من الأسئلة: اختيار، وصح أو خطأ، وتوقّع الناتج، وكتابة كود، وتصحيح كود. وبعد كل إجابة شرح السبب، وفي النهاية روابط الدروس التي تحتاج مراجعتها.</p>
+                    </article>
+                    <article class="info-card">
+                        <div class="ic"><i class="fas fa-chart-simple"></i></div>
+                        <h3>تقدّم محفوظ</h3>
+                        <p>✓ مكتمل، و ▶ الحالي، و 🔒 مقفل. الدروس داخل الكورس تُفتح بالتتابع، ويُحفظ تقدّمك وكودك في متصفحك.</p>
+                    </article>
+                    <article class="info-card">
+                        <div class="ic"><i class="fas fa-shield-halved"></i></div>
+                        <h3>محتوى مُتحقق منه</h3>
+                        <p>كل مثال في الدروس يُشغَّل آلياً قبل النشر للتأكد من أن النتيجة المكتوبة هي النتيجة الفعلية، وكل حل نموذجي يُختبر.</p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer" id="cw-footer"></footer>
+    <script type="module" src="js/pages/landing.js"></script>
+</body>
+</html>

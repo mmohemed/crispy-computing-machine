@@ -1,0 +1,410 @@
+{
+  "slug": "python-exceptions",
+  "course": "python-basics",
+  "module": "python-fundamentals",
+  "order": 15,
+  "title": "معالجة الأخطاء",
+  "title_en": "Exceptions",
+  "minutes": 25,
+  "level": "مبتدئ",
+  "objectives": [
+    "تقرأ رسالة الخطأ Traceback وتحدد نوعه وسطره.",
+    "تلتقط الأخطاء المتوقعة باستخدام `try` و `except` دون إيقاف البرنامج.",
+    "تستخدم `else` و `finally` وتلتقط أكثر من نوع خطأ.",
+    "تطلق أخطاءك بنفسك بـ `raise` للتحقق من صحة البيانات."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "عندما يحدث خطأ أثناء التشغيل",
+      "body": [
+        "رأيت في الدروس السابقة أخطاء مثل `ValueError` و `KeyError` و `ZeroDivisionError`. هذه **استثناءات exceptions**: أحداث تقع أثناء التشغيل فتوقف البرنامج إذا لم يعالجها أحد. رسالة الخطأ تخبرك بثلاثة أشياء: **نوع** الخطأ، و**السطر** الذي وقع فيه، و**وصف** مختصر.",
+        {
+          "code": [
+            "try:",
+            "    # كود قد يسبب خطأ",
+            "except ValueError:",
+            "    # ماذا نفعل إذا حدث ValueError",
+            "except (TypeError, KeyError) as e:",
+            "    # أكثر من نوع، و e يحمل تفاصيل الخطأ",
+            "else:",
+            "    # يُنفّذ فقط إذا لم يحدث أي خطأ",
+            "finally:",
+            "    # يُنفّذ دائماً، مع خطأ أو بدونه"
+          ],
+          "label": "الشكل العام"
+        },
+        {
+          "table": {
+            "head": [
+              "الخطأ",
+              "متى يحدث في البيانات"
+            ],
+            "rows": [
+              [
+                "`ValueError`",
+                "`int(\"abc\")`: قيمة لا يمكن تحويلها"
+              ],
+              [
+                "`TypeError`",
+                "`\"5\" + 3`: نوع غير مناسب للعملية"
+              ],
+              [
+                "`KeyError`",
+                "مفتاح أو عمود غير موجود"
+              ],
+              [
+                "`IndexError`",
+                "موضع خارج حدود القائمة"
+              ],
+              [
+                "`ZeroDivisionError`",
+                "قسمة على صفر"
+              ],
+              [
+                "`FileNotFoundError`",
+                "ملف غير موجود"
+              ]
+            ]
+          }
+        },
+        "و `raise` تطلق خطأً بنفسك عندما تكتشف بيانات غير منطقية: `raise ValueError(\"العمر لا يمكن أن يكون سالباً\")`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "البيانات الحقيقية مليئة بالمفاجآت: خلية فيها `\"غير معروف\"` بدلاً من رقم، أو سطر ناقص، أو ملف لم يصل. بدون معالجة الأخطاء يتوقف تحليلك كله عند أول قيمة سيئة من بين مليون قيمة سليمة.",
+        "معالجة الأخطاء تتيح لك أن **تتخذ قراراً**: تتجاهل القيمة وتعدّها، أو تعوّضها بقيمة أخرى، أو تسجلها في تقرير الأخطاء، ثم تكمل. و `raise` تتيح لك إيقاف التحليل **عمداً** عندما تكون البيانات خاطئة لدرجة أن الاستمرار سيعطي نتائج مضللة."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "عند تحويل بيانات قادمة من مصدر خارجي (ملفات، مستخدمين، API).",
+            "عند عمليات قد تفشل لأسباب خارج الكود (فتح ملف، الاتصال بالشبكة).",
+            "التقط **أنواعاً محددة** تتوقعها، ولا تلتقط كل شيء بشكل أعمى.",
+            "لا تستخدم `try` بدلاً من الشروط البسيطة: إذا كان فحص `if` سهلاً وواضحاً فهو أفضل."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "تجاوز القيم غير الصالحة وعدّها",
+      "code": [
+        "values = [\"120\", \"95\", \"abc\", \"80\", \"\", \"40.5\"]",
+        "",
+        "total = 0",
+        "bad = []",
+        "for v in values:",
+        "    try:",
+        "        total += float(v)",
+        "    except ValueError:",
+        "        bad.append(v)",
+        "",
+        "print(\"المجموع:\", total)",
+        "print(\"قيم غير صالحة:\", len(bad), bad)"
+      ],
+      "explanation": [
+        {
+          "code": "try: total += float(v)",
+          "text": "نحاول التحويل. إذا نجح تكمل الحلقة بشكل طبيعي."
+        },
+        {
+          "code": "except ValueError:",
+          "text": "إذا فشل التحويل (`\"abc\"` أو النص الفارغ) نسجّل القيمة ونكمل بدلاً من التوقف."
+        },
+        {
+          "code": "bad.append(v)",
+          "text": "لا نخفي المشكلة: نحتفظ بالقيم السيئة لنراجعها. هذه ممارسة مهمة في تنظيف البيانات."
+        }
+      ],
+      "expected_output": [
+        "المجموع: 335.5",
+        "قيم غير صالحة: 2 ['abc', '']"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "أكثر من نوع خطأ، مع as",
+      "code": [
+        "def safe_ratio(a, b):",
+        "    try:",
+        "        return a / b",
+        "    except ZeroDivisionError:",
+        "        print(\"تنبيه: المقام صفر\")",
+        "        return None",
+        "    except TypeError as e:",
+        "        print(\"نوع غير صحيح:\", e)",
+        "        return None",
+        "",
+        "print(safe_ratio(10, 4))",
+        "print(safe_ratio(10, 0))",
+        "print(safe_ratio(\"10\", 2))"
+      ],
+      "explanation": [
+        {
+          "code": "except ZeroDivisionError:",
+          "text": "لكل نوع خطأ معالجة مختلفة تناسبه."
+        },
+        {
+          "code": "except TypeError as e:",
+          "text": "`as e` تعطينا كائن الخطأ، وطباعته تعرض الرسالة الأصلية."
+        },
+        {
+          "code": "return None",
+          "text": "نرجع `None` كإشارة إلى أن النتيجة غير متاحة، بدلاً من رقم مضلل مثل 0."
+        }
+      ],
+      "expected_output": [
+        "2.5",
+        "تنبيه: المقام صفر",
+        "None",
+        "نوع غير صحيح: unsupported operand type(s) for /: 'str' and 'int'",
+        "None"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "else و finally",
+      "code": [
+        "def read_price(text):",
+        "    try:",
+        "        price = float(text)",
+        "    except ValueError:",
+        "        print(\"فشل التحويل:\", text)",
+        "    else:",
+        "        print(\"تم التحويل:\", price)",
+        "    finally:",
+        "        print(\"انتهت محاولة القراءة\")",
+        "",
+        "read_price(\"19.99\")",
+        "read_price(\"مجاني\")"
+      ],
+      "explanation": [
+        {
+          "code": "else:",
+          "text": "تُنفّذ فقط إذا نجحت `try` بالكامل. نضع فيها ما يعتمد على النجاح، فتبقى `try` صغيرة ومركّزة."
+        },
+        {
+          "code": "finally:",
+          "text": "تُنفّذ في الحالتين. تُستخدم عادة للتنظيف مثل إغلاق اتصال أو تسجيل انتهاء العملية."
+        }
+      ],
+      "expected_output": [
+        "تم التحويل: 19.99",
+        "انتهت محاولة القراءة",
+        "فشل التحويل: مجاني",
+        "انتهت محاولة القراءة"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "raise: التحقق من صحة البيانات",
+      "code": [
+        "def validate_age(age):",
+        "    if not isinstance(age, int):",
+        "        raise TypeError(\"العمر يجب أن يكون رقماً صحيحاً\")",
+        "    if age < 0 or age > 120:",
+        "        raise ValueError(f\"عمر غير منطقي: {age}\")",
+        "    return age",
+        "",
+        "for candidate in [34, -5, \"ثلاثون\", 130]:",
+        "    try:",
+        "        print(\"مقبول:\", validate_age(candidate))",
+        "    except (ValueError, TypeError) as e:",
+        "        print(\"مرفوض:\", e)"
+      ],
+      "explanation": [
+        {
+          "code": "raise TypeError(...)",
+          "text": "نطلق خطأً برسالة واضحة عندما تخالف البيانات القواعد."
+        },
+        {
+          "code": "raise ValueError(f\"...\")",
+          "text": "نضع القيمة المخالفة في الرسالة ليسهل تتبعها."
+        },
+        {
+          "code": "except (ValueError, TypeError) as e:",
+          "text": "صف من الأنواع يلتقط أياً منها."
+        }
+      ],
+      "expected_output": [
+        "مقبول: 34",
+        "مرفوض: عمر غير منطقي: -5",
+        "مرفوض: العمر يجب أن يكون رقماً صحيحاً",
+        "مرفوض: عمر غير منطقي: 130"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "اقرأ رسالة الخطأ من الأسفل: السطر الأخير فيه النوع والوصف، وفوقه رقم السطر في كودك.",
+        "اجعل كتلة `try` صغيرة: السطر الذي قد يفشل فقط. الكتلة الكبيرة تخفي مصدر الخطأ.",
+        "تجنّب `except:` بدون نوع، أو `except Exception` بدون تسجيل الخطأ؛ ستخفي أخطاء برمجية حقيقية مثل خطأ إملائي في اسم متغير.",
+        "لا تجعل المعالجة صامتة: عُدّ القيم المرفوضة أو سجّلها، حتى تعرف حجم المشكلة في بياناتك."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "التقاط كل الأخطاء بصمت",
+          "wrong": [
+            "total = 0",
+            "for v in [\"10\", \"20\"]:",
+            "    try:",
+            "        totl += int(v)",
+            "    except:",
+            "        pass",
+            "print(total)"
+          ],
+          "why": "خطأ إملائي في `totl` سبب `NameError`، لكن `except:` أخفاه، فظهرت النتيجة صفراً وكأن كل البيانات سيئة. لا توجد رسالة تدل على المشكلة الحقيقية.",
+          "fix": [
+            "total = 0",
+            "for v in [\"10\", \"20\"]:",
+            "    try:",
+            "        total += int(v)",
+            "    except ValueError:",
+            "        print(\"قيمة غير صالحة:\", v)",
+            "print(total)"
+          ]
+        },
+        {
+          "title": "التقاط النوع الخطأ",
+          "wrong": [
+            "try:",
+            "    rate = 50 / 0",
+            "except ValueError:",
+            "    rate = None"
+          ],
+          "error": "ZeroDivisionError: division by zero",
+          "error_type": "ZeroDivisionError",
+          "why": "المعالجة مكتوبة لـ `ValueError`، لكن الخطأ الذي يحدث هو `ZeroDivisionError`، فيتوقف البرنامج رغم وجود `try`.",
+          "fix": [
+            "try:",
+            "    rate = 50 / 0",
+            "except ZeroDivisionError:",
+            "    rate = None",
+            "print(rate)"
+          ]
+        },
+        {
+          "title": "استخدام try مكان شرط بسيط",
+          "wrong": [
+            "stock = {\"قهوة\": 5}",
+            "try:",
+            "    qty = stock[\"شاي\"]",
+            "except KeyError:",
+            "    qty = 0",
+            "print(qty)"
+          ],
+          "why": "الكود يعمل، لكن فحص `if` أوضح هنا لأن الحالة متوقعة وسهلة الاختبار. اترك `try` للحالات التي يصعب فحصها مسبقاً مثل تحويل النصوص.",
+          "fix": [
+            "stock = {\"قهوة\": 5}",
+            "qty = stock.get(\"شاي\", 0)",
+            "print(qty)"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تنظيف عمود المبالغ",
+    "prompt": [
+      "عمود المبالغ في ملف المبيعات فيه قيم غير صالحة. اكتب دالتين:"
+    ],
+    "requirements": [
+      "`parse_amount(text)`: تحوّل النص إلى `float` بعد حذف المسافات، وترجع `None` إذا فشل التحويل أو كانت القيمة سالبة.",
+      "`clean_total(values)`: ترجع صفاً `(total, invalid_count)`: مجموع المبالغ الصالحة، وعدد القيم غير الصالحة. استخدم `parse_amount` داخلها.",
+      "استخدم `try/except ValueError` في `parse_amount`."
+    ],
+    "starter_code": [
+      "def parse_amount(text):",
+      "    pass",
+      "",
+      "",
+      "def clean_total(values):",
+      "    pass",
+      "",
+      "",
+      "amounts = [\"150\", \" 99.5\", \"N/A\", \"-20\", \"\", \"300\"]",
+      "print(clean_total(amounts))"
+    ],
+    "tests": [
+      "assert parse_amount(\"150\") == 150.0, \"parse_amount(\\\"150\\\") يجب أن ترجع 150.0\"",
+      "assert parse_amount(\" 99.5 \") == 99.5, \"احذف المسافات قبل التحويل\"",
+      "assert parse_amount(\"N/A\") is None, \"القيمة غير القابلة للتحويل ترجع None\"",
+      "assert parse_amount(\"\") is None, \"النص الفارغ يرجع None\"",
+      "assert parse_amount(\"-20\") is None, \"القيمة السالبة ترجع None\"",
+      "assert parse_amount(\"0\") == 0.0, \"الصفر قيمة صالحة\"",
+      "result = clean_total([\"150\", \" 99.5\", \"N/A\", \"-20\", \"\", \"300\"])",
+      "assert result == (549.5, 3), f\"clean_total يجب أن ترجع (549.5, 3)، وأعادت {result}\"",
+      "assert clean_total([]) == (0, 0), \"قائمة فارغة: (0, 0)\"",
+      "assert \"except ValueError\" in __code__, \"استخدم except ValueError\""
+    ],
+    "hints": [
+      "في `parse_amount`: `float(text.strip())` داخل `try`، و `return None` داخل `except ValueError`.",
+      "بعد نجاح التحويل تحقق من السالب بـ `if value < 0`.",
+      "في `clean_total` افحص `if amount is None` وليس `if not amount`، لأن الصفر قيمة صالحة لكنه يُعامل كـ `False`."
+    ],
+    "solution": [
+      "def parse_amount(text):",
+      "    try:",
+      "        value = float(text.strip())",
+      "    except ValueError:",
+      "        return None",
+      "    if value < 0:",
+      "        return None",
+      "    return value",
+      "",
+      "",
+      "def clean_total(values):",
+      "    total = 0",
+      "    invalid_count = 0",
+      "    for v in values:",
+      "        amount = parse_amount(v)",
+      "        if amount is None:",
+      "            invalid_count += 1",
+      "        else:",
+      "            total += amount",
+      "    return total, invalid_count",
+      "",
+      "",
+      "amounts = [\"150\", \" 99.5\", \"N/A\", \"-20\", \"\", \"300\"]",
+      "print(clean_total(amounts))"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "try:",
+      "    x = int(\"7\")",
+      "    y = 10 / 0",
+      "except ValueError:",
+      "    print(\"A\")",
+      "except ZeroDivisionError:",
+      "    print(\"B\")",
+      "finally:",
+      "    print(\"C\")"
+    ],
+    "options": [
+      "A\nC",
+      "B\nC",
+      "C",
+      "B"
+    ],
+    "answer": 1,
+    "explanation": "`int(\"7\")` تنجح، ثم القسمة على صفر تسبب `ZeroDivisionError` فيُطبع B، و `finally` تُنفّذ دائماً فيُطبع C."
+  },
+  "summary": [
+    "رسالة الخطأ تحدد النوع والسطر والوصف؛ اقرأها من الأسفل.",
+    "`try/except النوع` لالتقاط الأخطاء المتوقعة، و `as e` للتفاصيل.",
+    "`else` عند النجاح، و `finally` دائماً.",
+    "`raise` للتحقق من صحة البيانات، ولا تلتقط كل الأخطاء بصمت."
+  ]
+}

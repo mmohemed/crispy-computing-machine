@@ -1,0 +1,404 @@
+{
+  "slug": "python-files",
+  "course": "python-basics",
+  "module": "python-fundamentals",
+  "order": 14,
+  "title": "التعامل مع الملفات",
+  "title_en": "File Handling",
+  "minutes": 25,
+  "level": "مبتدئ",
+  "objectives": [
+    "تفتح الملفات للقراءة والكتابة والإضافة بالأنماط `r` و `w` و `a`.",
+    "تستخدم `with` لضمان إغلاق الملف تلقائياً.",
+    "تقرأ ملفاً سطراً سطراً وتحلل بياناته.",
+    "تكتب نتائج تحليلك في ملف تقرير، مع ترميز `utf-8` للعربية."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "الملفات: بيانات تبقى بعد انتهاء البرنامج",
+      "body": [
+        "كل المتغيرات تختفي عندما ينتهي البرنامج. لكي تقرأ بيانات موجودة أو تحفظ نتائج تحتاج **الملفات**. الدالة `open(path, mode, encoding)` تفتح ملفاً وترجع كائناً تقرأ منه أو تكتب فيه.",
+        {
+          "table": {
+            "head": [
+              "النمط mode",
+              "المعنى",
+              "إذا لم يوجد الملف",
+              "إذا كان موجوداً"
+            ],
+            "rows": [
+              [
+                "`\"r\"` (الافتراضي)",
+                "قراءة",
+                "خطأ `FileNotFoundError`",
+                "يُقرأ"
+              ],
+              [
+                "`\"w\"`",
+                "كتابة",
+                "يُنشأ",
+                "**يُمسح محتواه بالكامل** ثم يُكتب"
+              ],
+              [
+                "`\"a\"`",
+                "إضافة في النهاية",
+                "يُنشأ",
+                "يُضاف بعد المحتوى الحالي"
+              ]
+            ]
+          }
+        },
+        {
+          "h": "with: الطريقة الصحيحة"
+        },
+        {
+          "code": [
+            "with open(\"data.txt\", \"r\", encoding=\"utf-8\") as f:",
+            "    content = f.read()",
+            "# هنا الملف مغلق تلقائياً"
+          ],
+          "label": "Python"
+        },
+        "`with` تغلق الملف تلقائياً عند الخروج من الكتلة، حتى لو حدث خطأ. الملف غير المغلق قد لا تُحفظ فيه البيانات بالكامل.",
+        {
+          "h": "طرق القراءة"
+        },
+        {
+          "list": [
+            "`f.read()`: كل المحتوى في نص واحد.",
+            "`f.readline()`: سطر واحد (مفيد لقراءة سطر العناوين header).",
+            "`for line in f:`: سطراً سطراً. هذه أفضل طريقة للملفات الكبيرة لأنها لا تحمّل الملف كله في الذاكرة."
+          ]
+        },
+        "وللكتابة: `f.write(text)`، وهي **لا تضيف سطراً جديداً تلقائياً**، فأضف `\"\\n\"` بنفسك."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "مصدر البيانات في أغلب المشاريع ملف: CSV من نظام المبيعات، سجلات Logs من خادم، ملف نصي من جهاز قياس. ونتيجة التحليل غالباً ملف أيضاً: تقرير أو ملف منظف يستخدمه فريق آخر.",
+        "صحيح أن Pandas ستقرأ ملفات CSV بسطر واحد، لكن فهم القراءة اليدوية يساعدك عندما يكون الملف غير منتظم ولا تستطيع Pandas قراءته مباشرة، وهذا يحدث أكثر مما تتوقع."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`\"r\"` لقراءة بيانات المدخلات.",
+            "`\"w\"` لإنشاء ملف نتائج جديد (انتبه: يمسح القديم).",
+            "`\"a\"` لإضافة سجلات إلى ملف Log دون حذف ما سبق.",
+            "دائماً `encoding=\"utf-8\"` عندما يحتوي الملف أو قد يحتوي نصاً عربياً."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الكتابة ثم القراءة",
+      "code": [
+        "with open(\"notes.txt\", \"w\", encoding=\"utf-8\") as f:",
+        "    f.write(\"السطر الأول\\n\")",
+        "    f.write(\"السطر الثاني\\n\")",
+        "",
+        "with open(\"notes.txt\", \"r\", encoding=\"utf-8\") as f:",
+        "    content = f.read()",
+        "",
+        "print(content)",
+        "print(\"عدد الحروف:\", len(content))"
+      ],
+      "explanation": [
+        {
+          "code": "open(\"notes.txt\", \"w\", encoding=\"utf-8\")",
+          "text": "نمط `w` ينشئ الملف، و `utf-8` يضمن حفظ العربية بشكل صحيح."
+        },
+        {
+          "code": "f.write(\"السطر الأول\\n\")",
+          "text": "`\\n` هو رمز السطر الجديد، و `write` لا تضيفه تلقائياً."
+        },
+        {
+          "code": "content = f.read()",
+          "text": "نقرأ الملف كاملاً في متغير نصي."
+        },
+        {
+          "code": "print(content)",
+          "text": "يظهر سطر فارغ بعد المحتوى لأن الملف ينتهي بـ `\\n`، و `print` تضيف سطراً جديداً آخر."
+        }
+      ],
+      "expected_output": [
+        "السطر الأول",
+        "السطر الثاني",
+        "",
+        "عدد الحروف: 25"
+      ],
+      "run_note": "في محرر CodeWay تُحفظ الملفات في ذاكرة مؤقتة داخل متصفحك، وتبقى ما دامت الصفحة مفتوحة. على جهازك تُحفظ في المجلد الذي تشغّل منه البرنامج."
+    },
+    {
+      "type": "example",
+      "title": "الإضافة والقراءة سطراً سطراً",
+      "code": [
+        "with open(\"log.txt\", \"w\", encoding=\"utf-8\") as f:",
+        "    f.write(\"تشغيل 1: تم تحميل البيانات\\n\")",
+        "",
+        "with open(\"log.txt\", \"a\", encoding=\"utf-8\") as f:",
+        "    f.write(\"تشغيل 2: تم التنظيف\\n\")",
+        "    f.write(\"تشغيل 3: تم التحليل\\n\")",
+        "",
+        "with open(\"log.txt\", encoding=\"utf-8\") as f:",
+        "    for number, line in enumerate(f, start=1):",
+        "        print(number, line.strip())"
+      ],
+      "explanation": [
+        {
+          "code": "open(\"log.txt\", \"a\", ...)",
+          "text": "نمط `a` يضيف في النهاية ويحتفظ بالسطر الأول."
+        },
+        {
+          "code": "for number, line in enumerate(f, start=1):",
+          "text": "المرور على الملف يعطي سطراً في كل دورة، ومع `enumerate` نرقّمها."
+        },
+        {
+          "code": "line.strip()",
+          "text": "كل سطر مقروء ينتهي بـ `\\n`؛ `strip` تحذفه حتى لا تظهر أسطر فارغة إضافية."
+        }
+      ],
+      "expected_output": [
+        "1 تشغيل 1: تم تحميل البيانات",
+        "2 تشغيل 2: تم التنظيف",
+        "3 تشغيل 3: تم التحليل"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "تحليل ملف CSV يدوياً",
+      "code": [
+        "rows = [",
+        "    \"product,qty,price\",",
+        "    \"قهوة,3,18.5\",",
+        "    \"شاي,5,12\",",
+        "    \"عصير,2,15\",",
+        "]",
+        "with open(\"sales.csv\", \"w\", encoding=\"utf-8\") as f:",
+        "    f.write(\"\\n\".join(rows) + \"\\n\")",
+        "",
+        "total = 0",
+        "with open(\"sales.csv\", encoding=\"utf-8\") as f:",
+        "    header = f.readline().strip().split(\",\")",
+        "    print(\"الأعمدة:\", header)",
+        "    for line in f:",
+        "        product, qty, price = line.strip().split(\",\")",
+        "        revenue = int(qty) * float(price)",
+        "        total += revenue",
+        "        print(f\"{product}: {revenue:.2f}\")",
+        "",
+        "print(f\"إجمالي المبيعات: {total:.2f}\")"
+      ],
+      "explanation": [
+        {
+          "code": "\"\\n\".join(rows) + \"\\n\"",
+          "text": "نجهّز محتوى الملف من قائمة أسطر، وهذا الجزء فقط لإنشاء ملف تجريبي."
+        },
+        {
+          "code": "header = f.readline()...",
+          "text": "السطر الأول هو أسماء الأعمدة، نقرؤه وحده حتى لا يدخل في الحساب."
+        },
+        {
+          "code": "for line in f:",
+          "text": "تكمل الحلقة من السطر الثاني لأن `readline` قرأت الأول."
+        },
+        {
+          "code": "line.strip().split(\",\")",
+          "text": "نفس تقنية درس النصوص: تنظيف ثم تقسيم ثم تحويل الأنواع."
+        }
+      ],
+      "expected_output": [
+        "الأعمدة: ['product', 'qty', 'price']",
+        "قهوة: 55.50",
+        "شاي: 60.00",
+        "عصير: 30.00",
+        "إجمالي المبيعات: 145.50"
+      ],
+      "after": [
+        "في الوحدة الثانية ستتعلم وحدة `csv` التي تتعامل مع الحالات الصعبة (مثل فاصلة داخل اسم المنتج)، وفي كورس Pandas ستقرأ الملف بسطر واحد `pd.read_csv(\"sales.csv\")`."
+      ]
+    },
+    {
+      "type": "example",
+      "title": "كتابة تقرير والتحقق من وجود الملفات",
+      "code": [
+        "import os",
+        "",
+        "report_lines = [\"التقرير اليومي\", \"عدد الطلبات: 42\", \"الإيراد: 3150\"]",
+        "with open(\"report.txt\", \"w\", encoding=\"utf-8\") as f:",
+        "    for line in report_lines:",
+        "        f.write(line + \"\\n\")",
+        "",
+        "print(os.path.exists(\"report.txt\"))",
+        "print(os.path.exists(\"missing.csv\"))",
+        "",
+        "if os.path.exists(\"missing.csv\"):",
+        "    print(\"سيتم تحميل الملف\")",
+        "else:",
+        "    print(\"الملف غير موجود، تأكد من المسار\")"
+      ],
+      "explanation": [
+        {
+          "code": "import os",
+          "text": "وحدة `os` للتعامل مع نظام الملفات. ستتعلم الاستيراد بالتفصيل في درس الوحدات والمكتبات."
+        },
+        {
+          "code": "f.write(line + \"\\n\")",
+          "text": "نضيف السطر الجديد لكل سطر من التقرير."
+        },
+        {
+          "code": "os.path.exists(\"missing.csv\")",
+          "text": "تحقق قبل القراءة بدلاً من أن يتوقف البرنامج بخطأ."
+        }
+      ],
+      "expected_output": [
+        "True",
+        "False",
+        "الملف غير موجود، تأكد من المسار"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "نمط `\"w\"` يمسح الملف فوراً عند فتحه، حتى لو لم تكتب فيه شيئاً. تأكد من الاسم قبل التشغيل.",
+        "المسار النسبي `\"data/sales.csv\"` يُحسب من المجلد الذي تشغّل منه البرنامج، والمسار المطلق يبدأ من جذر القرص.",
+        "على Windows استخدم `/` في المسارات أو ضع `r` قبل النص: `r\"C:\\data\\sales.csv\"`.",
+        "ملفات Excel ليست ملفات نصية؛ ستقرؤها لاحقاً بـ Pandas وليس بـ `open`."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "قراءة ملف غير موجود",
+          "wrong": [
+            "with open(\"data.csv\", encoding=\"utf-8\") as f:",
+            "    print(f.read())"
+          ],
+          "error": "FileNotFoundError: [Errno 2] No such file or directory: 'data.csv'",
+          "error_type": "FileNotFoundError",
+          "why": "المسار خاطئ أو الملف في مجلد آخر. تحقق من الاسم والمجلد، أو استخدم `os.path.exists`."
+        },
+        {
+          "title": "القراءة من ملف مفتوح للكتابة",
+          "wrong": [
+            "with open(\"out.txt\", \"w\", encoding=\"utf-8\") as f:",
+            "    f.write(\"مرحبا\")",
+            "    print(f.read())"
+          ],
+          "error": "io.UnsupportedOperation: not readable",
+          "error_type": "UnsupportedOperation",
+          "why": "الملف مفتوح بنمط `w` فلا يمكن القراءة منه. افتحه مرة أخرى بنمط `r`.",
+          "fix": [
+            "with open(\"out.txt\", \"w\", encoding=\"utf-8\") as f:",
+            "    f.write(\"مرحبا\")",
+            "with open(\"out.txt\", encoding=\"utf-8\") as f:",
+            "    print(f.read())"
+          ]
+        },
+        {
+          "title": "نسيان الترميز مع النصوص العربية",
+          "wrong": [
+            "with open(\"arabic.txt\") as f:",
+            "    text = f.read()"
+          ],
+          "why": "على بعض أنظمة Windows يكون الترميز الافتراضي غير `utf-8`، فتظهر الحروف العربية رموزاً غريبة أو يظهر `UnicodeDecodeError`. اكتب `encoding=\"utf-8\"` دائماً.",
+          "fix": [
+            "with open(\"arabic.txt\", encoding=\"utf-8\") as f:",
+            "    text = f.read()"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "ملخص درجات من ملف",
+    "prompt": [
+      "الكود في البداية ينشئ ملف `grades.csv` (لا تعدّله). اقرأ الملف وحلّله:"
+    ],
+    "requirements": [
+      "`average`: متوسط الدرجات مقرباً لمنزلة عشرية واحدة.",
+      "`passed`: عدد الطلاب الذين درجتهم 60 فأكثر.",
+      "اكتب ملفاً اسمه `summary.txt` فيه سطران بالضبط: `المتوسط: 71.2` ثم `الناجحون: 4`."
+    ],
+    "starter_code": [
+      "with open(\"grades.csv\", \"w\", encoding=\"utf-8\") as f:",
+      "    f.write(\"name,grade\\n\")",
+      "    f.write(\"سارة,88\\n\")",
+      "    f.write(\"يزن,54\\n\")",
+      "    f.write(\"دانة,91\\n\")",
+      "    f.write(\"طلال,60\\n\")",
+      "    f.write(\"رنا,63\\n\")",
+      "",
+      "# اقرأ grades.csv واحسب average و passed",
+      "",
+      "# اكتب summary.txt"
+    ],
+    "tests": [
+      "import os",
+      "assert average == 71.2, f\"المتوسط يجب أن يكون 71.2، والموجود {average}\"",
+      "assert passed == 4, f\"عدد الناجحين يجب أن يكون 4، والموجود {passed}\"",
+      "assert os.path.exists(\"summary.txt\"), \"لم يُنشأ الملف summary.txt\"",
+      "with open(\"summary.txt\", encoding=\"utf-8\") as _f:",
+      "    _lines = [l.strip() for l in _f.read().strip().splitlines()]",
+      "assert _lines == [\"المتوسط: 71.2\", \"الناجحون: 4\"], f\"محتوى summary.txt غير صحيح: {_lines}\"",
+      "assert __code__.count(\"open(\") >= 3, \"اقرأ الملف grades.csv بـ open ثم اكتب summary.txt بـ open\""
+    ],
+    "hints": [
+      "تجاوز سطر العناوين بـ `f.readline()` قبل الحلقة.",
+      "لكل سطر: `name, grade = line.strip().split(\",\")` ثم `int(grade)`.",
+      "للكتابة: `open(\"summary.txt\", \"w\", encoding=\"utf-8\")` ثم `f.write(f\"المتوسط: {average}\\n\")`."
+    ],
+    "solution": [
+      "with open(\"grades.csv\", \"w\", encoding=\"utf-8\") as f:",
+      "    f.write(\"name,grade\\n\")",
+      "    f.write(\"سارة,88\\n\")",
+      "    f.write(\"يزن,54\\n\")",
+      "    f.write(\"دانة,91\\n\")",
+      "    f.write(\"طلال,60\\n\")",
+      "    f.write(\"رنا,63\\n\")",
+      "",
+      "grades = []",
+      "with open(\"grades.csv\", encoding=\"utf-8\") as f:",
+      "    f.readline()",
+      "    for line in f:",
+      "        name, grade = line.strip().split(\",\")",
+      "        grades.append(int(grade))",
+      "",
+      "average = round(sum(grades) / len(grades), 1)",
+      "passed = 0",
+      "for g in grades:",
+      "    if g >= 60:",
+      "        passed += 1",
+      "",
+      "with open(\"summary.txt\", \"w\", encoding=\"utf-8\") as f:",
+      "    f.write(f\"المتوسط: {average}\\n\")",
+      "    f.write(f\"الناجحون: {passed}\\n\")",
+      "",
+      "print(average, passed)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "أي نمط تستخدم لإضافة أسطر جديدة إلى نهاية ملف موجود دون حذف محتواه؟",
+    "options": [
+      "`\"r\"`",
+      "`\"w\"`",
+      "`\"a\"`",
+      "`\"x\"`"
+    ],
+    "answer": 2,
+    "explanation": "`\"a\"` (append) يضيف في النهاية. أما `\"w\"` فيمسح المحتوى كله أولاً، و `\"r\"` للقراءة فقط."
+  },
+  "summary": [
+    "`open(path, mode, encoding=\"utf-8\")` مع `with` لإغلاق الملف تلقائياً.",
+    "`r` قراءة، و `w` كتابة تمسح القديم، و `a` إضافة في النهاية.",
+    "`for line in f` للقراءة سطراً سطراً، و `readline()` لسطر العناوين، و `strip()` لحذف `\\n`.",
+    "`write` لا تضيف سطراً جديداً؛ أضف `\\n` بنفسك."
+  ]
+}
