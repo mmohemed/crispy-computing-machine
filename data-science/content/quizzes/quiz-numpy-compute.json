@@ -1,0 +1,237 @@
+{
+  "slug": "quiz-numpy-compute",
+  "course": "numpy",
+  "module": "numpy-compute",
+  "title": "اختبار الوحدة: الحسابات",
+  "intro": [
+    "يغطي هذا الاختبار Vectorization و Broadcasting والتجميع مع المحاور والجبر الخطي والمحاكاة والأداء."
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "a = np.array([4, 9, 16])",
+        "print(np.sqrt(a) + 1)"
+      ],
+      "options": [
+        "[3. 4. 5.]",
+        "[5 10 17]",
+        "[2. 3. 4.]",
+        "[ 3  4  5]"
+      ],
+      "answer": 0,
+      "explanation": "الجذر لكل عنصر (2 و 3 و 4) ثم +1، والنتيجة عشرية.",
+      "lesson": "numpy-vectorization"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "prompt": "أي تعبير يحسب التغير بين كل قيمة والتي قبلها في `a`؟",
+      "options": [
+        "`a[1:] - a[:-1]`",
+        "`a - a`",
+        "`a[:-1] - a[1:]`",
+        "`a.sum() - a`"
+      ],
+      "answer": 0,
+      "explanation": "الاقتطاع المزاح: من الثاني ناقص من الأول حتى ما قبل الأخير، أو `np.diff(a)`.",
+      "lesson": "numpy-vectorization"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "prompt": "ما ناتج `np.ones((4, 3)) + np.array([1, 2, 3, 4])`؟",
+      "options": [
+        "مصفوفة `(4, 3)`",
+        "مصفوفة `(4, 4)`",
+        "خطأ: الأشكال `(4, 3)` و `(4,)` غير متوافقة",
+        "مصفوفة `(3,)`"
+      ],
+      "answer": 2,
+      "explanation": "من اليمين 3 لا تساوي 4. لإضافة قيمة لكل صف حوّلها إلى عمود `(4, 1)`.",
+      "lesson": "numpy-broadcasting"
+    },
+    {
+      "id": "q4",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "m = np.array([[1, 2], [3, 4]])",
+        "print(m * np.array([[10], [100]]))"
+      ],
+      "options": [
+        "[[ 10  20]\n [300 400]]",
+        "[[ 10 200]\n [ 30 400]]",
+        "[[11 22]\n [33 44]]",
+        "خطأ"
+      ],
+      "answer": 0,
+      "explanation": "العمود `(2, 1)` يُمدّ على الأعمدة: الصف الأول × 10 والثاني × 100.",
+      "lesson": "numpy-broadcasting"
+    },
+    {
+      "id": "q5",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "m = np.array([[3, 9], [7, 1]])",
+        "print(m.max(axis=0), m.argmax(axis=1))"
+      ],
+      "options": [
+        "[7 9] [1 0]",
+        "[9 7] [1 0]",
+        "[7 9] [0 1]",
+        "9 1"
+      ],
+      "answer": 0,
+      "explanation": "`axis=0` قيمة لكل عمود: 7 و 9. و `argmax(axis=1)` موضع الأكبر في كل صف: 1 ثم 0.",
+      "lesson": "numpy-aggregations"
+    },
+    {
+      "id": "q6",
+      "type": "true_false",
+      "prompt": "وجود قيمة `NaN` واحدة يجعل `arr.mean()` تعطي `nan`، ولذلك نستخدم `np.nanmean`.",
+      "answer": true,
+      "explanation": "الدوال العادية تنشر `NaN`، أما `nan...` فتتجاهلها.",
+      "lesson": "numpy-aggregations"
+    },
+    {
+      "id": "q7",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "print((np.ones((2, 3)) @ np.ones((3, 5))).shape)"
+      ],
+      "options": [
+        "(2, 5)",
+        "(3, 3)",
+        "(2, 3)",
+        "خطأ"
+      ],
+      "answer": 0,
+      "explanation": "`(2, 3) @ (3, 5)`: البعدان الداخليان يختفيان فيبقى `(2, 5)`.",
+      "lesson": "numpy-linear-algebra"
+    },
+    {
+      "id": "q8",
+      "type": "mcq",
+      "prompt": "ما الفرق بين `a * b` و `a @ b` لمتجهين بنفس الطول؟",
+      "options": [
+        "لا فرق",
+        "`*` ضرب عنصراً بعنصر يعطي متجهاً، و `@` ضرب نقطي يعطي رقماً (مجموع الضرب)",
+        "`@` أسرع فقط",
+        "`*` للمصفوفات و `@` للقوائم"
+      ],
+      "answer": 1,
+      "explanation": "`@` ضرب نقطي/مصفوفات، أما `*` فعنصراً بعنصر.",
+      "lesson": "numpy-linear-algebra"
+    },
+    {
+      "id": "q9",
+      "type": "mcq",
+      "prompt": "لماذا نثبّت البذرة في `default_rng(42)`؟",
+      "options": [
+        "لتسريع التوليد",
+        "لتكون الأرقام العشوائية قابلة للتكرار فيحصل الجميع على نفس النتائج",
+        "لأن الأرقام تكون أكثر عشوائية",
+        "لا حاجة لها"
+      ],
+      "answer": 1,
+      "explanation": "قابلية التكرار أساس التحليل الموثوق.",
+      "lesson": "numpy-random"
+    },
+    {
+      "id": "q10",
+      "type": "true_false",
+      "prompt": "استخدام `np.append` داخل حلقة طويلة طريقة سريعة لبناء مصفوفة.",
+      "answer": false,
+      "explanation": "كل `np.append` تنسخ المصفوفة كاملة. اجمع في قائمة ثم حوّل مرة واحدة، أو استخدم عملية متجهة.",
+      "lesson": "numpy-performance"
+    },
+    {
+      "id": "q11",
+      "type": "fix_code",
+      "prompt": "الكود يجب أن يحسب حصة كل منتج من مبيعات فرعه (كل صف مجموعه 1)، لكنه يسبب خطأ. صحّحه دون حلقات.",
+      "starter_code": [
+        "import numpy as np",
+        "",
+        "sales = np.array([[20, 30, 50], [10, 10, 80]])",
+        "share = sales / sales.sum(axis=1)",
+        "print(share)"
+      ],
+      "tests": [
+        "import numpy as _np",
+        "assert share.shape == (2, 3), \"share يجب أن تكون بشكل (2, 3)\"",
+        "assert _np.allclose(share.sum(axis=1), 1), \"حصص كل صف يجب أن يكون مجموعها 1\"",
+        "assert _np.allclose(share[0], [0.2, 0.3, 0.5]), \"حصص الصف الأول غير صحيحة\""
+      ],
+      "solution": [
+        "import numpy as np",
+        "",
+        "sales = np.array([[20, 30, 50], [10, 10, 80]])",
+        "share = sales / sales.sum(axis=1, keepdims=True)",
+        "print(share)"
+      ],
+      "hints": [
+        "اطبع شكل `sales.sum(axis=1)`.",
+        "قيمة لكل صف تحتاج أن تكون عموداً."
+      ],
+      "explanation": "مجموع كل صف شكله `(2,)` ولا يتوافق مع `(2, 3)`. نجعله عموداً بـ `keepdims=True` أو `reshape(-1, 1)`.",
+      "lesson": "numpy-broadcasting"
+    },
+    {
+      "id": "q12",
+      "type": "write_code",
+      "prompt": "سؤال تطبيقي: مصفوفة `temps` لسبعة أيام × 3 مدن (الرياض، جدة، أبها). احسب `city_avg` (متوسط كل مدينة مقرباً لمنزلة) و `hottest_day` (رقم اليوم من 1 إلى 7 الذي كان متوسط حرارته عبر المدن الأعلى، كـ `int`).",
+      "starter_code": [
+        "import numpy as np",
+        "",
+        "temps = np.array([",
+        "    [41, 36, 28],",
+        "    [43, 37, 29],",
+        "    [44, 38, 27],",
+        "    [40, 35, 26],",
+        "    [45, 39, 30],",
+        "    [42, 36, 28],",
+        "    [39, 34, 25],",
+        "])",
+        "",
+        "# اكتب الحل هنا"
+      ],
+      "tests": [
+        "import numpy as _np",
+        "assert _np.allclose(city_avg, [42.0, 36.4, 27.6]), f\"city_avg غير صحيحة: {city_avg}\"",
+        "assert hottest_day == 5 and isinstance(hottest_day, int), f\"hottest_day يجب أن يكون 5، والموجود {hottest_day!r}\""
+      ],
+      "solution": [
+        "import numpy as np",
+        "",
+        "temps = np.array([",
+        "    [41, 36, 28],",
+        "    [43, 37, 29],",
+        "    [44, 38, 27],",
+        "    [40, 35, 26],",
+        "    [45, 39, 30],",
+        "    [42, 36, 28],",
+        "    [39, 34, 25],",
+        "])",
+        "",
+        "city_avg = temps.mean(axis=0).round(1)",
+        "hottest_day = int(temps.mean(axis=1).argmax()) + 1",
+        "print(city_avg, hottest_day)"
+      ],
+      "hints": [
+        "`temps.mean(axis=0)` لكل مدينة.",
+        "`temps.mean(axis=1).argmax()` ثم أضف 1."
+      ],
+      "explanation": "متوسط كل مدينة (عمود) بـ `axis=0`، ومتوسط كل يوم (صف) بـ `axis=1` ثم `argmax`.",
+      "lesson": "numpy-aggregations"
+    }
+  ]
+}

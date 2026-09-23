@@ -1,0 +1,369 @@
+{
+  "slug": "numpy-aggregations",
+  "course": "numpy",
+  "module": "numpy-compute",
+  "order": 8,
+  "title": "التجميع والمحور axis",
+  "title_en": "Aggregations & axis",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تستخدم دوال التجميع: `sum` و `mean` و `std` و `min` و `max` و `median` و `percentile`.",
+    "تفهم المحور `axis` في المصفوفات ثنائية الأبعاد بدقة.",
+    "تجد مواضع القيم العليا والدنيا بـ `argmax` و `argmin` و `argsort`.",
+    "تحسب المجاميع التراكمية وتتعامل مع `NaN` بدوال `nan...`."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "التجميع يختصر مصفوفة في رقم، أو في صف أو عمود",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "الدالة",
+              "المعنى"
+            ],
+            "rows": [
+              [
+                "`sum` / `mean` / `median`",
+                "المجموع / المتوسط / الوسيط"
+              ],
+              [
+                "`std` / `var`",
+                "الانحراف المعياري / التباين"
+              ],
+              [
+                "`min` / `max`",
+                "أصغر / أكبر قيمة"
+              ],
+              [
+                "`argmin` / `argmax`",
+                "**موضع** أصغر / أكبر قيمة"
+              ],
+              [
+                "`percentile(a, q)`",
+                "المئين q، مثل الربيع الأول 25"
+              ],
+              [
+                "`cumsum`",
+                "المجموع التراكمي"
+              ],
+              [
+                "`nansum` / `nanmean` ...",
+                "نفس الدوال مع تجاهل `NaN`"
+              ]
+            ]
+          }
+        },
+        {
+          "h": "المحور axis"
+        },
+        "في مصفوفة ثنائية الأبعاد (صفوف × أعمدة):",
+        {
+          "list": [
+            "**بدون axis**: رقم واحد لكل المصفوفة.",
+            "**`axis=0`**: التجميع **عبر الصفوف** (ينهار بُعد الصفوف)، فتحصل على **قيمة لكل عمود**.",
+            "**`axis=1`**: التجميع **عبر الأعمدة**، فتحصل على **قيمة لكل صف**."
+          ]
+        },
+        "طريقة تذكّر بسيطة: رقم المحور هو البعد الذي **يختفي**. مصفوفة `(3, 4)` مع `axis=0` تعطي `(4,)`، ومع `axis=1` تعطي `(3,)`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "كل سؤال تجميعي على جدول هو اختيار محور: إجمالي كل فرع (`axis=1`)، أو متوسط كل شهر عبر الفروع (`axis=0`)، أو أفضل شهر لكل فرع (`argmax(axis=1)`). ونفس المفهوم موجود في Pandas (`df.sum(axis=0)`) وفي أطر التعلم العميق، فإتقانه هنا يوفر عليك أخطاء كثيرة لاحقاً."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`axis=0` لإحصاءات الأعمدة (الخصائص)، وهو الاستخدام الأكثر شيوعاً مع بيانات التحليل.",
+            "`axis=1` لإحصاءات كل مشاهدة أو كل صف.",
+            "`median` و `percentile` عندما توجد قيم متطرفة تشوّه المتوسط.",
+            "`nan...` عندما تحتوي البيانات على قيم مفقودة."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "المحاور في مصفوفة المبيعات",
+      "code": [
+        "import numpy as np",
+        "",
+        "# 3 فروع × 4 أشهر",
+        "sales = np.array([",
+        "    [540, 610, 580, 700],",
+        "    [420, 390, 450, 480],",
+        "    [310, 330, 360, 400],",
+        "])",
+        "",
+        "print(sales.sum())",
+        "print(sales.sum(axis=0))",
+        "print(sales.sum(axis=1))",
+        "print(sales.mean(axis=0).round(1))",
+        "print(sales.max(axis=1))"
+      ],
+      "explanation": [
+        {
+          "code": "sales.sum()",
+          "text": "رقم واحد: إجمالي كل الفروع في كل الأشهر."
+        },
+        {
+          "code": "sales.sum(axis=0)",
+          "text": "قيمة لكل عمود: إجمالي كل شهر عبر الفروع. شكلها `(4,)`."
+        },
+        {
+          "code": "sales.sum(axis=1)",
+          "text": "قيمة لكل صف: إجمالي كل فرع. شكلها `(3,)`."
+        },
+        {
+          "code": "sales.max(axis=1)",
+          "text": "أعلى شهر لكل فرع (القيمة وليس رقم الشهر)."
+        }
+      ],
+      "expected_output": [
+        "5570",
+        "[1270 1330 1390 1580]",
+        "[2430 1740 1400]",
+        "[423.3 443.3 463.3 526.7]",
+        "[700 480 400]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "المواضع: أي شهر وأي فرع؟",
+      "code": [
+        "import numpy as np",
+        "",
+        "sales = np.array([",
+        "    [540, 610, 580, 700],",
+        "    [420, 390, 450, 480],",
+        "    [310, 330, 360, 400],",
+        "])",
+        "months = np.array([\"يناير\", \"فبراير\", \"مارس\", \"أبريل\"])",
+        "branches = np.array([\"الرياض\", \"جدة\", \"أبها\"])",
+        "",
+        "best_month_idx = sales.argmax(axis=1)",
+        "print(best_month_idx)",
+        "print(months[best_month_idx])",
+        "",
+        "print(\"أعلى فرع إجمالاً:\", branches[sales.sum(axis=1).argmax()])",
+        "",
+        "order = np.argsort(sales.sum(axis=1))[::-1]",
+        "print(\"الترتيب:\", branches[order])"
+      ],
+      "explanation": [
+        {
+          "code": "sales.argmax(axis=1)",
+          "text": "لكل فرع: **موضع** الشهر الأعلى."
+        },
+        {
+          "code": "months[best_month_idx]",
+          "text": "Fancy Indexing لتحويل المواضع إلى أسماء."
+        },
+        {
+          "code": "np.argsort(...)[::-1]",
+          "text": "`argsort` ترجع المواضع مرتبة تصاعدياً، و `[::-1]` تعكسها للترتيب التنازلي."
+        }
+      ],
+      "expected_output": [
+        "[3 3 3]",
+        "['أبريل' 'أبريل' 'أبريل']",
+        "أعلى فرع إجمالاً: الرياض",
+        "الترتيب: ['الرياض' 'جدة' 'أبها']"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الوسيط والمئينات والتراكمي والقيم المفقودة",
+      "code": [
+        "import numpy as np",
+        "",
+        "orders = np.array([45, 60, 75, 80, 90, 110, 130, 2400])",
+        "print(\"المتوسط:\", orders.mean())",
+        "print(\"الوسيط:\", np.median(orders))",
+        "print(\"الربيع الأول والثالث:\", np.percentile(orders, [25, 75]))",
+        "",
+        "daily = np.array([120, 95, 143, 80, 210])",
+        "print(\"التراكمي:\", daily.cumsum())",
+        "",
+        "ratings = np.array([4, 5, np.nan, 3, np.nan, 5])",
+        "print(ratings.mean(), np.nanmean(ratings).round(2), np.isnan(ratings).sum())"
+      ],
+      "explanation": [
+        {
+          "code": "orders.mean() مقابل np.median(orders)",
+          "text": "طلب واحد ضخم (2400) رفع المتوسط إلى 373.75، بينما الوسيط 85 يمثل الطلب المعتاد أفضل."
+        },
+        {
+          "code": "np.percentile(orders, [25, 75])",
+          "text": "الربيعان الأول والثالث: نصف الطلبات بين هاتين القيمتين. ستستخدمهما في كشف القيم الشاذة بطريقة IQR."
+        },
+        {
+          "code": "daily.cumsum()",
+          "text": "الإجمالي حتى كل يوم: مفيد لتتبع الوصول إلى هدف."
+        },
+        {
+          "code": "ratings.mean() مقابل np.nanmean",
+          "text": "قيمة `NaN` واحدة تجعل المتوسط العادي `nan`، و `nanmean` يتجاهلها."
+        }
+      ],
+      "expected_output": [
+        "المتوسط: 373.75",
+        "الوسيط: 85.0",
+        "الربيع الأول والثالث: [ 71.25 115.  ]",
+        "التراكمي: [120 215 358 438 648]",
+        "nan 4.25 2"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "كل دوال التجميع متاحة بصيغتين: `arr.sum(axis=0)` و `np.sum(arr, axis=0)`. أما `median` و `percentile` فمن `np` فقط.",
+        "`std` في NumPy تقسم على n افتراضياً (انحراف المجتمع). للعينة استخدم `ddof=1`، وهو ما تستخدمه Pandas افتراضياً. ستفهم الفرق في كورس الإحصاء.",
+        "`keepdims=True` تُبقي البعد المجمّع بطول 1، فيصلح الناتج للـ Broadcasting مباشرة: `sales / sales.sum(axis=1, keepdims=True)`."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "الخلط بين axis=0 و axis=1",
+          "wrong": [
+            "import numpy as np",
+            "sales = np.array([[5, 5, 5], [1, 1, 1]])",
+            "branch_totals = sales.sum(axis=0)",
+            "print(branch_totals)"
+          ],
+          "why": "أردنا إجمالي كل فرع (صف) فحصلنا على إجمالي كل شهر. تذكّر: المحور هو البعد الذي يختفي.",
+          "fix": [
+            "import numpy as np",
+            "sales = np.array([[5, 5, 5], [1, 1, 1]])",
+            "branch_totals = sales.sum(axis=1)",
+            "print(branch_totals)"
+          ]
+        },
+        {
+          "title": "محور غير موجود",
+          "wrong": [
+            "import numpy as np",
+            "print(np.array([1, 2, 3]).sum(axis=1))"
+          ],
+          "error": "numpy.exceptions.AxisError: axis 1 is out of bounds for array of dimension 1",
+          "error_type": "AxisError",
+          "why": "المصفوفة أحادية البعد لها محور واحد فقط `axis=0`.",
+          "fix": [
+            "import numpy as np",
+            "print(np.array([1, 2, 3]).sum(axis=0))"
+          ]
+        },
+        {
+          "title": "استخدام max بدلاً من argmax",
+          "wrong": [
+            "import numpy as np",
+            "months = np.array([\"يناير\", \"فبراير\"])",
+            "values = np.array([300, 700])",
+            "print(months[values.max()])"
+          ],
+          "error": "IndexError: index 700 is out of bounds for axis 0 with size 2",
+          "error_type": "IndexError",
+          "why": "`max` ترجع القيمة (700) وليس موضعها، فلا يمكن استخدامها كفهرس للأسماء.",
+          "fix": [
+            "import numpy as np",
+            "months = np.array([\"يناير\", \"فبراير\"])",
+            "values = np.array([300, 700])",
+            "print(months[values.argmax()])"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "لوحة مؤشرات الفروع",
+    "prompt": [
+      "مصفوفة `sales` لأربعة فروع × 6 أشهر، وفيها قيمة مفقودة `NaN`. استخدم التجميع مع المحور المناسب:"
+    ],
+    "requirements": [
+      "`branch_totals`: إجمالي كل فرع متجاهلاً `NaN` (شكل `(4,)`).",
+      "`month_avg`: متوسط كل شهر عبر الفروع متجاهلاً `NaN`، مقرباً لمنزلة واحدة (شكل `(6,)`).",
+      "`best_branch`: اسم الفرع الأعلى إجمالاً من `branches`.",
+      "`best_month_per_branch`: لكل فرع رقم أفضل شهر (من 1 إلى 6)، متجاهلاً `NaN` (استخدم `np.nanargmax` مع `axis`).",
+      "`running`: الإجمالي التراكمي للفرع الأول."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "",
+      "branches = np.array([\"الرياض\", \"جدة\", \"الدمام\", \"أبها\"])",
+      "sales = np.array([",
+      "    [540, 610, 580, 700, 650, 720],",
+      "    [420, 390, np.nan, 480, 470, 500],",
+      "    [310, 330, 360, 400, 380, 410],",
+      "    [200, 260, 240, 300, 310, 330],",
+      "])",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import numpy as _np",
+      "assert _np.allclose(branch_totals, [3800, 2260, 2190, 1640]), f\"branch_totals غير صحيحة: {branch_totals}\"",
+      "assert _np.allclose(month_avg, [367.5, 397.5, 393.3, 470.0, 452.5, 490.0]), f\"month_avg غير صحيحة: {month_avg}\"",
+      "assert best_branch == \"الرياض\", f\"best_branch يجب أن يكون الرياض، والموجود {best_branch}\"",
+      "assert list(best_month_per_branch) == [6, 6, 6, 6], f\"best_month_per_branch غير صحيحة: {best_month_per_branch}\"",
+      "assert _np.array_equal(running, [540, 1150, 1730, 2430, 3080, 3800]), f\"running غير صحيحة: {running}\""
+    ],
+    "hints": [
+      "قيمة لكل فرع = لكل صف = `axis=1`، وقيمة لكل شهر = `axis=0`.",
+      "`np.nansum` و `np.nanmean` و `np.nanargmax` تتجاهل `NaN`.",
+      "المواضع تبدأ من 0، فأضف 1 لرقم الشهر."
+    ],
+    "solution": [
+      "import numpy as np",
+      "",
+      "branches = np.array([\"الرياض\", \"جدة\", \"الدمام\", \"أبها\"])",
+      "sales = np.array([",
+      "    [540, 610, 580, 700, 650, 720],",
+      "    [420, 390, np.nan, 480, 470, 500],",
+      "    [310, 330, 360, 400, 380, 410],",
+      "    [200, 260, 240, 300, 310, 330],",
+      "])",
+      "",
+      "branch_totals = np.nansum(sales, axis=1)",
+      "month_avg = np.nanmean(sales, axis=0).round(1)",
+      "best_branch = branches[branch_totals.argmax()]",
+      "best_month_per_branch = np.nanargmax(sales, axis=1) + 1",
+      "running = sales[0].cumsum()",
+      "",
+      "print(branch_totals, best_branch)",
+      "print(month_avg)",
+      "print(best_month_per_branch, running)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import numpy as np",
+      "m = np.array([[1, 2, 3], [4, 5, 6]])",
+      "print(m.sum(axis=0), m.sum(axis=1))"
+    ],
+    "options": [
+      "[5 7 9] [ 6 15]",
+      "[ 6 15] [5 7 9]",
+      "21 21",
+      "[5 7 9] 21"
+    ],
+    "answer": 0,
+    "explanation": "`axis=0` يجمع عبر الصفوف فيعطي قيمة لكل عمود، و `axis=1` قيمة لكل صف."
+  },
+  "summary": [
+    "دوال التجميع: `sum` و `mean` و `median` و `std` و `min` و `max` و `percentile` و `cumsum`.",
+    "`axis=0` قيمة لكل عمود، و `axis=1` قيمة لكل صف: المحور هو البعد الذي يختفي.",
+    "`argmax` و `argmin` و `argsort` للمواضع، ثم Fancy Indexing للأسماء.",
+    "`nan...` لتجاهل القيم المفقودة، والوسيط أمتن من المتوسط مع القيم المتطرفة."
+  ]
+}

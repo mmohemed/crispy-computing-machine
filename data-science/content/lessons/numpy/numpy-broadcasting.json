@@ -1,0 +1,348 @@
+{
+  "slug": "numpy-broadcasting",
+  "course": "numpy",
+  "module": "numpy-compute",
+  "order": 7,
+  "title": "Broadcasting",
+  "title_en": "Broadcasting",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تفهم قواعد Broadcasting بين مصفوفات بأشكال مختلفة.",
+    "تجري عملية بين مصفوفة ثنائية الأبعاد وصف واحد أو عمود واحد.",
+    "توحّد أعمدة البيانات (Standardization) بدون حلقات.",
+    "تشخّص أخطاء الأشكال غير المتوافقة وتصلحها بـ `reshape`."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "توسيع الأشكال تلقائياً",
+      "body": [
+        "عندما تكتب `prices * 1.15` فإن NumPy \"يمدّ\" الرقم 1.15 ليطابق شكل المصفوفة. هذا هو **Broadcasting**، ويعمل أيضاً بين مصفوفتين بأشكال مختلفة بشرط أن تكون **متوافقة**.",
+        {
+          "h": "القاعدة"
+        },
+        "قارن الشكلين **من اليمين** بعداً بعداً. كل بعدين متوافقان إذا كانا **متساويين** أو كان **أحدهما 1** (أو غير موجود). البعد الذي قيمته 1 يُمدّ ليطابق الآخر.",
+        {
+          "table": {
+            "head": [
+              "الشكل أ",
+              "الشكل ب",
+              "النتيجة",
+              "المعنى"
+            ],
+            "rows": [
+              [
+                "`(3, 4)`",
+                "رقم",
+                "`(3, 4)`",
+                "الرقم لكل العناصر"
+              ],
+              [
+                "`(3, 4)`",
+                "`(4,)`",
+                "`(3, 4)`",
+                "صف واحد يُطبّق على كل صف (قيمة لكل عمود)"
+              ],
+              [
+                "`(3, 4)`",
+                "`(3, 1)`",
+                "`(3, 4)`",
+                "عمود واحد يُطبّق على كل عمود (قيمة لكل صف)"
+              ],
+              [
+                "`(3, 4)`",
+                "`(3,)`",
+                "خطأ",
+                "3 لا تطابق 4 من اليمين"
+              ]
+            ]
+          }
+        },
+        "المثال الأخير هو الخطأ الأشهر: إذا أردت قيمة لكل **صف** فحوّلها إلى عمود بـ `reshape(-1, 1)` لتصبح `(3, 1)`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "في مصفوفة بيانات، الصفوف مشاهدات والأعمدة خصائص. عمليات مثل \"اطرح متوسط كل عمود من قيمه\" أو \"احسب حصة كل شهر من إجمالي فرعه\" هي Broadcasting. وهذه العملية الأولى (التوحيد Standardization) خطوة أساسية قبل خوارزميات كثيرة في تعلم الآلة مثل KNN و K-Means."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "مصفوفة مع صف `(n_cols,)`: عملية لكل عمود (متوسط العمود، سعر كل منتج).",
+            "مصفوفة مع عمود `(n_rows, 1)`: عملية لكل صف (إجمالي الفرع، وزن المشاهدة).",
+            "إذا ظهر خطأ `operands could not be broadcast` فاطبع الشكلين وقارنهما من اليمين."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "صف لكل الصفوف: كمية × سعر",
+      "code": [
+        "import numpy as np",
+        "",
+        "# الكميات: 3 فروع × 4 منتجات",
+        "qty = np.array([",
+        "    [10, 4, 2, 7],",
+        "    [6, 8, 1, 3],",
+        "    [12, 2, 5, 9],",
+        "])",
+        "prices = np.array([149, 59, 399, 129])",
+        "",
+        "print(qty.shape, prices.shape)",
+        "revenue = qty * prices",
+        "print(revenue)",
+        "print(revenue.sum(axis=1))"
+      ],
+      "explanation": [
+        {
+          "code": "qty.shape, prices.shape",
+          "text": "`(3, 4)` و `(4,)`: من اليمين 4 تطابق 4، فالأسعار تُمدّ على الفروع الثلاثة."
+        },
+        {
+          "code": "qty * prices",
+          "text": "كل صف (فرع) يُضرب في أسعار المنتجات الأربعة."
+        },
+        {
+          "code": "revenue.sum(axis=1)",
+          "text": "إيراد كل فرع (المجموع عبر الأعمدة). ستفهم `axis` بالتفصيل في الدرس القادم."
+        }
+      ],
+      "expected_output": [
+        "(3, 4) (4,)",
+        "[[1490  236  798  903]",
+        " [ 894  472  399  387]",
+        " [1788  118 1995 1161]]",
+        "[3427 2152 5062]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "عمود لكل الأعمدة: حصة كل شهر من إجمالي الفرع",
+      "code": [
+        "import numpy as np",
+        "",
+        "sales = np.array([",
+        "    [540, 610, 580, 700],",
+        "    [420, 390, 450, 480],",
+        "])",
+        "branch_totals = sales.sum(axis=1)",
+        "print(branch_totals, branch_totals.shape)",
+        "",
+        "share = sales / branch_totals.reshape(-1, 1) * 100",
+        "print(share.round(1))",
+        "print(share.sum(axis=1))"
+      ],
+      "explanation": [
+        {
+          "code": "branch_totals.shape",
+          "text": "`(2,)`: إجمالي لكل فرع."
+        },
+        {
+          "code": "branch_totals.reshape(-1, 1)",
+          "text": "نحوّله إلى عمود `(2, 1)` حتى يُمدّ على الأشهر الأربعة. بدون ذلك سيقارن NumPy الرقم 2 بالرقم 4 ويرفض."
+        },
+        {
+          "code": "share.sum(axis=1)",
+          "text": "تحقق: الحصص في كل فرع مجموعها 100."
+        }
+      ],
+      "expected_output": [
+        "[2430 1740] (2,)",
+        "[[22.2 25.1 23.9 28.8]",
+        " [24.1 22.4 25.9 27.6]]",
+        "[100. 100.]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "توحيد الأعمدة Standardization",
+      "code": [
+        "import numpy as np",
+        "",
+        "# 5 عملاء × 3 خصائص: العمر، الإنفاق الشهري، عدد الزيارات",
+        "X = np.array([",
+        "    [25, 1200, 4],",
+        "    [34, 3400, 9],",
+        "    [45, 800, 2],",
+        "    [29, 2600, 7],",
+        "    [52, 1500, 3],",
+        "], dtype=float)",
+        "",
+        "means = X.mean(axis=0)",
+        "stds = X.std(axis=0)",
+        "print(means)",
+        "",
+        "Z = (X - means) / stds",
+        "print(Z.round(2))",
+        "print(np.allclose(Z.mean(axis=0), 0), np.allclose(Z.std(axis=0), 1))"
+      ],
+      "explanation": [
+        {
+          "code": "X.mean(axis=0)",
+          "text": "متوسط كل عمود (خاصية): شكله `(3,)`."
+        },
+        {
+          "code": "(X - means) / stds",
+          "text": "Broadcasting: متوسط وانحراف كل عمود يُطبّقان على كل الصفوف. كل خاصية تصبح بمتوسط 0 وانحراف 1."
+        },
+        {
+          "code": "np.allclose(Z.mean(axis=0), 0)",
+          "text": "تحقق: متوسط كل عمود أصبح 0 وانحرافه 1 (مع تسامح صغير للكسور)، فصارت الخصائص قابلة للمقارنة رغم اختلاف وحداتها: سنوات، وريالات، وزيارات."
+        }
+      ],
+      "expected_output": [
+        "[  37. 1900.    5.]",
+        "[[-1.19 -0.73 -0.38]",
+        " [-0.3   1.56  1.53]",
+        " [ 0.8  -1.15 -1.15]",
+        " [-0.8   0.73  0.77]",
+        " [ 1.49 -0.42 -0.77]]",
+        "True True"
+      ],
+      "after": [
+        "هذه بالضبط العملية التي تنفذها `StandardScaler` في Scikit-learn، وستستخدمها في مستوى تعلم الآلة."
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "Broadcasting لا ينسخ البيانات فعلياً في الذاكرة؛ NumPy يتصرف كأنها مكررة، ولهذا هو سريع.",
+        "`reshape(-1, 1)` تحوّل إلى عمود، و `reshape(1, -1)` إلى صف. وبديل مختصر: `arr[:, np.newaxis]` للعمود.",
+        "`axis=0` يعطي قيمة لكل عمود (شكلها يطابق عدد الأعمدة)، فهي جاهزة للـ Broadcasting مع المصفوفة مباشرة."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "قيمة لكل صف بدون تحويلها إلى عمود",
+          "wrong": [
+            "import numpy as np",
+            "sales = np.ones((2, 4))",
+            "totals = sales.sum(axis=1)",
+            "print(sales / totals)"
+          ],
+          "error": "ValueError: operands could not be broadcast together with shapes (2,4) (2,) ",
+          "error_type": "ValueError",
+          "why": "`(2, 4)` مع `(2,)`: من اليمين 4 لا تساوي 2، فيُرفض.",
+          "fix": [
+            "import numpy as np",
+            "sales = np.ones((2, 4))",
+            "totals = sales.sum(axis=1)",
+            "print(sales / totals.reshape(-1, 1))"
+          ]
+        },
+        {
+          "title": "Broadcasting غير مقصود ينتج مصفوفة ضخمة",
+          "wrong": [
+            "import numpy as np",
+            "a = np.array([1, 2, 3])",
+            "b = np.array([[10], [20], [30]])",
+            "print((a + b).shape)"
+          ],
+          "why": "`(3,)` مع `(3, 1)` لا تسبب خطأ، بل تنتج `(3, 3)`: كل قيمة مع كل قيمة. إذا كنت تتوقع 3 نتائج فهذا خطأ منطقي صامت. تأكد من الأشكال.",
+          "fix": [
+            "import numpy as np",
+            "a = np.array([1, 2, 3])",
+            "b = np.array([[10], [20], [30]])",
+            "print((a + b.ravel()).shape)"
+          ]
+        },
+        {
+          "title": "توحيد بمتوسط كل المصفوفة بدل كل عمود",
+          "wrong": [
+            "import numpy as np",
+            "X = np.array([[25, 1200], [35, 3400]], dtype=float)",
+            "print(X - X.mean())"
+          ],
+          "why": "`X.mean()` بدون `axis` متوسط واحد لكل القيم، فتخلط الأعمار بالرواتب. التوحيد يكون لكل عمود: `axis=0`.",
+          "fix": [
+            "import numpy as np",
+            "X = np.array([[25, 1200], [35, 3400]], dtype=float)",
+            "print(X - X.mean(axis=0))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "مقارنة الفروع بالنسبة إلى المتوسط",
+    "prompt": [
+      "مصفوفة `sales` لثلاثة فروع × 4 أرباع. استخدم Broadcasting فقط:"
+    ],
+    "requirements": [
+      "`quarter_avg`: متوسط كل ربع عبر الفروع (شكل `(4,)`).",
+      "`vs_avg`: الفرق بين مبيعات كل فرع ومتوسط الربع (نفس شكل `sales`).",
+      "`branch_share`: حصة كل ربع من إجمالي الفرع كنسبة مئوية مقربة لمنزلة واحدة (نفس شكل `sales`).",
+      "`adjusted`: المبيعات بعد تطبيق معامل تعديل لكل فرع من `factors` (فرع 1 × 1.0، فرع 2 × 1.1، فرع 3 × 0.9)."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "",
+      "sales = np.array([",
+      "    [100, 120, 140, 160],",
+      "    [80, 90, 110, 120],",
+      "    [60, 90, 80, 70],",
+      "])",
+      "factors = np.array([1.0, 1.1, 0.9])",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import numpy as _np",
+      "assert _np.allclose(quarter_avg, [80, 100, 110, 116.6666667]), f\"quarter_avg غير صحيحة: {quarter_avg}\"",
+      "assert vs_avg.shape == (3, 4) and _np.allclose(vs_avg[0], [20, 20, 30, 43.3333333]), \"vs_avg غير صحيحة\"",
+      "assert branch_share.shape == (3, 4) and _np.allclose(branch_share[0], [19.2, 23.1, 26.9, 30.8]), f\"branch_share غير صحيحة: {branch_share[0]}\"",
+      "assert _np.allclose(branch_share.sum(axis=1), [100, 100, 100], atol=0.2), \"حصص كل فرع يجب أن يكون مجموعها 100 تقريباً\"",
+      "assert _np.allclose(adjusted[1], [88, 99, 121, 132]) and _np.allclose(adjusted[2], [54, 81, 72, 63]), \"adjusted غير صحيحة\"",
+      "assert \"for \" not in __code__, \"حل بدون حلقات\""
+    ],
+    "hints": [
+      "متوسط كل ربع: `sales.mean(axis=0)`، ويُطرح مباشرة لأن شكله `(4,)`.",
+      "إجمالي كل فرع وقيم `factors` لكل **صف**، فحوّلهما إلى عمود بـ `reshape(-1, 1)`."
+    ],
+    "solution": [
+      "import numpy as np",
+      "",
+      "sales = np.array([",
+      "    [100, 120, 140, 160],",
+      "    [80, 90, 110, 120],",
+      "    [60, 90, 80, 70],",
+      "])",
+      "factors = np.array([1.0, 1.1, 0.9])",
+      "",
+      "quarter_avg = sales.mean(axis=0)",
+      "vs_avg = sales - quarter_avg",
+      "branch_share = (sales / sales.sum(axis=1).reshape(-1, 1) * 100).round(1)",
+      "adjusted = sales * factors.reshape(-1, 1)",
+      "",
+      "print(quarter_avg)",
+      "print(branch_share)",
+      "print(adjusted)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "ما شكل ناتج `np.ones((5, 3)) * np.array([1, 2, 3])`؟",
+    "options": [
+      "`(5, 3)`",
+      "`(3,)`",
+      "`(5,)`",
+      "خطأ: الأشكال غير متوافقة"
+    ],
+    "answer": 0,
+    "explanation": "من اليمين 3 تطابق 3، فالصف `(3,)` يُمدّ على الصفوف الخمسة."
+  },
+  "summary": [
+    "Broadcasting يمدّ الأبعاد التي قيمتها 1 لتطابق الشكل الآخر، والمقارنة تبدأ من اليمين.",
+    "صف `(n_cols,)` يُطبّق على كل صف، وعمود `(n_rows, 1)` يُطبّق على كل عمود.",
+    "`reshape(-1, 1)` لتحويل قيم \"لكل صف\" إلى عمود.",
+    "التوحيد `(X - X.mean(axis=0)) / X.std(axis=0)` مثال عملي أساسي."
+  ]
+}

@@ -1,0 +1,312 @@
+{
+  "slug": "numpy-performance",
+  "course": "numpy",
+  "module": "numpy-compute",
+  "order": 11,
+  "title": "الأداء وأفضل الممارسات",
+  "title_en": "Performance",
+  "minutes": 15,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تقيس حجم المصفوفة في الذاكرة وتختار `dtype` مناسباً.",
+    "تتجنب الأنماط البطيئة مثل `np.append` داخل حلقة.",
+    "تخصص المصفوفات مسبقاً أو تجمع في قائمة ثم تحوّل.",
+    "تلخص قواعد كتابة كود NumPy سريع وواضح."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "أين يضيع الأداء؟",
+      "body": [
+        "NumPy سريعة **عندما تستخدمها كما صُممت**: عمليات على مصفوفات كاملة. أبطأ الأنماط الشائعة:",
+        {
+          "list": [
+            "**حلقة Python على عناصر مصفوفة** لإجراء حساب يمكن كتابته متجهاً.",
+            "**`np.append` داخل حلقة**: كل استدعاء ينشئ مصفوفة جديدة وينسخ كل ما سبق، فيصبح الوقت تربيعياً.",
+            "**نوع بيانات أكبر من اللازم**: `float64` لقيم لا تحتاج هذه الدقة يضاعف الذاكرة.",
+            "**مصفوفات `object`**: خلط الأنواع يجعل NumPy تتعامل مع كائنات Python فتفقد سرعتها."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "النوع",
+              "البايتات لكل عنصر",
+              "المدى / الدقة"
+            ],
+            "rows": [
+              [
+                "`int8`",
+                "1",
+                "من -128 إلى 127"
+              ],
+              [
+                "`int32`",
+                "4",
+                "± 2.1 مليار"
+              ],
+              [
+                "`int64`",
+                "8",
+                "ضخم جداً (الافتراضي)"
+              ],
+              [
+                "`float32`",
+                "4",
+                "حوالي 7 أرقام دقيقة"
+              ],
+              [
+                "`float64`",
+                "8",
+                "حوالي 15 رقماً دقيقاً (الافتراضي)"
+              ],
+              [
+                "`bool`",
+                "1",
+                "True / False"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "مع ملايين الصفوف يصبح الفرق بين دقيقة وساعة، أو بين برنامج يعمل وبرنامج يتوقف لنفاد الذاكرة. هذه العادات نفسها تنطبق على Pandas: تجنّب الحلقات على الصفوف، واختر الأنواع المناسبة للأعمدة. والتعلم العميق يستخدم `float32` افتراضياً لهذا السبب تحديداً."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "ابدأ دائماً بالحل المتجه الواضح. لا تحسّن الأداء قبل أن تقيسه.",
+            "إذا كان عدد العناصر غير معروف مسبقاً: اجمع في قائمة Python ثم `np.array(list)` مرة واحدة.",
+            "إذا كان معروفاً: خصص `np.empty(n)` أو `np.zeros(n)` ثم املأ.",
+            "صغّر الأنواع فقط عندما تكون الذاكرة مشكلة فعلية، وبعد التأكد من مدى القيم."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الذاكرة ونوع البيانات",
+      "code": [
+        "import numpy as np",
+        "",
+        "ages = np.arange(1_000_000) % 100",
+        "print(ages.dtype, ages.itemsize, \"bytes\")",
+        "print(f\"{ages.nbytes / 1e6:.1f} MB\")",
+        "",
+        "small = ages.astype(np.int8)",
+        "print(small.dtype, f\"{small.nbytes / 1e6:.1f} MB\")",
+        "print(np.array_equal(ages, small))",
+        "",
+        "overflow = np.array([120, 10], dtype=np.int8) + np.int8(10)",
+        "print(overflow)"
+      ],
+      "explanation": [
+        {
+          "code": "ages.itemsize / nbytes",
+          "text": "حجم العنصر الواحد، والحجم الكلي للمصفوفة بالبايت."
+        },
+        {
+          "code": "astype(np.int8)",
+          "text": "الأعمار بين 0 و 99 تكفيها `int8`: الذاكرة تنخفض من 8 إلى 1 ميغابايت دون فقدان أي قيمة."
+        },
+        {
+          "code": "overflow",
+          "text": "لكن احذر: 120 + 10 = 130 تتجاوز حد `int8` (127) فتلتف إلى رقم سالب بصمت. اختر النوع بعد معرفة المدى."
+        }
+      ],
+      "expected_output": [
+        "int64 8 bytes",
+        "8.0 MB",
+        "int8 1.0 MB",
+        "True",
+        "[-126   20]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "np.append داخل حلقة مقابل البدائل",
+      "code": [
+        "import timeit",
+        "import numpy as np",
+        "",
+        "n = 20_000",
+        "",
+        "def with_append():",
+        "    result = np.array([])",
+        "    for i in range(n):",
+        "        result = np.append(result, i * 2)",
+        "    return result",
+        "",
+        "def with_list():",
+        "    items = []",
+        "    for i in range(n):",
+        "        items.append(i * 2)",
+        "    return np.array(items)",
+        "",
+        "def vectorized():",
+        "    return np.arange(n) * 2",
+        "",
+        "for f in (with_append, with_list, vectorized):",
+        "    t = min(timeit.repeat(f, number=1, repeat=3))",
+        "    print(f\"{f.__name__:<12} {t * 1000:8.2f} ms\")",
+        "",
+        "print(np.array_equal(with_append(), vectorized()))"
+      ],
+      "explanation": [
+        {
+          "code": "np.append داخل الحلقة",
+          "text": "كل استدعاء ينسخ المصفوفة كاملة إلى مصفوفة جديدة: الأبطأ بفارق كبير."
+        },
+        {
+          "code": "قائمة ثم np.array",
+          "text": "`append` في القوائم رخيصة، ثم تحويل واحد في النهاية."
+        },
+        {
+          "code": "np.arange(n) * 2",
+          "text": "الحل المتجه هو الأسرع دائماً عندما يكون ممكناً."
+        }
+      ],
+      "expected_output": null,
+      "output_varies": true,
+      "run_note": "الأزمنة تختلف حسب الجهاز، لكن الترتيب ثابت: المتجه أسرع، ثم القائمة، ثم `np.append` الأبطأ بمراحل."
+    },
+    {
+      "type": "notes",
+      "items": [
+        "**قواعد مختصرة**: فكّر في المصفوفة كلها. استخدم الأقنعة بدل `if` داخل حلقة. استخدم `axis` بدل حلقة على الصفوف. لا تستخدم `np.append` في حلقة. اطبع `shape` و `dtype` كثيراً.",
+        "عمليات مثل `a += 1` تعدّل المصفوفة في مكانها دون إنشاء نسخة، فتوفر الذاكرة مع المصفوفات الكبيرة.",
+        "`np.vectorize` لا تجعل الكود أسرع؛ هي مجرد حلقة بشكل مختلف. السرعة الحقيقية من ufuncs والعمليات المدمجة."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "مصفوفة object بسبب خلط الأنواع",
+          "wrong": [
+            "import numpy as np",
+            "mixed = np.array([10, \"20\", 30], dtype=object)",
+            "print(mixed.dtype, mixed * 2)"
+          ],
+          "why": "خلط نصوص وأرقام بـ `dtype=object` يجعل كل عنصر كائن Python، فتفقد NumPy سرعتها وتفشل بعض العمليات.",
+          "fix": [
+            "import numpy as np",
+            "clean = np.array([10, \"20\", 30], dtype=object).astype(int)",
+            "print(clean.dtype, clean * 2)"
+          ]
+        },
+        {
+          "title": "تجاوز حد النوع الصغير",
+          "wrong": [
+            "import numpy as np",
+            "pixels = np.array([250, 100], dtype=np.uint8)",
+            "print(pixels + np.uint8(10))"
+          ],
+          "why": "`uint8` من 0 إلى 255 فقط؛ 250 + 10 تلتف إلى 4 دون أي تحذير.",
+          "fix": [
+            "import numpy as np",
+            "pixels = np.array([250, 100], dtype=np.uint8)",
+            "print(pixels.astype(np.int16) + 10)"
+          ]
+        },
+        {
+          "title": "حلقة على الصفوف بدل axis",
+          "wrong": [
+            "import numpy as np",
+            "m = np.ones((3, 4))",
+            "totals = [row.sum() for row in m]",
+            "print(totals)"
+          ],
+          "why": "تعمل وتعطي نتيجة صحيحة، لكنها أبطأ بكثير مع البيانات الكبيرة وأطول في القراءة.",
+          "fix": [
+            "import numpy as np",
+            "m = np.ones((3, 4))",
+            "print(m.sum(axis=1))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "أعد كتابة الكود البطيء",
+    "prompt": [
+      "الكود الابتدائي صحيح لكنه بطيء ويستخدم `np.append` وحلقات. أعد كتابته بعمليات متجهة **بدون `for` وبدون `np.append`** مع نفس النتائج:"
+    ],
+    "requirements": [
+      "`scores`: مصفوفة الدرجات كما هي.",
+      "`curved`: كل درجة + 5 بحد أقصى 100.",
+      "`passed`: الدرجات بعد الزيادة التي تساوي 60 أو أكثر.",
+      "`letter`: مصفوفة فيها `\"A\"` للدرجة 90 فأكثر، و `\"B\"` من 75 إلى أقل من 90، و `\"C\"` لغير ذلك (بعد الزيادة). تلميح: `np.where` متداخلة."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "",
+      "scores = np.array([88, 52, 97, 60, 41, 73, 85, 58])",
+      "",
+      "curved = np.array([])",
+      "passed = np.array([])",
+      "letter = []",
+      "for s in scores:",
+      "    c = min(s + 5, 100)",
+      "    curved = np.append(curved, c)",
+      "    if c >= 60:",
+      "        passed = np.append(passed, c)",
+      "    if c >= 90:",
+      "        letter.append(\"A\")",
+      "    elif c >= 75:",
+      "        letter.append(\"B\")",
+      "    else:",
+      "        letter.append(\"C\")",
+      "letter = np.array(letter)",
+      "",
+      "print(curved, passed, letter)"
+    ],
+    "tests": [
+      "import numpy as _np",
+      "assert \"for \" not in __code__ and \"np.append\" not in __code__, \"أعد الكتابة بدون for وبدون np.append\"",
+      "assert _np.array_equal(curved, [93, 57, 100, 65, 46, 78, 90, 63]), f\"curved غير صحيحة: {curved}\"",
+      "assert _np.array_equal(passed, [93, 100, 65, 78, 90, 63]), f\"passed غير صحيحة: {passed}\"",
+      "assert list(letter) == [\"A\", \"C\", \"A\", \"C\", \"C\", \"B\", \"A\", \"C\"], f\"letter غير صحيحة: {letter}\""
+    ],
+    "hints": [
+      "`np.minimum(scores + 5, 100)` بدل `min` داخل حلقة.",
+      "`curved[curved >= 60]` للتصفية.",
+      "`np.where(c >= 90, \"A\", np.where(c >= 75, \"B\", \"C\"))`."
+    ],
+    "solution": [
+      "import numpy as np",
+      "",
+      "scores = np.array([88, 52, 97, 60, 41, 73, 85, 58])",
+      "",
+      "curved = np.minimum(scores + 5, 100)",
+      "passed = curved[curved >= 60]",
+      "letter = np.where(curved >= 90, \"A\", np.where(curved >= 75, \"B\", \"C\"))",
+      "",
+      "print(curved, passed, letter)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "ما أفضل طريقة لبناء مصفوفة من نتائج حلقة لا تعرف عدد تكراراتها مسبقاً؟",
+    "options": [
+      "`np.append` في كل تكرار",
+      "جمع النتائج في قائمة Python ثم `np.array(list)` مرة واحدة",
+      "إنشاء مصفوفة `object`",
+      "تحويل كل نتيجة إلى نص"
+    ],
+    "answer": 1,
+    "explanation": "`append` على القوائم رخيصة، والتحويل مرة واحدة في النهاية. أما `np.append` فتنسخ المصفوفة كلها في كل مرة."
+  },
+  "summary": [
+    "الأداء في NumPy يأتي من العمليات المتجهة وليس من الحلقات.",
+    "لا تستخدم `np.append` في حلقة: اجمع في قائمة ثم حوّل، أو خصص مسبقاً.",
+    "`itemsize` و `nbytes` لقياس الذاكرة، واختر `dtype` بعد معرفة مدى القيم.",
+    "تجنّب مصفوفات `object` وتجاوز حدود الأنواع الصغيرة."
+  ]
+}

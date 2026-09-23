@@ -1,0 +1,342 @@
+{
+  "slug": "numpy-vectorization",
+  "course": "numpy",
+  "module": "numpy-compute",
+  "order": 6,
+  "title": "Vectorization و ufuncs",
+  "title_en": "Vectorization",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تحوّل حسابات مكتوبة بحلقات إلى عمليات متجهة على المصفوفات.",
+    "تستخدم الدوال العامة ufuncs مثل `np.sqrt` و `np.log` و `np.exp` و `np.abs`.",
+    "تحسب التغير النسبي بين قيم متتالية بالاقتطاع.",
+    "تفهم أن العمليات بين مصفوفتين تتم عنصراً بعنصر."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "فكّر في المصفوفة كلها",
+      "body": [
+        "**Vectorization** يعني أن تكتب العملية مرة واحدة على المصفوفة كلها بدلاً من حلقة على عناصرها. العمليات الحسابية `+ - * / ** // %` والمقارنات كلها تعمل عنصراً بعنصر بين مصفوفتين بنفس الشكل، أو بين مصفوفة ورقم.",
+        "**ufuncs** (Universal Functions) دوال رياضية في NumPy تُطبّق على كل عنصر بسرعة:",
+        {
+          "table": {
+            "head": [
+              "الدالة",
+              "المعنى",
+              "استخدام في البيانات"
+            ],
+            "rows": [
+              [
+                "`np.sqrt`",
+                "الجذر التربيعي",
+                "الانحراف المعياري، RMSE"
+              ],
+              [
+                "`np.log` / `np.log1p`",
+                "اللوغاريتم الطبيعي / لوغاريتم (1 + x)",
+                "تقليل انحراف البيانات الكبيرة (دخل، أسعار)"
+              ],
+              [
+                "`np.exp`",
+                "الأس الطبيعي",
+                "عكس اللوغاريتم، النمو المركب"
+              ],
+              [
+                "`np.abs`",
+                "القيمة المطلقة",
+                "حجم الخطأ بغض النظر عن إشارته"
+              ],
+              [
+                "`np.round` / `np.floor` / `np.ceil`",
+                "التقريب",
+                "عرض النتائج"
+              ],
+              [
+                "`np.maximum(a, b)`",
+                "الأكبر عنصراً بعنصر",
+                "حد أدنى لقيمة"
+              ]
+            ]
+          }
+        },
+        "حيلة مهمة: **الاقتطاع المزاح** `a[1:] - a[:-1]` يطرح كل عنصر من الذي يليه، وهي طريقة حساب التغيرات المتتالية بدون حلقة. وتوجد دالة جاهزة لذلك: `np.diff(a)`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "الكود المتجه أقصر وأوضح (يشبه المعادلة الرياضية) وأسرع بكثير. وكل مؤشر تحسبه لاحقاً في Pandas أو في تقييم النماذج مكتوب بهذه الطريقة: الخطأ المطلق `np.abs(y - pred)`، والتغير الشهري، وتحويل اللوغاريتم قبل النمذجة."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "كلما وجدت نفسك تكتب `for` على عناصر مصفوفة لإجراء حساب، ابحث عن الصيغة المتجهة.",
+            "`np.log1p` للبيانات الموجبة المنحرفة التي فيها أصفار (مبيعات يومية، عدد زيارات).",
+            "الحلقات تبقى مقبولة للمنطق المعقد الذي لا يُكتب كمعادلة، لكنها استثناء وليست القاعدة."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "من حلقة إلى عملية متجهة",
+      "code": [
+        "import numpy as np",
+        "",
+        "price = np.array([149, 59, 399, 129])",
+        "qty = np.array([3, 10, 1, 4])",
+        "discount = np.array([0.1, 0, 0.2, 0.05])",
+        "",
+        "revenue = price * qty * (1 - discount)",
+        "print(revenue)",
+        "print(revenue.sum())",
+        "",
+        "loop_revenue = []",
+        "for p, q, d in zip(price, qty, discount):",
+        "    loop_revenue.append(p * q * (1 - d))",
+        "print(np.allclose(revenue, loop_revenue))"
+      ],
+      "explanation": [
+        {
+          "code": "price * qty * (1 - discount)",
+          "text": "المعادلة نفسها تُكتب مرة واحدة وتُطبّق على كل الطلبات عنصراً بعنصر."
+        },
+        {
+          "code": "loop_revenue",
+          "text": "نفس الحساب بحلقة: أطول وأبطأ ويعطي النتيجة نفسها."
+        },
+        {
+          "code": "np.allclose(a, b)",
+          "text": "مقارنة مصفوفتين عشريتين مع تسامح صغير في الكسور؛ لا تستخدم `==` مع الأعداد العشرية."
+        }
+      ],
+      "expected_output": [
+        "[402.3 590.  319.2 490.2]",
+        "1801.7",
+        "True"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "ufuncs",
+      "code": [
+        "import numpy as np",
+        "",
+        "errors = np.array([-12.0, 5.0, -3.0, 8.0])",
+        "print(np.abs(errors))",
+        "print(np.sqrt(np.mean(errors ** 2)).round(2))",
+        "",
+        "incomes = np.array([3000, 8000, 15000, 120000])",
+        "print(np.log10(incomes).round(2))",
+        "",
+        "visits = np.array([0, 9, 99, 999])",
+        "print(np.log1p(visits).round(2))",
+        "",
+        "print(np.maximum(np.array([40, 75, 55]), 60))"
+      ],
+      "explanation": [
+        {
+          "code": "np.abs(errors)",
+          "text": "حجم الخطأ بغض النظر عن إشارته، أساس مقياس MAE."
+        },
+        {
+          "code": "np.sqrt(np.mean(errors ** 2))",
+          "text": "الجذر التربيعي لمتوسط مربعات الأخطاء: هذا هو مقياس RMSE الذي ستقيّم به نماذج الانحدار."
+        },
+        {
+          "code": "np.log10(incomes)",
+          "text": "اللوغاريتم يقرّب القيم المتباعدة: الدخل من 3,000 إلى 120,000 يصبح من 3.48 إلى 5.08."
+        },
+        {
+          "code": "np.log1p(visits)",
+          "text": "`log(1 + x)` تعمل مع الصفر، بينما `log(0)` غير معرّفة."
+        },
+        {
+          "code": "np.maximum(arr, 60)",
+          "text": "لكل عنصر الأكبر بينه وبين 60: حد أدنى."
+        }
+      ],
+      "expected_output": [
+        "[12.  5.  3.  8.]",
+        "7.78",
+        "[3.48 3.9  4.18 5.08]",
+        "[0.   2.3  4.61 6.91]",
+        "[60 75 60]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "التغيرات المتتالية",
+      "code": [
+        "import numpy as np",
+        "",
+        "monthly = np.array([36403, 24449, 45481, 41942, 36561, 27338])",
+        "",
+        "change = monthly[1:] - monthly[:-1]",
+        "print(change)",
+        "print(np.array_equal(change, np.diff(monthly)))",
+        "",
+        "pct = (monthly[1:] / monthly[:-1] - 1) * 100",
+        "print(pct.round(1))",
+        "",
+        "growth_months = np.arange(2, 7)[change > 0]",
+        "print(\"أشهر النمو:\", growth_months)"
+      ],
+      "explanation": [
+        {
+          "code": "monthly[1:] - monthly[:-1]",
+          "text": "من الشهر الثاني ناقص من الأول حتى ما قبل الأخير: كل شهر ناقص الذي قبله."
+        },
+        {
+          "code": "np.diff(monthly)",
+          "text": "الدالة الجاهزة لنفس العملية."
+        },
+        {
+          "code": "(monthly[1:] / monthly[:-1] - 1) * 100",
+          "text": "نسبة التغير الشهري (Month over Month)."
+        },
+        {
+          "code": "np.arange(2, 7)[change > 0]",
+          "text": "أرقام الأشهر التي حدث فيها نمو، بالجمع بين القناع و Vectorization."
+        }
+      ],
+      "expected_output": [
+        "[-11954  21032  -3539  -5381  -9223]",
+        "True",
+        "[-32.8  86.   -7.8 -12.8 -25.2]",
+        "أشهر النمو: [3]"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "العمليات بين مصفوفتين تتطلب نفس الشكل، أو أشكالاً متوافقة حسب قواعد Broadcasting (الدرس القادم).",
+        "القسمة على صفر في NumPy لا توقف البرنامج؛ تعطي `inf` أو `nan` مع تحذير. افحص المقام أو استخدم `np.where`.",
+        "`np.log` للأرقام السالبة تعطي `nan`. تأكد أن البيانات موجبة قبل تحويل اللوغاريتم."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "مصفوفتان بطولين مختلفين",
+          "wrong": [
+            "import numpy as np",
+            "print(np.array([1, 2, 3]) + np.array([10, 20]))"
+          ],
+          "error": "ValueError: operands could not be broadcast together with shapes (3,) (2,) ",
+          "error_type": "ValueError",
+          "why": "العملية عنصراً بعنصر تحتاج نفس الطول (أو شكلاً متوافقاً).",
+          "fix": [
+            "import numpy as np",
+            "print(np.array([1, 2, 3]) + np.array([10, 20, 30]))"
+          ]
+        },
+        {
+          "title": "استخدام دالة math مع مصفوفة",
+          "wrong": [
+            "import math",
+            "import numpy as np",
+            "print(math.sqrt(np.array([4, 9])))"
+          ],
+          "error": "TypeError: only length-1 arrays can be converted to Python scalars",
+          "error_type": "TypeError",
+          "why": "دوال الوحدة `math` تعمل مع رقم واحد فقط. استخدم نظيرتها في NumPy.",
+          "fix": [
+            "import numpy as np",
+            "print(np.sqrt(np.array([4, 9])))"
+          ]
+        },
+        {
+          "title": "مقارنة أعداد عشرية بـ ==",
+          "wrong": [
+            "import numpy as np",
+            "print(np.array([0.1 + 0.2]) == np.array([0.3]))"
+          ],
+          "why": "بسبب دقة الكسور قد تكون النتيجة `False` رغم التساوي الرياضي. استخدم `np.allclose` أو `np.isclose`.",
+          "fix": [
+            "import numpy as np",
+            "print(np.isclose(np.array([0.1 + 0.2]), np.array([0.3])))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تقييم دقة توقعات المبيعات",
+    "prompt": [
+      "لديك المبيعات الفعلية `actual` والمتوقعة `forecast` لستة أيام. احسب بدون حلقات:"
+    ],
+    "requirements": [
+      "`errors`: الفرق `actual - forecast`.",
+      "`mae`: متوسط القيمة المطلقة للأخطاء، كرقم `float` مقرب لمنزلتين.",
+      "`rmse`: الجذر التربيعي لمتوسط مربعات الأخطاء، كرقم `float` مقرب لمنزلتين.",
+      "`mape`: متوسط `|خطأ| ÷ الفعلي × 100` كرقم `float` مقرب لمنزلة واحدة.",
+      "`worst_day`: رقم اليوم (من 1 إلى 6) صاحب أكبر خطأ مطلق، كرقم `int` (استخدم `np.argmax`)."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "",
+      "actual = np.array([520, 480, 610, 450, 700, 530])",
+      "forecast = np.array([500, 500, 560, 470, 620, 540])",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import numpy as _np",
+      "assert _np.array_equal(errors, [20, -20, 50, -20, 80, -10]), f\"errors غير صحيحة: {errors}\"",
+      "assert isinstance(mae, float) and mae == 33.33, f\"mae يجب أن يكون 33.33، والموجود {mae}\"",
+      "assert isinstance(rmse, float) and rmse == 41.23, f\"rmse يجب أن يكون 41.23، والموجود {rmse}\"",
+      "assert isinstance(mape, float) and mape == 5.7, f\"mape يجب أن يكون 5.7، والموجود {mape}\"",
+      "assert worst_day == 5 and isinstance(worst_day, int), f\"worst_day يجب أن يكون 5 (int)، والموجود {worst_day!r}\"",
+      "assert \"for \" not in __code__, \"احسب بدون حلقات\""
+    ],
+    "hints": [
+      "`np.abs(errors).mean()` للـ MAE، و `np.sqrt((errors ** 2).mean())` للـ RMSE.",
+      "`np.argmax` ترجع **موضع** أكبر قيمة (يبدأ من 0)، فأضف 1 لرقم اليوم.",
+      "حوّل النتائج بـ `float()` و `int()` قبل التقريب."
+    ],
+    "solution": [
+      "import numpy as np",
+      "",
+      "actual = np.array([520, 480, 610, 450, 700, 530])",
+      "forecast = np.array([500, 500, 560, 470, 620, 540])",
+      "",
+      "errors = actual - forecast",
+      "mae = round(float(np.abs(errors).mean()), 2)",
+      "rmse = round(float(np.sqrt((errors ** 2).mean())), 2)",
+      "mape = round(float((np.abs(errors) / actual * 100).mean()), 1)",
+      "worst_day = int(np.argmax(np.abs(errors))) + 1",
+      "",
+      "print(errors, mae, rmse, mape, worst_day)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import numpy as np",
+      "a = np.array([10, 13, 11, 20])",
+      "print(np.diff(a))"
+    ],
+    "options": [
+      "[ 3 -2  9]",
+      "[10 13 11 20]",
+      "[3 2 9]",
+      "[ 0  3 -2  9]"
+    ],
+    "answer": 0,
+    "explanation": "`diff` تطرح كل عنصر من الذي يليه: 13−10، 11−13، 20−11، فتعطي 3 قيم."
+  },
+  "summary": [
+    "Vectorization: اكتب المعادلة على المصفوفة كلها بدلاً من حلقة.",
+    "ufuncs مثل `np.sqrt` و `np.log1p` و `np.abs` و `np.maximum` تُطبّق على كل عنصر.",
+    "`a[1:] - a[:-1]` أو `np.diff` للتغيرات المتتالية.",
+    "`np.allclose` و `np.isclose` لمقارنة الأعداد العشرية."
+  ]
+}

@@ -1,0 +1,354 @@
+{
+  "slug": "numpy-masking",
+  "course": "numpy",
+  "module": "numpy-arrays",
+  "order": 5,
+  "title": "Boolean Masking و Fancy Indexing",
+  "title_en": "Boolean Masking",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تنشئ أقنعة منطقية من شروط وتستخدمها لتصفية البيانات.",
+    "تجمع الشروط بـ `&` و `|` و `~` مع الأقواس.",
+    "تستخدم `np.where` للاختيار الشرطي، و Fancy Indexing لاختيار مواضع محددة.",
+    "تعدّ القيم التي تحقق شرطاً وتستبدل القيم الشاذة."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "القناع المنطقي",
+      "body": [
+        "عندما تقارن مصفوفة بقيمة `sales > 500` لا تحصل على `True` واحدة، بل على **مصفوفة من القيم المنطقية** بنفس الشكل، لكل عنصر إجابته. هذه المصفوفة تسمى **قناعاً mask**، وعندما تضعها داخل الأقواس `sales[mask]` تحصل على العناصر التي قيمتها في القناع `True` فقط.",
+        {
+          "table": {
+            "head": [
+              "العملية",
+              "الكتابة في NumPy",
+              "ملاحظة"
+            ],
+            "rows": [
+              [
+                "و",
+                "`(a > 5) & (a < 10)`",
+                "**الأقواس إلزامية**"
+              ],
+              [
+                "أو",
+                "`(a < 2) | (a > 8)`",
+                "لا تستخدم `and` و `or`"
+              ],
+              [
+                "نفي",
+                "`~(a > 5)`",
+                "لا تستخدم `not`"
+              ],
+              [
+                "عدّ ما يحقق الشرط",
+                "`(a > 5).sum()`",
+                "`True` تساوي 1"
+              ],
+              [
+                "نسبة ما يحقق الشرط",
+                "`(a > 5).mean()`",
+                "متوسط الآحاد والأصفار"
+              ],
+              [
+                "اختيار شرطي",
+                "`np.where(a > 5, \"عالٍ\", \"منخفض\")`",
+                "مثل `if/else` لكل عنصر"
+              ]
+            ]
+          }
+        },
+        "**Fancy Indexing**: تمرير قائمة مواضع بدل رقم واحد: `a[[0, 3, 5]]` تعطي العناصر في هذه المواضع بالترتيب الذي تحدده.",
+        "وعلى عكس الاقتطاع، التصفية بالقناع و Fancy Indexing **تنشئ نسخة** جديدة."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "التصفية هي أكثر عملية تجريها على البيانات: الطلبات فوق 500، والقراءات الصالحة، والعملاء في مدينة معينة. والقناع المنطقي هو الطريقة التي يعمل بها Pandas تماماً: `df[df[\"amount\"] > 500]` هي نفس الفكرة. وحيلة `mask.mean()` لحساب النسب ستستخدمها كثيراً، مثل: ما نسبة الطلبات التي فيها خصم؟"
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`arr[mask]` لاستخراج العناصر التي تحقق شرطاً.",
+            "`arr[mask] = value` لاستبدال القيم التي تحقق شرطاً (مثل القيم الشاذة أو الرموز الخاطئة).",
+            "`np.where(cond, a, b)` لإنشاء مصفوفة جديدة تختار لكل عنصر قيمة من اثنتين.",
+            "Fancy Indexing لاختيار صفوف أو عناصر بمواضع معروفة، أو لإعادة الترتيب."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "التصفية بقناع",
+      "code": [
+        "import numpy as np",
+        "",
+        "orders = np.array([250, 90, 410, 35, 180, 620, 75])",
+        "",
+        "mask = orders > 200",
+        "print(mask)",
+        "print(orders[mask])",
+        "print(orders[orders < 100])",
+        "print(\"عدد الطلبات الكبيرة:\", mask.sum())",
+        "print(f\"نسبتها: {mask.mean():.0%}\")"
+      ],
+      "explanation": [
+        {
+          "code": "mask = orders > 200",
+          "text": "مصفوفة منطقية بنفس الطول: إجابة الشرط لكل طلب."
+        },
+        {
+          "code": "orders[mask]",
+          "text": "تبقي العناصر المقابلة لـ `True` فقط."
+        },
+        {
+          "code": "orders[orders < 100]",
+          "text": "الطريقة المختصرة: الشرط مباشرة داخل الأقواس."
+        },
+        {
+          "code": "mask.sum() / mask.mean()",
+          "text": "`True` = 1، فالمجموع عدد، والمتوسط نسبة."
+        }
+      ],
+      "expected_output": [
+        "[ True False  True False False  True False]",
+        "[250 410 620]",
+        "[90 35 75]",
+        "عدد الطلبات الكبيرة: 3",
+        "نسبتها: 43%"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "شروط مركبة و np.where",
+      "code": [
+        "import numpy as np",
+        "",
+        "amounts = np.array([250, 90, 410, 35, 180, 620, 75])",
+        "discounts = np.array([0, 0.1, 0.2, 0, 0.05, 0.2, 0])",
+        "",
+        "big_discounted = amounts[(amounts > 200) & (discounts > 0)]",
+        "print(big_discounted)",
+        "",
+        "edge = amounts[(amounts < 50) | (amounts > 600)]",
+        "print(edge)",
+        "",
+        "no_discount = amounts[~(discounts > 0)]",
+        "print(no_discount)",
+        "",
+        "size = np.where(amounts >= 200, \"كبير\", \"صغير\")",
+        "print(size)"
+      ],
+      "explanation": [
+        {
+          "code": "(amounts > 200) & (discounts > 0)",
+          "text": "\"و\" بين قناعين. الأقواس ضرورية لأن `&` تُنفّذ قبل `>`."
+        },
+        {
+          "code": "|",
+          "text": "\"أو\": أصغر من 50 أو أكبر من 600."
+        },
+        {
+          "code": "~(discounts > 0)",
+          "text": "\"ليس\": الطلبات بلا خصم."
+        },
+        {
+          "code": "np.where(amounts >= 200, \"كبير\", \"صغير\")",
+          "text": "لكل عنصر: القيمة الأولى إذا تحقق الشرط، وإلا الثانية."
+        }
+      ],
+      "expected_output": [
+        "[410 620]",
+        "[ 35 620]",
+        "[250  35  75]",
+        "['كبير' 'صغير' 'كبير' 'صغير' 'صغير' 'كبير' 'صغير']"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "استبدال القيم الشاذة و Fancy Indexing",
+      "code": [
+        "import numpy as np",
+        "",
+        "readings = np.array([22.5, 23.1, -999.0, 24.0, 85.0, 23.7, -999.0])",
+        "",
+        "clean = readings.copy()",
+        "clean[clean == -999.0] = np.nan",
+        "print(clean)",
+        "print(\"المتوسط بدون المفقود:\", round(np.nanmean(clean), 2))",
+        "",
+        "capped = np.clip(readings[readings > -999], 20, 30)",
+        "print(capped)",
+        "",
+        "top_positions = [4, 3, 1]",
+        "print(readings[top_positions])"
+      ],
+      "explanation": [
+        {
+          "code": "clean[clean == -999.0] = np.nan",
+          "text": "نستبدل رمز القيمة المفقودة بـ `NaN` (Not a Number)، وهي الطريقة المعتادة لتمثيل المفقود في NumPy و Pandas."
+        },
+        {
+          "code": "np.nanmean(clean)",
+          "text": "متوسط يتجاهل `NaN`. الدالة العادية `mean` ستعطي `nan`."
+        },
+        {
+          "code": "np.clip(values, 20, 30)",
+          "text": "تقصّ القيم: ما دون 20 يصبح 20، وما فوق 30 يصبح 30. طريقة شائعة للتعامل مع القيم المتطرفة."
+        },
+        {
+          "code": "readings[[4, 3, 1]]",
+          "text": "Fancy Indexing: عناصر بمواضع نحددها وبالترتيب الذي نريده."
+        }
+      ],
+      "expected_output": [
+        "[22.5 23.1  nan 24.  85.  23.7  nan]",
+        "المتوسط بدون المفقود: 35.66",
+        "[22.5 23.1 24.  30.  23.7]",
+        "[85.  24.  23.1]"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "استخدم `&` و `|` و `~` مع المصفوفات، وضع كل شرط بين أقواس. `and` و `or` تعمل مع قيمة واحدة فقط.",
+        "`NaN` عدد عشري، فلا يمكن وضعه في مصفوفة أعداد صحيحة؛ حوّلها إلى `float` أولاً.",
+        "`np.nan == np.nan` نتيجتها `False`! للتحقق من القيم المفقودة استخدم `np.isnan(arr)`.",
+        "مع مصفوفة ثنائية الأبعاد: `m[m[:, 0] > 500]` تختار **الصفوف** التي عمودها الأول أكبر من 500."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "استخدام and بدل &",
+          "wrong": [
+            "import numpy as np",
+            "a = np.array([1, 5, 9])",
+            "print(a[(a > 2) and (a < 8)])"
+          ],
+          "error": "ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()",
+          "error_type": "ValueError",
+          "why": "`and` تحاول تحويل المصفوفة كلها إلى قيمة منطقية واحدة، وهذا غامض.",
+          "fix": [
+            "import numpy as np",
+            "a = np.array([1, 5, 9])",
+            "print(a[(a > 2) & (a < 8)])"
+          ]
+        },
+        {
+          "title": "نسيان الأقواس حول الشروط",
+          "wrong": [
+            "import numpy as np",
+            "a = np.array([1, 5, 9])",
+            "print(a[a > 2 & a < 8])"
+          ],
+          "error": "ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()",
+          "error_type": "ValueError",
+          "why": "`&` تُنفّذ قبل المقارنة، فيحاول NumPy حساب `2 & a` أولاً ثم مقارنة غريبة تسبب نفس الخطأ.",
+          "fix": [
+            "import numpy as np",
+            "a = np.array([1, 5, 9])",
+            "print(a[(a > 2) & (a < 8)])"
+          ]
+        },
+        {
+          "title": "وضع NaN في مصفوفة أعداد صحيحة",
+          "wrong": [
+            "import numpy as np",
+            "a = np.array([1, -1, 3])",
+            "a[a < 0] = np.nan"
+          ],
+          "error": "ValueError: cannot convert float NaN to integer",
+          "error_type": "ValueError",
+          "why": "`NaN` قيمة عشرية لا تُمثَّل في `int`.",
+          "fix": [
+            "import numpy as np",
+            "a = np.array([1, -1, 3], dtype=float)",
+            "a[a < 0] = np.nan",
+            "print(a)"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تنظيف قراءات أجهزة",
+    "prompt": [
+      "جهاز قياس سجّل 10 قراءات، ويستخدم `-1` للقراءة المفقودة، وأحياناً يسجّل قيماً مستحيلة فوق 60."
+    ],
+    "requirements": [
+      "`valid`: القراءات الصالحة فقط (ليست -1 وليست فوق 60).",
+      "`missing_count`: عدد القراءات المفقودة (-1).",
+      "`clean`: نسخة عشرية من `readings` تُستبدل فيها -1 والقيم فوق 60 بـ `np.nan`.",
+      "`avg`: متوسط `clean` متجاهلاً `NaN`، مقرباً لمنزلتين، كرقم `float` عادي.",
+      "`labels`: لكل قراءة في `readings`: `\"حار\"` إذا كانت 35 أو أكثر، وإلا `\"معتدل\"` (استخدم `np.where`)."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "",
+      "readings = np.array([31, 36, -1, 29, 72, 38, -1, 33, 40, 27])",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import numpy as _np",
+      "assert _np.array_equal(valid, [31, 36, 29, 38, 33, 40, 27]), f\"valid غير صحيحة: {valid}\"",
+      "assert missing_count == 2, f\"missing_count يجب أن يكون 2، والموجود {missing_count}\"",
+      "assert clean.dtype.kind == \"f\" and _np.isnan(clean).sum() == 3, \"clean يجب أن تكون عشرية وفيها 3 قيم NaN\"",
+      "assert _np.array_equal(readings, [31, 36, -1, 29, 72, 38, -1, 33, 40, 27]), \"لا تعدّل readings الأصلية\"",
+      "assert isinstance(avg, float) and avg == 33.43, f\"avg يجب أن يكون 33.43، والموجود {avg}\"",
+      "assert list(labels) == [\"معتدل\", \"حار\", \"معتدل\", \"معتدل\", \"حار\", \"حار\", \"معتدل\", \"معتدل\", \"حار\", \"معتدل\"], f\"labels غير صحيحة: {labels}\""
+    ],
+    "hints": [
+      "قناع القيم السيئة: `(readings == -1) | (readings > 60)`، ثم `readings[~is_bad]`.",
+      "`clean = readings.astype(float)` ثم `clean[is_bad] = np.nan`.",
+      "`round(float(np.nanmean(clean)), 2)`."
+    ],
+    "solution": [
+      "import numpy as np",
+      "",
+      "readings = np.array([31, 36, -1, 29, 72, 38, -1, 33, 40, 27])",
+      "",
+      "is_bad = (readings == -1) | (readings > 60)",
+      "valid = readings[~is_bad]",
+      "missing_count = int((readings == -1).sum())",
+      "clean = readings.astype(float)",
+      "clean[is_bad] = np.nan",
+      "avg = round(float(np.nanmean(clean)), 2)",
+      "labels = np.where(readings >= 35, \"حار\", \"معتدل\")",
+      "",
+      "print(valid, missing_count, avg)",
+      "print(labels)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import numpy as np",
+      "a = np.array([4, 9, 1, 7])",
+      "print(a[(a > 3) & (a < 8)], (a > 3).sum())"
+    ],
+    "options": [
+      "[4 7] 3",
+      "[4 9 7] 3",
+      "[4 7] 2",
+      "[9] 1"
+    ],
+    "answer": 0,
+    "explanation": "بين 3 و 8: 4 و 7. والقيم الأكبر من 3 ثلاث: 4 و 9 و 7."
+  },
+  "summary": [
+    "المقارنة مع مصفوفة تعطي قناعاً منطقياً، و `arr[mask]` تصفّي العناصر.",
+    "`&` و `|` و `~` مع أقواس حول كل شرط، وليس `and` و `or` و `not`.",
+    "`mask.sum()` عدد و `mask.mean()` نسبة، و `np.where` للاختيار الشرطي.",
+    "`np.nan` للقيم المفقودة مع `np.nanmean` و `np.isnan`، و `np.clip` لقص القيم المتطرفة."
+  ]
+}

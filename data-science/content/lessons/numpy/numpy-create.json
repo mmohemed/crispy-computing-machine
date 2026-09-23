@@ -1,0 +1,352 @@
+{
+  "slug": "numpy-create",
+  "course": "numpy",
+  "module": "numpy-arrays",
+  "order": 2,
+  "title": "إنشاء المصفوفات",
+  "title_en": "Creating Arrays",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تنشئ مصفوفات من القوائم أحادية وثنائية الأبعاد.",
+    "تستخدم `zeros` و `ones` و `full` و `arange` و `linspace`.",
+    "تولّد أرقاماً عشوائية قابلة للتكرار باستخدام `default_rng(seed)`.",
+    "تختار دالة الإنشاء المناسبة للموقف."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "طرق الإنشاء",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "الدالة",
+              "ماذا تعطي",
+              "مثال"
+            ],
+            "rows": [
+              [
+                "`np.array(list)`",
+                "مصفوفة من بيانات موجودة",
+                "`np.array([[1, 2], [3, 4]])`"
+              ],
+              [
+                "`np.zeros(shape)`",
+                "أصفار",
+                "`np.zeros(5)` أو `np.zeros((2, 3))`"
+              ],
+              [
+                "`np.ones(shape)`",
+                "آحاد",
+                "`np.ones(3)`"
+              ],
+              [
+                "`np.full(shape, value)`",
+                "قيمة ثابتة",
+                "`np.full(4, 100)`"
+              ],
+              [
+                "`np.arange(start, stop, step)`",
+                "تسلسل بخطوة (مثل `range`)",
+                "`np.arange(0, 10, 2)`"
+              ],
+              [
+                "`np.linspace(start, stop, n)`",
+                "`n` قيمة متساوية المسافات **تشمل النهاية**",
+                "`np.linspace(0, 1, 5)`"
+              ],
+              [
+                "`np.eye(n)`",
+                "مصفوفة الوحدة",
+                "`np.eye(3)`"
+              ],
+              [
+                "`rng.integers / random / normal`",
+                "أرقام عشوائية",
+                "`rng.normal(100, 15, 5)`"
+              ]
+            ]
+          }
+        },
+        "**الشكل shape** يُعطى كعدد للمصفوفة أحادية البعد، أو **كصف** للأبعاد المتعددة: `(2, 3)` تعني صفين وثلاثة أعمدة.",
+        {
+          "h": "الأرقام العشوائية القابلة للتكرار"
+        },
+        "الطريقة الحديثة الموصى بها: أنشئ **مولّداً** ببذرة ثابتة `rng = np.random.default_rng(42)` ثم اطلب منه الأرقام. نفس البذرة تعطي نفس الأرقام في كل تشغيل، وهذا ضروري حتى يستطيع غيرك إعادة إنتاج تحليلك."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "في التحليل تحتاج إنشاء مصفوفات باستمرار: مصفوفة أصفار تملؤها بالنتائج، وتسلسل أيام أو قيم لمحور رسم بياني، وبيانات عشوائية لتجربة فكرة أو محاكاة سيناريو، ومصفوفات ثنائية الأبعاد تمثل جدول مبيعات (فروع × أشهر)."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`np.array`: عندما تكون البيانات موجودة في قائمة.",
+            "`zeros` و `full`: لتجهيز مصفوفة ستملؤها لاحقاً.",
+            "`arange`: لتسلسل أعداد صحيحة بخطوة معروفة.",
+            "`linspace`: لتقسيم مدى إلى عدد محدد من النقاط (مثلاً لرسم منحنى).",
+            "`default_rng(seed)`: لأي عشوائية، مع تثبيت البذرة دائماً."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "من القوائم، وأحادية وثنائية الأبعاد",
+      "code": [
+        "import numpy as np",
+        "",
+        "daily = np.array([120, 95, 143, 80])",
+        "print(daily, daily.shape)",
+        "",
+        "sales = np.array([",
+        "    [540, 610, 580],",
+        "    [420, 390, 450],",
+        "    [310, 330, 360],",
+        "])",
+        "print(sales)",
+        "print(sales.shape)"
+      ],
+      "explanation": [
+        {
+          "code": "np.array([120, ...])",
+          "text": "مصفوفة أحادية البعد، وشكلها `(4,)`: أربعة عناصر."
+        },
+        {
+          "code": "np.array([[...], [...], [...]])",
+          "text": "قائمة من القوائم تصبح مصفوفة ثنائية الأبعاد: 3 فروع (صفوف) × 3 أشهر (أعمدة)."
+        },
+        {
+          "code": "sales.shape",
+          "text": "`(3, 3)`: عدد الصفوف ثم عدد الأعمدة."
+        }
+      ],
+      "expected_output": [
+        "[120  95 143  80] (4,)",
+        "[[540 610 580]",
+        " [420 390 450]",
+        " [310 330 360]]",
+        "(3, 3)"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "مصفوفات جاهزة وتسلسلات",
+      "code": [
+        "import numpy as np",
+        "",
+        "print(np.zeros(4))",
+        "print(np.ones((2, 3), dtype=int))",
+        "print(np.full(3, 7.5))",
+        "print(np.arange(0, 20, 5))",
+        "print(np.arange(5))",
+        "print(np.linspace(0, 1, 5))",
+        "print(np.eye(3, dtype=int))"
+      ],
+      "explanation": [
+        {
+          "code": "np.zeros(4)",
+          "text": "أصفار عشرية افتراضياً."
+        },
+        {
+          "code": "np.ones((2, 3), dtype=int)",
+          "text": "الشكل صف `(2, 3)`، و `dtype=int` لأعداد صحيحة."
+        },
+        {
+          "code": "np.arange(0, 20, 5)",
+          "text": "مثل `range`: لا تشمل النهاية 20."
+        },
+        {
+          "code": "np.linspace(0, 1, 5)",
+          "text": "خمس نقاط متساوية المسافات من 0 إلى 1 **شاملة** للنهاية."
+        },
+        {
+          "code": "np.eye(3)",
+          "text": "مصفوفة الوحدة: آحاد على القطر. ستحتاجها في الجبر الخطي."
+        }
+      ],
+      "expected_output": [
+        "[0. 0. 0. 0.]",
+        "[[1 1 1]",
+        " [1 1 1]]",
+        "[7.5 7.5 7.5]",
+        "[ 0  5 10 15]",
+        "[0 1 2 3 4]",
+        "[0.   0.25 0.5  0.75 1.  ]",
+        "[[1 0 0]",
+        " [0 1 0]",
+        " [0 0 1]]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "أرقام عشوائية بمولّد ببذرة ثابتة",
+      "code": [
+        "import numpy as np",
+        "",
+        "rng = np.random.default_rng(42)",
+        "print(rng.integers(1, 7, size=5))",
+        "print(rng.random(3).round(3))",
+        "print(rng.normal(loc=100, scale=15, size=4).round(1))",
+        "print(rng.choice([\"جدة\", \"الرياض\", \"أبها\"], size=4))",
+        "",
+        "rng2 = np.random.default_rng(42)",
+        "print(rng2.integers(1, 7, size=5))"
+      ],
+      "explanation": [
+        {
+          "code": "np.random.default_rng(42)",
+          "text": "مولّد ببذرة 42. كل ما يُطلب منه لاحقاً قابل للتكرار."
+        },
+        {
+          "code": "rng.integers(1, 7, size=5)",
+          "text": "خمسة أعداد صحيحة من 1 إلى 6 (النهاية غير مشمولة): رمي نرد خمس مرات."
+        },
+        {
+          "code": "rng.normal(loc=100, scale=15, size=4)",
+          "text": "قيم من التوزيع الطبيعي بمتوسط 100 وانحراف معياري 15. ستفهم هذا التوزيع في مستوى الإحصاء."
+        },
+        {
+          "code": "rng2 ... بنفس البذرة",
+          "text": "مولّد جديد بنفس البذرة يعطي نفس الأرقام الأولى بالضبط."
+        }
+      ],
+      "expected_output": [
+        "[1 5 4 3 3]",
+        "[0.697 0.094 0.976]",
+        "[101.9  95.3  99.7  87.2]",
+        "['أبها' 'الرياض' 'الرياض' 'جدة']",
+        "[1 5 4 3 3]"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "الشكل للأبعاد المتعددة صف: `np.zeros((2, 3))` وليس `np.zeros(2, 3)`.",
+        "`arange` مع خطوة عشرية قد تعطي عدداً غير متوقع من العناصر بسبب دقة الكسور؛ استخدم `linspace` عندما تعرف عدد النقاط.",
+        "ستجد في الأكواد القديمة `np.random.seed(42)` و `np.random.rand()`. تعمل، لكن `default_rng` هي الطريقة الموصى بها حالياً.",
+        "القوائم الداخلية يجب أن تكون بنفس الطول لتتكون مصفوفة ثنائية الأبعاد سليمة."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "تمرير الشكل كقيمتين منفصلتين",
+          "wrong": [
+            "import numpy as np",
+            "m = np.zeros(2, 3)"
+          ],
+          "error": "TypeError: Cannot interpret '3' as a data type",
+          "error_type": "TypeError",
+          "why": "المعامل الثاني لـ `zeros` هو النوع `dtype`، فظُن أن 3 نوع بيانات.",
+          "fix": [
+            "import numpy as np",
+            "m = np.zeros((2, 3))",
+            "print(m)"
+          ]
+        },
+        {
+          "title": "قوائم داخلية بأطوال مختلفة",
+          "wrong": [
+            "import numpy as np",
+            "m = np.array([[1, 2, 3], [4, 5]])"
+          ],
+          "error": "ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.",
+          "error_type": "ValueError",
+          "why": "لا يمكن تكوين جدول منتظم من صفوف بأطوال مختلفة.",
+          "fix": [
+            "import numpy as np",
+            "m = np.array([[1, 2, 3], [4, 5, 0]])",
+            "print(m.shape)"
+          ]
+        },
+        {
+          "title": "عشوائية بدون بذرة في تحليل تريد تكراره",
+          "wrong": [
+            "import numpy as np",
+            "rng = np.random.default_rng()",
+            "sample = rng.integers(0, 100, 3)"
+          ],
+          "why": "بدون بذرة تتغير الأرقام في كل تشغيل، فلا يحصل زميلك على نتائجك نفسها. ثبّت البذرة دائماً.",
+          "fix": [
+            "import numpy as np",
+            "rng = np.random.default_rng(2025)",
+            "sample = rng.integers(0, 100, 3)",
+            "print(sample)"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تجهيز مصفوفات لتحليل أسبوعي",
+    "prompt": [
+      "أنشئ المصفوفات التالية:"
+    ],
+    "requirements": [
+      "`days`: الأرقام من 1 إلى 7 باستخدام `np.arange`.",
+      "`targets`: مصفوفة طولها 7 كل قيمها 500 (هدف المبيعات اليومي) باستخدام `np.full`.",
+      "`grid`: مصفوفة أصفار بشكل 4 فروع × 7 أيام من نوع أعداد صحيحة.",
+      "`sim`: مبيعات محاكاة لسبعة أيام من التوزيع الطبيعي بمتوسط 500 وانحراف 80، باستخدام مولّد ببذرة 7، مقربة إلى أعداد صحيحة بـ `.round().astype(int)`."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import numpy as _np",
+      "assert _np.array_equal(days, _np.arange(1, 8)), f\"days غير صحيحة: {days}\"",
+      "assert targets.shape == (7,) and (targets == 500).all(), \"targets يجب أن تكون 7 قيم كلها 500\"",
+      "assert grid.shape == (4, 7) and (grid == 0).all() and grid.dtype.kind == \"i\", \"grid يجب أن تكون أصفاراً صحيحة بشكل (4, 7)\"",
+      "_exp = _np.random.default_rng(7).normal(500, 80, 7).round().astype(int)",
+      "assert _np.array_equal(sim, _exp), f\"sim غير صحيحة. تأكد من البذرة 7 والترتيب: {sim}\""
+    ],
+    "hints": [
+      "`np.arange(1, 8)` لأن النهاية غير مشمولة.",
+      "`np.zeros((4, 7), dtype=int)`: الشكل صف.",
+      "`rng = np.random.default_rng(7)` ثم `rng.normal(500, 80, 7)`."
+    ],
+    "solution": [
+      "import numpy as np",
+      "",
+      "days = np.arange(1, 8)",
+      "targets = np.full(7, 500)",
+      "grid = np.zeros((4, 7), dtype=int)",
+      "rng = np.random.default_rng(7)",
+      "sim = rng.normal(500, 80, 7).round().astype(int)",
+      "",
+      "print(days)",
+      "print(sim)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import numpy as np",
+      "print(np.linspace(0, 10, 3))"
+    ],
+    "options": [
+      "[ 0.  5. 10.]",
+      "[0 5 10]",
+      "[0. 3.33 6.67]",
+      "[0 3 6 9]"
+    ],
+    "answer": 0,
+    "explanation": "`linspace` تعطي 3 نقاط متساوية تشمل البداية والنهاية، وتكون عشرية."
+  },
+  "summary": [
+    "`np.array` من قوائم، والقوائم المتداخلة تعطي أبعاداً متعددة.",
+    "`zeros` و `ones` و `full` بشكل يُعطى كصف للأبعاد المتعددة.",
+    "`arange` بخطوة (بدون النهاية)، و `linspace` بعدد نقاط (مع النهاية).",
+    "العشوائية عبر `rng = np.random.default_rng(seed)` لنتائج قابلة للتكرار."
+  ]
+}

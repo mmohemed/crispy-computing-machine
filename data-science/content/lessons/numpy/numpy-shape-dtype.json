@@ -1,0 +1,328 @@
+{
+  "slug": "numpy-shape-dtype",
+  "course": "numpy",
+  "module": "numpy-arrays",
+  "order": 3,
+  "title": "shape و dtype و reshape",
+  "title_en": "Shape, dtype, reshape",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تقرأ خصائص المصفوفة: `ndim` و `shape` و `size` و `dtype`.",
+    "تحوّل نوع المصفوفة بـ `astype`.",
+    "تعيد تشكيل المصفوفة بـ `reshape` بما فيها `-1`.",
+    "تستخدم `ravel` و `.T` للتسطيح والتبديل."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "أربع خصائص تعرّف أي مصفوفة",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "الخاصية",
+              "المعنى",
+              "لمصفوفة 3 فروع × 4 أشهر"
+            ],
+            "rows": [
+              [
+                "`ndim`",
+                "عدد الأبعاد (المحاور)",
+                "`2`"
+              ],
+              [
+                "`shape`",
+                "حجم كل بعد كصف",
+                "`(3, 4)`"
+              ],
+              [
+                "`size`",
+                "إجمالي العناصر",
+                "`12`"
+              ],
+              [
+                "`dtype`",
+                "نوع العناصر",
+                "`int64` أو `float64` أو `bool`"
+              ]
+            ]
+          }
+        },
+        "**reshape** يرتّب نفس العناصر في شكل جديد بشرط أن يبقى العدد نفسه: 12 عنصراً يمكن أن تكون `(3, 4)` أو `(4, 3)` أو `(2, 6)` أو `(12,)`. واستخدام `-1` في بعد واحد يعني \"احسبه أنت\"، و `reshape(-1, 1)` تحويل شائع جداً في Scikit-learn لجعل عمود واحد مصفوفة ثنائية الأبعاد.",
+        "**astype** تنشئ نسخة بنوع جديد: `arr.astype(float)` أو `arr.astype(int)` (تحذف الكسر ولا تقرّب).",
+        "**ravel** تسطّح المصفوفة إلى بعد واحد، و **`.T`** تبدّل الصفوف والأعمدة (Transpose)."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "أكثر أخطاء NumPy و Scikit-learn شيوعاً هي أخطاء الشكل: \"Expected 2D array, got 1D array\" أو \"shapes (3,4) and (3,) not aligned\". قراءة `shape` قبل أي عملية وفهم `reshape` يحلان أغلب هذه الأخطاء. والنوع مهم أيضاً: عمود أرقام مخزن كنص لا يُحسب، والأعداد العشرية أكبر حجماً من الصحيحة."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "اطبع `shape` و `dtype` كلما حمّلت بيانات أو بعد أي عملية تغيّر الشكل.",
+            "`reshape(-1, 1)` عندما تطلب مكتبة مصفوفة ثنائية الأبعاد من عمود واحد.",
+            "`astype` بعد القراءة إذا وصلت الأرقام بنوع غير مناسب.",
+            "`.T` عندما تحتاج أن تصبح الأعمدة صفوفاً (مثلاً لحساب يعتمد على الأشهر بدل الفروع)."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "قراءة الخصائص",
+      "code": [
+        "import numpy as np",
+        "",
+        "sales = np.array([",
+        "    [540, 610, 580, 700],",
+        "    [420, 390, 450, 480],",
+        "    [310, 330, 360, 400],",
+        "])",
+        "print(\"ndim:\", sales.ndim)",
+        "print(\"shape:\", sales.shape)",
+        "print(\"size:\", sales.size)",
+        "print(\"dtype:\", sales.dtype)",
+        "rows, cols = sales.shape",
+        "print(f\"{rows} فروع × {cols} أشهر\")"
+      ],
+      "explanation": [
+        {
+          "code": "sales.shape",
+          "text": "صف (عدد الصفوف، عدد الأعمدة)."
+        },
+        {
+          "code": "rows, cols = sales.shape",
+          "text": "فك الصف إلى متغيرين، وهو نمط شائع."
+        }
+      ],
+      "expected_output": [
+        "ndim: 2",
+        "shape: (3, 4)",
+        "size: 12",
+        "dtype: int64",
+        "3 فروع × 4 أشهر"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "reshape و -1",
+      "code": [
+        "import numpy as np",
+        "",
+        "monthly = np.arange(1, 13)",
+        "print(monthly.reshape(4, 3))",
+        "print(monthly.reshape(2, -1).shape)",
+        "",
+        "column = monthly.reshape(-1, 1)",
+        "print(column.shape)",
+        "print(column[:3])"
+      ],
+      "explanation": [
+        {
+          "code": "monthly.reshape(4, 3)",
+          "text": "12 شهراً في 4 أرباع × 3 أشهر. العناصر تُملأ صفاً بعد صف."
+        },
+        {
+          "code": "reshape(2, -1)",
+          "text": "`-1` تعني احسب البعد تلقائياً: 12 ÷ 2 = 6."
+        },
+        {
+          "code": "reshape(-1, 1)",
+          "text": "عمود واحد بـ 12 صفاً، وهو الشكل الذي تطلبه Scikit-learn لخاصية واحدة."
+        }
+      ],
+      "expected_output": [
+        "[[ 1  2  3]",
+        " [ 4  5  6]",
+        " [ 7  8  9]",
+        " [10 11 12]]",
+        "(2, 6)",
+        "(12, 1)",
+        "[[1]",
+        " [2]",
+        " [3]]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "astype و ravel و T",
+      "code": [
+        "import numpy as np",
+        "",
+        "raw = np.array([\"12\", \"7\", \"30\"])",
+        "print(raw.dtype)",
+        "values = raw.astype(int)",
+        "print(values * 2)",
+        "",
+        "prices = np.array([19.99, 5.5, 7.01])",
+        "print(prices.astype(int))",
+        "",
+        "m = np.array([[1, 2, 3], [4, 5, 6]])",
+        "print(m.T)",
+        "print(m.T.shape, m.ravel())"
+      ],
+      "explanation": [
+        {
+          "code": "raw.dtype",
+          "text": "`<U2`: نصوص Unicode بطول حرفين. النصوص لا تُحسب."
+        },
+        {
+          "code": "raw.astype(int)",
+          "text": "تحويل النوع ينشئ مصفوفة جديدة صالحة للحساب."
+        },
+        {
+          "code": "prices.astype(int)",
+          "text": "انتبه: تحذف الكسر ولا تقرّب، فـ 19.99 تصبح 19. للتقريب استخدم `np.round` أولاً."
+        },
+        {
+          "code": "m.T",
+          "text": "Transpose: الصف الأول يصبح العمود الأول، والشكل `(2, 3)` يصبح `(3, 2)`."
+        },
+        {
+          "code": "m.ravel()",
+          "text": "تسطيح إلى بعد واحد."
+        }
+      ],
+      "expected_output": [
+        "<U2",
+        "[24 14 60]",
+        "[19  5  7]",
+        "[[1 4]",
+        " [2 5]",
+        " [3 6]]",
+        "(3, 2) [1 2 3 4 5 6]"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`shape` للمصفوفة أحادية البعد صف بعنصر واحد مثل `(5,)`، وهي تختلف عن `(5, 1)` (عمود) وعن `(1, 5)` (صف).",
+        "`reshape` ترجع غالباً **view**: شكلاً جديداً لنفس البيانات. تعديله يعدّل الأصل. ستفهم views في الدرس القادم.",
+        "استخدم `np.round(arr).astype(int)` عندما تريد تقريباً صحيحاً قبل التحويل."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "reshape بعدد عناصر مختلف",
+          "wrong": [
+            "import numpy as np",
+            "np.arange(12).reshape(5, 3)"
+          ],
+          "error": "ValueError: cannot reshape array of size 12 into shape (5,3)",
+          "error_type": "ValueError",
+          "why": "12 عنصراً لا يمكن ترتيبها في 5 × 3 = 15 خانة.",
+          "fix": [
+            "import numpy as np",
+            "print(np.arange(12).reshape(4, 3))"
+          ]
+        },
+        {
+          "title": "تحويل نص غير رقمي إلى رقم",
+          "wrong": [
+            "import numpy as np",
+            "np.array([\"5\", \"N/A\"]).astype(int)"
+          ],
+          "error": "ValueError: invalid literal for int() with base 10: 'N/A'",
+          "error_type": "ValueError",
+          "why": "`astype(int)` تفشل إذا كان في المصفوفة نص لا يمثل رقماً. نظّف القيم أولاً.",
+          "fix": [
+            "import numpy as np",
+            "raw = np.array([\"5\", \"N/A\"])",
+            "clean = np.where(raw == \"N/A\", \"0\", raw).astype(int)",
+            "print(clean)"
+          ]
+        },
+        {
+          "title": "استخدام -1 في أكثر من بعد",
+          "wrong": [
+            "import numpy as np",
+            "np.arange(12).reshape(-1, -1)"
+          ],
+          "error": "ValueError: can only specify one unknown dimension",
+          "error_type": "ValueError",
+          "why": "يمكن ترك بعد واحد فقط ليُحسب تلقائياً.",
+          "fix": [
+            "import numpy as np",
+            "print(np.arange(12).reshape(3, -1).shape)"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "إعادة تشكيل مبيعات السنة",
+    "prompt": [
+      "لديك مبيعات 12 شهراً كنصوص قادمة من ملف."
+    ],
+    "requirements": [
+      "`monthly`: حوّل `raw` إلى أعداد صحيحة.",
+      "`quarters`: أعد تشكيلها إلى 4 أرباع × 3 أشهر.",
+      "`quarter_totals`: مجموع كل ربع باستخدام `quarters.sum(axis=1)` (ستفهم `axis` بالتفصيل في درس التجميع).",
+      "`as_column`: الأشهر كعمود بشكل `(12, 1)` باستخدام `-1`."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "",
+      "raw = np.array([\"36\", \"24\", \"45\", \"42\", \"37\", \"27\", \"28\", \"32\", \"33\", \"32\", \"53\", \"40\"])",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import numpy as _np",
+      "assert monthly.dtype.kind == \"i\", \"monthly يجب أن تكون أعداداً صحيحة\"",
+      "assert quarters.shape == (4, 3), f\"quarters يجب أن تكون بشكل (4, 3)، والموجود {quarters.shape}\"",
+      "assert _np.array_equal(quarter_totals, [105, 106, 93, 125]), f\"quarter_totals غير صحيحة: {quarter_totals}\"",
+      "assert as_column.shape == (12, 1), f\"as_column يجب أن تكون بشكل (12, 1)، والموجود {as_column.shape}\"",
+      "assert \"-1\" in __code__, \"استخدم -1 في reshape\""
+    ],
+    "hints": [
+      "`raw.astype(int)`.",
+      "`monthly.reshape(4, 3)`، والعناصر تُملأ صفاً بعد صف فيكون كل صف ربعاً.",
+      "`monthly.reshape(-1, 1)`."
+    ],
+    "solution": [
+      "import numpy as np",
+      "",
+      "raw = np.array([\"36\", \"24\", \"45\", \"42\", \"37\", \"27\", \"28\", \"32\", \"33\", \"32\", \"53\", \"40\"])",
+      "",
+      "monthly = raw.astype(int)",
+      "quarters = monthly.reshape(4, 3)",
+      "quarter_totals = quarters.sum(axis=1)",
+      "as_column = monthly.reshape(-1, 1)",
+      "",
+      "print(quarters)",
+      "print(quarter_totals)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import numpy as np",
+      "a = np.arange(6).reshape(2, 3)",
+      "print(a.T.shape, a.size)"
+    ],
+    "options": [
+      "(3, 2) 6",
+      "(2, 3) 6",
+      "(3, 2) 5",
+      "(6,) 6"
+    ],
+    "answer": 0,
+    "explanation": "`a` بشكل `(2, 3)`، والـ Transpose يبدّله إلى `(3, 2)`، وعدد العناصر 6."
+  },
+  "summary": [
+    "`ndim` و `shape` و `size` و `dtype` تصف أي مصفوفة؛ اطبع `shape` كثيراً.",
+    "`reshape` يرتّب نفس العناصر بشكل جديد، و `-1` لبعد يُحسب تلقائياً.",
+    "`astype` لتغيير النوع، و `astype(int)` تحذف الكسر.",
+    "`ravel` للتسطيح و `.T` للتبديل."
+  ]
+}

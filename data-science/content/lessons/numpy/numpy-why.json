@@ -1,0 +1,323 @@
+{
+  "slug": "numpy-why",
+  "course": "numpy",
+  "module": "numpy-arrays",
+  "order": 1,
+  "title": "لماذا NumPy؟ القوائم مقابل المصفوفات",
+  "title_en": "Why NumPy",
+  "minutes": 15,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تشرح ما هي NumPy ودورها كأساس لمكتبات علم البيانات.",
+    "تنشئ أول مصفوفة `ndarray` وتجري عليها عمليات بدون حلقات.",
+    "تفهم الفرق بين القائمة والمصفوفة في النوع والسرعة والسلوك.",
+    "تستورد NumPy بالاختصار المعتمد `np`."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "المصفوفة ndarray",
+      "body": [
+        "**NumPy** (Numerical Python) مكتبة الحسابات العددية في Python، وقلبها نوع بيانات اسمه **ndarray**: مصفوفة من القيم **كلها من نفس النوع**، مخزنة متجاورة في الذاكرة. هذا التصميم هو ما يجعلها أسرع من القوائم بعشرات المرات في الحسابات.",
+        "والأهم من السرعة هو **طريقة التفكير**: مع القوائم تكتب حلقة لتطبيق عملية على كل عنصر. مع NumPy تطبّق العملية على **المصفوفة كلها** دفعة واحدة، وتسمى هذه الطريقة **Vectorization**:",
+        {
+          "table": {
+            "head": [
+              "المهمة",
+              "قائمة Python",
+              "مصفوفة NumPy"
+            ],
+            "rows": [
+              [
+                "ضرب كل سعر في 1.15",
+                "`[p * 1.15 for p in prices]`",
+                "`prices * 1.15`"
+              ],
+              [
+                "جمع قائمتين عنصراً بعنصر",
+                "`[a + b for a, b in zip(x, y)]`",
+                "`x + y`"
+              ],
+              [
+                "`[1, 2] * 2`",
+                "`[1, 2, 1, 2]` (تكرار)",
+                "`[2 4]` (ضرب رياضي)"
+              ],
+              [
+                "أنواع العناصر",
+                "أي خليط",
+                "نوع واحد `dtype`"
+              ]
+            ]
+          }
+        },
+        "وكل مكتبات المسار مبنية على NumPy: أعمدة Pandas مصفوفات NumPy، و Scikit-learn تستقبل مصفوفات NumPy، والصور في الرؤية الحاسوبية مصفوفات NumPy ثلاثية الأبعاد."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "البيانات في علم البيانات أرقام كثيرة: آلاف الأسعار، وملايين القراءات، وصور من ملايين البكسلات. الحلقات في Python بطيئة مع هذه الأحجام، و NumPy تنفذ نفس العمليات بكود مكتوب بلغة C. وإتقان NumPy يجعل Pandas وتعلم الآلة أسهل بكثير، لأن نفس الأفكار (Vectorization، والمحاور، والأقنعة المنطقية) تتكرر فيها."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "عندما تجري حسابات رياضية على مجموعات كبيرة من الأرقام.",
+            "عندما تتعامل مع مصفوفات ثنائية الأبعاد (جداول أرقام، صور) أو جبر خطي.",
+            "في المحاكاة العشوائية والإحصاء.",
+            "للبيانات الجدولية بأعمدة مختلفة الأنواع (نصوص وأرقام وتواريخ) ستستخدم Pandas، وهي مبنية على NumPy."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "أول مصفوفة",
+      "code": [
+        "import numpy as np",
+        "",
+        "prices = np.array([120, 45, 300, 80])",
+        "print(prices)",
+        "print(type(prices).__name__, prices.dtype)",
+        "",
+        "print(prices * 1.15)",
+        "print(prices + 10)",
+        "print(prices.sum(), prices.mean(), prices.max())"
+      ],
+      "explanation": [
+        {
+          "code": "import numpy as np",
+          "text": "الاختصار `np` معتمد عالمياً؛ ستراه في كل كود وتوثيق."
+        },
+        {
+          "code": "np.array([...])",
+          "text": "إنشاء مصفوفة من قائمة. لاحظ أن الطباعة بدون فواصل بين العناصر."
+        },
+        {
+          "code": "prices.dtype",
+          "text": "نوع العناصر: `int64` أي أعداد صحيحة 64-bit."
+        },
+        {
+          "code": "prices * 1.15",
+          "text": "العملية تُطبّق على كل عنصر دون حلقة، والنتيجة مصفوفة جديدة من نوع عشري."
+        },
+        {
+          "code": "prices.sum() ...",
+          "text": "دوال التجميع جاهزة كدوال للمصفوفة."
+        }
+      ],
+      "expected_output": [
+        "[120  45 300  80]",
+        "ndarray int64",
+        "[138.    51.75 345.    92.  ]",
+        "[130  55 310  90]",
+        "545 136.25 300"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "القائمة والمصفوفة: نفس الرمز، معنى مختلف",
+      "code": [
+        "import numpy as np",
+        "",
+        "a_list = [1, 2, 3]",
+        "a_array = np.array([1, 2, 3])",
+        "",
+        "print(a_list * 2)",
+        "print(a_array * 2)",
+        "print(a_list + [10, 20, 30])",
+        "print(a_array + np.array([10, 20, 30]))",
+        "",
+        "mixed = np.array([1, 2.5, 3])",
+        "print(mixed, mixed.dtype)"
+      ],
+      "explanation": [
+        {
+          "code": "a_list * 2",
+          "text": "مع القوائم `*` تكرر القائمة."
+        },
+        {
+          "code": "a_array * 2",
+          "text": "مع المصفوفات `*` ضرب رياضي لكل عنصر."
+        },
+        {
+          "code": "a_list + [...]",
+          "text": "مع القوائم `+` تدمج القائمتين."
+        },
+        {
+          "code": "a_array + np.array(...)",
+          "text": "مع المصفوفات `+` جمع عنصراً بعنصر."
+        },
+        {
+          "code": "np.array([1, 2.5, 3])",
+          "text": "نوع واحد لكل العناصر: وجود عدد عشري واحد يحوّل الكل إلى `float64`."
+        }
+      ],
+      "expected_output": [
+        "[1, 2, 3, 1, 2, 3]",
+        "[2 4 6]",
+        "[1, 2, 3, 10, 20, 30]",
+        "[11 22 33]",
+        "[1.  2.5 3. ] float64"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "السرعة: قياس تقريبي",
+      "code": [
+        "import timeit",
+        "import numpy as np",
+        "",
+        "values = list(range(1_000_000))",
+        "arr = np.arange(1_000_000)",
+        "",
+        "list_time = min(timeit.repeat(lambda: sum(v * v for v in values), number=1, repeat=3))",
+        "numpy_time = min(timeit.repeat(lambda: (arr * arr).sum(), number=1, repeat=3))",
+        "",
+        "print(f\"قائمة: {list_time * 1000:.1f} ms\")",
+        "print(f\"NumPy: {numpy_time * 1000:.1f} ms\")",
+        "print(f\"NumPy أسرع بحوالي {list_time / numpy_time:.0f} مرة\")"
+      ],
+      "explanation": [
+        {
+          "code": "timeit.repeat(..., number=1, repeat=3)",
+          "text": "نقيس ثلاث مرات ونأخذ الأسرع، حتى لا يؤثر وقت التجهيز في أول تشغيل على المقارنة."
+        },
+        {
+          "code": "sum(v * v for v in values)",
+          "text": "مليون عملية ضرب وجمع في حلقة Python."
+        },
+        {
+          "code": "(arr * arr).sum()",
+          "text": "نفس الحساب دفعة واحدة داخل NumPy."
+        }
+      ],
+      "expected_output": null,
+      "output_varies": true,
+      "run_note": "الأزمنة تختلف حسب جهازك وحسب التشغيل داخل المتصفح، لكن الفرق يبقى كبيراً دائماً (عادة عشرات المرات)."
+    },
+    {
+      "type": "notes",
+      "items": [
+        "كل عناصر المصفوفة من نوع واحد. إذا خلطت نصوصاً وأرقاماً ستصبح كلها نصوصاً، وتفقد القدرة على الحساب.",
+        "العمليات على المصفوفات ترجع مصفوفات **جديدة** ولا تغيّر الأصلية، إلا إذا استخدمت `+=` وما يشبهها.",
+        "دوال التجميع ترجع قيماً من أنواع NumPy مثل `np.int64`. تُطبع كأرقام عادية مع `print`، وتظهر بشكل `np.int64(6)` إذا عرضت داخل قائمة."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "نسيان الاستيراد أو الاختصار",
+          "wrong": [
+            "arr = np.array([1, 2, 3])"
+          ],
+          "error": "NameError: name 'np' is not defined",
+          "error_type": "NameError",
+          "why": "استخدمت `np` دون `import numpy as np`.",
+          "fix": [
+            "import numpy as np",
+            "arr = np.array([1, 2, 3])",
+            "print(arr)"
+          ]
+        },
+        {
+          "title": "إنشاء مصفوفة بأرقام منفصلة بدل قائمة",
+          "wrong": [
+            "import numpy as np",
+            "arr = np.array(1, 2, 3)"
+          ],
+          "error": "TypeError: array() takes from 1 to 2 positional arguments but 3 were given",
+          "error_type": "TypeError",
+          "why": "`np.array` تأخذ قائمة واحدة (أو مجموعة) كأول وسيط. الأرقام المنفصلة تُفهم كمعاملات أخرى.",
+          "fix": [
+            "import numpy as np",
+            "arr = np.array([1, 2, 3])",
+            "print(arr)"
+          ]
+        },
+        {
+          "title": "توقع سلوك القوائم",
+          "wrong": [
+            "import numpy as np",
+            "print(np.array([1, 2]) + np.array([3]))"
+          ],
+          "why": "`np.array([1, 2]) * 2` لا تكرر المصفوفة بل تضاعف القيم. وإذا أردت الدمج فاستخدم `np.concatenate`.",
+          "fix": [
+            "import numpy as np",
+            "print(np.concatenate([np.array([1, 2]), np.array([3])]))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "أسعار بعد الضريبة والخصم",
+    "prompt": [
+      "حوّل القائمة `prices` إلى مصفوفة NumPy، ثم نفّذ المطلوب **بدون حلقات**:"
+    ],
+    "requirements": [
+      "`arr`: مصفوفة الأسعار.",
+      "`with_vat`: الأسعار بعد إضافة ضريبة 15%.",
+      "`final`: الأسعار بعد الضريبة ثم خصم 10%، مقربة لمنزلتين بـ `np.round`.",
+      "`total`: مجموع `final` كرقم عادي (استخدم `float()`)."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "",
+      "prices = [120, 45, 300, 80]",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import numpy as _np",
+      "assert isinstance(arr, _np.ndarray), \"arr يجب أن تكون مصفوفة NumPy\"",
+      "assert _np.allclose(with_vat, [138.0, 51.75, 345.0, 92.0]), f\"with_vat غير صحيحة: {with_vat}\"",
+      "assert _np.allclose(final, [124.2, 46.58, 310.5, 82.8]), f\"final غير صحيحة: {final}\"",
+      "assert isinstance(total, float) and abs(total - 564.08) < 1e-6, f\"total يجب أن يكون 564.08، والموجود {total}\"",
+      "assert \"for \" not in __code__, \"نفّذ المطلوب بدون حلقات\""
+    ],
+    "hints": [
+      "`arr = np.array(prices)` ثم `arr * 1.15`.",
+      "`np.round(values, 2)` تقرّب كل العناصر.",
+      "`final.sum()` ثم `float(...)`."
+    ],
+    "solution": [
+      "import numpy as np",
+      "",
+      "prices = [120, 45, 300, 80]",
+      "",
+      "arr = np.array(prices)",
+      "with_vat = arr * 1.15",
+      "final = np.round(with_vat * 0.9, 2)",
+      "total = float(final.sum())",
+      "",
+      "print(final, total)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import numpy as np",
+      "print(np.array([1, 2, 3]) * 2)"
+    ],
+    "options": [
+      "[2 4 6]",
+      "[1, 2, 3, 1, 2, 3]",
+      "[1 2 3 1 2 3]",
+      "[2, 4, 6]"
+    ],
+    "answer": 0,
+    "explanation": "مع المصفوفات `*` ضرب رياضي لكل عنصر، وتُطبع المصفوفة بدون فواصل."
+  },
+  "summary": [
+    "NumPy مكتبة الحسابات العددية، وقلبها `ndarray`: قيم من نوع واحد متجاورة في الذاكرة.",
+    "Vectorization: العملية تُطبّق على المصفوفة كلها بدون حلقات، وهي أسرع بكثير.",
+    "`*` و `+` لهما معنى رياضي مع المصفوفات، ومعنى التكرار والدمج مع القوائم.",
+    "Pandas و Scikit-learn مبنيتان على NumPy."
+  ]
+}

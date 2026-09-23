@@ -873,41 +873,41 @@
               "title": "لماذا NumPy؟ القوائم مقابل المصفوفات",
               "title_en": "Why NumPy",
               "minutes": 15,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "numpy-create",
               "title": "إنشاء المصفوفات",
               "title_en": "Creating Arrays",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "numpy-shape-dtype",
               "title": "shape و dtype و reshape",
               "title_en": "Shape, dtype, reshape",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "numpy-indexing",
-              "title": "Indexing و Slicing",
+              "title": "الفهرسة والاقتطاع",
               "title_en": "Indexing & Slicing",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "numpy-masking",
               "title": "Boolean Masking و Fancy Indexing",
               "title_en": "Boolean Masking",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             }
           ],
           "quiz": {
             "slug": "quiz-numpy-arrays",
             "title": "اختبار الوحدة: المصفوفات",
-            "status": "planned"
+            "status": "published"
           }
         },
         {
@@ -920,48 +920,48 @@
               "title": "Vectorization و ufuncs",
               "title_en": "Vectorization",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "numpy-broadcasting",
               "title": "Broadcasting",
               "title_en": "Broadcasting",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "numpy-aggregations",
               "title": "التجميع والمحور axis",
               "title_en": "Aggregations & axis",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "numpy-linear-algebra",
               "title": "الجبر الخطي في NumPy",
               "title_en": "Linear Algebra",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "numpy-random",
               "title": "الأرقام العشوائية والمحاكاة",
               "title_en": "Random & Simulation",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "numpy-performance",
-              "title": "مقارنة الأداء وأفضل الممارسات",
+              "title": "الأداء وأفضل الممارسات",
               "title_en": "Performance",
               "minutes": 15,
-              "status": "planned"
+              "status": "published"
             }
           ],
           "quiz": {
             "slug": "quiz-numpy-compute",
             "title": "اختبار الوحدة: الحسابات",
-            "status": "planned"
+            "status": "published"
           }
         }
       ]

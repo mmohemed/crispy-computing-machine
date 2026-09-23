@@ -1,0 +1,318 @@
+{
+  "slug": "numpy-random",
+  "course": "numpy",
+  "module": "numpy-compute",
+  "order": 10,
+  "title": "الأرقام العشوائية والمحاكاة",
+  "title_en": "Random & Simulation",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تستخدم مولّد الأرقام العشوائية لتوليد بيانات وعينات قابلة للتكرار.",
+    "تسحب عينات عشوائية مع إرجاع وبدون إرجاع، وتخلط البيانات.",
+    "تنفذ محاكاة مونت كارلو لتقدير احتمال أو قيمة متوقعة.",
+    "تطبّق Bootstrap لتقدير مدى الثقة في متوسط."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "المحاكاة: جرّب ألف مرة بدلاً من الحساب النظري",
+      "body": [
+        "**مولّد الأرقام العشوائية** `rng = np.random.default_rng(seed)` هو أداتك لكل ما هو عشوائي:",
+        {
+          "table": {
+            "head": [
+              "الدالة",
+              "تعطي"
+            ],
+            "rows": [
+              [
+                "`rng.integers(low, high, size)`",
+                "أعداد صحيحة (high غير مشمول)"
+              ],
+              [
+                "`rng.random(size)`",
+                "أعداد بين 0 و 1"
+              ],
+              [
+                "`rng.normal(mean, std, size)`",
+                "من التوزيع الطبيعي"
+              ],
+              [
+                "`rng.choice(a, size, replace, p)`",
+                "عينة من مصفوفة، مع احتمالات اختيارية"
+              ],
+              [
+                "`rng.permutation(a)`",
+                "نسخة مخلوطة الترتيب"
+              ]
+            ]
+          }
+        },
+        "**محاكاة مونت كارلو**: عندما يصعب حساب احتمال رياضياً، كرر التجربة العشوائية آلاف المرات واحسب النسبة. مع Vectorization تُنفّذ مئة ألف تجربة في جزء من الثانية.",
+        "**Bootstrap**: لتعرف مدى ثقتك في متوسط عينة، اسحب منها عينات جديدة **مع الإرجاع** بنفس الحجم آلاف المرات، واحسب المتوسط في كل مرة. تشتت هذه المتوسطات يخبرك بمدى دقة تقديرك."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "العشوائية في كل مكان في علم البيانات: تقسيم البيانات إلى تدريب واختبار، وخلطها قبل التدريب، وتهيئة أوزان الشبكات العصبية، وأخذ العينات من بيانات ضخمة، ومحاكاة السيناريوهات (ماذا لو زاد الطلب؟). والمحاكاة طريقة قوية لفهم الإحصاء بالتجربة، وستستخدمها لإثبات نظرية النهاية المركزية في مستوى الإحصاء."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`permutation` أو `choice(replace=False)` لتقسيم البيانات أو أخذ عينة بدون تكرار.",
+            "`choice(replace=True)` للـ Bootstrap.",
+            "مونت كارلو لتقدير احتمالات أو مخاطر يصعب حسابها بمعادلة.",
+            "ثبّت البذرة دائماً، ووثّقها في تقريرك."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "عينات وخلط",
+      "code": [
+        "import numpy as np",
+        "",
+        "rng = np.random.default_rng(10)",
+        "customers = np.array([\"C1\", \"C2\", \"C3\", \"C4\", \"C5\", \"C6\", \"C7\", \"C8\"])",
+        "",
+        "print(rng.choice(customers, size=3, replace=False))",
+        "print(rng.permutation(customers))",
+        "",
+        "idx = rng.permutation(len(customers))",
+        "train, test = customers[idx[:6]], customers[idx[6:]]",
+        "print(\"تدريب:\", train)",
+        "print(\"اختبار:\", test)",
+        "",
+        "print(rng.choice([\"جديد\", \"عائد\"], size=10, p=[0.4, 0.6]))"
+      ],
+      "explanation": [
+        {
+          "code": "choice(..., replace=False)",
+          "text": "ثلاثة عملاء مختلفين: عينة بدون تكرار."
+        },
+        {
+          "code": "rng.permutation(len(customers))",
+          "text": "مواضع مخلوطة، نستخدمها لتقسيم البيانات إلى تدريب واختبار بنسبة 75/25. هذا ما تفعله `train_test_split` في Scikit-learn."
+        },
+        {
+          "code": "p=[0.4, 0.6]",
+          "text": "احتمالات مختلفة لكل خيار."
+        }
+      ],
+      "expected_output": [
+        "['C3' 'C7' 'C5']",
+        "['C2' 'C4' 'C6' 'C7' 'C3' 'C5' 'C8' 'C1']",
+        "تدريب: ['C7' 'C2' 'C5' 'C1' 'C6' 'C4']",
+        "اختبار: ['C8' 'C3']",
+        "['عائد' 'جديد' 'عائد' 'عائد' 'عائد' 'عائد' 'جديد' 'عائد' 'جديد' 'عائد']"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "مونت كارلو: احتمال تجاوز المخزون",
+      "code": [
+        "import numpy as np",
+        "",
+        "rng = np.random.default_rng(2025)",
+        "n_sims = 100_000",
+        "",
+        "# الطلب اليومي على منتج ~ طبيعي بمتوسط 40 وانحراف 8، لمدة 7 أيام",
+        "weekly_demand = rng.normal(40, 8, size=(n_sims, 7)).round().sum(axis=1)",
+        "",
+        "stock = 300",
+        "p_shortage = (weekly_demand > stock).mean()",
+        "print(f\"احتمال نفاد المخزون: {p_shortage:.1%}\")",
+        "",
+        "needed = np.percentile(weekly_demand, 95)",
+        "print(f\"المخزون الكافي في 95% من الأسابيع: {needed:.0f} قطعة\")"
+      ],
+      "explanation": [
+        {
+          "code": "size=(n_sims, 7)",
+          "text": "مئة ألف أسبوع محاكى × 7 أيام، في مصفوفة واحدة وبدون حلقات."
+        },
+        {
+          "code": ".sum(axis=1)",
+          "text": "إجمالي الطلب في كل أسبوع."
+        },
+        {
+          "code": "(weekly_demand > stock).mean()",
+          "text": "نسبة الأسابيع التي تجاوز فيها الطلب المخزون: تقدير للاحتمال."
+        },
+        {
+          "code": "np.percentile(weekly_demand, 95)",
+          "text": "مستوى المخزون الذي يغطي 95% من السيناريوهات: رقم يحتاجه مدير المخزون فعلاً."
+        }
+      ],
+      "expected_output": [
+        "احتمال نفاد المخزون: 16.6%",
+        "المخزون الكافي في 95% من الأسابيع: 315 قطعة"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "Bootstrap: مدى الثقة في متوسط قيمة الطلب",
+      "code": [
+        "import numpy as np",
+        "",
+        "rng = np.random.default_rng(7)",
+        "sample = np.array([120, 85, 300, 45, 210, 95, 150, 60, 480, 130, 75, 190])",
+        "print(\"متوسط العينة:\", sample.mean().round(1))",
+        "",
+        "boot_means = np.array([",
+        "    rng.choice(sample, size=len(sample), replace=True).mean()",
+        "    for _ in range(5000)",
+        "])",
+        "low, high = np.percentile(boot_means, [2.5, 97.5])",
+        "print(f\"المتوسط الحقيقي غالباً بين {low:.0f} و {high:.0f}\")"
+      ],
+      "explanation": [
+        {
+          "code": "rng.choice(sample, size=len(sample), replace=True)",
+          "text": "عينة جديدة بنفس الحجم **مع الإرجاع**: بعض القيم تتكرر وبعضها يغيب."
+        },
+        {
+          "code": "for _ in range(5000)",
+          "text": "هنا الحلقة مقبولة لأن كل تكرار عملية كاملة؛ و `_` اسم متغير لا نستخدمه."
+        },
+        {
+          "code": "np.percentile(boot_means, [2.5, 97.5])",
+          "text": "95% من متوسطات Bootstrap بين هاتين القيمتين: تقدير لـ **فترة الثقة** التي ستدرسها في الإحصاء الاستدلالي."
+        }
+      ],
+      "expected_output": [
+        "متوسط العينة: 161.7",
+        "المتوسط الحقيقي غالباً بين 103 و 238"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "النتائج تتغير بتغير البذرة، لكن مع عدد محاكاة كبير تستقر التقديرات. جرّب بذوراً مختلفة لترى ذلك.",
+        "12 طلباً عينة صغيرة، لذلك فترة Bootstrap واسعة. كلما كبرت العينة ضاقت الفترة.",
+        "افترضنا توزيعاً طبيعياً للطلب، وهذا افتراض يجب فحصه على البيانات الحقيقية. المحاكاة جيدة بقدر جودة افتراضاتها."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "عينة بدون إرجاع أكبر من المصدر",
+          "wrong": [
+            "import numpy as np",
+            "rng = np.random.default_rng(1)",
+            "rng.choice([1, 2, 3, 4, 5], size=10, replace=False)"
+          ],
+          "error": "ValueError: Cannot take a larger sample than population when replace is False",
+          "error_type": "ValueError",
+          "why": "لا يمكن اختيار 10 عناصر مختلفة من 5.",
+          "fix": [
+            "import numpy as np",
+            "rng = np.random.default_rng(1)",
+            "print(rng.choice([1, 2, 3, 4, 5], size=10, replace=True))"
+          ]
+        },
+        {
+          "title": "احتمالات لا يساوي مجموعها 1",
+          "wrong": [
+            "import numpy as np",
+            "rng = np.random.default_rng(1)",
+            "rng.choice([\"أ\", \"ب\"], size=3, p=[0.5, 0.6])"
+          ],
+          "error": "ValueError: probabilities do not sum to 1",
+          "error_type": "ValueError",
+          "why": "مجموع `p` يجب أن يكون 1 بالضبط.",
+          "fix": [
+            "import numpy as np",
+            "rng = np.random.default_rng(1)",
+            "print(rng.choice([\"أ\", \"ب\"], size=3, p=[0.4, 0.6]))"
+          ]
+        },
+        {
+          "title": "إنشاء مولّد جديد ببذرة ثابتة داخل الحلقة",
+          "wrong": [
+            "import numpy as np",
+            "for i in range(3):",
+            "    rng = np.random.default_rng(42)",
+            "    print(rng.integers(0, 100))"
+          ],
+          "why": "كل تكرار يبدأ من نفس النقطة، فتتكرر نفس الأرقام ولا توجد عشوائية حقيقية. أنشئ المولّد مرة واحدة قبل الحلقة.",
+          "fix": [
+            "import numpy as np",
+            "rng = np.random.default_rng(42)",
+            "for i in range(3):",
+            "    print(rng.integers(0, 100))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "محاكاة حملة تسويقية",
+    "prompt": [
+      "حملة رسائل تصل إلى 1000 عميل، واحتمال شراء كل عميل 3%، ومتوسط قيمة الشراء 250 ريالاً بانحراف 60 (توزيع طبيعي). استخدم مولّداً ببذرة 99 **بهذا الترتيب بالضبط**:"
+    ],
+    "requirements": [
+      "`buyers`: مصفوفة بشكل `(10000, 1000)` من القيم المنطقية؛ `True` إذا اشترى العميل في تلك المحاكاة: `rng.random((10000, 1000)) < 0.03`.",
+      "`n_buyers`: عدد المشترين في كل محاكاة (شكل `(10000,)`).",
+      "`revenue`: إيراد كل محاكاة = `n_buyers * rng.normal(250, 60, size=10000)` (نفس المولّد بعد السطر الأول).",
+      "`p_below_5000`: نسبة المحاكاات التي كان إيرادها أقل من 5000، كـ `float` مقرب لثلاث منازل.",
+      "`expected_revenue`: متوسط `revenue` مقرباً إلى عدد صحيح بـ `round`."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "",
+      "rng = np.random.default_rng(99)",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import numpy as _np",
+      "_rng = _np.random.default_rng(99)",
+      "_b = _rng.random((10000, 1000)) < 0.03",
+      "_n = _b.sum(axis=1)",
+      "_r = _n * _rng.normal(250, 60, size=10000)",
+      "assert buyers.shape == (10000, 1000) and buyers.dtype == bool, \"buyers يجب أن تكون منطقية بشكل (10000, 1000)\"",
+      "assert _np.array_equal(n_buyers, _n), \"n_buyers غير صحيحة: استخدم sum على المحور المناسب\"",
+      "assert _np.allclose(revenue, _r), \"revenue غير صحيحة: تأكد من ترتيب استدعاء المولّد\"",
+      "assert p_below_5000 == round(float((_r < 5000).mean()), 3), f\"p_below_5000 غير صحيحة: {p_below_5000}\"",
+      "assert expected_revenue == round(float(_r.mean())), f\"expected_revenue غير صحيحة: {expected_revenue}\""
+    ],
+    "hints": [
+      "عدد المشترين لكل محاكاة (صف): `buyers.sum(axis=1)`.",
+      "النسبة: `(revenue < 5000).mean()`.",
+      "لا تنشئ مولّداً جديداً؛ استخدم `rng` نفسه بالترتيب المطلوب."
+    ],
+    "solution": [
+      "import numpy as np",
+      "",
+      "rng = np.random.default_rng(99)",
+      "",
+      "buyers = rng.random((10000, 1000)) < 0.03",
+      "n_buyers = buyers.sum(axis=1)",
+      "revenue = n_buyers * rng.normal(250, 60, size=10000)",
+      "p_below_5000 = round(float((revenue < 5000).mean()), 3)",
+      "expected_revenue = round(float(revenue.mean()))",
+      "",
+      "print(n_buyers[:5], expected_revenue, p_below_5000)"
+    ]
+  },
+  "check": {
+    "type": "true_false",
+    "prompt": "مولّدان بنفس البذرة `np.random.default_rng(5)` يعطيان نفس سلسلة الأرقام العشوائية.",
+    "answer": true,
+    "explanation": "البذرة تحدد نقطة البداية، فنفس البذرة ونفس الطلبات بنفس الترتيب تعطي نفس الأرقام، وهذا ما يجعل التحليل قابلاً للتكرار."
+  },
+  "summary": [
+    "`rng = np.random.default_rng(seed)` مرة واحدة، ثم `integers` و `random` و `normal` و `choice` و `permutation`.",
+    "`choice(replace=False)` لعينة بدون تكرار، و `replace=True` للـ Bootstrap.",
+    "مونت كارلو: كرر التجربة آلاف المرات بمصفوفة واحدة واحسب النسبة.",
+    "Bootstrap يقدّر مدى الثقة في إحصاء من عينة واحدة."
+  ]
+}

@@ -1,0 +1,254 @@
+{
+  "slug": "quiz-numpy-arrays",
+  "course": "numpy",
+  "module": "numpy-arrays",
+  "title": "اختبار الوحدة: المصفوفات",
+  "intro": [
+    "يغطي هذا الاختبار إنشاء المصفوفات وخصائصها والفهرسة والأقنعة المنطقية.",
+    "أسئلة الكود تُشغَّل فعلياً داخل المتصفح مع NumPy، وقد يستغرق أول تشغيل بضع ثوانٍ لتحميلها."
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "print(np.array([1, 2]) * 3, [1, 2] * 3)"
+      ],
+      "options": [
+        "[3 6] [1, 2, 1, 2, 1, 2]",
+        "[3 6] [3, 6]",
+        "[1 2 1 2 1 2] [3, 6]",
+        "خطأ"
+      ],
+      "answer": 0,
+      "explanation": "مع المصفوفة `*` ضرب رياضي، ومع القائمة تكرار.",
+      "lesson": "numpy-why"
+    },
+    {
+      "id": "q2",
+      "type": "true_false",
+      "prompt": "يمكن أن تحتوي مصفوفة NumPy عادية على أعداد صحيحة ونصوص معاً مع بقاء الأرقام صالحة للحساب.",
+      "answer": false,
+      "explanation": "المصفوفة نوع واحد؛ خلط النصوص بالأرقام يحوّل الكل إلى نصوص (أو `object`) فيفقد الحساب.",
+      "lesson": "numpy-why"
+    },
+    {
+      "id": "q3",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "print(np.arange(2, 11, 4))"
+      ],
+      "options": [
+        "[ 2  6 10]",
+        "[2 6]",
+        "[ 2  6 10 14]",
+        "[2 4 6 8 10]"
+      ],
+      "answer": 0,
+      "explanation": "من 2 بخطوة 4 حتى ما قبل 11: 2 و 6 و 10.",
+      "lesson": "numpy-create"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "prompt": "أي سطر ينشئ مصفوفة أصفار بصفين وثلاثة أعمدة؟",
+      "options": [
+        "`np.zeros(2, 3)`",
+        "`np.zeros((2, 3))`",
+        "`np.zeros([2][3])`",
+        "`np.zero(2, 3)`"
+      ],
+      "answer": 1,
+      "explanation": "الشكل يُمرر كصف `(2, 3)`؛ المعامل الثاني لـ `zeros` هو النوع.",
+      "lesson": "numpy-create"
+    },
+    {
+      "id": "q5",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "a = np.arange(12).reshape(3, -1)",
+        "print(a.shape, a.ndim)"
+      ],
+      "options": [
+        "(3, 4) 2",
+        "(3, -1) 2",
+        "(4, 3) 2",
+        "(12,) 1"
+      ],
+      "answer": 0,
+      "explanation": "`-1` تُحسب تلقائياً: 12 ÷ 3 = 4.",
+      "lesson": "numpy-shape-dtype"
+    },
+    {
+      "id": "q6",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "print(np.array([2.9, 7.5]).astype(int))"
+      ],
+      "options": [
+        "[2 7]",
+        "[3 8]",
+        "[3 7]",
+        "[2.9 7.5]"
+      ],
+      "answer": 0,
+      "explanation": "`astype(int)` تحذف الكسر ولا تقرّب.",
+      "lesson": "numpy-shape-dtype"
+    },
+    {
+      "id": "q7",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "m = np.arange(1, 7).reshape(2, 3)",
+        "print(m[:, 1], m[1, -1])"
+      ],
+      "options": [
+        "[2 5] 6",
+        "[4 5 6] 6",
+        "[2 5] 5",
+        "[1 4] 6"
+      ],
+      "answer": 0,
+      "explanation": "العمود 1 لكل الصفوف: 2 و 5. والصف 1 العمود الأخير: 6.",
+      "lesson": "numpy-indexing"
+    },
+    {
+      "id": "q8",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "a = np.array([1, 2, 3])",
+        "b = a[:2]",
+        "b[0] = 100",
+        "print(a)"
+      ],
+      "options": [
+        "[100   2   3]",
+        "[1 2 3]",
+        "[100 2]",
+        "خطأ"
+      ],
+      "answer": 0,
+      "explanation": "الاقتطاع view على نفس البيانات، فتعديل `b` غيّر `a`.",
+      "lesson": "numpy-indexing"
+    },
+    {
+      "id": "q9",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import numpy as np",
+        "a = np.array([5, 12, 8, 20])",
+        "print(a[(a > 6) & (a < 15)], (a > 6).mean())"
+      ],
+      "options": [
+        "[12  8] 0.75",
+        "[12 8 20] 0.75",
+        "[12  8] 3",
+        "[5 20] 0.5"
+      ],
+      "answer": 0,
+      "explanation": "بين 6 و 15: 12 و 8. ونسبة الأكبر من 6: ثلاثة من أربعة.",
+      "lesson": "numpy-masking"
+    },
+    {
+      "id": "q10",
+      "type": "mcq",
+      "prompt": "لماذا يسبب `a[(a > 2) and (a < 8)]` خطأً؟",
+      "options": [
+        "لأن الأقواس زائدة",
+        "لأن `and` تحاول تحويل المصفوفة كلها إلى قيمة منطقية واحدة؛ الصحيح `&`",
+        "لأن الشرط يجب أن يكون خارج الأقواس المربعة",
+        "لأن NumPy لا تدعم الشروط المركبة"
+      ],
+      "answer": 1,
+      "explanation": "مع المصفوفات نستخدم `&` و `|` و `~` وكل شرط بين أقواس.",
+      "lesson": "numpy-masking"
+    },
+    {
+      "id": "q11",
+      "type": "fix_code",
+      "prompt": "الكود التالي يجب أن يستبدل القيم السالبة بـ `NaN` ويحسب المتوسط متجاهلاً المفقود، لكن فيه خطآن. صحّحه.",
+      "starter_code": [
+        "import numpy as np",
+        "",
+        "values = np.array([10, -1, 30, -1, 50])",
+        "values[values < 0] = np.nan",
+        "avg = values.mean()",
+        "print(avg)"
+      ],
+      "tests": [
+        "import numpy as _np",
+        "assert _np.isnan(values).sum() == 2, \"يجب أن تحتوي values على قيمتي NaN\"",
+        "assert avg == 30.0, f\"avg يجب أن يكون 30.0، والموجود {avg}\""
+      ],
+      "solution": [
+        "import numpy as np",
+        "",
+        "values = np.array([10, -1, 30, -1, 50], dtype=float)",
+        "values[values < 0] = np.nan",
+        "avg = np.nanmean(values)",
+        "print(avg)"
+      ],
+      "hints": [
+        "شغّل الكود واقرأ الخطأ الأول.",
+        "بعد إصلاحه، ما ناتج `mean` مع `NaN`؟"
+      ],
+      "explanation": "الخطأ الأول: `NaN` لا تُوضع في مصفوفة أعداد صحيحة، فنحتاج `dtype=float`. الثاني: `mean` تعطي `nan` مع القيم المفقودة، والصحيح `np.nanmean`.",
+      "lesson": "numpy-masking"
+    },
+    {
+      "id": "q12",
+      "type": "write_code",
+      "prompt": "سؤال تطبيقي: في مصفوفة `scores` (4 طلاب × 3 مواد)، خزّن في `top_students` مواضع الطلاب (أرقام الصفوف) الذين درجتهم في المادة الثالثة 90 فأكثر، وفي `math_col` عمود المادة الأولى كاملاً.",
+      "starter_code": [
+        "import numpy as np",
+        "",
+        "scores = np.array([",
+        "    [88, 75, 92],",
+        "    [70, 80, 85],",
+        "    [95, 90, 98],",
+        "    [60, 72, 90],",
+        "])",
+        "",
+        "# اكتب الحل هنا"
+      ],
+      "tests": [
+        "import numpy as _np",
+        "assert _np.array_equal(top_students, [0, 2, 3]), f\"top_students غير صحيحة: {top_students}\"",
+        "assert _np.array_equal(math_col, [88, 70, 95, 60]), f\"math_col غير صحيحة: {math_col}\""
+      ],
+      "solution": [
+        "import numpy as np",
+        "",
+        "scores = np.array([",
+        "    [88, 75, 92],",
+        "    [70, 80, 85],",
+        "    [95, 90, 98],",
+        "    [60, 72, 90],",
+        "])",
+        "",
+        "top_students = np.where(scores[:, 2] >= 90)[0]",
+        "math_col = scores[:, 0]",
+        "print(top_students, math_col)"
+      ],
+      "hints": [
+        "العمود الثالث: `scores[:, 2]`.",
+        "`np.where(mask)[0]` تعطي المواضع."
+      ],
+      "explanation": "`np.where(cond)` بمعامل واحد ترجع مواضع العناصر التي تحقق الشرط (داخل صف، فنأخذ `[0]`). ويمكن أيضاً `np.arange(4)[scores[:, 2] >= 90]`.",
+      "lesson": "numpy-indexing"
+    }
+  ]
+}
