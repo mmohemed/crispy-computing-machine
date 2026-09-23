@@ -1,0 +1,356 @@
+{
+  "slug": "pandas-dataframe",
+  "course": "pandas",
+  "module": "pandas-basics",
+  "order": 2,
+  "title": "DataFrame: ما هو وكيف ننشئه",
+  "title_en": "The DataFrame",
+  "minutes": 30,
+  "level": "متوسط",
+  "objectives": [
+    "تفهم DataFrame كجدول من أعمدة Series تشترك في فهرس واحد.",
+    "تنشئ DataFrame من قاموس قوائم ومن قائمة قواميس.",
+    "تقرأ خصائصه: `shape` و `columns` و `index` و `dtypes`.",
+    "تستخدم `set_index` و `reset_index` وتعرض أجزاء من الجدول."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "الجدول في Pandas",
+      "body": [
+        "**DataFrame** جدول ثنائي الأبعاد: **صفوف** (مشاهدات، مثل طلب واحد) و**أعمدة** (خصائص، مثل المدينة والسعر). تقنياً هو مجموعة Series، عمود لكل منها، تشترك كلها في **فهرس واحد** للصفوف. ولكل عمود نوع مستقل: عمود نصوص، وعمود أعداد صحيحة، وعمود أعداد عشرية.",
+        {
+          "table": {
+            "head": [
+              "الخاصية",
+              "تعطي"
+            ],
+            "rows": [
+              [
+                "`df.shape`",
+                "صف (عدد الصفوف، عدد الأعمدة)"
+              ],
+              [
+                "`df.columns`",
+                "أسماء الأعمدة"
+              ],
+              [
+                "`df.index`",
+                "فهرس الصفوف (افتراضياً 0، 1، 2، ...)"
+              ],
+              [
+                "`df.dtypes`",
+                "نوع كل عمود"
+              ],
+              [
+                "`df.head(n)` / `df.tail(n)`",
+                "أول / آخر n صفوف"
+              ],
+              [
+                "`len(df)`",
+                "عدد الصفوف"
+              ]
+            ]
+          }
+        },
+        "طرق الإنشاء الأكثر شيوعاً (غير قراءة ملف):",
+        {
+          "list": [
+            "**قاموس قوائم**: كل مفتاح اسم عمود، وقيمته قائمة قيم العمود.",
+            "**قائمة قواميس**: كل قاموس صف، كما في بيانات JSON والـ API، وكما بنيت الطلبات يدوياً في مشروع Python."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "هذه هي البنية التي ستعمل عليها في أغلب مسيرتك في تحليل البيانات. ما كتبته في مشروع Python الخالص بقائمة قواميس ودوال تجميع، يصبح هنا جدولاً واحداً بعمليات جاهزة وسريعة. وفهم أن كل عمود Series بنوع خاص، وأن الصفوف لها فهرس، يفسر سلوك Pandas في كل العمليات القادمة."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "DataFrame لأي بيانات جدولية بأعمدة مسماة وأنواع مختلفة.",
+            "قاموس القوائم عندما تكون البيانات منظمة كأعمدة.",
+            "قائمة القواميس عندما تأتيك سجلات (JSON، API، نتائج حلقة).",
+            "`set_index` عندما يكون لعمود معرّف فريد (مثل رقم الطلب) وتريد الوصول بالتسمية."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "من قاموس قوائم",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.DataFrame({",
+        "    \"product\": [\"سماعة\", \"شاحن\", \"ساعة ذكية\", \"لوحة مفاتيح\"],",
+        "    \"price\": [149, 59, 399, 129],",
+        "    \"stock\": [12, 40, 5, 0],",
+        "    \"rating\": [4.5, 4.1, 4.7, None],",
+        "})",
+        "print(df)",
+        "print(df.shape, len(df))",
+        "print(list(df.columns))",
+        "print(df.dtypes)"
+      ],
+      "explanation": [
+        {
+          "code": "\"product\": [...]",
+          "text": "كل مفتاح عمود، والقوائم يجب أن تكون بنفس الطول."
+        },
+        {
+          "code": "print(df)",
+          "text": "Pandas تعرض الجدول مع الفهرس 0 إلى 3 على اليسار."
+        },
+        {
+          "code": "None في rating",
+          "text": "تصبح `NaN`، والعمود عشري `float64`."
+        },
+        {
+          "code": "df.dtypes",
+          "text": "نوع كل عمود: `object` للنصوص، و `int64` للأعداد الصحيحة، و `float64` للعشرية."
+        }
+      ],
+      "expected_output": [
+        "       product  price  stock  rating",
+        "0        سماعة    149     12     4.5",
+        "1         شاحن     59     40     4.1",
+        "2    ساعة ذكية    399      5     4.7",
+        "3  لوحة مفاتيح    129      0     NaN",
+        "(4, 4) 4",
+        "['product', 'price', 'stock', 'rating']",
+        "product     object",
+        "price        int64",
+        "stock        int64",
+        "rating     float64",
+        "dtype: object"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "من قائمة قواميس (سجلات)",
+      "code": [
+        "import pandas as pd",
+        "",
+        "orders = [",
+        "    {\"order_id\": \"A1\", \"city\": \"جدة\", \"amount\": 250},",
+        "    {\"order_id\": \"A2\", \"city\": \"الرياض\", \"amount\": 90, \"coupon\": \"WELCOME\"},",
+        "    {\"order_id\": \"A3\", \"city\": \"أبها\", \"amount\": 410},",
+        "]",
+        "df = pd.DataFrame(orders)",
+        "print(df)",
+        "",
+        "df = df.set_index(\"order_id\")",
+        "print(df.loc[\"A2\", \"amount\"])",
+        "print(df.reset_index().columns.tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "pd.DataFrame(orders)",
+          "text": "كل قاموس صف. المفتاح الموجود في بعض السجلات فقط (`coupon`) يصبح عموداً قيمه `NaN` في البقية."
+        },
+        {
+          "code": "set_index(\"order_id\")",
+          "text": "يجعل العمود فهرساً للصفوف، فنصل إلى الطلب برقمه."
+        },
+        {
+          "code": "df.loc[\"A2\", \"amount\"]",
+          "text": "الصف بتسميته والعمود باسمه. `loc` لها درس كامل قريباً."
+        },
+        {
+          "code": "reset_index()",
+          "text": "العكس: يعيد الفهرس عموداً عادياً."
+        }
+      ],
+      "expected_output": [
+        "  order_id    city  amount   coupon",
+        "0       A1     جدة     250      NaN",
+        "1       A2  الرياض      90  WELCOME",
+        "2       A3    أبها     410      NaN",
+        "90",
+        "['order_id', 'city', 'amount', 'coupon']"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الجدول الحقيقي: ملف المبيعات",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "print(df.shape)",
+        "print(df[[\"order_id\", \"city\", \"product\", \"unit_price\", \"quantity\"]].head(3))",
+        "print(df[\"unit_price\"].dtype, df[\"discount\"].dtype, df[\"city\"].dtype)",
+        "print(type(df[\"quantity\"]).__name__)"
+      ],
+      "explanation": [
+        {
+          "code": "df.shape",
+          "text": "1,700 صف و 11 عموداً: نفس الملف الذي حللته بـ Python الخالصة."
+        },
+        {
+          "code": "df[[...]].head(3)",
+          "text": "أول ثلاثة صفوف لخمسة أعمدة فقط حتى يبقى العرض مقروءاً."
+        },
+        {
+          "code": "dtypes",
+          "text": "Pandas اكتشفت الأنواع تلقائياً: الأسعار أعداد صحيحة، والخصم عشري، والمدينة نص."
+        },
+        {
+          "code": "type(df[\"quantity\"])",
+          "text": "كل عمود Series."
+        }
+      ],
+      "expected_output": [
+        "(1700, 11)",
+        "    order_id city      product  unit_price  quantity",
+        "0  ORD-10001  جدة    قميص قطني          79         1",
+        "1  ORD-10002  جدة  لوحة مفاتيح         129         1",
+        "2  ORD-10003  جدة    شاحن سريع          59         4",
+        "int64 float64 object",
+        "Series"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`object` في Pandas تعني غالباً عمود نصوص.",
+        "عند طباعة جدول عريض يلفّه Pandas على عدة أسطر. اختر أعمدة محددة للعرض، أو غيّر `pd.set_option(\"display.width\", 120)`.",
+        "الفهرس ليس عموداً عادياً؛ لا يظهر في `df.columns`. استخدم `reset_index()` إذا أردته عموداً.",
+        "نسخ الجدول: `df.copy()`. الإسناد `df2 = df` لا ينسخ، تماماً كالقوائم."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "قوائم بأطوال مختلفة",
+          "wrong": [
+            "import pandas as pd",
+            "pd.DataFrame({\"a\": [1, 2, 3], \"b\": [4, 5]})"
+          ],
+          "error": "ValueError: All arrays must be of the same length",
+          "error_type": "ValueError",
+          "why": "كل الأعمدة يجب أن يكون لها نفس عدد الصفوف.",
+          "fix": [
+            "import pandas as pd",
+            "print(pd.DataFrame({\"a\": [1, 2, 3], \"b\": [4, 5, None]}))"
+          ]
+        },
+        {
+          "title": "استدعاء shape كدالة",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [1]})",
+            "print(df.shape())"
+          ],
+          "error": "TypeError: 'tuple' object is not callable",
+          "error_type": "TypeError",
+          "why": "`shape` خاصية وليست دالة، فلا توضع بعدها أقواس.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [1]})",
+            "print(df.shape)"
+          ]
+        },
+        {
+          "title": "نسيان حفظ ناتج set_index",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"id\": [\"A\"], \"v\": [1]})",
+            "df.set_index(\"id\")",
+            "print(df.index.tolist())"
+          ],
+          "why": "أغلب دوال Pandas ترجع جدولاً **جديداً** ولا تغيّر الأصلي. بدون إسناد يبقى `df` كما هو.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"id\": [\"A\"], \"v\": [1]})",
+            "df = df.set_index(\"id\")",
+            "print(df.index.tolist())"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "جدول المنتجات",
+    "prompt": [
+      "أنشئ DataFrame من السجلات `records` ثم:"
+    ],
+    "requirements": [
+      "`products`: الجدول من `records` بفهرس هو عمود `sku` (استخدم `set_index`).",
+      "`n_rows, n_cols`: عدد الصفوف والأعمدة في `products` (بعد نقل `sku` إلى الفهرس).",
+      "`missing_rating`: عدد القيم المفقودة في عمود `rating` (استخدم `isna().sum()` وحوّله بـ `int`).",
+      "`price_of_p3`: سعر المنتج `P3` باستخدام `loc`."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "records = [",
+      "    {\"sku\": \"P1\", \"name\": \"سماعة\", \"price\": 149, \"rating\": 4.5},",
+      "    {\"sku\": \"P2\", \"name\": \"شاحن\", \"price\": 59},",
+      "    {\"sku\": \"P3\", \"name\": \"ساعة ذكية\", \"price\": 399, \"rating\": 4.7},",
+      "    {\"sku\": \"P4\", \"name\": \"لوحة مفاتيح\", \"price\": 129},",
+      "]",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import pandas as _pd",
+      "assert isinstance(products, _pd.DataFrame), \"products يجب أن يكون DataFrame\"",
+      "assert list(products.index) == [\"P1\", \"P2\", \"P3\", \"P4\"], \"الفهرس يجب أن يكون عمود sku\"",
+      "assert (n_rows, n_cols) == (4, 3), f\"الشكل يجب أن يكون (4, 3)، والموجود {(n_rows, n_cols)}\"",
+      "assert missing_rating == 2 and isinstance(missing_rating, int), f\"missing_rating يجب أن يكون 2، والموجود {missing_rating!r}\"",
+      "assert price_of_p3 == 399, f\"price_of_p3 يجب أن يكون 399، والموجود {price_of_p3}\""
+    ],
+    "hints": [
+      "`pd.DataFrame(records).set_index(\"sku\")`.",
+      "`n_rows, n_cols = products.shape`.",
+      "`products[\"rating\"].isna().sum()` يعدّ القيم المفقودة."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "records = [",
+      "    {\"sku\": \"P1\", \"name\": \"سماعة\", \"price\": 149, \"rating\": 4.5},",
+      "    {\"sku\": \"P2\", \"name\": \"شاحن\", \"price\": 59},",
+      "    {\"sku\": \"P3\", \"name\": \"ساعة ذكية\", \"price\": 399, \"rating\": 4.7},",
+      "    {\"sku\": \"P4\", \"name\": \"لوحة مفاتيح\", \"price\": 129},",
+      "]",
+      "",
+      "products = pd.DataFrame(records).set_index(\"sku\")",
+      "n_rows, n_cols = products.shape",
+      "missing_rating = int(products[\"rating\"].isna().sum())",
+      "price_of_p3 = products.loc[\"P3\", \"price\"]",
+      "",
+      "print(products)",
+      "print(n_rows, n_cols, missing_rating, price_of_p3)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "ماذا يحدث عندما تنشئ DataFrame من قائمة قواميس وبعض القواميس ينقصها مفتاح؟",
+    "options": [
+      "خطأ ValueError",
+      "يُحذف ذلك المفتاح من كل الصفوف",
+      "يصبح عموداً، وقيمه في الصفوف التي ينقصها `NaN`",
+      "تُحذف الصفوف الناقصة"
+    ],
+    "answer": 2,
+    "explanation": "Pandas تجمع كل المفاتيح كأعمدة وتضع `NaN` حيث تغيب القيمة."
+  },
+  "summary": [
+    "DataFrame جدول من أعمدة Series تشترك في فهرس الصفوف، ولكل عمود نوعه.",
+    "الإنشاء من قاموس قوائم (أعمدة) أو قائمة قواميس (سجلات)، أو من ملف.",
+    "`shape` و `columns` و `index` و `dtypes` و `head` لفهم الجدول.",
+    "أغلب الدوال ترجع جدولاً جديداً؛ احفظ الناتج بالإسناد."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

@@ -1,0 +1,242 @@
+{
+  "slug": "quiz-pandas-basics",
+  "course": "pandas",
+  "module": "pandas-basics",
+  "title": "اختبار الوحدة: Series و DataFrame",
+  "intro": [
+    "يغطي هذا الاختبار Series و DataFrame والقراءة والفحص واختيار الأعمدة و loc و iloc والتصفية والترتيب وإنشاء الأعمدة.",
+    "أسئلة الكود تعمل على ملف `store_sales.csv` نفسه الذي استخدمته في الدروس."
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "s = pd.Series([5, 8, 2], index=['a', 'b', 'c'])",
+        "print(s['b'], s.idxmax(), s.iloc[-1])"
+      ],
+      "options": [
+        "8 b 2",
+        "8 1 2",
+        "5 b c",
+        "8 b c"
+      ],
+      "answer": 0,
+      "explanation": "`s['b']` بالتسمية، و `idxmax` تسمية الأكبر، و `iloc[-1]` آخر قيمة بالموقع.",
+      "lesson": "pandas-series"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "prompt": "ما نوع `df[\"city\"]` وما نوع `df[[\"city\"]]`؟",
+      "options": [
+        "كلاهما Series",
+        "Series ثم DataFrame",
+        "DataFrame ثم Series",
+        "كلاهما DataFrame"
+      ],
+      "answer": 1,
+      "explanation": "اسم واحد يعطي Series، وقائمة أسماء تعطي DataFrame.",
+      "lesson": "pandas-dataframe"
+    },
+    {
+      "id": "q3",
+      "type": "true_false",
+      "prompt": "`df.to_csv(\"out.csv\")` بدون `index=False` تكتب الفهرس كعمود إضافي في الملف.",
+      "answer": true,
+      "explanation": "لذلك يظهر عمود `Unnamed: 0` عند القراءة لاحقاً. استخدم `index=False`.",
+      "lesson": "pandas-read"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "prompt": "أي دالة تعرض لكل عمود نوعه وعدد القيم غير المفقودة؟",
+      "options": [
+        "`df.describe()`",
+        "`df.info()`",
+        "`df.head()`",
+        "`df.shape`"
+      ],
+      "answer": 1,
+      "explanation": "`info` تعرض الأنواع وعدد القيم غير المفقودة لكل عمود.",
+      "lesson": "pandas-inspect"
+    },
+    {
+      "id": "q5",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "df = pd.DataFrame({'r': [4, None, 5, None]})",
+        "print(df['r'].isna().sum(), df['r'].mean())"
+      ],
+      "options": [
+        "2 4.5",
+        "2 2.25",
+        "0 4.5",
+        "2 nan"
+      ],
+      "answer": 0,
+      "explanation": "قيمتان مفقودتان، و `mean` في Pandas تتجاهل المفقود: (4 + 5) ÷ 2.",
+      "lesson": "pandas-inspect"
+    },
+    {
+      "id": "q6",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "df = pd.DataFrame({'v': [10, 20, 30]}, index=['x', 'y', 'z'])",
+        "print(df.loc['x':'y', 'v'].sum(), df.iloc[0:1, 0].sum())"
+      ],
+      "options": [
+        "30 10",
+        "10 10",
+        "30 30",
+        "60 10"
+      ],
+      "answer": 0,
+      "explanation": "`loc` تشمل النهاية (x و y)، و `iloc[0:1]` الموقع 0 فقط.",
+      "lesson": "pandas-loc-iloc"
+    },
+    {
+      "id": "q7",
+      "type": "mcq",
+      "prompt": "لماذا يسبب `df[(df[\"a\"] > 1) and (df[\"b\"] < 5)]` خطأً؟",
+      "options": [
+        "لأن الأقواس زائدة",
+        "لأن `and` لا تعمل مع Series كاملة؛ الصحيح `&`",
+        "لأن الأعمدة غير موجودة",
+        "لأن الشرط يحتاج `query`"
+      ],
+      "answer": 1,
+      "explanation": "`and` تحتاج قيمة منطقية واحدة، والـ Series فيها قيم كثيرة.",
+      "lesson": "pandas-filter"
+    },
+    {
+      "id": "q8",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "df = pd.DataFrame({'city': ['جدة', 'أبها', 'مكة', 'جدة']})",
+        "print(df['city'].isin(['جدة', 'مكة']).mean())"
+      ],
+      "options": [
+        "0.75",
+        "3",
+        "0.5",
+        "True"
+      ],
+      "answer": 0,
+      "explanation": "ثلاثة من أربعة صفوف في القائمة، ومتوسط القناع نسبة.",
+      "lesson": "pandas-filter"
+    },
+    {
+      "id": "q9",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "df = pd.DataFrame({'v': [3, 9, 1]})",
+        "print(df.nlargest(2, 'v')['v'].tolist(), df.sort_values('v').index[0])"
+      ],
+      "options": [
+        "[9, 3] 2",
+        "[9, 3] 0",
+        "[3, 9] 2",
+        "[9, 1] 2"
+      ],
+      "answer": 0,
+      "explanation": "أعلى قيمتين 9 و 3، وأصغر قيمة (1) فهرسها الأصلي 2.",
+      "lesson": "pandas-sort"
+    },
+    {
+      "id": "q10",
+      "type": "true_false",
+      "prompt": "`df[\"region\"] = df[\"city\"].map(regions)` تضع `NaN` لأي مدينة غير موجودة في القاموس `regions` دون أي خطأ.",
+      "answer": true,
+      "explanation": "لذلك افحص `isna().sum()` بعد `map`.",
+      "lesson": "pandas-new-columns"
+    },
+    {
+      "id": "q11",
+      "type": "fix_code",
+      "prompt": "الكود التالي يجب أن يحسب عدد طلبات الأغذية في جدة التي فيها خصم، لكن فيه خطآن. صحّحه.",
+      "starter_code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "mask = df[\"city\"] == \"جدة\" & df[\"category\"] == \"أغذية\" & df[\"discount\"] > 0",
+        "count = df[mask].len()",
+        "print(count)"
+      ],
+      "tests": [
+        "import pandas as _pd",
+        "_d = _pd.read_csv(\"store_sales.csv\")",
+        "_e = int(((_d[\"city\"] == \"جدة\") & (_d[\"category\"] == \"أغذية\") & (_d[\"discount\"] > 0)).sum())",
+        "assert count == _e, f\"count يجب أن يكون {_e}، والموجود {count}\""
+      ],
+      "solution": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "mask = (df[\"city\"] == \"جدة\") & (df[\"category\"] == \"أغذية\") & (df[\"discount\"] > 0)",
+        "count = len(df[mask])",
+        "print(count)"
+      ],
+      "hints": [
+        "ضع كل مقارنة بين أقواس.",
+        "DataFrame ليس لها دالة `.len()`."
+      ],
+      "explanation": "كل شرط يحتاج أقواساً حوله قبل `&`، وعدد الصفوف بـ `len(df)` وليس `df.len()`.",
+      "lesson": "pandas-filter",
+      "files": [
+        "datasets/store_sales.csv"
+      ]
+    },
+    {
+      "id": "q12",
+      "type": "write_code",
+      "prompt": "سؤال تطبيقي: أضف عمود `revenue` (السعر × الكمية × (1 − الخصم)) إلى `df`، ثم خزّن في `top_city` المدينة التي فيها أعلى متوسط إيراد للطلب، وفي `avg_top` ذلك المتوسط مقرباً لمنزلتين كـ `float`. (تلميح: لكل مدينة صفّ واحسب المتوسط، أو استخدم `groupby` إذا كنت تعرفه.)",
+      "starter_code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "",
+        "# اكتب الحل هنا"
+      ],
+      "tests": [
+        "import pandas as _pd",
+        "_d = _pd.read_csv(\"store_sales.csv\")",
+        "_d[\"revenue\"] = _d[\"unit_price\"] * _d[\"quantity\"] * (1 - _d[\"discount\"])",
+        "_m = _d.groupby(\"city\")[\"revenue\"].mean()",
+        "assert \"revenue\" in df.columns, \"أضف عمود revenue إلى df\"",
+        "assert top_city == _m.idxmax(), f\"top_city يجب أن تكون {_m.idxmax()}\"",
+        "assert avg_top == round(float(_m.max()), 2), f\"avg_top يجب أن يكون {round(float(_m.max()), 2)}\""
+      ],
+      "solution": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "averages = {city: df.loc[df[\"city\"] == city, \"revenue\"].mean() for city in df[\"city\"].unique()}",
+        "top_city = max(averages, key=averages.get)",
+        "avg_top = round(float(averages[top_city]), 2)",
+        "print(top_city, avg_top)"
+      ],
+      "hints": [
+        "أنشئ العمود بعملية متجهة.",
+        "قاموس المدينة ← `df.loc[df[\"city\"] == c, \"revenue\"].mean()`."
+      ],
+      "explanation": "لكل مدينة نحسب متوسط الإيراد بالتصفية، ثم نختار الأعلى. في الوحدة القادمة تكتب هذا بسطر واحد: `df.groupby(\"city\")[\"revenue\"].mean().idxmax()`.",
+      "lesson": "pandas-new-columns",
+      "files": [
+        "datasets/store_sales.csv"
+      ]
+    }
+  ]
+}

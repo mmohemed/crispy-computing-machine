@@ -1,0 +1,352 @@
+{
+  "slug": "pandas-filter",
+  "course": "pandas",
+  "module": "pandas-basics",
+  "order": 7,
+  "title": "تصفية الصفوف",
+  "title_en": "Filtering Rows",
+  "minutes": 30,
+  "level": "متوسط",
+  "objectives": [
+    "تصفّي الصفوف بشروط بسيطة ومركبة باستخدام `&` و `|` و `~`.",
+    "تستخدم `isin` و `between` و `str.contains` و `notna`.",
+    "تكتب التصفية بشكل مقروء باستخدام `query`.",
+    "تحسب نسباً من شروط وتقارن بين الشرائح."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "التصفية = قناع منطقي",
+      "body": [
+        "نفس فكرة NumPy تماماً: الشرط على عمود `df[\"quantity\"] > 2` يعطي Series من `True` و `False`، ووضعها داخل الأقواس `df[mask]` يبقي الصفوف التي قيمتها `True`.",
+        {
+          "table": {
+            "head": [
+              "الأداة",
+              "مثال",
+              "المعنى"
+            ],
+            "rows": [
+              [
+                "مقارنة",
+                "`df[df[\"unit_price\"] > 200]`",
+                "السعر أكبر من 200"
+              ],
+              [
+                "و / أو / ليس",
+                "`df[(a) & (b)]` و `df[(a) | (b)]` و `df[~a]`",
+                "مع أقواس حول كل شرط"
+              ],
+              [
+                "`isin`",
+                "`df[df[\"city\"].isin([\"جدة\", \"مكة\"])]`",
+                "القيمة ضمن قائمة"
+              ],
+              [
+                "`between`",
+                "`df[df[\"unit_price\"].between(50, 150)]`",
+                "بين قيمتين (شاملة)"
+              ],
+              [
+                "`str.contains`",
+                "`df[df[\"product\"].str.contains(\"تمر\")]`",
+                "النص يحتوي كلمة"
+              ],
+              [
+                "`notna` / `isna`",
+                "`df[df[\"rating\"].notna()]`",
+                "القيمة موجودة / مفقودة"
+              ],
+              [
+                "`query`",
+                "`df.query(\"unit_price > 200 and city == 'جدة'\")`",
+                "شرط كنص مقروء"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "كل سؤال تحليلي تقريباً يبدأ بتصفية: الطلبات في رمضان، والعملاء الجدد في جدة، والمنتجات التي تقييمها أقل من 3. والتصفية مع `mean` على القناع تجيب عن أسئلة النسب مباشرة: ما نسبة الطلبات بخصم؟ ما نسبة العملاء العائدين في كل مدينة؟"
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "الأقنعة مع `&` و `|` للشروط الديناميكية أو المبنية من متغيرات.",
+            "`isin` بدلاً من سلسلة `|` طويلة لعدة قيم.",
+            "`query` عندما يكون الشرط طويلاً وتريد قراءته كجملة.",
+            "خزّن القناع في متغير باسم واضح إذا استخدمته أكثر من مرة: `is_ramadan = ...`."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "شروط بسيطة ومركبة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "",
+        "expensive = df[df[\"unit_price\"] > 200]",
+        "print(len(expensive), sorted(expensive[\"product\"].unique()))",
+        "",
+        "west_new = df[(df[\"city\"].isin([\"جدة\", \"مكة\", \"المدينة\"])) & (df[\"customer_type\"] == \"جديد\")]",
+        "print(len(west_new))",
+        "",
+        "bulk_or_discount = df[(df[\"quantity\"] >= 4) | (df[\"discount\"] >= 0.2)]",
+        "print(len(bulk_or_discount))",
+        "",
+        "not_riyadh = df[~(df[\"city\"] == \"الرياض\")]",
+        "print(len(not_riyadh) + (df[\"city\"] == \"الرياض\").sum() == len(df))"
+      ],
+      "explanation": [
+        {
+          "code": "df[df[\"unit_price\"] > 200]",
+          "text": "الطلبات على المنتجات الأغلى من 200: ساعة ذكية وحذاء رياضي وطقم أواني."
+        },
+        {
+          "code": "isin([...]) & (...)",
+          "text": "العملاء الجدد في مدن المنطقة الغربية."
+        },
+        {
+          "code": "|",
+          "text": "الطلبات بالجملة أو بخصم كبير."
+        },
+        {
+          "code": "~",
+          "text": "النفي: كل الطلبات من خارج الرياض. ونتحقق أن الجزأين معاً يساويان كل البيانات."
+        }
+      ],
+      "expected_output": [
+        "348 ['حذاء رياضي', 'ساعة ذكية', 'طقم أواني']",
+        "307",
+        "202",
+        "True"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "between و str.contains و notna و query",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "",
+        "mid = df[df[\"unit_price\"].between(60, 130)]",
+        "print(sorted(mid[\"unit_price\"].unique().tolist()))",
+        "",
+        "dates = df[df[\"product\"].str.contains(\"تمر\")]",
+        "print(dates[\"product\"].unique(), len(dates))",
+        "",
+        "rated_low = df[df[\"rating\"].notna() & (df[\"rating\"] <= 2)]",
+        "print(len(rated_low))",
+        "",
+        "q = df.query(\"unit_price >= 200 and city == 'الرياض' and discount > 0\")",
+        "print(len(q))"
+      ],
+      "explanation": [
+        {
+          "code": "between(60, 130)",
+          "text": "الحدان مشمولان. و `unique().tolist()` تحوّل القيم الفريدة إلى قائمة Python لطباعة واضحة."
+        },
+        {
+          "code": "str.contains(\"تمر\")",
+          "text": "البحث داخل النص. دوال `.str` تعمل على العمود كله."
+        },
+        {
+          "code": "notna() & (rating <= 2)",
+          "text": "التقييمات المنخفضة من الطلبات المقيّمة فقط."
+        },
+        {
+          "code": "df.query(...)",
+          "text": "نفس التصفية كنص مقروء؛ النصوص داخلها بعلامات تنصيص مفردة."
+        }
+      ],
+      "expected_output": [
+        "[65, 79, 89, 95, 119, 120, 129]",
+        "['تمر فاخر'] 165",
+        "140",
+        "41"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "النسب ومقارنة الشرائح",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"month\"] = df[\"order_date\"].str[5:7].astype(int)",
+        "",
+        "has_discount = df[\"discount\"] > 0",
+        "print(f\"طلبات بخصم: {has_discount.mean():.1%}\")",
+        "",
+        "for month in (3, 6, 11):",
+        "    in_month = df[\"month\"] == month",
+        "    print(month, f\"{(has_discount & in_month).sum() / in_month.sum():.1%}\")",
+        "",
+        "food = df[df[\"category\"] == \"أغذية\"]",
+        "print(f\"نصيب مارس من طلبات الأغذية: {(food['month'] == 3).mean():.1%}\")"
+      ],
+      "explanation": [
+        {
+          "code": "df[\"order_date\"].str[5:7].astype(int)",
+          "text": "استخراج الشهر من نص التاريخ بدوال `.str` (الطريقة الأفضل بالتواريخ في الوحدة القادمة)."
+        },
+        {
+          "code": "has_discount.mean()",
+          "text": "متوسط القناع = نسبة الطلبات التي فيها خصم."
+        },
+        {
+          "code": "(has_discount & in_month).sum() / in_month.sum()",
+          "text": "نسبة الخصم داخل كل شهر: نوفمبر أعلى بوضوح (الجمعة البيضاء)."
+        },
+        {
+          "code": "(food['month'] == 3).mean()",
+          "text": "أي نسبة من طلبات الأغذية كانت في مارس؟ لو توزعت بالتساوي لكانت حوالي 8%."
+        }
+      ],
+      "expected_output": [
+        "طلبات بخصم: 34.8%",
+        "3 31.3%",
+        "6 31.4%",
+        "11 67.5%",
+        "نصيب مارس من طلبات الأغذية: 17.6%"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "استخدم `&` و `|` و `~` مع أقواس حول كل شرط، وليس `and` و `or` (إلا داخل `query`).",
+        "`df[\"rating\"] == None` لا تعمل للقيم المفقودة؛ استخدم `isna()`.",
+        "`str.contains` تعامل النص كـ regex افتراضياً. للبحث عن رموز خاصة مثل `+` أو `(` أضف `regex=False`.",
+        "نتيجة التصفية جدول جديد بنفس الأعمدة والفهرس الأصلي."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "and بدل &",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[(df[\"quantity\"] > 2) and (df[\"discount\"] > 0)]"
+          ],
+          "error": "ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().",
+          "error_type": "ValueError",
+          "why": "`and` تحاول تحويل Series كاملة إلى قيمة منطقية واحدة.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "print(len(df[(df[\"quantity\"] > 2) & (df[\"discount\"] > 0)]))"
+          ]
+        },
+        {
+          "title": "نسيان الأقواس حول كل شرط",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[df[\"quantity\"] > 2 & df[\"discount\"] > 0]"
+          ],
+          "error": "TypeError: Cannot perform 'rand_' with a dtyped [float64] array and scalar of type [bool]",
+          "error_type": "TypeError",
+          "why": "`&` تُنفّذ قبل `>` و `==`، فيحاول Pandas حساب `2 & df[...]` أولاً.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "print(len(df[(df[\"quantity\"] > 2) & (df[\"discount\"] > 0)]))"
+          ]
+        },
+        {
+          "title": "المقارنة مع None للقيم المفقودة",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "print(len(df[df[\"rating\"] == None]))"
+          ],
+          "why": "`NaN` لا تساوي أي شيء، حتى نفسها، فالنتيجة جدول فارغ دون أي خطأ.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "print(len(df[df[\"rating\"].isna()]))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "شرائح العملاء",
+    "prompt": [
+      "من `store_sales.csv` احسب:"
+    ],
+    "requirements": [
+      "`returning_riyadh`: عدد طلبات العملاء العائدين في الرياض كـ `int`.",
+      "`premium`: جدول الطلبات التي سعرها 150 فأكثر **و** تقييمها موجود **و** 4 فأكثر.",
+      "`gulf_cod`: عدد الطلبات في الدمام أو الرياض (استخدم `isin`) التي طريقة دفعها `الدفع عند الاستلام`، كـ `int`.",
+      "`low_rating_share`: نسبة الطلبات التي تقييمها 2 أو أقل من بين **الطلبات المقيّمة فقط**، كـ `float` مقرب لثلاث منازل."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import pandas as _pd",
+      "_d = _pd.read_csv(\"store_sales.csv\")",
+      "assert returning_riyadh == int(((_d[\"customer_type\"] == \"عائد\") & (_d[\"city\"] == \"الرياض\")).sum()) and isinstance(returning_riyadh, int), \"returning_riyadh غير صحيح\"",
+      "_p = _d[(_d[\"unit_price\"] >= 150) & (_d[\"rating\"].notna()) & (_d[\"rating\"] >= 4)]",
+      "assert premium.equals(_p), f\"premium غير صحيح (المتوقع {len(_p)} صفاً)\"",
+      "assert gulf_cod == int((_d[\"city\"].isin([\"الدمام\", \"الرياض\"]) & (_d[\"payment_method\"] == \"الدفع عند الاستلام\")).sum()), \"gulf_cod غير صحيح\"",
+      "_r = _d[\"rating\"].dropna()",
+      "assert low_rating_share == round(float((_r <= 2).mean()), 3), f\"low_rating_share يجب أن تكون {round(float((_r <= 2).mean()), 3)}\""
+    ],
+    "hints": [
+      "العدّ: `(mask).sum()` ثم `int(...)`.",
+      "للنسبة من المقيّمين: صفِّ أولاً `rated = df[df[\"rating\"].notna()]` ثم `(rated[\"rating\"] <= 2).mean()`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "returning_riyadh = int(((df[\"customer_type\"] == \"عائد\") & (df[\"city\"] == \"الرياض\")).sum())",
+      "premium = df[(df[\"unit_price\"] >= 150) & (df[\"rating\"].notna()) & (df[\"rating\"] >= 4)]",
+      "gulf_cod = int((df[\"city\"].isin([\"الدمام\", \"الرياض\"]) & (df[\"payment_method\"] == \"الدفع عند الاستلام\")).sum())",
+      "rated = df[df[\"rating\"].notna()]",
+      "low_rating_share = round(float((rated[\"rating\"] <= 2).mean()), 3)",
+      "",
+      "print(returning_riyadh, len(premium), gulf_cod, low_rating_share)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "أي تعبير يختار الطلبات من جدة أو مكة؟",
+    "options": [
+      "`df[df[\"city\"] == \"جدة\" or \"مكة\"]`",
+      "`df[df[\"city\"].isin([\"جدة\", \"مكة\"])]`",
+      "`df[df[\"city\"] in [\"جدة\", \"مكة\"]]`",
+      "`df[\"جدة\", \"مكة\"]`"
+    ],
+    "answer": 1,
+    "explanation": "`isin` تفحص كل قيمة في العمود مقابل القائمة وتعطي قناعاً منطقياً."
+  },
+  "summary": [
+    "التصفية = قناع منطقي داخل الأقواس: `df[mask]`.",
+    "`&` و `|` و `~` مع أقواس، و `isin` و `between` و `str.contains` و `notna`.",
+    "`query` لكتابة الشرط كنص مقروء.",
+    "`mask.mean()` نسبة، و `mask.sum()` عدد: أسرع طريقة لأسئلة النسب."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

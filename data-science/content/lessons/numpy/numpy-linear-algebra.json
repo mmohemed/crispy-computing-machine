@@ -251,8 +251,15 @@
             "np.linalg.solve(A, np.array([3, 6]))"
           ],
           "error": "numpy.linalg.LinAlgError: Singular matrix",
-          "error_type": "LinAlgError",
-          "why": "المعادلة الثانية ضعف الأولى، فلا يوجد حل وحيد."
+          "why": "المعادلة الثانية ضعف الأولى، فلا يوجد حل وحيد. على أغلب الأجهزة يظهر خطأ `LinAlgError`، وفي بعض البيئات قد تظهر أرقام بلا معنى أو `inf` بدلاً من الخطأ. لذلك افحص المحدد `det` قبل الحل: إذا كان صفراً (تقريباً) فالمصفوفة منفردة.",
+          "fix": [
+            "import numpy as np",
+            "A = np.array([[1, 2], [2, 4]])",
+            "if np.isclose(np.linalg.det(A), 0):",
+            "    print(\"المصفوفة منفردة: لا يوجد حل وحيد\")",
+            "else:",
+            "    print(np.linalg.solve(A, np.array([3, 6])))"
+          ]
         }
       ]
     }

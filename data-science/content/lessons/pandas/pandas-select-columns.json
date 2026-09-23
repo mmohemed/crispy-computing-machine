@@ -1,0 +1,335 @@
+{
+  "slug": "pandas-select-columns",
+  "course": "pandas",
+  "module": "pandas-basics",
+  "order": 5,
+  "title": "اختيار الأعمدة",
+  "title_en": "Selecting Columns",
+  "minutes": 20,
+  "level": "متوسط",
+  "objectives": [
+    "تختار عموداً واحداً كـ Series أو عدة أعمدة كـ DataFrame.",
+    "تعيد تسمية الأعمدة وتحذفها وتعيد ترتيبها.",
+    "تختار الأعمدة حسب النوع بـ `select_dtypes`.",
+    "تتجنب مشاكل الوصول بالنقطة `df.col`."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "قوس واحد أم قوسان؟",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "الكتابة",
+              "الناتج",
+              "الاستخدام"
+            ],
+            "rows": [
+              [
+                "`df[\"city\"]`",
+                "Series",
+                "عمود واحد للحساب عليه"
+              ],
+              [
+                "`df[[\"city\"]]`",
+                "DataFrame بعمود واحد",
+                "عندما تحتاج جدولاً"
+              ],
+              [
+                "`df[[\"city\", \"product\"]]`",
+                "DataFrame",
+                "مجموعة أعمدة"
+              ],
+              [
+                "`df.city`",
+                "Series",
+                "مختصر، لكن لا يعمل مع كل الأسماء"
+              ]
+            ]
+          }
+        },
+        "القوسان في `df[[\"a\", \"b\"]]` ليسا صيغة خاصة: القوس الخارجي للاختيار، والداخلي **قائمة** أسماء.",
+        {
+          "h": "تعديل الأعمدة"
+        },
+        {
+          "list": [
+            "`df.rename(columns={\"old\": \"new\"})`: إعادة تسمية.",
+            "`df.drop(columns=[\"a\", \"b\"])`: حذف.",
+            "`df[[\"c\", \"a\", \"b\"]]`: إعادة ترتيب بقائمة جديدة.",
+            "`df.columns = [...]`: استبدال كل الأسماء (بنفس العدد).",
+            "`df.select_dtypes(include=\"number\")`: الأعمدة الرقمية فقط."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "جداول الواقع قد تحتوي عشرات الأعمدة، وتحليلك يحتاج بعضها فقط. اختيار الأعمدة يجعل العرض مقروءاً والحساب أسرع، وأسماء الأعمدة الواضحة الموحدة (مثل `snake_case` بالإنجليزية) تجعل الكود نظيفاً وتمنع أخطاء كثيرة."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`df[\"col\"]` للحسابات على عمود.",
+            "`df[[...]]` لعرض أو تصدير مجموعة أعمدة.",
+            "`df.col` فقط للأسماء البسيطة بدون مسافات، وليس للإسناد.",
+            "`select_dtypes` قبل حساب إحصاءات أو ارتباطات على كل الأعمدة الرقمية."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "Series أم DataFrame",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "",
+        "prices = df[\"unit_price\"]",
+        "print(type(prices).__name__, prices.shape)",
+        "",
+        "one_col_table = df[[\"unit_price\"]]",
+        "print(type(one_col_table).__name__, one_col_table.shape)",
+        "",
+        "subset = df[[\"city\", \"product\", \"quantity\"]]",
+        "print(subset.head(3))",
+        "print(df.quantity.sum())"
+      ],
+      "explanation": [
+        {
+          "code": "df[\"unit_price\"]",
+          "text": "قوس واحد: Series بشكل `(1700,)`."
+        },
+        {
+          "code": "df[[\"unit_price\"]]",
+          "text": "قائمة داخل القوس: DataFrame بشكل `(1700, 1)`."
+        },
+        {
+          "code": "df[[\"city\", \"product\", \"quantity\"]]",
+          "text": "جدول فرعي بثلاثة أعمدة بالترتيب الذي نحدده."
+        },
+        {
+          "code": "df.quantity",
+          "text": "الوصول بالنقطة يعمل هنا لأن الاسم بسيط."
+        }
+      ],
+      "expected_output": [
+        "Series (1700,)",
+        "DataFrame (1700, 1)",
+        "  city      product  quantity",
+        "0  جدة    قميص قطني         1",
+        "1  جدة  لوحة مفاتيح         1",
+        "2  جدة    شاحن سريع         4",
+        "2973"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "إعادة التسمية والحذف والترتيب",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\", nrows=3)",
+        "",
+        "renamed = df.rename(columns={\"unit_price\": \"price\", \"quantity\": \"qty\"})",
+        "print(renamed.columns.tolist())",
+        "",
+        "slim = renamed.drop(columns=[\"payment_method\", \"customer_type\", \"rating\"])",
+        "print(slim.columns.tolist())",
+        "",
+        "ordered = slim[[\"order_id\", \"product\", \"price\", \"qty\", \"discount\", \"city\", \"category\", \"order_date\"]]",
+        "print(ordered.head(2))"
+      ],
+      "explanation": [
+        {
+          "code": "rename(columns={...})",
+          "text": "قاموس الاسم القديم ← الجديد. الأعمدة غير المذكورة تبقى كما هي."
+        },
+        {
+          "code": "drop(columns=[...])",
+          "text": "ترجع جدولاً جديداً بدون هذه الأعمدة."
+        },
+        {
+          "code": "slim[[...]]",
+          "text": "إعادة الترتيب: نختار كل الأعمدة بالترتيب الذي نريده."
+        }
+      ],
+      "expected_output": [
+        "['order_id', 'order_date', 'city', 'category', 'product', 'price', 'qty', 'discount', 'payment_method', 'customer_type', 'rating']",
+        "['order_id', 'order_date', 'city', 'category', 'product', 'price', 'qty', 'discount']",
+        "    order_id      product  price  qty  discount city    category  order_date",
+        "0  ORD-10001    قميص قطني     79    1       0.0  جدة       ملابس  2025-01-01",
+        "1  ORD-10002  لوحة مفاتيح    129    1       0.0  جدة  إلكترونيات  2025-01-01"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الاختيار حسب النوع وتنظيف الأسماء",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "print(df.select_dtypes(include=\"number\").columns.tolist())",
+        "print(df.select_dtypes(include=\"object\").columns.tolist())",
+        "",
+        "messy = pd.DataFrame(columns=[\" Order ID\", \"Unit Price \", \"City\"])",
+        "messy.columns = messy.columns.str.strip().str.lower().str.replace(\" \", \"_\")",
+        "print(messy.columns.tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "select_dtypes(include=\"number\")",
+          "text": "الأعمدة الرقمية فقط، مفيدة قبل `describe` أو حساب الارتباطات."
+        },
+        {
+          "code": "messy.columns.str...",
+          "text": "أسماء الأعمدة نفسها لها دوال النصوص `.str`، فننظفها كلها بسطر واحد."
+        }
+      ],
+      "expected_output": [
+        "['unit_price', 'quantity', 'discount', 'rating']",
+        "['order_id', 'order_date', 'city', 'category', 'product', 'payment_method', 'customer_type']",
+        "['order_id', 'unit_price', 'city']"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "أغلب هذه الدوال ترجع جدولاً جديداً؛ احفظه: `df = df.rename(...)`.",
+        "`df.col` لا تعمل مع الأسماء التي فيها مسافات أو تبدأ برقم أو تطابق اسم دالة (مثل عمود اسمه `count`)، ولا تنشئ عموداً جديداً عند الإسناد. لذلك `df[\"col\"]` هي الطريقة الموثوقة.",
+        "`df.columns.tolist()` أسهل للقراءة من طباعة `df.columns` مباشرة."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "اختيار عدة أعمدة بقوس واحد",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [1], \"b\": [2]})",
+            "print(df[\"a\", \"b\"])"
+          ],
+          "error": "KeyError: ('a', 'b')",
+          "error_type": "KeyError",
+          "why": "`df[\"a\", \"b\"]` يبحث عن عمود واحد اسمه الصف `(\"a\", \"b\")`. للأعمدة المتعددة ضع قائمة داخل القوس.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [1], \"b\": [2]})",
+            "print(df[[\"a\", \"b\"]])"
+          ]
+        },
+        {
+          "title": "اسم عمود بحروف مختلفة",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "print(df[\"City\"])"
+          ],
+          "error": "KeyError: 'City'",
+          "error_type": "KeyError",
+          "why": "أسماء الأعمدة حساسة للحروف والمسافات.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "print(df[\"city\"].head(2))"
+          ]
+        },
+        {
+          "title": "إنشاء عمود بالنقطة",
+          "wrong": [
+            "import pandas as pd",
+            "import warnings",
+            "warnings.simplefilter(\"ignore\")",
+            "df = pd.DataFrame({\"a\": [1, 2]})",
+            "df.total = df[\"a\"] * 2",
+            "print(df.columns.tolist())"
+          ],
+          "why": "`df.total = ...` تنشئ خاصية على الكائن وليس عموداً، مع تحذير، فلا يظهر العمود في الجدول.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [1, 2]})",
+            "df[\"total\"] = df[\"a\"] * 2",
+            "print(df.columns.tolist())"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تجهيز جدول للتصدير",
+    "prompt": [
+      "جهّز من `store_sales.csv` جدولاً مختصراً لفريق المبيعات:"
+    ],
+    "requirements": [
+      "`report`: الأعمدة `order_id` و `order_date` و `city` و `product` و `unit_price` و `quantity` فقط، بهذا الترتيب.",
+      "أعد تسمية `unit_price` إلى `price` و `quantity` إلى `qty` في `report`.",
+      "`numeric_cols`: قائمة أسماء الأعمدة الرقمية في الجدول الأصلي `df`.",
+      "`total_qty`: مجموع `qty` في `report` كـ `int`."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import pandas as _pd",
+      "_df = _pd.read_csv(\"store_sales.csv\")",
+      "assert list(report.columns) == [\"order_id\", \"order_date\", \"city\", \"product\", \"price\", \"qty\"], f\"أعمدة report غير صحيحة: {list(report.columns)}\"",
+      "assert len(report) == len(_df), \"report يجب أن يحتوي كل الصفوف\"",
+      "assert numeric_cols == _df.select_dtypes(include=\"number\").columns.tolist(), f\"numeric_cols غير صحيحة: {numeric_cols}\"",
+      "assert total_qty == int(_df[\"quantity\"].sum()) and isinstance(total_qty, int), \"total_qty غير صحيح\""
+    ],
+    "hints": [
+      "اختر الأعمدة بقائمة داخل القوس، ثم `rename`.",
+      "`df.select_dtypes(include=\"number\").columns.tolist()`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "report = df[[\"order_id\", \"order_date\", \"city\", \"product\", \"unit_price\", \"quantity\"]]",
+      "report = report.rename(columns={\"unit_price\": \"price\", \"quantity\": \"qty\"})",
+      "numeric_cols = df.select_dtypes(include=\"number\").columns.tolist()",
+      "total_qty = int(report[\"qty\"].sum())",
+      "",
+      "print(report.head(3))",
+      "print(numeric_cols, total_qty)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import pandas as pd",
+      "df = pd.DataFrame({\"a\": [1, 2], \"b\": [3, 4]})",
+      "print(type(df[\"a\"]).__name__, type(df[[\"a\"]]).__name__)"
+    ],
+    "options": [
+      "Series DataFrame",
+      "DataFrame DataFrame",
+      "Series Series",
+      "list DataFrame"
+    ],
+    "answer": 0,
+    "explanation": "قوس واحد مع اسم يعطي Series، وقائمة أسماء تعطي DataFrame حتى لو كانت عموداً واحداً."
+  },
+  "summary": [
+    "`df[\"col\"]` Series، و `df[[\"a\", \"b\"]]` DataFrame.",
+    "`rename(columns={...})` و `drop(columns=[...])` وإعادة الترتيب بقائمة.",
+    "`select_dtypes` للاختيار حسب النوع، و `columns.str` لتنظيف الأسماء.",
+    "`df[\"col\"]` أوثق من `df.col`، خاصة عند الإسناد."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

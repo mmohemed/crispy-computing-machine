@@ -1,0 +1,377 @@
+{
+  "slug": "pandas-read",
+  "course": "pandas",
+  "module": "pandas-basics",
+  "order": 3,
+  "title": "قراءة CSV و Excel و JSON",
+  "title_en": "Reading Files",
+  "minutes": 25,
+  "level": "متوسط",
+  "objectives": [
+    "تقرأ ملفات CSV بـ `pd.read_csv` مع أهم الخيارات.",
+    "تحدد الأعمدة والأنواع والتواريخ عند القراءة.",
+    "تقرأ JSON وتفهم كيف تُقرأ ملفات Excel.",
+    "تحفظ النتائج بـ `to_csv` و `to_json`."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "من ملف إلى DataFrame بسطر واحد",
+      "body": [
+        "`pd.read_csv(path)` تقرأ الملف، وتأخذ أسماء الأعمدة من السطر الأول، وتستنتج نوع كل عمود، وتحوّل الخلايا الفارغة إلى `NaN`. وهذا كله كان دالة `load_orders` كاملة في مشروع Python.",
+        {
+          "table": {
+            "head": [
+              "الخيار",
+              "وظيفته",
+              "مثال"
+            ],
+            "rows": [
+              [
+                "`usecols`",
+                "قراءة أعمدة محددة فقط",
+                "`usecols=[\"city\", \"quantity\"]`"
+              ],
+              [
+                "`dtype`",
+                "فرض نوع عمود",
+                "`dtype={\"order_id\": \"string\"}`"
+              ],
+              [
+                "`parse_dates`",
+                "تحويل أعمدة إلى تواريخ",
+                "`parse_dates=[\"order_date\"]`"
+              ],
+              [
+                "`nrows`",
+                "قراءة أول n صفوف فقط (للمعاينة)",
+                "`nrows=100`"
+              ],
+              [
+                "`sep`",
+                "الفاصل إذا لم يكن فاصلة",
+                "`sep=\";\"`"
+              ],
+              [
+                "`encoding`",
+                "ترميز الملف",
+                "`encoding=\"utf-8-sig\"`"
+              ],
+              [
+                "`na_values`",
+                "قيم إضافية تُعامل كمفقودة",
+                "`na_values=[\"N/A\", \"-\"]`"
+              ],
+              [
+                "`index_col`",
+                "عمود يصبح الفهرس",
+                "`index_col=\"order_id\"`"
+              ]
+            ]
+          }
+        },
+        "وبنفس الأسلوب: `pd.read_json` و `pd.read_excel` (تحتاج مكتبة `openpyxl`) و `pd.read_sql` (في كورس SQL). وللحفظ: `df.to_csv(path, index=False)` و `df.to_json` و `df.to_excel`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "القراءة الصحيحة توفر عليك نصف التنظيف: تاريخ يُقرأ كتاريخ من البداية، وأرقام هاتف تُقرأ كنص فلا تفقد الصفر في أولها، و`N/A` تُعرف كقيمة مفقودة. وقراءة الأعمدة المطلوبة فقط تسرّع العمل مع الملفات الكبيرة جداً."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`nrows` للمعاينة السريعة لملف ضخم قبل قراءته كاملاً.",
+            "`parse_dates` لأي عمود تاريخ تحتاج الحساب عليه.",
+            "`dtype=\"string\"` أو `str` للمعرّفات والرموز التي تبدو أرقاماً (أرقام هواتف، رموز بريدية).",
+            "`to_csv(..., index=False)` عند الحفظ، حتى لا يُكتب الفهرس كعمود إضافي بلا اسم."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "القراءة الأساسية والمعاينة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "print(df.shape)",
+        "print(df.columns.tolist())",
+        "",
+        "preview = pd.read_csv(\"store_sales.csv\", nrows=3, usecols=[\"order_date\", \"product\", \"rating\"])",
+        "print(preview)"
+      ],
+      "explanation": [
+        {
+          "code": "pd.read_csv(\"store_sales.csv\")",
+          "text": "الملف كاملاً في جدول، مع أنواع مكتشفة تلقائياً."
+        },
+        {
+          "code": "nrows=3, usecols=[...]",
+          "text": "معاينة: ثلاثة صفوف وثلاثة أعمدة فقط. ترتيب الأعمدة يبقى كما في الملف."
+        },
+        {
+          "code": "NaN في rating",
+          "text": "التقييم الفارغ أصبح `NaN` تلقائياً، دون أي كود منا."
+        }
+      ],
+      "expected_output": [
+        "(1700, 11)",
+        "['order_id', 'order_date', 'city', 'category', 'product', 'unit_price', 'quantity', 'discount', 'payment_method', 'customer_type', 'rating']",
+        "   order_date      product  rating",
+        "0  2025-01-01    قميص قطني     3.0",
+        "1  2025-01-01  لوحة مفاتيح     NaN",
+        "2  2025-01-02    شاحن سريع     5.0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الأنواع والتواريخ عند القراءة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(",
+        "    \"store_sales.csv\",",
+        "    parse_dates=[\"order_date\"],",
+        "    dtype={\"order_id\": \"string\", \"city\": \"category\"},",
+        ")",
+        "print(df.dtypes)",
+        "print(df[\"order_date\"].min(), df[\"order_date\"].max())",
+        "print(df[\"order_date\"].dt.month.head(3).tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "parse_dates=[\"order_date\"]",
+          "text": "العمود أصبح `datetime64` فنستطيع أخذ `min` و `max` واستخراج الشهر بـ `.dt.month`."
+        },
+        {
+          "code": "\"order_id\": \"string\"",
+          "text": "نوع نصوص مخصص في Pandas بدلاً من `object`."
+        },
+        {
+          "code": "\"city\": \"category\"",
+          "text": "نوع فئوي: موفر للذاكرة للأعمدة ذات القيم المتكررة. له درس في الوحدة القادمة."
+        }
+      ],
+      "expected_output": [
+        "order_id          string[python]",
+        "order_date        datetime64[ns]",
+        "city                    category",
+        "category                  object",
+        "product                   object",
+        "unit_price                 int64",
+        "quantity                   int64",
+        "discount                 float64",
+        "payment_method            object",
+        "customer_type             object",
+        "rating                   float64",
+        "dtype: object",
+        "2025-01-01 00:00:00 2025-12-31 00:00:00",
+        "[1, 1, 1]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "JSON والحفظ",
+      "code": [
+        "import io",
+        "import pandas as pd",
+        "",
+        "api_json = '''[",
+        "  {\"branch\": \"جدة\", \"month\": \"2025-11\", \"revenue\": 53225},",
+        "  {\"branch\": \"الرياض\", \"month\": \"2025-11\", \"revenue\": 61800}",
+        "]'''",
+        "branches = pd.read_json(io.StringIO(api_json))",
+        "print(branches)",
+        "",
+        "branches.to_csv(\"branches.csv\", index=False)",
+        "print(open(\"branches.csv\", encoding=\"utf-8\").read())",
+        "",
+        "print(branches.to_json(orient=\"records\", force_ascii=False))"
+      ],
+      "explanation": [
+        {
+          "code": "pd.read_json(io.StringIO(api_json))",
+          "text": "قراءة JSON من نص (من ملف: `pd.read_json(\"file.json\")`). `io.StringIO` تجعل النص يتصرف كملف."
+        },
+        {
+          "code": "to_csv(\"branches.csv\", index=False)",
+          "text": "`index=False` لا يكتب الفهرس 0 و 1 كعمود إضافي."
+        },
+        {
+          "code": "to_json(orient=\"records\", force_ascii=False)",
+          "text": "قائمة سجلات مع الحروف العربية كما هي."
+        }
+      ],
+      "expected_output": [
+        "   branch    month  revenue",
+        "0     جدة  2025-11    53225",
+        "1  الرياض  2025-11    61800",
+        "branch,month,revenue",
+        "جدة,2025-11,53225",
+        "الرياض,2025-11,61800",
+        "",
+        "[{\"branch\":\"جدة\",\"month\":\"2025-11\",\"revenue\":53225},{\"branch\":\"الرياض\",\"month\":\"2025-11\",\"revenue\":61800}]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "قراءة ملف Excel",
+      "intro": [
+        "لنفترض أن لديك على جهازك ملف `sales_2025.xlsx` فيه أربع أوراق، واحدة لكل ربع: `Q1` إلى `Q4`."
+      ],
+      "code": [
+        "import pandas as pd",
+        "",
+        "# تحتاج: pip install openpyxl",
+        "df = pd.read_excel(\"sales_2025.xlsx\", sheet_name=\"Q1\")",
+        "all_sheets = pd.read_excel(\"sales_2025.xlsx\", sheet_name=None)",
+        "print(list(all_sheets.keys()))",
+        "",
+        "df.to_excel(\"report.xlsx\", index=False)"
+      ],
+      "run": false,
+      "explanation": [
+        {
+          "code": "sheet_name=\"Q1\"",
+          "text": "اختيار ورقة بالاسم (أو برقمها بدءاً من 0)."
+        },
+        {
+          "code": "sheet_name=None",
+          "text": "كل الأوراق في قاموس: اسم الورقة ← DataFrame."
+        },
+        {
+          "code": "to_excel",
+          "text": "الحفظ كملف Excel، مفيد لمشاركة النتائج مع فرق لا تستخدم Python."
+        }
+      ],
+      "expected_output": [
+        "['Q1', 'Q2', 'Q3', 'Q4']"
+      ],
+      "run_note": "هذا المثال يحتاج ملف Excel ومكتبة openpyxl على جهازك، لذلك لا يُشغّل في المحرر."
+    },
+    {
+      "type": "notes",
+      "items": [
+        "إذا ظهرت الحروف العربية رموزاً غريبة، أو ظهر `ï»¿` في أول اسم عمود، فجرّب `encoding=\"utf-8-sig\"` (ملفات Excel المحفوظة كـ CSV).",
+        "القراءة لا تغيّر الملف الأصلي أبداً؛ كل التعديلات في الذاكرة حتى تحفظ بنفسك.",
+        "للملفات الضخمة جداً: `chunksize=100_000` تقرأ الملف على دفعات (Generator من الجداول)، وهي نفس فكرة درس Generators."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "مسار أو اسم ملف خاطئ",
+          "wrong": [
+            "import pandas as pd",
+            "pd.read_csv(\"store-sales.csv\")"
+          ],
+          "error": "FileNotFoundError: [Errno 2] No such file or directory: 'store-sales.csv'",
+          "error_type": "FileNotFoundError",
+          "why": "تأكد من اسم الملف وامتداده ومن المجلد الذي تشغّل منه الكود.",
+          "fix": [
+            "import pandas as pd",
+            "print(pd.read_csv(\"store_sales.csv\").shape)"
+          ]
+        },
+        {
+          "title": "اسم عمود غير موجود في usecols",
+          "wrong": [
+            "import pandas as pd",
+            "pd.read_csv(\"store_sales.csv\", usecols=[\"City\"])"
+          ],
+          "error": "ValueError: Usecols do not match columns, columns expected but not found: ['City']",
+          "error_type": "ValueError",
+          "why": "الأسماء يجب أن تطابق السطر الأول في الملف بالضبط.",
+          "fix": [
+            "import pandas as pd",
+            "print(pd.read_csv(\"store_sales.csv\", usecols=[\"city\"]).head(2))"
+          ]
+        },
+        {
+          "title": "الحفظ مع الفهرس ثم القراءة",
+          "wrong": [
+            "import pandas as pd",
+            "pd.DataFrame({\"a\": [1, 2]}).to_csv(\"t.csv\")",
+            "print(pd.read_csv(\"t.csv\").columns.tolist())"
+          ],
+          "why": "بدون `index=False` يُكتب الفهرس كعمود بلا اسم، فيظهر عند القراءة عمود إضافي اسمه `Unnamed: 0`.",
+          "fix": [
+            "import pandas as pd",
+            "pd.DataFrame({\"a\": [1, 2]}).to_csv(\"t.csv\", index=False)",
+            "print(pd.read_csv(\"t.csv\").columns.tolist())"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "قراءة موجهة للتحليل",
+    "prompt": [
+      "اقرأ `store_sales.csv` بحيث تكون جاهزة لتحليل التقييمات حسب التاريخ:"
+    ],
+    "requirements": [
+      "`df`: الأعمدة `order_id` و `order_date` و `category` و `rating` فقط، مع تحويل `order_date` إلى تاريخ.",
+      "`first_day` و `last_day`: أقدم وأحدث تاريخ في البيانات.",
+      "`n_missing`: عدد التقييمات المفقودة كـ `int`.",
+      "احفظ الصفوف التي فيها تقييم مفقود فقط في ملف `no_rating.csv` بدون الفهرس (تلميح: `df[df[\"rating\"].isna()]`)."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import pandas as _pd",
+      "assert list(df.columns) == [\"order_id\", \"order_date\", \"category\", \"rating\"], f\"الأعمدة غير صحيحة: {list(df.columns)}\"",
+      "assert str(df[\"order_date\"].dtype).startswith(\"datetime64\"), \"order_date يجب أن يكون تاريخاً (parse_dates)\"",
+      "assert str(first_day.date()) == \"2025-01-01\" and str(last_day.date()) == \"2025-12-31\", \"first_day و last_day غير صحيحين\"",
+      "_raw = _pd.read_csv(\"store_sales.csv\")",
+      "assert n_missing == int(_raw[\"rating\"].isna().sum()) and isinstance(n_missing, int), \"n_missing غير صحيح\"",
+      "_saved = _pd.read_csv(\"no_rating.csv\")",
+      "assert len(_saved) == n_missing, \"no_rating.csv يجب أن يحتوي صفوف التقييم المفقود فقط\"",
+      "assert \"Unnamed: 0\" not in _saved.columns, \"احفظ بدون الفهرس (index=False)\""
+    ],
+    "hints": [
+      "`pd.read_csv(..., usecols=[...], parse_dates=[\"order_date\"])`.",
+      "`df[\"order_date\"].min()` تعمل مع التواريخ.",
+      "`to_csv(\"no_rating.csv\", index=False)`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(",
+      "    \"store_sales.csv\",",
+      "    usecols=[\"order_id\", \"order_date\", \"category\", \"rating\"],",
+      "    parse_dates=[\"order_date\"],",
+      ")",
+      "first_day = df[\"order_date\"].min()",
+      "last_day = df[\"order_date\"].max()",
+      "n_missing = int(df[\"rating\"].isna().sum())",
+      "df[df[\"rating\"].isna()].to_csv(\"no_rating.csv\", index=False)",
+      "",
+      "print(df.dtypes)",
+      "print(first_day, last_day, n_missing)"
+    ]
+  },
+  "check": {
+    "type": "true_false",
+    "prompt": "`pd.read_csv` تحوّل الخلايا الفارغة في الملف إلى `NaN` تلقائياً.",
+    "answer": true,
+    "explanation": "الخلايا الفارغة (وقيم مثل `NA` و `N/A` و `null`) تُقرأ `NaN` افتراضياً، ويمكن إضافة غيرها بـ `na_values`."
+  },
+  "summary": [
+    "`pd.read_csv` تقرأ الأسماء وتستنتج الأنواع وتحوّل الفارغ إلى `NaN`.",
+    "`usecols` و `dtype` و `parse_dates` و `nrows` و `na_values` و `encoding` لقراءة موجهة.",
+    "`pd.read_json` و `pd.read_excel` بنفس الأسلوب.",
+    "`to_csv(path, index=False)` للحفظ دون عمود فهرس زائد."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

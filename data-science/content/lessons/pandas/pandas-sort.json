@@ -1,0 +1,337 @@
+{
+  "slug": "pandas-sort",
+  "course": "pandas",
+  "module": "pandas-basics",
+  "order": 8,
+  "title": "الترتيب",
+  "title_en": "Sorting",
+  "minutes": 15,
+  "level": "متوسط",
+  "objectives": [
+    "ترتب الجدول حسب عمود أو عدة أعمدة تصاعدياً وتنازلياً.",
+    "تستخدم `nlargest` و `nsmallest` لأعلى وأدنى القيم.",
+    "ترتب حسب الفهرس وتعيد ضبطه بعد الترتيب.",
+    "تتعامل مع موضع القيم المفقودة في الترتيب."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "sort_values و sort_index",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "الدالة",
+              "المعنى"
+            ],
+            "rows": [
+              [
+                "`df.sort_values(\"col\")`",
+                "ترتيب تصاعدي حسب عمود"
+              ],
+              [
+                "`df.sort_values(\"col\", ascending=False)`",
+                "تنازلي"
+              ],
+              [
+                "`df.sort_values([\"a\", \"b\"], ascending=[True, False])`",
+                "حسب `a` تصاعدياً، ثم `b` تنازلياً داخل كل قيمة من `a`"
+              ],
+              [
+                "`df.nlargest(5, \"col\")` / `nsmallest`",
+                "أعلى / أدنى 5 صفوف مباشرة"
+              ],
+              [
+                "`df.sort_index()`",
+                "ترتيب حسب الفهرس"
+              ],
+              [
+                "`na_position=\"first\"`",
+                "وضع القيم المفقودة في البداية (الافتراضي في النهاية)"
+              ]
+            ]
+          }
+        },
+        "الترتيب يحتفظ بالفهرس القديم لكل صف. إذا أردت ترقيماً جديداً 0، 1، 2 بعد الترتيب فاستخدم `reset_index(drop=True)`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "\"أعلى 10\" و \"أقل 5\" من أكثر أسئلة التقارير شيوعاً: أعلى الطلبات قيمة، وأقل المنتجات تقييماً، وأحدث الطلبات. والترتيب حسب عدة أعمدة ينظم الجداول للعرض: حسب المدينة ثم الأعلى قيمة داخلها."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`nlargest` / `nsmallest` عندما تحتاج أعلى أو أدنى n فقط (أوضح وأسرع من ترتيب كل الجدول).",
+            "`sort_values` بعدة أعمدة لتنظيم الجداول للعرض والتقارير.",
+            "`sort_index` لإعادة الترتيب الأصلي، أو لترتيب نتائج مفهرسة بالتاريخ أو الشهر."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "ترتيب بعمود وبعدة أعمدة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "cols = [\"order_id\", \"city\", \"product\", \"revenue\"]",
+        "",
+        "print(df.sort_values(\"revenue\", ascending=False, kind=\"stable\")[cols].head(3))",
+        "",
+        "by_city = df.sort_values([\"city\", \"revenue\"], ascending=[True, False])",
+        "print(by_city[cols].head(3))"
+      ],
+      "explanation": [
+        {
+          "code": "sort_values(\"revenue\", ascending=False, kind=\"stable\")",
+          "text": "الأعلى إيراداً أولاً، والفهرس الأصلي بقي مع كل صف. `kind=\"stable\"` تجعل الطلبات المتساوية في الإيراد تبقى بترتيبها الأصلي، فتكون النتيجة نفسها على كل الأجهزة."
+        },
+        {
+          "code": "[\"city\", \"revenue\"], ascending=[True, False]",
+          "text": "المدن أبجدياً، وداخل كل مدينة الأعلى إيراداً أولاً."
+        },
+        {
+          "code": "df[\"revenue\"] = ...",
+          "text": "عمود محسوب؛ ستتعلم إنشاء الأعمدة بالتفصيل في الدرس القادم."
+        }
+      ],
+      "expected_output": [
+        "      order_id  city    product  revenue",
+        "86   ORD-10087  أبها  ساعة ذكية   1596.0",
+        "120  ORD-10121   جدة  ساعة ذكية   1596.0",
+        "318  ORD-10319   مكة  ساعة ذكية   1596.0",
+        "       order_id  city     product  revenue",
+        "86    ORD-10087  أبها   ساعة ذكية   1596.0",
+        "1186  ORD-11187  أبها   ساعة ذكية   1197.0",
+        "855   ORD-10856  أبها  حذاء رياضي    996.0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "nlargest و nsmallest و reset_index",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "",
+        "top = df.nlargest(3, \"unit_price\")[[\"product\", \"unit_price\"]]",
+        "print(top)",
+        "",
+        "cheapest = df.nsmallest(3, [\"unit_price\", \"quantity\"])[[\"product\", \"unit_price\", \"quantity\"]]",
+        "print(cheapest.reset_index(drop=True))"
+      ],
+      "explanation": [
+        {
+          "code": "nlargest(3, \"unit_price\")",
+          "text": "أعلى 3 صفوف حسب السعر. عند التساوي تُؤخذ الأسبق في الجدول."
+        },
+        {
+          "code": "nsmallest(3, [\"unit_price\", \"quantity\"])",
+          "text": "الأرخص، ثم الأقل كمية عند تساوي السعر."
+        },
+        {
+          "code": "reset_index(drop=True)",
+          "text": "ترقيم جديد 0 و 1 و 2، و `drop=True` لا يحتفظ بالفهرس القديم كعمود."
+        }
+      ],
+      "expected_output": [
+        "      product  unit_price",
+        "28  ساعة ذكية         399",
+        "30  ساعة ذكية         399",
+        "78  ساعة ذكية         399",
+        "  product  unit_price  quantity",
+        "0   رواية          45         1",
+        "1   رواية          45         1",
+        "2   رواية          45         1"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "القيم المفقودة والترتيب حسب الفهرس",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\", nrows=6)[[\"order_id\", \"rating\"]]",
+        "",
+        "print(df.sort_values(\"rating\"))",
+        "print(df.sort_values(\"rating\", na_position=\"first\").head(2))",
+        "",
+        "shuffled = df.sample(frac=1, random_state=3)",
+        "print(shuffled.index.tolist(), shuffled.sort_index().index.tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "sort_values(\"rating\")",
+          "text": "القيم المفقودة في النهاية افتراضياً."
+        },
+        {
+          "code": "na_position=\"first\"",
+          "text": "المفقودة أولاً، مفيد لمراجعتها."
+        },
+        {
+          "code": "sample(frac=1)",
+          "text": "`frac=1` تعني عينة بحجم الجدول كله، أي خلط الصفوف. ثم `sort_index` تعيد الترتيب الأصلي."
+        }
+      ],
+      "expected_output": [
+        "    order_id  rating",
+        "0  ORD-10001     3.0",
+        "5  ORD-10006     4.0",
+        "2  ORD-10003     5.0",
+        "4  ORD-10005     5.0",
+        "1  ORD-10002     NaN",
+        "3  ORD-10004     NaN",
+        "    order_id  rating",
+        "1  ORD-10002     NaN",
+        "3  ORD-10004     NaN",
+        "[3, 5, 4, 1, 0, 2] [0, 1, 2, 3, 4, 5]"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "عند تساوي القيم لا يضمن الترتيب الافتراضي ترتيباً ثابتاً للصفوف المتساوية، وقد يختلف بين جهاز وآخر. استخدم `kind=\"stable\"`، أو أضف عموداً ثانياً للترتيب مثل رقم الطلب.",
+        "`sort_values` ترجع جدولاً جديداً؛ احفظه أو استخدم السلسلة مباشرة.",
+        "مع البيانات الكبيرة `nlargest(10, col)` أسرع من `sort_values(col).tail(10)`.",
+        "الترتيب الأبجدي للنصوص العربية يتبع ترتيب الحروف في Unicode، وقد لا يطابق ترتيب القاموس تماماً في كل الحالات (مثل الهمزات)."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "عدد قيم ascending لا يطابق الأعمدة",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [1, 2], \"b\": [3, 4]})",
+            "df.sort_values([\"a\", \"b\"], ascending=[True])"
+          ],
+          "error": "ValueError: Length of ascending (1) != length of by (2)",
+          "error_type": "ValueError",
+          "why": "لكل عمود في القائمة قيمة `ascending` مقابلة.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [1, 2], \"b\": [3, 4]})",
+            "print(df.sort_values([\"a\", \"b\"], ascending=[True, False]))"
+          ]
+        },
+        {
+          "title": "ترتيب عمود أرقام مقروء كنص",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"amount\": [\"9\", \"100\", \"25\"]})",
+            "print(df.sort_values(\"amount\")[\"amount\"].tolist())"
+          ],
+          "why": "النصوص تُرتب حرفاً حرفاً: `\"100\"` قبل `\"9\"`. حوّل النوع أولاً.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"amount\": [\"9\", \"100\", \"25\"]})",
+            "df[\"amount\"] = df[\"amount\"].astype(int)",
+            "print(df.sort_values(\"amount\")[\"amount\"].tolist())"
+          ]
+        },
+        {
+          "title": "استخدام head بعد ترتيب تصاعدي لأعلى القيم",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"v\": [5, 50, 20]})",
+            "print(df.sort_values(\"v\").head(1))"
+          ],
+          "why": "الترتيب الافتراضي تصاعدي، فـ `head` تعطي **الأقل**. استخدم `ascending=False` أو `nlargest`.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"v\": [5, 50, 20]})",
+            "print(df.nlargest(1, \"v\"))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "قوائم الأعلى والأدنى",
+    "prompt": [
+      "من `store_sales.csv`:"
+    ],
+    "requirements": [
+      "`top5_qty`: أعلى 5 طلبات حسب `quantity` ثم `unit_price` (الأعلى في الاثنين)، بالأعمدة `order_id` و `product` و `quantity` و `unit_price`، مع فهرس جديد 0 إلى 4.",
+      "`latest_riyadh`: آخر 3 طلبات في الرياض حسب `order_date` (الأحدث أولاً)، الأعمدة `order_id` و `order_date` فقط.",
+      "`cheapest_product`: اسم أرخص منتج (أول صف بعد الترتيب تصاعدياً حسب `unit_price`)."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import pandas as _pd",
+      "_d = _pd.read_csv(\"store_sales.csv\")",
+      "_t = _d.sort_values([\"quantity\", \"unit_price\"], ascending=[False, False])[[\"order_id\", \"product\", \"quantity\", \"unit_price\"]].head(5).reset_index(drop=True)",
+      "assert list(top5_qty.index) == [0, 1, 2, 3, 4], \"top5_qty يجب أن يكون بفهرس 0 إلى 4 (reset_index(drop=True))\"",
+      "assert top5_qty[[\"quantity\", \"unit_price\"]].equals(_t[[\"quantity\", \"unit_price\"]]), \"top5_qty غير صحيح\"",
+      "_l = _d[_d[\"city\"] == \"الرياض\"].sort_values(\"order_date\", ascending=False)[[\"order_id\", \"order_date\"]].head(3)",
+      "assert list(latest_riyadh[\"order_date\"]) == list(_l[\"order_date\"]) and list(latest_riyadh.columns) == [\"order_id\", \"order_date\"], \"latest_riyadh غير صحيح\"",
+      "assert cheapest_product == \"رواية\", f\"cheapest_product يجب أن يكون رواية، والموجود {cheapest_product}\""
+    ],
+    "hints": [
+      "`ascending=[False, False]` لعمودين تنازلياً.",
+      "تواريخ ISO تُرتب كنصوص بشكل صحيح.",
+      "`.iloc[0][\"product\"]` بعد الترتيب."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "top5_qty = (",
+      "    df.sort_values([\"quantity\", \"unit_price\"], ascending=[False, False])",
+      "    [[\"order_id\", \"product\", \"quantity\", \"unit_price\"]]",
+      "    .head(5)",
+      "    .reset_index(drop=True)",
+      ")",
+      "latest_riyadh = df[df[\"city\"] == \"الرياض\"].sort_values(\"order_date\", ascending=False)[[\"order_id\", \"order_date\"]].head(3)",
+      "cheapest_product = df.sort_values(\"unit_price\").iloc[0][\"product\"]",
+      "",
+      "print(top5_qty)",
+      "print(latest_riyadh)",
+      "print(cheapest_product)"
+    ],
+    "solution_explanation": [
+      "الأقواس الخارجية حول سلسلة الدوال تسمح بكتابتها على عدة أسطر، وهو أسلوب شائع ومقروء في Pandas يسمى Method Chaining."
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import pandas as pd",
+      "df = pd.DataFrame({\"v\": [30, 10, 20]})",
+      "print(df.sort_values(\"v\").index.tolist())"
+    ],
+    "options": [
+      "[1, 2, 0]",
+      "[0, 1, 2]",
+      "[10, 20, 30]",
+      "[2, 1, 0]"
+    ],
+    "answer": 0,
+    "explanation": "الترتيب يحتفظ بالفهرس الأصلي لكل صف: 10 في الموقع 1، ثم 20 في 2، ثم 30 في 0."
+  },
+  "summary": [
+    "`sort_values(col, ascending=...)` بعمود أو بقائمة أعمدة وقائمة اتجاهات.",
+    "`nlargest` و `nsmallest` لأعلى وأدنى n مباشرة.",
+    "الترتيب يحتفظ بالفهرس؛ `reset_index(drop=True)` لترقيم جديد، و `sort_index` لإعادة الترتيب الأصلي.",
+    "القيم المفقودة في النهاية افتراضياً، و `na_position` تغيّر ذلك."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

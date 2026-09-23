@@ -1,0 +1,338 @@
+{
+  "slug": "pandas-loc-iloc",
+  "course": "pandas",
+  "module": "pandas-basics",
+  "order": 6,
+  "title": "loc و iloc",
+  "title_en": "loc & iloc",
+  "minutes": 30,
+  "level": "متوسط",
+  "objectives": [
+    "تختار صفوفاً وأعمدة بالتسميات باستخدام `loc`.",
+    "تختار صفوفاً وأعمدة بالمواقع باستخدام `iloc`.",
+    "تفهم الفرق في شمول نهاية المدى بين الاثنتين.",
+    "تعدّل قيماً بأمان باستخدام `loc` مع شرط."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "طريقتان للعنونة",
+      "body": [
+        "الجدول له بعدان، وكل خلية لها **تسمية** (اسم الصف في الفهرس، واسم العمود) و**موقع** (رقم الصف ورقم العمود بدءاً من 0). Pandas تفصل بينهما بوضوح:",
+        {
+          "table": {
+            "head": [
+              "",
+              "`df.loc[rows, cols]`",
+              "`df.iloc[rows, cols]`"
+            ],
+            "rows": [
+              [
+                "تعتمد على",
+                "**التسميات** (الفهرس وأسماء الأعمدة)",
+                "**المواقع** (أرقام تبدأ من 0)"
+              ],
+              [
+                "نهاية المدى `a:b`",
+                "**مشمولة**",
+                "غير مشمولة (مثل Python)"
+              ],
+              [
+                "تقبل شرطاً منطقياً",
+                "نعم: `df.loc[df[\"qty\"] > 2]`",
+                "فقط كمصفوفة، وليس Series"
+              ],
+              [
+                "مثال",
+                "`df.loc[\"ORD-10005\", \"city\"]`",
+                "`df.iloc[4, 2]`"
+              ]
+            ]
+          }
+        },
+        "الصيغة نفسها `[صفوف، أعمدة]` التي تعلمتها في NumPy. ويمكن أن يكون كل جزء: تسمية أو موقعاً واحداً، أو قائمة، أو مدى، أو `:` للكل.",
+        "عندما يكون الفهرس الافتراضي (0، 1، 2، ...) تبدو التسميات مثل المواقع، لكن الفرق يظهر بعد الترتيب أو التصفية أو `set_index`، لأن التسميات تبقى مع صفوفها."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "`loc` هي الطريقة الواضحة والآمنة لاختيار البيانات وتعديلها في Pandas: تختار بالأسماء التي لها معنى، وتدمج التصفية واختيار الأعمدة في خطوة واحدة. و `iloc` مفيدة عندما يهمك الموقع: أول 10 صفوف، أو آخر عمود. والخلط بينهما سبب شائع لنتائج خاطئة بصمت."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`loc` لأغلب العمل اليومي: صفوف بشرط وأعمدة بالاسم، والتعديل `df.loc[cond, \"col\"] = value`.",
+            "`iloc` للاختيار بالموقع: `df.iloc[:10]` أو `df.iloc[:, -1]`.",
+            "`df.at[label, col]` و `df.iat[i, j]` لقراءة خلية واحدة أو كتابتها بسرعة."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "loc بالتسميات",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\", index_col=\"order_id\")",
+        "",
+        "print(df.loc[\"ORD-10005\", \"product\"])",
+        "print(df.loc[\"ORD-10005\", [\"city\", \"product\", \"quantity\"]])",
+        "print(df.loc[\"ORD-10001\":\"ORD-10003\", [\"product\", \"unit_price\"]])"
+      ],
+      "explanation": [
+        {
+          "code": "index_col=\"order_id\"",
+          "text": "رقم الطلب أصبح فهرس الصفوف، فنصل إلى الطلب بتسميته."
+        },
+        {
+          "code": "df.loc[\"ORD-10005\", \"product\"]",
+          "text": "صف واحد وعمود واحد: قيمة واحدة."
+        },
+        {
+          "code": "df.loc[\"ORD-10005\", [...]]",
+          "text": "صف واحد وعدة أعمدة: Series فهرسها أسماء الأعمدة."
+        },
+        {
+          "code": "\"ORD-10001\":\"ORD-10003\"",
+          "text": "المدى في `loc` **يشمل** النهاية: ثلاثة طلبات."
+        }
+      ],
+      "expected_output": [
+        "طقم أواني",
+        "city              جدة",
+        "product     طقم أواني",
+        "quantity            1",
+        "Name: ORD-10005, dtype: object",
+        "               product  unit_price",
+        "order_id                          ",
+        "ORD-10001    قميص قطني          79",
+        "ORD-10002  لوحة مفاتيح         129",
+        "ORD-10003    شاحن سريع          59"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "iloc بالمواقع",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "",
+        "print(df.iloc[0, 4])",
+        "print(df.iloc[:3, [2, 4, 6]])",
+        "print(df.iloc[-1, :3].tolist())",
+        "print(df.iloc[::500, 0].tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "df.iloc[0, 4]",
+          "text": "الصف الأول والعمود الخامس (`product`)."
+        },
+        {
+          "code": "df.iloc[:3, [2, 4, 6]]",
+          "text": "أول 3 صفوف (بدون الموقع 3)، والأعمدة في المواقع 2 و 4 و 6."
+        },
+        {
+          "code": "df.iloc[-1, :3]",
+          "text": "آخر صف وأول ثلاثة أعمدة."
+        },
+        {
+          "code": "df.iloc[::500, 0]",
+          "text": "كل صف خمسمئة من العمود الأول: عينة منتظمة."
+        }
+      ],
+      "expected_output": [
+        "قميص قطني",
+        "  city      product  quantity",
+        "0  جدة    قميص قطني         1",
+        "1  جدة  لوحة مفاتيح         1",
+        "2  جدة    شاحن سريع         4",
+        "['ORD-11700', '2025-12-31', 'الدمام']",
+        "['ORD-10001', 'ORD-10501', 'ORD-11001', 'ORD-11501']"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "loc مع شرط، والتعديل الآمن",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "",
+        "big = df.loc[df[\"quantity\"] >= 4, [\"order_id\", \"product\", \"quantity\"]]",
+        "print(len(big))",
+        "print(big.head(3))",
+        "",
+        "df.loc[df[\"rating\"].isna(), \"rating_status\"] = \"بدون تقييم\"",
+        "df.loc[df[\"rating\"].notna(), \"rating_status\"] = \"مقيّم\"",
+        "print(df[\"rating_status\"].value_counts())"
+      ],
+      "explanation": [
+        {
+          "code": "df.loc[condition, columns]",
+          "text": "الشرط يختار الصفوف، والقائمة تختار الأعمدة، في خطوة واحدة."
+        },
+        {
+          "code": "df.loc[cond, \"rating_status\"] = ...",
+          "text": "الطريقة الصحيحة لتعديل الصفوف التي تحقق شرطاً. العمود غير موجود فيُنشأ."
+        },
+        {
+          "code": "value_counts()",
+          "text": "نتأكد من النتيجة: كل طلب أخذ حالة واحدة."
+        }
+      ],
+      "expected_output": [
+        "101",
+        "     order_id     product  quantity",
+        "2   ORD-10003   شاحن سريع         4",
+        "39  ORD-10040  قهوة مختصة         4",
+        "51  ORD-10052       جاكيت         4",
+        "rating_status",
+        "مقيّم         1495",
+        "بدون تقييم     205",
+        "Name: count, dtype: int64"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "بعد التصفية أو الترتيب يبقى الفهرس القديم (مثل 7 و 52 و 311). `iloc[0]` تعطي أول صف **الآن**، و `loc[0]` تبحث عن التسمية 0 وقد لا تجدها. استخدم `reset_index(drop=True)` إذا أردت فهرساً جديداً.",
+        "`df[\"col\"][cond] = value` (تعديل على مرحلتين) قد لا يعدّل الجدول الأصلي ويظهر تحذير `SettingWithCopyWarning`. استخدم دائماً `df.loc[cond, \"col\"] = value`.",
+        "إذا أنشأت جدولاً فرعياً وتريد تعديله باستقلالية فاكتب `.copy()`: `sub = df.loc[cond].copy()`."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "استخدام iloc مع أسماء الأعمدة",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "print(df.iloc[0, \"city\"])"
+          ],
+          "error": "ValueError: Location based indexing can only have [integer, integer slice (START point is INCLUDED, END point is EXCLUDED), listlike of integers, boolean array] types",
+          "error_type": "ValueError",
+          "why": "`iloc` تقبل مواقع رقمية فقط. استخدم `loc` مع الأسماء.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "print(df.loc[0, \"city\"])"
+          ]
+        },
+        {
+          "title": "loc بتسمية اختفت بعد التصفية",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "big = df[df[\"quantity\"] >= 4]",
+            "print(big.loc[0, \"product\"])"
+          ],
+          "error": "KeyError: 0",
+          "error_type": "KeyError",
+          "why": "بعد التصفية بقي الفهرس الأصلي، والتسمية 0 لم تعد موجودة لأن الطلب الأول ليس ضمن النتيجة.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "big = df[df[\"quantity\"] >= 4]",
+            "print(big.iloc[0][\"product\"])"
+          ]
+        },
+        {
+          "title": "توقع أن iloc تشمل النهاية",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [10, 20, 30]})",
+            "print(len(df.iloc[0:2]))"
+          ],
+          "why": "`iloc[0:2]` تعطي صفين فقط (0 و 1)، على عكس `loc[0:2]` التي تعطي ثلاثة مع الفهرس الافتراضي.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [10, 20, 30]})",
+            "print(len(df.iloc[0:3]), len(df.loc[0:2]))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "استعلامات على الطلبات",
+    "prompt": [
+      "اقرأ الملف مع `order_id` كفهرس، ثم:"
+    ],
+    "requirements": [
+      "`city_of_10100`: مدينة الطلب `ORD-10100` باستخدام `loc`.",
+      "`first_five`: أول 5 صفوف والأعمدة `product` و `unit_price` باستخدام `iloc` (مواقعهما في الجدول بعد جعل `order_id` فهرساً: 3 و 4).",
+      "`jeddah_books`: صفوف مدينة `جدة` وفئة `كتب` مع الأعمدة `order_date` و `product` و `quantity`، باستخدام `loc` مع شرط.",
+      "أضف عموداً `size` قيمته `\"كبير\"` للطلبات التي كميتها 3 فأكثر و `\"عادي\"` لغيرها، باستخدام `loc` مرتين."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\", index_col=\"order_id\")",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import pandas as _pd",
+      "_d = _pd.read_csv(\"store_sales.csv\", index_col=\"order_id\")",
+      "assert city_of_10100 == _d.loc[\"ORD-10100\", \"city\"], \"city_of_10100 غير صحيحة\"",
+      "assert first_five.shape == (5, 2) and list(first_five.columns) == [\"product\", \"unit_price\"], f\"first_five غير صحيحة: {first_five.shape}, {list(first_five.columns)}\"",
+      "_exp = _d.loc[(_d[\"city\"] == \"جدة\") & (_d[\"category\"] == \"كتب\"), [\"order_date\", \"product\", \"quantity\"]]",
+      "assert jeddah_books.equals(_exp), f\"jeddah_books غير صحيحة (المتوقع {len(_exp)} صفاً)\"",
+      "assert set(df[\"size\"].unique()) == {\"كبير\", \"عادي\"}, \"size يجب أن تحتوي كبير و عادي فقط\"",
+      "assert (df.loc[df[\"quantity\"] >= 3, \"size\"] == \"كبير\").all() and (df.loc[df[\"quantity\"] < 3, \"size\"] == \"عادي\").all(), \"قيم size غير صحيحة\""
+    ],
+    "hints": [
+      "بعد `index_col=\"order_id\"` تبدأ المواقع من `order_date` = 0، فالمنتج 3 والسعر 4.",
+      "الشرط المركب: `(df[\"city\"] == \"جدة\") & (df[\"category\"] == \"كتب\")`.",
+      "`df.loc[df[\"quantity\"] >= 3, \"size\"] = \"كبير\"`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\", index_col=\"order_id\")",
+      "",
+      "city_of_10100 = df.loc[\"ORD-10100\", \"city\"]",
+      "first_five = df.iloc[:5, [3, 4]]",
+      "jeddah_books = df.loc[(df[\"city\"] == \"جدة\") & (df[\"category\"] == \"كتب\"), [\"order_date\", \"product\", \"quantity\"]]",
+      "df.loc[df[\"quantity\"] >= 3, \"size\"] = \"كبير\"",
+      "df.loc[df[\"quantity\"] < 3, \"size\"] = \"عادي\"",
+      "",
+      "print(city_of_10100)",
+      "print(first_five)",
+      "print(len(jeddah_books), df[\"size\"].value_counts().to_dict())"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import pandas as pd",
+      "df = pd.DataFrame({\"v\": [10, 20, 30, 40]}, index=[1, 2, 3, 4])",
+      "print(df.loc[1:2, \"v\"].tolist(), df.iloc[1:2, 0].tolist())"
+    ],
+    "options": [
+      "[10, 20] [20]",
+      "[20, 30] [20]",
+      "[10] [20]",
+      "[10, 20] [20, 30]"
+    ],
+    "answer": 0,
+    "explanation": "`loc[1:2]` بالتسميات 1 و 2 شاملة النهاية. `iloc[1:2]` الموقع 1 فقط (القيمة 20)."
+  },
+  "summary": [
+    "`loc` بالتسميات، والمدى فيها يشمل النهاية؛ و `iloc` بالمواقع، والمدى لا يشمل النهاية.",
+    "`df.loc[شرط، أعمدة]` تصفية واختيار في خطوة واحدة.",
+    "التعديل الصحيح: `df.loc[cond, \"col\"] = value`.",
+    "بعد التصفية يبقى الفهرس القديم؛ استخدم `iloc` للمواقع أو `reset_index(drop=True)`."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

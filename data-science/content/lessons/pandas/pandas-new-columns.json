@@ -1,0 +1,365 @@
+{
+  "slug": "pandas-new-columns",
+  "course": "pandas",
+  "module": "pandas-basics",
+  "order": 9,
+  "title": "إضافة الأعمدة وتعديلها",
+  "title_en": "Creating Columns",
+  "minutes": 30,
+  "level": "متوسط",
+  "objectives": [
+    "تنشئ أعمدة محسوبة بعمليات متجهة بين الأعمدة.",
+    "تستخدم `np.where` و `map` و `pd.cut` لإنشاء أعمدة فئوية.",
+    "تستخدم `apply` مع دوالك وتعرف متى تتجنبها.",
+    "تستخدم `assign` لإضافة عدة أعمدة في سلسلة واحدة."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "العمود الجديد = عملية على أعمدة موجودة",
+      "body": [
+        "`df[\"new\"] = ...` تنشئ عموداً جديداً (أو تستبدل موجوداً). والطرف الأيمن عملية متجهة على أعمدة كاملة، تماماً كما في NumPy.",
+        {
+          "table": {
+            "head": [
+              "الطريقة",
+              "مثال",
+              "متى"
+            ],
+            "rows": [
+              [
+                "عملية متجهة",
+                "`df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"]`",
+                "حساب رياضي (الأسرع دائماً)"
+              ],
+              [
+                "`np.where`",
+                "`np.where(df[\"qty\"] >= 3, \"كبير\", \"عادي\")`",
+                "قيمتان حسب شرط"
+              ],
+              [
+                "`map(dict)`",
+                "`df[\"city\"].map({\"جدة\": \"الغربية\", ...})`",
+                "تحويل قيم فئوية بجدول بحث"
+              ],
+              [
+                "`pd.cut`",
+                "`pd.cut(df[\"price\"], bins=[0, 100, 200, 400])`",
+                "تقسيم أرقام إلى فئات بمدى"
+              ],
+              [
+                "`apply(func)`",
+                "`df[\"product\"].apply(my_function)`",
+                "منطق لا يمكن كتابته متجهاً"
+              ],
+              [
+                "`assign`",
+                "`df.assign(a=..., b=...)`",
+                "عدة أعمدة في سلسلة دوال"
+              ]
+            ]
+          }
+        },
+        "**قاعدة الأداء**: `apply` تمرر الصفوف أو القيم لدالة Python واحدة واحدة، فهي حلقة مقنّعة. استخدمها فقط عندما لا توجد صيغة متجهة."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "البيانات الخام نادراً ما تحتوي الأعمدة التي تحتاجها للتحليل. الإيراد، والشهر، والمنطقة، وفئة السعر، وحالة الطلب كلها **أعمدة مشتقة** تنشئها بنفسك. وهذه الخطوة هي بداية **هندسة الخصائص Feature Engineering** التي ستكون أساس نماذج تعلم الآلة لاحقاً."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "العمليات الحسابية بين الأعمدة أولاً دائماً.",
+            "`np.where` لشرط واحد بنتيجتين، و `np.select` لعدة شروط.",
+            "`map` لتحويل فئات إلى فئات أخرى (مدينة إلى منطقة، رمز إلى اسم).",
+            "`pd.cut` لتحويل أرقام متصلة إلى فئات للعرض أو التحليل.",
+            "`apply` أخيراً للمنطق المعقد."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "أعمدة محسوبة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "",
+        "df[\"gross\"] = df[\"unit_price\"] * df[\"quantity\"]",
+        "df[\"revenue\"] = (df[\"gross\"] * (1 - df[\"discount\"])).round(2)",
+        "df[\"discount_value\"] = df[\"gross\"] - df[\"revenue\"]",
+        "df[\"month\"] = pd.to_datetime(df[\"order_date\"]).dt.month",
+        "",
+        "print(df[[\"unit_price\", \"quantity\", \"discount\", \"gross\", \"revenue\", \"discount_value\", \"month\"]].head(4))",
+        "print(f\"إجمالي الخصومات: {df['discount_value'].sum():,.0f} ريال\")"
+      ],
+      "explanation": [
+        {
+          "code": "df[\"gross\"] = ...",
+          "text": "الإيراد قبل الخصم: ضرب عمودين عنصراً بعنصر."
+        },
+        {
+          "code": "(... * (1 - df[\"discount\"])).round(2)",
+          "text": "الإيراد بعد الخصم مقرباً لهللتين."
+        },
+        {
+          "code": "pd.to_datetime(...).dt.month",
+          "text": "تحويل النص إلى تاريخ ثم استخراج الشهر. `.dt` مثل `.str` لكن للتواريخ، ولها درس كامل في الوحدة القادمة."
+        },
+        {
+          "code": "discount_value.sum()",
+          "text": "الأعمدة الجديدة جاهزة للتحليل فوراً: كم كلّفت الخصومات المتجر؟"
+        }
+      ],
+      "expected_output": [
+        "   unit_price  quantity  discount  gross  revenue  discount_value  month",
+        "0          79         1       0.0     79     79.0             0.0      1",
+        "1         129         1       0.0    129    129.0             0.0      1",
+        "2          59         4       0.1    236    212.4            23.6      1",
+        "3          89         1       0.0     89     89.0             0.0      1",
+        "إجمالي الخصومات: 15,594 ريال"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "أعمدة فئوية: np.where و map و pd.cut",
+      "code": [
+        "import numpy as np",
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "",
+        "df[\"size\"] = np.where(df[\"quantity\"] >= 3, \"كبير\", \"عادي\")",
+        "",
+        "region_of = {\"الرياض\": \"الوسطى\", \"جدة\": \"الغربية\", \"مكة\": \"الغربية\",",
+        "             \"المدينة\": \"الغربية\", \"الدمام\": \"الشرقية\", \"أبها\": \"الجنوبية\"}",
+        "df[\"region\"] = df[\"city\"].map(region_of)",
+        "",
+        "df[\"price_band\"] = pd.cut(df[\"unit_price\"], bins=[0, 80, 150, 400],",
+        "                          labels=[\"اقتصادي\", \"متوسط\", \"مرتفع\"])",
+        "",
+        "print(df[[\"quantity\", \"size\", \"city\", \"region\", \"unit_price\", \"price_band\"]].head(4))",
+        "print(df[\"region\"].value_counts())",
+        "print(df[\"region\"].isna().sum())"
+      ],
+      "explanation": [
+        {
+          "code": "np.where(cond, a, b)",
+          "text": "قيمة لكل صف حسب شرط، وهي نفس دالة NumPy."
+        },
+        {
+          "code": "map(region_of)",
+          "text": "جدول بحث: كل مدينة تُستبدل بمنطقتها. أي مدينة غير موجودة في القاموس تصبح `NaN`، لذلك نتحقق بـ `isna().sum()`."
+        },
+        {
+          "code": "pd.cut(..., bins=[0, 80, 150, 400], labels=[...])",
+          "text": "تقسيم الأسعار إلى ثلاث فئات: `(0, 80]` و `(80, 150]` و `(150, 400]`. الحد الأيمن مشمول."
+        }
+      ],
+      "expected_output": [
+        "   quantity  size    city   region  unit_price price_band",
+        "0         1  عادي     جدة  الغربية          79    اقتصادي",
+        "1         1  عادي     جدة  الغربية         129      متوسط",
+        "2         4  كبير     جدة  الغربية          59    اقتصادي",
+        "3         1  عادي  الرياض   الوسطى          89      متوسط",
+        "region",
+        "الغربية     735",
+        "الوسطى      555",
+        "الشرقية     247",
+        "الجنوبية    163",
+        "Name: count, dtype: int64",
+        "0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "apply و assign",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\", nrows=5)",
+        "",
+        "def delivery_days(city):",
+        "    if city in (\"الرياض\", \"جدة\", \"الدمام\"):",
+        "        return 1",
+        "    return 3",
+        "",
+        "df[\"delivery_days\"] = df[\"city\"].apply(delivery_days)",
+        "",
+        "summary = df.assign(",
+        "    revenue=lambda d: d[\"unit_price\"] * d[\"quantity\"] * (1 - d[\"discount\"]),",
+        "    is_rated=lambda d: d[\"rating\"].notna(),",
+        ")[[\"city\", \"delivery_days\", \"revenue\", \"is_rated\"]]",
+        "print(summary)"
+      ],
+      "explanation": [
+        {
+          "code": "df[\"city\"].apply(delivery_days)",
+          "text": "تطبيق دالتنا على كل قيمة في العمود. مقبول هنا، لكن `map` أو `np.where` كانت ستكفي؛ اختر `apply` للمنطق الأكثر تعقيداً."
+        },
+        {
+          "code": "df.assign(col=lambda d: ...)",
+          "text": "تنشئ عدة أعمدة وترجع جدولاً جديداً دون تعديل `df`. و `lambda d` تستقبل الجدول الحالي في السلسلة."
+        }
+      ],
+      "expected_output": [
+        "     city  delivery_days  revenue  is_rated",
+        "0     جدة              1     79.0      True",
+        "1     جدة              1    129.0     False",
+        "2     جدة              1    212.4      True",
+        "3  الرياض              1     89.0     False",
+        "4     جدة              1    269.1      True"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "الإسناد `df[\"col\"] = ...` يعدّل `df` نفسه، أما `assign` فترجع جدولاً جديداً.",
+        "بعد `map` افحص دائماً `isna().sum()`؛ القيمة غير الموجودة في القاموس تصبح مفقودة بصمت.",
+        "`pd.cut` بحدود تحددها أنت، و `pd.qcut` بحدود تقسم البيانات إلى مجموعات متساوية العدد (مثل الأرباع).",
+        "لعدة شروط استخدم `np.select(conditions, choices, default=...)` بدلاً من `np.where` متداخلة."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "apply على الصفوف بدون axis=1",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"p\": [10, 20], \"q\": [1, 2]})",
+            "df[\"t\"] = df.apply(lambda row: row[\"p\"] * row[\"q\"])"
+          ],
+          "error": "KeyError: 'p'",
+          "error_type": "KeyError",
+          "why": "`df.apply(func)` تمرر **الأعمدة** افتراضياً. لتمرير الصفوف أضف `axis=1`، وهي بطيئة فاستخدم العملية المتجهة إن أمكن.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"p\": [10, 20], \"q\": [1, 2]})",
+            "df[\"t\"] = df[\"p\"] * df[\"q\"]",
+            "print(df)"
+          ]
+        },
+        {
+          "title": "map بقاموس ناقص",
+          "wrong": [
+            "import pandas as pd",
+            "s = pd.Series([\"جدة\", \"تبوك\"])",
+            "print(s.map({\"جدة\": \"الغربية\"}).tolist())"
+          ],
+          "why": "مدينة `تبوك` غير موجودة في القاموس، فأصبحت منطقتها `NaN` دون أي تحذير.",
+          "fix": [
+            "import pandas as pd",
+            "s = pd.Series([\"جدة\", \"تبوك\"])",
+            "regions = s.map({\"جدة\": \"الغربية\"}).fillna(\"غير محدد\")",
+            "print(regions.tolist())"
+          ]
+        },
+        {
+          "title": "استخدام if مع عمود كامل",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"q\": [1, 5]})",
+            "if df[\"q\"] >= 3:",
+            "    df[\"size\"] = \"كبير\""
+          ],
+          "error": "ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().",
+          "error_type": "ValueError",
+          "why": "`if` تحتاج قيمة واحدة، والعمود فيه قيم كثيرة. استخدم `np.where`.",
+          "fix": [
+            "import numpy as np",
+            "import pandas as pd",
+            "df = pd.DataFrame({\"q\": [1, 5]})",
+            "df[\"size\"] = np.where(df[\"q\"] >= 3, \"كبير\", \"عادي\")",
+            "print(df)"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "إثراء جدول الطلبات",
+    "prompt": [
+      "أضف إلى `df` الأعمدة التالية:"
+    ],
+    "requirements": [
+      "`revenue`: السعر × الكمية × (1 − الخصم)، مقرباً لمنزلتين.",
+      "`month`: رقم الشهر من `order_date` (استخدم `pd.to_datetime(...).dt.month`).",
+      "`season`: `\"رمضان\"` إذا كان الشهر 3، و `\"الجمعة البيضاء\"` إذا كان 11، و `\"عادي\"` لغير ذلك (استخدم `np.select` أو `np.where` متداخلة).",
+      "`rating_group`: `pd.cut` للتقييم بالحدود `[0, 2, 3, 5]` والتسميات `[\"منخفض\", \"متوسط\", \"مرتفع\"]`.",
+      "ثم احسب `season_revenue`: قاموس الموسم ← مجموع `revenue` مقرباً لعدد صحيح (استخدم `groupby` أو التصفية لكل موسم)."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import numpy as _np",
+      "import pandas as _pd",
+      "_d = _pd.read_csv(\"store_sales.csv\")",
+      "_rev = (_d[\"unit_price\"] * _d[\"quantity\"] * (1 - _d[\"discount\"])).round(2)",
+      "assert _np.allclose(df[\"revenue\"], _rev), \"revenue غير صحيح\"",
+      "assert (df[\"month\"] == _pd.to_datetime(_d[\"order_date\"]).dt.month).all(), \"month غير صحيح\"",
+      "assert set(df[\"season\"].unique()) == {\"رمضان\", \"الجمعة البيضاء\", \"عادي\"}, \"season يجب أن يحتوي القيم الثلاث\"",
+      "assert (df.loc[df[\"month\"] == 3, \"season\"] == \"رمضان\").all() and (df.loc[df[\"month\"] == 11, \"season\"] == \"الجمعة البيضاء\").all(), \"season غير صحيح للأشهر 3 و 11\"",
+      "assert list(df[\"rating_group\"].cat.categories) == [\"منخفض\", \"متوسط\", \"مرتفع\"], \"rating_group يجب أن تكون pd.cut بالتسميات المطلوبة\"",
+      "assert df[\"rating_group\"].isna().sum() == _d[\"rating\"].isna().sum(), \"التقييمات المفقودة يجب أن تبقى مفقودة في rating_group\"",
+      "_m = _pd.to_datetime(_d[\"order_date\"]).dt.month",
+      "_s = _np.select([_m == 3, _m == 11], [\"رمضان\", \"الجمعة البيضاء\"], default=\"عادي\")",
+      "_exp = {k: round(float(v)) for k, v in _rev.groupby(_s).sum().items()}",
+      "assert season_revenue == _exp, f\"season_revenue غير صحيح. المتوقع: {_exp}\""
+    ],
+    "hints": [
+      "`np.select([cond1, cond2], [v1, v2], default=\"عادي\")`.",
+      "`pd.cut(df[\"rating\"], bins=[0, 2, 3, 5], labels=[...])`: التقييم المفقود يبقى مفقوداً تلقائياً.",
+      "لكل موسم: `df.loc[df[\"season\"] == s, \"revenue\"].sum()`."
+    ],
+    "solution": [
+      "import numpy as np",
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "df[\"revenue\"] = (df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])).round(2)",
+      "df[\"month\"] = pd.to_datetime(df[\"order_date\"]).dt.month",
+      "df[\"season\"] = np.select([df[\"month\"] == 3, df[\"month\"] == 11], [\"رمضان\", \"الجمعة البيضاء\"], default=\"عادي\")",
+      "df[\"rating_group\"] = pd.cut(df[\"rating\"], bins=[0, 2, 3, 5], labels=[\"منخفض\", \"متوسط\", \"مرتفع\"])",
+      "",
+      "season_revenue = {s: round(float(df.loc[df[\"season\"] == s, \"revenue\"].sum())) for s in df[\"season\"].unique()}",
+      "",
+      "print(df[[\"month\", \"season\", \"rating\", \"rating_group\"]].head())",
+      "print(season_revenue)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "لديك عمود `city` وتريد عموداً جديداً فيه المنطقة لكل مدينة. ما الأنسب؟",
+    "options": [
+      "`apply` مع دالة فيها `if` لكل مدينة",
+      "`map` مع قاموس مدينة ← منطقة",
+      "حلقة `for` على الصفوف",
+      "`pd.cut`"
+    ],
+    "answer": 1,
+    "explanation": "`map` مع قاموس هي الطريقة الأوضح والأسرع لتحويل فئات إلى فئات. تذكر فحص القيم المفقودة بعدها."
+  },
+  "summary": [
+    "`df[\"new\"] = ...` بعملية متجهة على الأعمدة: الطريقة الأولى والأسرع.",
+    "`np.where` و `np.select` للشروط، و `map` لجداول البحث، و `pd.cut` للفئات من الأرقام.",
+    "`apply` حلقة مقنّعة؛ استخدمها للمنطق الذي لا يُكتب متجهاً فقط.",
+    "`assign` لإضافة عدة أعمدة في سلسلة دوال دون تعديل الأصل."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

@@ -1,0 +1,335 @@
+{
+  "slug": "pandas-series",
+  "course": "pandas",
+  "module": "pandas-basics",
+  "order": 1,
+  "title": "Series",
+  "title_en": "Series",
+  "minutes": 20,
+  "level": "متوسط",
+  "objectives": [
+    "تنشئ Series من قائمة أو قاموس وتفهم الفهرس Index.",
+    "تجري عمليات متجهة ودوال إحصائية على Series.",
+    "تفهم محاذاة الفهرس Index Alignment عند العمليات بين Series.",
+    "تستخدم `value_counts` و `unique` و `nunique` لفهم عمود فئوي."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "Series: مصفوفة لها أسماء",
+      "body": [
+        "**Pandas** هي مكتبة تحليل البيانات الجدولية في Python، وتُستورد عادة `import pandas as pd`. أبسط بنية فيها هي **Series**: مصفوفة NumPy أحادية البعد، لكن لكل قيمة **تسمية label** في ما يسمى **الفهرس Index**.",
+        {
+          "table": {
+            "head": [
+              "",
+              "مصفوفة NumPy",
+              "Series"
+            ],
+            "rows": [
+              [
+                "الوصول",
+                "بالموضع فقط `a[0]`",
+                "بالتسمية `s[\"يناير\"]` (والموضع عبر `iloc`)"
+              ],
+              [
+                "الاسم",
+                "لا يوجد",
+                "لها `name` (اسم العمود)"
+              ],
+              [
+                "القيم المفقودة",
+                "`nan` للأعداد فقط",
+                "`NaN` مدعومة، ودوال الإحصاء تتجاهلها افتراضياً"
+              ],
+              [
+                "العمليات بين اثنتين",
+                "بالموضع",
+                "**بمحاذاة التسميات**"
+              ]
+            ]
+          }
+        },
+        "كل **عمود** في جدول Pandas (DataFrame) هو Series. لذلك كل ما تتعلمه هنا ينطبق مباشرة على الأعمدة: `df[\"revenue\"].mean()` هي دالة Series."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "البيانات الحقيقية لها معنى: مبيعات **شهر معين**، وعدد عملاء **مدينة معينة**. الفهرس يحتفظ بهذا المعنى مع الأرقام، فعندما تجمع مبيعات فرعين تُجمع قيم نفس الشهر معاً تلقائياً حتى لو اختلف الترتيب. و `value_counts` وحدها تجيب عن سؤال يومي: ما توزيع هذا العمود؟"
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "عندما تحتاج عموداً واحداً من البيانات مع تسمياته.",
+            "ناتج كثير من العمليات يكون Series: `value_counts` و `groupby(...).sum()` ومتوسطات الأعمدة.",
+            "للجداول بعدة أعمدة استخدم DataFrame (الدرس القادم)."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "إنشاء Series والعمليات عليها",
+      "code": [
+        "import pandas as pd",
+        "",
+        "sales = pd.Series([36403, 24449, 45481, 41942], index=[\"يناير\", \"فبراير\", \"مارس\", \"أبريل\"], name=\"revenue\")",
+        "print(sales)",
+        "print(sales[\"مارس\"])",
+        "print(sales.mean().round(1), sales.idxmax())",
+        "print((sales / 1000).round(1).tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "pd.Series(values, index=..., name=...)",
+          "text": "القيم مع تسمياتها واسم للـ Series."
+        },
+        {
+          "code": "sales[\"مارس\"]",
+          "text": "الوصول بالتسمية."
+        },
+        {
+          "code": "sales.idxmax()",
+          "text": "**تسمية** أكبر قيمة (وليس موضعها كما في `argmax`)."
+        },
+        {
+          "code": "(sales / 1000).round(1)",
+          "text": "العمليات متجهة كما في NumPy. و `tolist()` تحوّل إلى قائمة Python."
+        }
+      ],
+      "expected_output": [
+        "يناير     36403",
+        "فبراير    24449",
+        "مارس      45481",
+        "أبريل     41942",
+        "Name: revenue, dtype: int64",
+        "45481",
+        "37068.8 مارس",
+        "[36.4, 24.4, 45.5, 41.9]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "من قاموس، ومحاذاة الفهرس",
+      "code": [
+        "import pandas as pd",
+        "",
+        "riyadh = pd.Series({\"قهوة\": 120, \"شاي\": 80, \"عصير\": 60})",
+        "jeddah = pd.Series({\"شاي\": 90, \"قهوة\": 100, \"كيك\": 40})",
+        "",
+        "total = riyadh + jeddah",
+        "print(total)",
+        "print(riyadh.add(jeddah, fill_value=0))"
+      ],
+      "explanation": [
+        {
+          "code": "pd.Series({...})",
+          "text": "مفاتيح القاموس تصبح الفهرس."
+        },
+        {
+          "code": "riyadh + jeddah",
+          "text": "الجمع **بالتسمية** وليس بالموضع: قهوة مع قهوة رغم اختلاف الترتيب. المنتج الموجود في واحدة فقط يصبح `NaN`."
+        },
+        {
+          "code": "add(jeddah, fill_value=0)",
+          "text": "اعتبر الغائب صفراً قبل الجمع، فيظهر الكيك والعصير بقيمهما."
+        }
+      ],
+      "expected_output": [
+        "شاي     170.0",
+        "عصير      NaN",
+        "قهوة    220.0",
+        "كيك       NaN",
+        "dtype: float64",
+        "شاي     170.0",
+        "عصير     60.0",
+        "قهوة    220.0",
+        "كيك      40.0",
+        "dtype: float64"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "عمود فئوي من ملف المبيعات",
+      "code": [
+        "import pandas as pd",
+        "",
+        "cities = pd.read_csv(\"store_sales.csv\")[\"city\"]",
+        "print(type(cities).__name__, len(cities))",
+        "print(cities.nunique(), sorted(cities.unique()))",
+        "print(cities.value_counts())",
+        "print(cities.value_counts(normalize=True).round(3).head(2))"
+      ],
+      "explanation": [
+        {
+          "code": "pd.read_csv(...)[\"city\"]",
+          "text": "قراءة الملف (الدرس الثالث بالتفصيل) واختيار عمود المدينة: النتيجة Series."
+        },
+        {
+          "code": "nunique / unique",
+          "text": "عدد القيم الفريدة، والقيم الفريدة نفسها."
+        },
+        {
+          "code": "value_counts()",
+          "text": "عدد تكرار كل قيمة مرتباً تنازلياً: توزيع الطلبات على المدن."
+        },
+        {
+          "code": "normalize=True",
+          "text": "النسب بدلاً من الأعداد."
+        }
+      ],
+      "expected_output": [
+        "Series 1700",
+        "6 ['أبها', 'الدمام', 'الرياض', 'المدينة', 'جدة', 'مكة']",
+        "city",
+        "الرياض     555",
+        "جدة        398",
+        "الدمام     247",
+        "مكة        174",
+        "المدينة    163",
+        "أبها       163",
+        "Name: count, dtype: int64",
+        "city",
+        "الرياض    0.326",
+        "جدة       0.234",
+        "Name: proportion, dtype: float64"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`s[\"مارس\"]` بالتسمية. للموضع استخدم `s.iloc[2]`؛ ستتعلم `loc` و `iloc` بالتفصيل في درس لاحق.",
+        "دوال الإحصاء (`mean` و `sum` و `max`) تتجاهل `NaN` افتراضياً في Pandas، على عكس NumPy.",
+        "`s.values` أو `s.to_numpy()` ترجع مصفوفة NumPy الداخلية."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "تسمية غير موجودة",
+          "wrong": [
+            "import pandas as pd",
+            "s = pd.Series([1, 2], index=[\"يناير\", \"فبراير\"])",
+            "print(s[\"مايو\"])"
+          ],
+          "error": "KeyError: 'مايو'",
+          "error_type": "KeyError",
+          "why": "لا توجد تسمية `مايو` في الفهرس.",
+          "fix": [
+            "import pandas as pd",
+            "s = pd.Series([1, 2], index=[\"يناير\", \"فبراير\"])",
+            "print(s.get(\"مايو\", 0))"
+          ]
+        },
+        {
+          "title": "توقع الجمع بالموضع",
+          "wrong": [
+            "import pandas as pd",
+            "a = pd.Series([1, 2], index=[\"x\", \"y\"])",
+            "b = pd.Series([10, 20], index=[\"m\", \"n\"])",
+            "print(a + b)"
+          ],
+          "why": "Pandas تجمع بالتسميات، فالنتيجة كلها `NaN` لأن التسميات مختلفة. إذا أردت الجمع بالموضع فاستخدم القيم `.values`.",
+          "fix": [
+            "import pandas as pd",
+            "a = pd.Series([1, 2], index=[\"x\", \"y\"])",
+            "b = pd.Series([10, 20], index=[\"m\", \"n\"])",
+            "print(a.values + b.values)"
+          ]
+        },
+        {
+          "title": "استخدام len لعدد القيم الفريدة",
+          "wrong": [
+            "import pandas as pd",
+            "s = pd.Series([\"أ\", \"أ\", \"ب\"])",
+            "print(len(s))"
+          ],
+          "why": "`len` تعطي عدد كل القيم بتكراراتها. لعدد القيم المختلفة استخدم `nunique`.",
+          "fix": [
+            "import pandas as pd",
+            "s = pd.Series([\"أ\", \"أ\", \"ب\"])",
+            "print(s.nunique())"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تحليل عمود الفئات",
+    "prompt": [
+      "من ملف `store_sales.csv`:"
+    ],
+    "requirements": [
+      "`categories`: عمود `category` كـ Series.",
+      "`counts`: عدد الطلبات لكل فئة بـ `value_counts`.",
+      "`top_category`: الفئة الأكثر طلباً (تسمية أول عنصر في `counts`، استخدم `idxmax`).",
+      "`share_books`: نسبة طلبات فئة `كتب` من كل الطلبات كـ `float` مقرب لثلاث منازل."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import pandas as _pd",
+      "_df = _pd.read_csv(\"store_sales.csv\")",
+      "assert isinstance(categories, _pd.Series) and len(categories) == len(_df), \"categories يجب أن تكون عمود category كاملاً\"",
+      "assert counts.to_dict() == _df[\"category\"].value_counts().to_dict(), \"counts غير صحيحة\"",
+      "assert top_category == _df[\"category\"].value_counts().idxmax(), f\"top_category غير صحيحة: {top_category}\"",
+      "_exp = round(float((_df[\"category\"] == \"كتب\").mean()), 3)",
+      "assert isinstance(share_books, float) and share_books == _exp, f\"share_books يجب أن تكون {_exp}، والموجود {share_books}\""
+    ],
+    "hints": [
+      "`df[\"category\"]` تعطي Series.",
+      "`counts.idxmax()` تسمية أكبر قيمة.",
+      "نسبة الكتب: `counts[\"كتب\"] / len(categories)`، أو `(categories == \"كتب\").mean()`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "categories = df[\"category\"]",
+      "counts = categories.value_counts()",
+      "top_category = counts.idxmax()",
+      "share_books = round(float(counts[\"كتب\"] / len(categories)), 3)",
+      "",
+      "print(counts)",
+      "print(top_category, share_books)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import pandas as pd",
+      "a = pd.Series({\"x\": 1, \"y\": 2})",
+      "b = pd.Series({\"y\": 10, \"x\": 20})",
+      "print((a + b).tolist())"
+    ],
+    "options": [
+      "[21, 12]",
+      "[11, 22]",
+      "[21.0, 12.0]",
+      "[nan, nan]"
+    ],
+    "answer": 0,
+    "explanation": "الجمع بمحاذاة التسميات: x = 1 + 20 و y = 2 + 10، بترتيب فهرس `a`."
+  },
+  "summary": [
+    "Series مصفوفة أحادية البعد مع فهرس من التسميات واسم، وكل عمود في DataFrame هو Series.",
+    "العمليات متجهة، والعمليات بين Series تتم بمحاذاة التسميات.",
+    "`idxmax` تعطي تسمية الأكبر، و `value_counts` توزيع القيم، و `nunique` عدد القيم الفريدة.",
+    "دوال الإحصاء في Pandas تتجاهل `NaN` افتراضياً."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

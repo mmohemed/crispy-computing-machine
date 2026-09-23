@@ -95,7 +95,7 @@
       "code": [
         "import numpy as np",
         "",
-        "ages = np.arange(1_000_000) % 100",
+        "ages = np.arange(1_000_000, dtype=np.int64) % 100",
         "print(ages.dtype, ages.itemsize, \"bytes\")",
         "print(f\"{ages.nbytes / 1e6:.1f} MB\")",
         "",
@@ -107,6 +107,10 @@
         "print(overflow)"
       ],
       "explanation": [
+        {
+          "code": "dtype=np.int64",
+          "text": "حددنا النوع صراحة لأن الافتراضي يختلف: `int64` على أغلب الأجهزة و `int32` داخل المتصفح."
+        },
         {
           "code": "ages.itemsize / nbytes",
           "text": "حجم العنصر الواحد، والحجم الكلي للمصفوفة بالبايت."

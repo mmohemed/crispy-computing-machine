@@ -990,69 +990,69 @@
               "title": "Series",
               "title_en": "Series",
               "minutes": 20,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-dataframe",
               "title": "DataFrame: ما هو وكيف ننشئه",
               "title_en": "The DataFrame",
               "minutes": 30,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-read",
               "title": "قراءة CSV و Excel و JSON",
               "title_en": "Reading Files",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-inspect",
               "title": "head و info و describe و shape",
               "title_en": "Inspecting Data",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-select-columns",
               "title": "اختيار الأعمدة",
               "title_en": "Selecting Columns",
               "minutes": 20,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-loc-iloc",
               "title": "loc و iloc",
               "title_en": "loc & iloc",
               "minutes": 30,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-filter",
               "title": "تصفية الصفوف",
               "title_en": "Filtering Rows",
               "minutes": 30,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-sort",
               "title": "الترتيب",
               "title_en": "Sorting",
               "minutes": 15,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-new-columns",
               "title": "إضافة الأعمدة وتعديلها",
               "title_en": "Creating Columns",
               "minutes": 30,
-              "status": "planned"
+              "status": "published"
             }
           ],
           "quiz": {
             "slug": "quiz-pandas-basics",
             "title": "اختبار الوحدة: Series و DataFrame",
-            "status": "planned"
+            "status": "published"
           }
         },
         {

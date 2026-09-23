@@ -1,0 +1,338 @@
+{
+  "slug": "pandas-inspect",
+  "course": "pandas",
+  "module": "pandas-basics",
+  "order": 4,
+  "title": "head و info و describe و shape",
+  "title_en": "Inspecting Data",
+  "minutes": 25,
+  "level": "متوسط",
+  "objectives": [
+    "تعاين البيانات بـ `head` و `tail` و `sample`.",
+    "تقرأ `info` لمعرفة الأنواع والقيم المفقودة والذاكرة.",
+    "تفسّر `describe` للأعمدة الرقمية والنصية.",
+    "تتبع قائمة فحص ثابتة لأي Dataset جديد."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "أول خمس دقائق مع أي Dataset",
+      "body": [
+        "قبل أي تحليل أجب عن هذه الأسئلة، ولكل منها دالة:",
+        {
+          "table": {
+            "head": [
+              "السؤال",
+              "الدالة"
+            ],
+            "rows": [
+              [
+                "كم صفاً وعموداً؟",
+                "`df.shape`"
+              ],
+              [
+                "كيف تبدو الصفوف؟",
+                "`df.head()` و `df.tail()` و `df.sample(5, random_state=1)`"
+              ],
+              [
+                "ما نوع كل عمود؟ وأين المفقود؟",
+                "`df.info()`"
+              ],
+              [
+                "كم قيمة مفقودة في كل عمود؟",
+                "`df.isna().sum()`"
+              ],
+              [
+                "ما نطاق الأرقام وتوزيعها؟",
+                "`df.describe()`"
+              ],
+              [
+                "ما القيم في الأعمدة النصية؟",
+                "`df.describe(include=\"object\")` و `value_counts()` و `nunique()`"
+              ]
+            ]
+          }
+        },
+        {
+          "h": "قراءة describe"
+        },
+        "`describe()` تعطي لكل عمود رقمي: العدد `count` (بدون المفقود)، والمتوسط `mean`، والانحراف المعياري `std`، والقيمة الصغرى، والمئينات 25% و 50% (الوسيط) و 75%، والقيمة العظمى. قارن المتوسط بالوسيط: إذا كان المتوسط أكبر بكثير ففي البيانات قيم كبيرة متطرفة."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "هذه الخطوة تكشف المشاكل قبل أن تفسد التحليل: عمود أرقام قُرئ كنص، أو قيم مفقودة كثيرة في عمود مهم، أو سعر سالب، أو تاريخ في المستقبل. المحلل الذي يتخطاها قد يبني تقريراً كاملاً على بيانات معطوبة. وهي أيضاً البداية الرسمية لمرحلة الاستكشاف EDA."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "مباشرة بعد تحميل أي بيانات، وبعد كل عملية دمج أو تنظيف كبيرة.",
+            "`sample` أفضل من `head` لأن أول الصفوف قد لا تمثل البقية (مثلاً مرتبة بالتاريخ).",
+            "`describe` للأرقام، و `value_counts` للفئات."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "المعاينة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "cols = [\"order_date\", \"city\", \"product\", \"quantity\", \"rating\"]",
+        "print(df[cols].head(3))",
+        "print(df[cols].tail(2))",
+        "print(df[cols].sample(3, random_state=7))"
+      ],
+      "explanation": [
+        {
+          "code": "head(3) / tail(2)",
+          "text": "أول وآخر الصفوف. هنا مرتبة بالتاريخ، فالأولى من يناير والأخيرة من ديسمبر."
+        },
+        {
+          "code": "sample(3, random_state=7)",
+          "text": "صفوف عشوائية من كل السنة. `random_state` بذرة لتكرار نفس العينة."
+        }
+      ],
+      "expected_output": [
+        "   order_date city      product  quantity  rating",
+        "0  2025-01-01  جدة    قميص قطني         1     3.0",
+        "1  2025-01-01  جدة  لوحة مفاتيح         1     NaN",
+        "2  2025-01-02  جدة    شاحن سريع         4     5.0",
+        "      order_date    city     product  quantity  rating",
+        "1698  2025-12-31  الرياض  حذاء رياضي         2     NaN",
+        "1699  2025-12-31  الدمام  قهوة مختصة         3     4.0",
+        "      order_date    city    product  quantity  rating",
+        "179   2025-02-14  الرياض      جاكيت         1     5.0",
+        "1455  2025-11-19  الرياض      جاكيت         1     4.0",
+        "833   2025-06-30  الرياض  طقم أواني         1     5.0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "info و isna",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df.info(memory_usage=False)",
+        "print(df.isna().sum()[lambda s: s > 0])",
+        "print(f\"{df['rating'].isna().mean():.1%} من الطلبات بلا تقييم\")"
+      ],
+      "explanation": [
+        {
+          "code": "df.info(memory_usage=False)",
+          "text": "لكل عمود: عدد القيم غير المفقودة ونوعه. `rating` فيه أقل من 1700 قيمة، فهو العمود الوحيد الذي فيه مفقود. أخفينا سطر حجم الذاكرة هنا لأنه يختلف من جهاز لآخر؛ جرّب `df.info()` بدون المعامل لتراه."
+        },
+        {
+          "code": "df.isna().sum()[lambda s: s > 0]",
+          "text": "عدد المفقود في كل عمود، ونعرض الأعمدة التي فيها مفقود فقط. `lambda` داخل الأقواس تصفية Series بشرط عليها نفسها."
+        },
+        {
+          "code": "isna().mean()",
+          "text": "نسبة المفقود، وهي أهم من العدد وحده."
+        }
+      ],
+      "expected_output": [
+        "<class 'pandas.core.frame.DataFrame'>",
+        "RangeIndex: 1700 entries, 0 to 1699",
+        "Data columns (total 11 columns):",
+        " #   Column          Non-Null Count  Dtype  ",
+        "---  ------          --------------  -----  ",
+        " 0   order_id        1700 non-null   object ",
+        " 1   order_date      1700 non-null   object ",
+        " 2   city            1700 non-null   object ",
+        " 3   category        1700 non-null   object ",
+        " 4   product         1700 non-null   object ",
+        " 5   unit_price      1700 non-null   int64  ",
+        " 6   quantity        1700 non-null   int64  ",
+        " 7   discount        1700 non-null   float64",
+        " 8   payment_method  1700 non-null   object ",
+        " 9   customer_type   1700 non-null   object ",
+        " 10  rating          1495 non-null   float64",
+        "dtypes: float64(2), int64(2), object(7)rating    205",
+        "dtype: int64",
+        "12.1% من الطلبات بلا تقييم"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "describe للأرقام والنصوص",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "print(df[[\"unit_price\", \"quantity\", \"discount\", \"rating\"]].describe().round(2))",
+        "print(df.describe(include=\"object\").loc[[\"unique\", \"top\", \"freq\"], [\"city\", \"category\", \"product\"]])"
+      ],
+      "explanation": [
+        {
+          "code": "describe()",
+          "text": "إحصاءات الأعمدة الرقمية. لاحظ أن `count` للتقييم أقل من البقية بسبب المفقود."
+        },
+        {
+          "code": "mean مقابل 50%",
+          "text": "متوسط السعر أعلى من وسيطه بسبب المنتجات الغالية القليلة (الساعة الذكية)."
+        },
+        {
+          "code": "describe(include=\"object\")",
+          "text": "للنصوص: عدد القيم الفريدة، والأكثر تكراراً `top`، وعدد تكراره `freq`."
+        },
+        {
+          "code": ".loc[[...], [...]]",
+          "text": "اخترنا صفوفاً وأعمدة محددة من ناتج `describe`، فهو نفسه DataFrame."
+        }
+      ],
+      "expected_output": [
+        "       unit_price  quantity  discount   rating",
+        "count     1700.00   1700.00   1700.00  1495.00",
+        "mean       152.35      1.75      0.03     4.02",
+        "std         96.02      0.91      0.06     1.05",
+        "min         45.00      1.00      0.00     1.00",
+        "25%         79.00      1.00      0.00     3.00",
+        "50%        120.00      1.00      0.00     4.00",
+        "75%        199.00      2.00      0.05     5.00",
+        "max        399.00      5.00      0.20     5.00",
+        "          city    category   product",
+        "unique       6           5        15",
+        "top     الرياض  إلكترونيات  تمر فاخر",
+        "freq       555         448       165"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`info()` تطبع مباشرة ولا ترجع شيئاً، فلا تكتب `print(df.info())`.",
+        "`describe` تحسب `std` بقسمة على n − 1 (انحراف العينة)، على عكس NumPy.",
+        "رقم الذاكرة في `info` يختلف حسب الجهاز والإصدار، فلا تعتمد عليه كرقم ثابت.",
+        "اكتب ملاحظاتك من هذه الخطوة: عدد الصفوف، والأعمدة ذات المفقود، والقيم الغريبة. ستحتاجها في التقرير."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "describe لا تعرض عمودك",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"price\": [\"10\", \"20\"]})",
+            "print(df.describe())"
+          ],
+          "why": "افتراضياً تعرض `describe` الأعمدة الرقمية فقط؛ عمود نصي أو رقم مقروء كنص لن يظهر. استخدم `include=\"all\"` أو صحح النوع.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"price\": [\"10\", \"20\"]})",
+            "df[\"price\"] = df[\"price\"].astype(int)",
+            "print(df.describe())"
+          ]
+        },
+        {
+          "title": "استدعاء head كخاصية",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [1, 2]})",
+            "print(df.head)"
+          ],
+          "why": "`head` دالة تحتاج أقواساً؛ بدونها تُطبع معلومات الدالة نفسها وليس البيانات.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": [1, 2]})",
+            "print(df.head())"
+          ]
+        },
+        {
+          "title": "sample بدون بذرة في تقرير",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": range(100)})",
+            "rows = df.sample(3)"
+          ],
+          "why": "كل تشغيل يعطي صفوفاً مختلفة، فلا يطابق تقريرك ما يراه زميلك. ثبّت `random_state`.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"a\": range(100)})",
+            "print(df.sample(3, random_state=42))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تقرير الفحص الأولي",
+    "prompt": [
+      "افحص `store_sales.csv` وخزّن النتائج في متغيرات:"
+    ],
+    "requirements": [
+      "`n_rows, n_cols`: أبعاد الجدول.",
+      "`missing`: قاموس لكل عمود فيه قيم مفقودة ← عددها (أعداد `int`).",
+      "`median_price` و `mean_price`: وسيط ومتوسط `unit_price` كـ `float` مقربين لمنزلتين.",
+      "`most_common_product`: المنتج الأكثر تكراراً.",
+      "`n_products`: عدد المنتجات المختلفة كـ `int`."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import pandas as _pd",
+      "_df = _pd.read_csv(\"store_sales.csv\")",
+      "assert (n_rows, n_cols) == _df.shape, \"الأبعاد غير صحيحة\"",
+      "_m = {k: int(v) for k, v in _df.isna().sum().items() if v > 0}",
+      "assert missing == _m, f\"missing يجب أن يكون {_m}، والموجود {missing}\"",
+      "assert median_price == round(float(_df[\"unit_price\"].median()), 2), \"median_price غير صحيح\"",
+      "assert mean_price == round(float(_df[\"unit_price\"].mean()), 2), \"mean_price غير صحيح\"",
+      "assert most_common_product == _df[\"product\"].value_counts().idxmax(), \"most_common_product غير صحيح\"",
+      "assert n_products == _df[\"product\"].nunique() and isinstance(n_products, int), \"n_products غير صحيح\""
+    ],
+    "hints": [
+      "`df.isna().sum()` Series؛ حوّلها لقاموس مع تصفية القيم الأكبر من صفر.",
+      "`df[\"unit_price\"].median()` و `.mean()`.",
+      "`value_counts().idxmax()` و `nunique()`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "n_rows, n_cols = df.shape",
+      "na = df.isna().sum()",
+      "missing = {col: int(count) for col, count in na.items() if count > 0}",
+      "median_price = round(float(df[\"unit_price\"].median()), 2)",
+      "mean_price = round(float(df[\"unit_price\"].mean()), 2)",
+      "most_common_product = df[\"product\"].value_counts().idxmax()",
+      "n_products = int(df[\"product\"].nunique())",
+      "",
+      "print(n_rows, n_cols, missing)",
+      "print(median_price, mean_price, most_common_product, n_products)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "في ناتج `describe()` عمود متوسطه 373 ووسيطه (50%) 85. ماذا يعني ذلك غالباً؟",
+    "options": [
+      "البيانات متماثلة",
+      "توجد قيم كبيرة متطرفة ترفع المتوسط",
+      "يوجد خطأ في الحساب",
+      "أغلب القيم أكبر من 373"
+    ],
+    "answer": 1,
+    "explanation": "المتوسط يتأثر بالقيم المتطرفة، والوسيط لا يتأثر. الفرق الكبير يعني انحرافاً نحو القيم الكبيرة."
+  },
+  "summary": [
+    "قائمة الفحص: `shape`، ثم `head`/`sample`، ثم `info`، ثم `isna().sum()`، ثم `describe`، ثم `value_counts`.",
+    "`info` للأنواع والمفقود، و `describe` للتوزيع، و `include=\"object\"` للنصوص.",
+    "قارن المتوسط بالوسيط لاكتشاف القيم المتطرفة.",
+    "ثبّت `random_state` في `sample`."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}
