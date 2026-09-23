@@ -1,0 +1,306 @@
+{
+  "slug": "python-venv-pip",
+  "course": "python-basics",
+  "module": "python-pro",
+  "order": 25,
+  "title": "pip والبيئات الافتراضية",
+  "title_en": "pip & Virtual Environments",
+  "minutes": 15,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تثبّت المكتبات وتحدّثها بـ `pip`.",
+    "تنشئ بيئة افتراضية لكل مشروع وتفعّلها.",
+    "تحفظ متطلبات المشروع في `requirements.txt` وتعيد تثبيتها.",
+    "تفهم لماذا يجب تثبيت أرقام الإصدارات في مشاريع البيانات."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "مشروع واحد، مكتبات خاصة به",
+      "body": [
+        "**pip** هو مدير حزم Python: يحمّل المكتبات من المستودع العام PyPI ويثبّتها. المشكلة أن كل مشروع قد يحتاج إصداراً مختلفاً من نفس المكتبة: مشروع قديم يعمل على Pandas 1.5، وجديد يحتاج 2.2. لو ثبّتهما على Python الجهاز مباشرة لتعارضا.",
+        "الحل: **البيئة الافتراضية virtual environment**، وهي مجلد داخل مشروعك فيه نسخة معزولة من Python ومكتباتها. كل مشروع له بيئته، وما تثبّته فيها لا يؤثر في غيرها.",
+        {
+          "table": {
+            "head": [
+              "المهمة",
+              "Windows",
+              "macOS / Linux"
+            ],
+            "rows": [
+              [
+                "إنشاء بيئة اسمها .venv",
+                "`python -m venv .venv`",
+                "`python3 -m venv .venv`"
+              ],
+              [
+                "تفعيلها",
+                "`.venv\\Scripts\\activate`",
+                "`source .venv/bin/activate`"
+              ],
+              [
+                "تثبيت مكتبة",
+                "`pip install pandas`",
+                "`pip install pandas`"
+              ],
+              [
+                "إصدار محدد",
+                "`pip install pandas==2.2.3`",
+                "`pip install pandas==2.2.3`"
+              ],
+              [
+                "حفظ المتطلبات",
+                "`pip freeze > requirements.txt`",
+                "`pip freeze > requirements.txt`"
+              ],
+              [
+                "التثبيت من الملف",
+                "`pip install -r requirements.txt`",
+                "`pip install -r requirements.txt`"
+              ],
+              [
+                "إلغاء التفعيل",
+                "`deactivate`",
+                "`deactivate`"
+              ]
+            ]
+          }
+        },
+        "بعد التفعيل يظهر اسم البيئة `(.venv)` في بداية سطر الأوامر، وهذا يعني أن `python` و `pip` يشيران الآن إلى البيئة."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "**قابلية التكرار Reproducibility** مبدأ أساسي في علم البيانات: زميلك، أو السيرفر، أو أنت بعد سنة، يجب أن يشغّل التحليل ويحصل على **نفس النتائج**. تغيّر إصدار مكتبة قد يغيّر نتيجة دالة أو يوقف الكود. الملف `requirements.txt` مع أرقام إصدارات مثبتة هو ما يضمن ذلك، وأول ما يبحث عنه من يراجع مشروعك على GitHub."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "أنشئ بيئة افتراضية **لكل مشروع** من أول يوم.",
+            "حدّث `requirements.txt` كلما ثبّت مكتبة جديدة، واحفظه في Git.",
+            "لا تضع مجلد `.venv` نفسه في Git؛ أضفه إلى `.gitignore`، فالملف `requirements.txt` يكفي لإعادة إنشائه.",
+            "إذا كنت تستخدم Anaconda فالمفهوم نفسه بأوامر `conda create` و `conda activate`."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "بداية مشروع تحليل جديد (Windows)",
+      "code": [
+        "D:\\Projects> mkdir sales-analysis",
+        "D:\\Projects> cd sales-analysis",
+        "D:\\Projects\\sales-analysis> python -m venv .venv",
+        "D:\\Projects\\sales-analysis> .venv\\Scripts\\activate",
+        "(.venv) D:\\Projects\\sales-analysis> pip install pandas matplotlib",
+        "(.venv) D:\\Projects\\sales-analysis> pip freeze > requirements.txt",
+        "(.venv) D:\\Projects\\sales-analysis> python analysis.py"
+      ],
+      "language": "text",
+      "label": "Terminal",
+      "run": false,
+      "explanation": [
+        {
+          "code": "python -m venv .venv",
+          "text": "ينشئ البيئة في مجلد `.venv` داخل المشروع. `-m venv` يعني تشغيل الوحدة `venv` المرفقة مع Python."
+        },
+        {
+          "code": ".venv\\Scripts\\activate",
+          "text": "التفعيل. على macOS و Linux: `source .venv/bin/activate`."
+        },
+        {
+          "code": "pip install pandas matplotlib",
+          "text": "التثبيت داخل البيئة فقط. تُثبّت المكتبات التي تحتاجها Pandas تلقائياً (مثل NumPy)."
+        },
+        {
+          "code": "pip freeze > requirements.txt",
+          "text": "يحفظ كل المكتبات بإصداراتها الدقيقة في الملف."
+        }
+      ],
+      "expected_output": null,
+      "run_note": "هذه أوامر طرفية تُكتب على جهازك وليس في محرر CodeWay."
+    },
+    {
+      "type": "example",
+      "title": "شكل requirements.txt وقراءته برمجياً",
+      "code": [
+        "requirements = '''",
+        "# مكتبات مشروع تحليل المبيعات",
+        "pandas==2.2.3",
+        "numpy==2.0.2",
+        "matplotlib>=3.8",
+        "openpyxl",
+        "'''",
+        "",
+        "for line in requirements.strip().splitlines():",
+        "    line = line.strip()",
+        "    if not line or line.startswith(\"#\"):",
+        "        continue",
+        "    if \"==\" in line:",
+        "        name, version = line.split(\"==\")",
+        "        print(f\"{name}: مثبّت على {version}\")",
+        "    else:",
+        "        print(f\"{line}: غير مثبّت على إصدار محدد\")"
+      ],
+      "explanation": [
+        {
+          "code": "pandas==2.2.3",
+          "text": "`==` إصدار محدد بالضبط، وهي الطريقة الأضمن لتكرار النتائج."
+        },
+        {
+          "code": "matplotlib>=3.8",
+          "text": "`>=` أي إصدار أحدث من 3.8، وهذا أقل ضماناً."
+        },
+        {
+          "code": "openpyxl",
+          "text": "بدون إصدار: pip يثبّت الأحدث، وقد يختلف من جهاز لآخر."
+        },
+        {
+          "code": "line.startswith(\"#\")",
+          "text": "الأسطر التي تبدأ بـ `#` تعليقات يتجاهلها pip."
+        }
+      ],
+      "expected_output": [
+        "pandas: مثبّت على 2.2.3",
+        "numpy: مثبّت على 2.0.2",
+        "matplotlib>=3.8: غير مثبّت على إصدار محدد",
+        "openpyxl: غير مثبّت على إصدار محدد"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "إذا كان عندك أكثر من إصدار Python فاستخدم `python -m pip install ...` لتضمن التثبيت للإصدار الذي تشغّله.",
+        "في PowerShell قد يمنع Windows تشغيل سكربت التفعيل؛ الحل: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` مرة واحدة، أو استخدم CMD.",
+        "`pip list` تعرض المكتبات المثبتة، و `pip show pandas` تعرض تفاصيل مكتبة واحدة.",
+        "في محرر CodeWay لا تحتاج pip: المكتبات الشائعة (NumPy و Pandas و Matplotlib) تُحمّل تلقائياً عند استيرادها."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "التثبيت خارج البيئة",
+          "wrong": [
+            "D:\\Projects\\sales-analysis> pip install pandas"
+          ],
+          "why": "نسيت تفعيل البيئة، فثُبّتت المكتبة على Python الجهاز، ثم يقول مشروعك إنها غير موجودة (أو العكس). تحقق من ظهور `(.venv)` قبل `pip install`.",
+          "fix": [
+            ".venv\\Scripts\\activate",
+            "pip install pandas"
+          ]
+        },
+        {
+          "title": "رفع مجلد البيئة إلى Git",
+          "wrong": [
+            "git add ."
+          ],
+          "why": "مجلد `.venv` كبير وخاص بجهازك ونظامك ولا يعمل على جهاز آخر. ارفع `requirements.txt` فقط، وأضف `.venv/` إلى `.gitignore`.",
+          "fix": [
+            "echo .venv/ >> .gitignore",
+            "git add requirements.txt analysis.py"
+          ]
+        },
+        {
+          "title": "تحليل النتائج ثم اختلافها عند زميلك",
+          "wrong": [
+            "pandas",
+            "numpy"
+          ],
+          "why": "`requirements.txt` بدون أرقام إصدارات، فثبّت كل منكما إصداراً مختلفاً. استخدم `pip freeze` لتثبيت الإصدارات بالضبط.",
+          "fix": [
+            "pandas==2.2.3",
+            "numpy==2.0.2"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "قارئ ملف المتطلبات",
+    "prompt": [
+      "اكتب دالة `parse_requirements(text)` تقرأ محتوى ملف `requirements.txt` وترجع قاموساً:"
+    ],
+    "requirements": [
+      "المفتاح اسم المكتبة **بحروف صغيرة**.",
+      "القيمة رقم الإصدار إذا كان مثبتاً بـ `==`، أو `None` إذا لم يكن مثبتاً بـ `==` (مثل `>=` أو بدون إصدار).",
+      "تتجاهل الأسطر الفارغة والتعليقات التي تبدأ بـ `#`، وتحذف المسافات.",
+      "للقيود مثل `matplotlib>=3.8` يكون الاسم `matplotlib` فقط."
+    ],
+    "starter_code": [
+      "def parse_requirements(text):",
+      "    pass",
+      "",
+      "",
+      "sample = '''",
+      "# مشروع المبيعات",
+      "Pandas==2.2.3",
+      "numpy == 2.0.2",
+      "matplotlib>=3.8",
+      "openpyxl",
+      "'''",
+      "print(parse_requirements(sample))"
+    ],
+    "tests": [
+      "sample = \"# c\\nPandas==2.2.3\\n numpy == 2.0.2 \\nmatplotlib>=3.8\\n\\nopenpyxl\\n\"",
+      "got = parse_requirements(sample)",
+      "assert got == {\"pandas\": \"2.2.3\", \"numpy\": \"2.0.2\", \"matplotlib\": None, \"openpyxl\": None}, f\"الناتج غير صحيح: {got}\"",
+      "assert parse_requirements(\"\") == {}, \"النص الفارغ يعطي قاموساً فارغاً\"",
+      "assert parse_requirements(\"scikit-learn<=1.5\") == {\"scikit-learn\": None}, \"القيد <= يعني أن الإصدار غير مثبت\""
+    ],
+    "hints": [
+      "لكل سطر: `strip()` ثم تجاهل الفارغ وما يبدأ بـ `#`.",
+      "إذا وُجد `==` فقسّم عليه، وإلا فافصل الاسم عند أول رمز مقارنة مثل `>=` أو `<`.",
+      "لا تنسَ `.lower()` و `.strip()` على الاسم والإصدار."
+    ],
+    "solution": [
+      "def parse_requirements(text):",
+      "    result = {}",
+      "    for line in text.splitlines():",
+      "        line = line.strip()",
+      "        if not line or line.startswith(\"#\"):",
+      "            continue",
+      "        if \"==\" in line:",
+      "            name, version = line.split(\"==\")",
+      "            result[name.strip().lower()] = version.strip()",
+      "        else:",
+      "            name = line",
+      "            for op in (\">=\", \"<=\", \">\", \"<\", \"~=\", \"!=\"):",
+      "                name = name.split(op)[0]",
+      "            result[name.strip().lower()] = None",
+      "    return result",
+      "",
+      "",
+      "sample = '''",
+      "# مشروع المبيعات",
+      "Pandas==2.2.3",
+      "numpy == 2.0.2",
+      "matplotlib>=3.8",
+      "openpyxl",
+      "'''",
+      "print(parse_requirements(sample))"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "ما الأمر الذي يحفظ المكتبات المثبتة في البيئة بإصداراتها الدقيقة؟",
+    "options": [
+      "`pip list > requirements.txt`",
+      "`pip freeze > requirements.txt`",
+      "`pip save requirements.txt`",
+      "`python -m venv requirements.txt`"
+    ],
+    "answer": 1,
+    "explanation": "`pip freeze` تطبع المكتبات بصيغة `name==version` المناسبة لـ `pip install -r`."
+  },
+  "summary": [
+    "`pip install name==version` لتثبيت المكتبات، و `pip install -r requirements.txt` لتثبيت متطلبات مشروع.",
+    "`python -m venv .venv` ثم التفعيل: بيئة معزولة لكل مشروع.",
+    "`pip freeze > requirements.txt` يثبّت الإصدارات لضمان تكرار النتائج.",
+    "ارفع `requirements.txt` إلى Git وليس مجلد `.venv`."
+  ]
+}

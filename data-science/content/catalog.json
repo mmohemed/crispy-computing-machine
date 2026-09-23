@@ -748,69 +748,69 @@
               "title": "List و Dict Comprehensions",
               "title_en": "Comprehensions",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "python-lambda-map-filter",
               "title": "lambda و map و filter و sorted(key)",
               "title_en": "Lambda, map, filter",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "python-args-kwargs",
               "title": "*args و **kwargs",
               "title_en": "*args & **kwargs",
               "minutes": 20,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "python-scope",
-              "title": "نطاق المتغيرات Scope",
+              "title": "نطاق المتغيرات",
               "title_en": "Scope",
               "minutes": 15,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "python-oop",
-              "title": "الأصناف والكائنات Classes & Objects",
+              "title": "الأصناف والكائنات",
               "title_en": "Classes & Objects",
               "minutes": 35,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "python-iterators-generators",
               "title": "Iterators و Generators",
               "title_en": "Iterators & Generators",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "python-datetime",
-              "title": "التواريخ والأوقات datetime",
+              "title": "التواريخ والأوقات",
               "title_en": "Dates & Times",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "python-csv-json",
               "title": "ملفات CSV و JSON",
               "title_en": "CSV & JSON Files",
               "minutes": 30,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "python-venv-pip",
               "title": "pip والبيئات الافتراضية",
               "title_en": "pip & Virtual Environments",
               "minutes": 15,
-              "status": "planned"
+              "status": "published"
             }
           ],
           "quiz": {
             "slug": "python-pro",
             "title": "اختبار الوحدة: Python بأسلوب محترف",
-            "status": "planned"
+            "status": "published"
           }
         },
         {
@@ -823,21 +823,21 @@
               "title": "قراءة ملف المبيعات وتنظيمه",
               "title_en": "Loading the Sales File",
               "minutes": 30,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "python-project-analyze",
               "title": "حساب المؤشرات: الإيراد، أفضل المنتجات، المبيعات الشهرية",
               "title_en": "Computing KPIs",
               "minutes": 40,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "python-project-report",
-              "title": "كتابة تقرير نصي ولماذا نحتاج Pandas",
+              "title": "كتابة تقرير نصي، ولماذا نحتاج Pandas",
               "title_en": "Writing the Report",
               "minutes": 30,
-              "status": "planned"
+              "status": "published"
             }
           ],
           "quiz": null
@@ -846,7 +846,7 @@
       "final_exam": {
         "slug": "python-basics-final",
         "title": "الاختبار النهائي: Python لعلم البيانات",
-        "status": "planned"
+        "status": "published"
       }
     },
     {

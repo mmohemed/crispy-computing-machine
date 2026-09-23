@@ -1,0 +1,298 @@
+{
+  "slug": "python-scope",
+  "course": "python-basics",
+  "module": "python-pro",
+  "order": 20,
+  "title": "نطاق المتغيرات",
+  "title_en": "Scope",
+  "minutes": 15,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تفرّق بين المتغيرات المحلية Local والعامة Global.",
+    "تفهم قاعدة LEGB في البحث عن الأسماء.",
+    "تعرف لماذا يُفضّل تمرير القيم وإرجاعها بدلاً من `global`.",
+    "تتجنب خطأ `UnboundLocalError`."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "أين يعيش المتغير؟",
+      "body": [
+        "كل متغير له **نطاق scope**: المنطقة من الكود التي يُعرف فيها. المتغير الذي تنشئه **داخل دالة** محلي: يُولد عند استدعائها ويختفي عند انتهائها، ولا يراه أحد خارجها. والمتغير الذي تنشئه في أعلى الملف عام: تستطيع الدوال **قراءته**.",
+        "عندما يرى Python اسماً يبحث عنه بالترتيب **LEGB**:",
+        {
+          "ol": [
+            "**L**ocal: داخل الدالة الحالية.",
+            "**E**nclosing: داخل دالة تحيط بها (إذا كانت الدالة معرّفة داخل دالة أخرى).",
+            "**G**lobal: في مستوى الملف.",
+            "**B**uilt-in: الأسماء الجاهزة مثل `print` و `len`."
+          ]
+        },
+        "وقاعدة مهمة: إذا **أسندت** قيمة لاسم في أي مكان داخل الدالة، يعتبره Python محلياً في **كل** الدالة، حتى في الأسطر التي قبل الإسناد."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "النطاق هو ما يجعل الدوال آمنة: متغير `total` داخل دالة لا يمسح متغير `total` خارجها. وفهمه يفسر أخطاء محيرة مثل `UnboundLocalError`، ويشرح لماذا تُكتب الدوال الجيدة بحيث **تأخذ مدخلاتها كمعاملات وترجع نتائجها** بدلاً من تعديل متغيرات عامة. وهذا مهم في التحليل حيث تريد أن تعطي الدالة نفس النتيجة لنفس المدخلات دائماً."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "اقرأ الثوابت العامة من داخل الدوال بحرية (مثل `VAT_RATE`).",
+            "لتعديل قيمة: مررها كمعامل وأرجع القيمة الجديدة.",
+            "`global` موجودة لكن تجنّبها في أكواد التحليل؛ تجعل النتيجة تعتمد على ترتيب الاستدعاءات."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "محلي وعام",
+      "code": [
+        "VAT_RATE = 0.15",
+        "total = 1000",
+        "",
+        "def price_with_vat(price):",
+        "    total = price * (1 + VAT_RATE)",
+        "    return round(total, 2)",
+        "",
+        "print(price_with_vat(200))",
+        "print(total)"
+      ],
+      "explanation": [
+        {
+          "code": "VAT_RATE",
+          "text": "عام، والدالة تقرؤه دون مشكلة (المرحلة G في LEGB)."
+        },
+        {
+          "code": "total = price * ...",
+          "text": "هذا `total` محلي داخل الدالة، مختلف تماماً عن `total` العام."
+        },
+        {
+          "code": "print(total)",
+          "text": "القيمة العامة لم تتغير: 1000."
+        }
+      ],
+      "expected_output": [
+        "230.0",
+        "1000"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الطريقة الصحيحة لتحديث قيمة: مرّر وأرجع",
+      "code": [
+        "def add_sale(total, amount):",
+        "    return total + amount",
+        "",
+        "running = 0",
+        "for amount in [120, 80, 45]:",
+        "    running = add_sale(running, amount)",
+        "print(running)"
+      ],
+      "explanation": [
+        {
+          "code": "def add_sale(total, amount):",
+          "text": "الدالة تأخذ كل ما تحتاجه كمعاملات ولا تعتمد على شيء خارجها."
+        },
+        {
+          "code": "running = add_sale(running, amount)",
+          "text": "المستدعي هو من يقرر تخزين النتيجة، فالتدفق واضح."
+        }
+      ],
+      "expected_output": [
+        "245"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "النطاق المحيط Enclosing و global",
+      "code": [
+        "def make_counter():",
+        "    count = 0",
+        "    def increment():",
+        "        nonlocal count",
+        "        count += 1",
+        "        return count",
+        "    return increment",
+        "",
+        "counter = make_counter()",
+        "counter()",
+        "counter()",
+        "print(counter())",
+        "",
+        "visits = 0",
+        "def register_visit():",
+        "    global visits",
+        "    visits += 1",
+        "",
+        "register_visit()",
+        "register_visit()",
+        "print(visits)"
+      ],
+      "explanation": [
+        {
+          "code": "nonlocal count",
+          "text": "`increment` تعدّل متغير الدالة المحيطة بها (المرحلة E). هذا متقدم قليلاً، ويكفي أن تتعرف عليه."
+        },
+        {
+          "code": "global visits",
+          "text": "تسمح للدالة بتعديل متغير عام. تعمل، لكن النمط السابق (مرّر وأرجع) أوضح وأسهل في الاختبار."
+        }
+      ],
+      "expected_output": [
+        "3",
+        "2"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "المعاملات متغيرات محلية أيضاً.",
+        "القوائم والقواميس تُمرر كمرجع: إذا عدّلتها داخل الدالة بـ `append` مثلاً يظهر التعديل خارجها، لأنها القائمة نفسها. أنشئ نسخة إذا لم ترد ذلك.",
+        "الحلقات و `if` لا تنشئ نطاقاً جديداً في Python؛ المتغير المعرّف داخل `for` يبقى بعدها."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "UnboundLocalError: قراءة متغير ثم إسناده في نفس الدالة",
+          "wrong": [
+            "count = 0",
+            "def add():",
+            "    count += 1",
+            "",
+            "add()"
+          ],
+          "error": "UnboundLocalError: cannot access local variable 'count' where it is not associated with a value",
+          "error_type": "UnboundLocalError",
+          "why": "لأن الدالة تسند `count += 1`، يعتبر Python `count` محلياً في كل الدالة، فعند قراءته لم تكن له قيمة محلية بعد.",
+          "fix": [
+            "def add(count):",
+            "    return count + 1",
+            "",
+            "count = 0",
+            "count = add(count)",
+            "print(count)"
+          ]
+        },
+        {
+          "title": "استخدام متغير محلي خارج الدالة",
+          "wrong": [
+            "def compute():",
+            "    result = 42",
+            "    return result",
+            "",
+            "compute()",
+            "print(result)"
+          ],
+          "error": "NameError: name 'result' is not defined",
+          "error_type": "NameError",
+          "why": "`result` وُلد داخل الدالة واختفى بعد انتهائها. استخدم القيمة المرجعة.",
+          "fix": [
+            "def compute():",
+            "    result = 42",
+            "    return result",
+            "",
+            "value = compute()",
+            "print(value)"
+          ]
+        },
+        {
+          "title": "تعديل قائمة ممررة دون قصد",
+          "wrong": [
+            "def with_shipping(items):",
+            "    items.append(25)",
+            "    return items",
+            "",
+            "prices = [100, 50]",
+            "with_shipping(prices)",
+            "print(prices)"
+          ],
+          "why": "الدالة أضافت إلى القائمة الأصلية نفسها، فتغيرت `prices` في الخارج أيضاً.",
+          "fix": [
+            "def with_shipping(items):",
+            "    return items + [25]",
+            "",
+            "prices = [100, 50]",
+            "full = with_shipping(prices)",
+            "print(prices, full)"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "دالة نقية بدل global",
+    "prompt": [
+      "الكود الابتدائي يستخدم `global` لتجميع النقاط. أعد كتابته بدالة **نقية** لا تعتمد على متغيرات خارجها."
+    ],
+    "requirements": [
+      "اكتب دالة `add_points(balance, amount)` ترجع الرصيد الجديد = الرصيد + (المبلغ ÷ 10 مقرباً للأسفل بـ `//`).",
+      "لا تستخدم `global` في الحل.",
+      "احسب `balance` النهائي للمشتريات `[120, 45, 300, 9]` بدءاً من صفر."
+    ],
+    "starter_code": [
+      "balance = 0",
+      "",
+      "def add_points(amount):",
+      "    global balance",
+      "    balance += amount // 10",
+      "",
+      "for amount in [120, 45, 300, 9]:",
+      "    add_points(amount)",
+      "",
+      "print(balance)"
+    ],
+    "tests": [
+      "assert \"global\" not in __code__, \"لا تستخدم global\"",
+      "assert add_points(0, 120) == 12, \"add_points(0, 120) يجب أن ترجع 12\"",
+      "assert add_points(5, 9) == 5, \"add_points(5, 9) يجب أن ترجع 5\"",
+      "assert balance == 46, f\"الرصيد النهائي يجب أن يكون 46، والموجود {balance}\""
+    ],
+    "hints": [
+      "الدالة تأخذ `balance` و `amount` وترجع الرصيد الجديد.",
+      "داخل الحلقة: `balance = add_points(balance, amount)`."
+    ],
+    "solution": [
+      "def add_points(balance, amount):",
+      "    return balance + amount // 10",
+      "",
+      "balance = 0",
+      "for amount in [120, 45, 300, 9]:",
+      "    balance = add_points(balance, amount)",
+      "",
+      "print(balance)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "x = 5",
+      "def change():",
+      "    x = 10",
+      "    return x",
+      "print(change(), x)"
+    ],
+    "options": [
+      "10 5",
+      "10 10",
+      "5 5",
+      "5 10"
+    ],
+    "answer": 0,
+    "explanation": "`x = 10` داخل الدالة ينشئ متغيراً محلياً جديداً، والمتغير العام يبقى 5."
+  },
+  "summary": [
+    "المتغير داخل الدالة محلي، وخارجها عام؛ والبحث بالترتيب LEGB.",
+    "الإسناد داخل الدالة يجعل الاسم محلياً في كل الدالة، ومن هنا يأتي `UnboundLocalError`.",
+    "الأسلوب الأفضل: مرّر القيم كمعاملات وأرجع النتائج، وتجنّب `global`.",
+    "القوائم والقواميس الممررة تُعدّل في مكانها؛ أنشئ نسخة إذا لزم."
+  ]
+}

@@ -16,6 +16,7 @@
 """
 import json
 import os
+import shutil
 import sys
 import tempfile
 
@@ -45,10 +46,15 @@ def load(rel):
         return json.load(f)
 
 
-def run(code, tests=None, stdin=None):
-    # كل تشغيل في مجلد مؤقت نظيف (مثل بيئة المتصفح)
+def run(code, tests=None, stdin=None, files=None):
+    # كل تشغيل في مجلد مؤقت نظيف (مثل بيئة المتصفح)، مع نسخ ملفات البيانات المطلوبة
     cwd = os.getcwd()
     with tempfile.TemporaryDirectory() as tmp:
+        for rel in files or []:
+            src = os.path.join(ROOT, rel)
+            if not os.path.exists(src):
+                raise FileNotFoundError(f'ملف البيانات غير موجود: {rel}')
+            shutil.copy(src, os.path.join(tmp, os.path.basename(rel)))
         os.chdir(tmp)
         try:
             return python_harness.run(code, tests=tests, stdin=stdin)
@@ -74,6 +80,7 @@ def check_lesson(course_slug, meta):
         fail(where, f'الصفحة {page} غير موجودة (شغّل node tools/build-pages.mjs)')
 
     lesson = load(rel)
+    files = lesson.get('files') or []
     checked['lessons'] += 1
     scan_placeholders(where, lesson)
 
@@ -98,7 +105,9 @@ def check_lesson(course_slug, meta):
             lang = sec.get('language', 'python')
             if lang == 'python' and sec.get('run', True):
                 checked['examples'] += 1
-                res = run(lines(sec['code']), stdin=lines(sec.get('stdin')))
+                res = run(lines(sec['code']), stdin=lines(sec.get('stdin')), files=files)
+                if sec.get('expects_chart') and not res.get('images'):
+                    fail(swhere, 'المثال يجب أن ينتج رسماً بيانياً')
                 if res['error']:
                     fail(swhere, f'المثال يسبب خطأ: {res["error"]}')
                 elif not sec.get('output_varies'):
@@ -114,39 +123,40 @@ def check_lesson(course_slug, meta):
                     fail(f'{swhere} mistake#{j}', 'ينقصه شرح why')
                 if m.get('error_type'):
                     checked['mistakes'] += 1
-                    res = run(lines(m['wrong']))
+                    res = run(lines(m['wrong']), files=files)
                     got = res['error']['type'] if res['error'] else None
                     if got != m['error_type']:
                         fail(f'{swhere} mistake#{j}', f'الكود الخاطئ يجب أن يسبب {m["error_type"]} لكنه سبب {got}')
                 if m.get('fix') and m.get('error_type'):
-                    res = run(lines(m['fix']))
+                    res = run(lines(m['fix']), files=files)
                     if res['error']:
                         fail(f'{swhere} mistake#{j}', f'كود التصحيح نفسه يسبب خطأ: {res["error"]}')
 
     ex = lesson.get('exercise') or {}
-    check_code_task(f'{where} exercise', ex.get('starter_code'), ex.get('tests'), ex.get('solution'), ex.get('stdin'))
+    check_code_task(f'{where} exercise', ex.get('starter_code'), ex.get('tests'), ex.get('solution'), ex.get('stdin'), files)
     if not ex.get('hints'):
         fail(f'{where} exercise', 'التمرين يحتاج تلميحاً واحداً على الأقل')
     if not ex.get('requirements'):
         fail(f'{where} exercise', 'التمرين يحتاج قائمة المطلوب requirements')
-    check_question(f'{where} check', lesson.get('check') or {})
+    check_question(f'{where} check', lesson.get('check') or {}, files)
 
 
-def check_code_task(where, starter, tests, solution, stdin=None):
+def check_code_task(where, starter, tests, solution, stdin=None, files=None):
     if not (starter and tests and solution):
         fail(where, 'يحتاج starter_code و tests و solution')
         return
     checked['exercises'] += 1
-    res = run(lines(solution), tests=lines(tests), stdin=lines(stdin))
+    res = run(lines(solution), tests=lines(tests), stdin=lines(stdin), files=files)
     if res['error'] or not (res['tests'] and res['tests']['passed']):
         fail(where, f'الحل النموذجي لا يجتاز الاختبارات: {res["error"] or res["tests"]}')
-    res = run(lines(starter), tests=lines(tests), stdin=lines(stdin))
+    res = run(lines(starter), tests=lines(tests), stdin=lines(stdin), files=files)
     if res['tests'] and res['tests']['passed']:
         fail(where, 'الكود الابتدائي يجتاز الاختبارات بدون حل؛ الاختبارات ضعيفة')
 
 
-def check_question(where, q):
+def check_question(where, q, files=None):
     checked['questions'] += 1
+    files = (files or []) + (q.get('files') or [])
     t = q.get('type')
     if not q.get('prompt') or not q.get('explanation'):
         fail(where, 'السؤال يحتاج prompt و explanation')
@@ -158,7 +168,7 @@ def check_question(where, q):
         if len(set(opts)) != len(opts):
             fail(where, 'خيارات مكررة')
         if t == 'predict_output':
-            res = run(lines(q['code']))
+            res = run(lines(q['code']), files=files)
             actual = res['stdout'].rstrip('\n') if not res['error'] else None
             if actual != opts[q['answer']]:
                 fail(where, f'الإجابة المعلّمة ({opts[q["answer"]]!r}) لا تطابق الناتج الفعلي ({actual!r})')
@@ -166,9 +176,35 @@ def check_question(where, q):
         if not isinstance(q.get('answer'), bool):
             fail(where, 'إجابة صح/خطأ يجب أن تكون true أو false')
     elif t in ('write_code', 'fix_code'):
-        check_code_task(where, q.get('starter_code'), q.get('tests'), q.get('solution'))
+        check_code_task(where, q.get('starter_code'), q.get('tests'), q.get('solution'), files=files)
     else:
         fail(where, f'نوع سؤال غير معروف: {t}')
+
+
+def check_quiz(cwhere, quiz, seen):
+    if not quiz or quiz['status'] != 'published':
+        return
+    rel = f'content/quizzes/{quiz["slug"]}.json'
+    if not os.path.exists(os.path.join(ROOT, rel)):
+        fail(cwhere, f'الاختبار {quiz["slug"]} منشور لكن {rel} غير موجود')
+        return
+    data = load(rel)
+    scan_placeholders(f'quiz {quiz["slug"]}', data)
+    if len(data['questions']) < 10:
+        fail(f'quiz {quiz["slug"]}', 'الاختبار يحتاج 10 أسئلة على الأقل')
+    kinds = {q['type'] for q in data['questions']}
+    for k in ('mcq', 'true_false', 'predict_output', 'write_code', 'fix_code'):
+        if k not in kinds:
+            fail(f'quiz {quiz["slug"]}', f'ينقصه سؤال من نوع {k}')
+    ids = [q['id'] for q in data['questions']]
+    if len(ids) != len(set(ids)):
+        fail(f'quiz {quiz["slug"]}', 'معرّفات أسئلة مكررة')
+    for q in data['questions']:
+        if q.get('lesson') and q['lesson'] not in seen:
+            fail(f'quiz {quiz["slug"]} {q["id"]}', f'درس غير معروف {q["lesson"]}')
+        check_question(f'quiz {quiz["slug"]} {q["id"]}', q)
+    if not os.path.exists(os.path.join(ROOT, f'exercises/quiz-{quiz["slug"]}.html')):
+        fail(cwhere, f'صفحة الاختبار exercises/quiz-{quiz["slug"]}.html غير موجودة')
 
 
 def main():
@@ -203,29 +239,8 @@ def main():
                 if lesson['status'] == 'published':
                     any_published = True
                     check_lesson(course['slug'], lesson)
-            quiz = mod.get('quiz')
-            if quiz and quiz['status'] == 'published':
-                rel = f'content/quizzes/{quiz["slug"]}.json'
-                if not os.path.exists(os.path.join(ROOT, rel)):
-                    fail(cwhere, f'الاختبار {quiz["slug"]} منشور لكن {rel} غير موجود')
-                    continue
-                data = load(rel)
-                scan_placeholders(f'quiz {quiz["slug"]}', data)
-                if len(data['questions']) < 10:
-                    fail(f'quiz {quiz["slug"]}', 'اختبار الوحدة يحتاج 10 أسئلة على الأقل')
-                kinds = {q['type'] for q in data['questions']}
-                for k in ('mcq', 'true_false', 'predict_output', 'write_code', 'fix_code'):
-                    if k not in kinds:
-                        fail(f'quiz {quiz["slug"]}', f'ينقصه سؤال من نوع {k}')
-                ids = [q['id'] for q in data['questions']]
-                if len(ids) != len(set(ids)):
-                    fail(f'quiz {quiz["slug"]}', 'معرّفات أسئلة مكررة')
-                for q in data['questions']:
-                    if q.get('lesson') and q['lesson'] not in seen:
-                        fail(f'quiz {quiz["slug"]} {q["id"]}', f'درس غير معروف {q["lesson"]}')
-                    check_question(f'quiz {quiz["slug"]} {q["id"]}', q)
-                if not os.path.exists(os.path.join(ROOT, f'exercises/quiz-{quiz["slug"]}.html')):
-                    fail(cwhere, f'صفحة الاختبار exercises/quiz-{quiz["slug"]}.html غير موجودة')
+            check_quiz(cwhere, mod.get('quiz'), seen)
+        check_quiz(cwhere, course.get('final_exam'), seen)
         if any_published:
             rel = f'content/courses/{course["slug"]}.json'
             if not os.path.exists(os.path.join(ROOT, rel)):

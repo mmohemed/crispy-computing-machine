@@ -1,0 +1,476 @@
+{
+  "slug": "python-project-analyze",
+  "course": "python-basics",
+  "module": "python-project",
+  "order": 27,
+  "title": "حساب المؤشرات: الإيراد، أفضل المنتجات، المبيعات الشهرية",
+  "title_en": "Computing KPIs",
+  "minutes": 40,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تحسب مؤشرات الأداء الأساسية KPIs: الإيراد، وعدد الطلبات، ومتوسط قيمة الطلب.",
+    "تكتب دالة تجميع عامة تعمل مع أي عمود.",
+    "تجد الأعلى والأدنى وتقارن الأشهر والفئات والمدن.",
+    "تستخرج أنماطاً حقيقية من البيانات وتصوغها كملاحظات."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "من البيانات إلى مؤشرات",
+      "body": [
+        "**مؤشر الأداء KPI** رقم واحد يلخص جانباً مهماً من العمل. أهم مؤشرات المتجر:",
+        {
+          "table": {
+            "head": [
+              "المؤشر",
+              "الحساب",
+              "يجيب عن"
+            ],
+            "rows": [
+              [
+                "الإيراد الإجمالي",
+                "مجموع `revenue`",
+                "كم ربحنا من المبيعات؟"
+              ],
+              [
+                "عدد الطلبات",
+                "عدد الصفوف",
+                "ما حجم النشاط؟"
+              ],
+              [
+                "متوسط قيمة الطلب AOV",
+                "الإيراد ÷ عدد الطلبات",
+                "كم ينفق العميل في الطلب الواحد؟"
+              ],
+              [
+                "الإيراد حسب البُعد",
+                "تجميع حسب الشهر أو الفئة أو المدينة",
+                "أين يأتي الإيراد؟"
+              ],
+              [
+                "متوسط التقييم",
+                "متوسط التقييمات غير المفقودة",
+                "هل العملاء راضون؟"
+              ]
+            ]
+          }
+        },
+        "كل \"الإيراد حسب ...\" هو نفس العملية: **نمط التجميع** من درس القواميس. بدلاً من كتابته ثلاث مرات نكتب دالة عامة `revenue_by(orders, key)` تستقبل اسم العمود. هذه بالضبط فكرة `groupby` التي ستتعلمها في Pandas."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "الإدارة لا تقرأ 1,700 صف؛ تقرأ خمسة أرقام وثلاث ملاحظات. قيمة المحلل في اختيار المؤشرات الصحيحة وحسابها بدقة واستخراج **ما وراءها**: لماذا نوفمبر أعلى شهر؟ هل ارتفاع مارس سببه فئة معينة؟ هذه الأسئلة تحوّل الأرقام إلى قرارات: متى نزيد المخزون، وأين نركز التسويق."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "احسب المؤشرات الإجمالية أولاً، ثم قسّمها حسب الأبعاد (الزمن، والفئة، والمكان).",
+            "عندما تجد رقماً لافتاً، فكّكه أكثر: الشهر الأعلى، ثم أي فئة داخله؟",
+            "احسب المتوسطات من القيم المتاحة فقط، واذكر عدد القيم المستبعدة."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "المؤشرات الإجمالية",
+      "code": [
+        "import csv",
+        "",
+        "def load_orders(path):",
+        "    orders = []",
+        "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+        "        for row in csv.DictReader(f):",
+        "            price = int(row[\"unit_price\"])",
+        "            qty = int(row[\"quantity\"])",
+        "            discount = float(row[\"discount\"])",
+        "            orders.append({",
+        "                \"order_id\": row[\"order_id\"],",
+        "                \"date\": row[\"order_date\"],",
+        "                \"month\": int(row[\"order_date\"][5:7]),",
+        "                \"city\": row[\"city\"],",
+        "                \"category\": row[\"category\"],",
+        "                \"product\": row[\"product\"],",
+        "                \"qty\": qty,",
+        "                \"revenue\": round(price * qty * (1 - discount), 2),",
+        "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+        "            })",
+        "    return orders",
+        "",
+        "orders = load_orders(\"store_sales.csv\")",
+        "",
+        "total_revenue = round(sum(o[\"revenue\"] for o in orders), 2)",
+        "n_orders = len(orders)",
+        "aov = round(total_revenue / n_orders, 2)",
+        "ratings = [o[\"rating\"] for o in orders if o[\"rating\"] is not None]",
+        "avg_rating = round(sum(ratings) / len(ratings), 2)",
+        "",
+        "print(f\"الإيراد الإجمالي: {total_revenue:,.2f} ريال\")",
+        "print(f\"عدد الطلبات: {n_orders:,}\")",
+        "print(f\"متوسط قيمة الطلب: {aov:.2f} ريال\")",
+        "print(f\"متوسط التقييم: {avg_rating} من 5 (من {len(ratings)} تقييماً)\")"
+      ],
+      "explanation": [
+        {
+          "code": "sum(o[\"revenue\"] for o in orders)",
+          "text": "Generator Expression: مجموع الإيراد دون قائمة مؤقتة."
+        },
+        {
+          "code": "aov = total_revenue / n_orders",
+          "text": "متوسط قيمة الطلب Average Order Value."
+        },
+        {
+          "code": "if o[\"rating\"] is not None",
+          "text": "نستبعد التقييمات المفقودة ونذكر عدد المتبقية في النتيجة للشفافية."
+        }
+      ],
+      "expected_output": [
+        "الإيراد الإجمالي: 429,719.05 ريال",
+        "عدد الطلبات: 1,700",
+        "متوسط قيمة الطلب: 252.78 ريال",
+        "متوسط التقييم: 4.02 من 5 (من 1495 تقييماً)"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "دالة تجميع عامة: الإيراد حسب أي عمود",
+      "code": [
+        "import csv",
+        "",
+        "def load_orders(path):",
+        "    orders = []",
+        "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+        "        for row in csv.DictReader(f):",
+        "            price = int(row[\"unit_price\"])",
+        "            qty = int(row[\"quantity\"])",
+        "            discount = float(row[\"discount\"])",
+        "            orders.append({",
+        "                \"order_id\": row[\"order_id\"],",
+        "                \"date\": row[\"order_date\"],",
+        "                \"month\": int(row[\"order_date\"][5:7]),",
+        "                \"city\": row[\"city\"],",
+        "                \"category\": row[\"category\"],",
+        "                \"product\": row[\"product\"],",
+        "                \"qty\": qty,",
+        "                \"revenue\": round(price * qty * (1 - discount), 2),",
+        "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+        "            })",
+        "    return orders",
+        "",
+        "def revenue_by(orders, key):",
+        "    totals = {}",
+        "    for o in orders:",
+        "        totals[o[key]] = totals.get(o[key], 0) + o[\"revenue\"]",
+        "    return {k: round(v, 2) for k, v in totals.items()}",
+        "",
+        "",
+        "def top_n(totals, n=3):",
+        "    return sorted(totals.items(), key=lambda item: item[1], reverse=True)[:n]",
+        "",
+        "orders = load_orders(\"store_sales.csv\")",
+        "",
+        "by_category = revenue_by(orders, \"category\")",
+        "for name, value in top_n(by_category, 5):",
+        "    print(f\"{name}: {value:,.0f}\")",
+        "",
+        "print(\"أعلى 3 منتجات:\", [name for name, value in top_n(revenue_by(orders, \"product\"))])",
+        "print(\"أعلى مدينة:\", top_n(revenue_by(orders, \"city\"), 1))"
+      ],
+      "explanation": [
+        {
+          "code": "def revenue_by(orders, key):",
+          "text": "دالة واحدة لكل الأبعاد: نمرر اسم العمود كنص، فتعمل مع `\"category\"` و `\"city\"` و `\"month\"`."
+        },
+        {
+          "code": "{k: round(v, 2) for ...}",
+          "text": "Dict Comprehension لتقريب كل المجاميع في النهاية."
+        },
+        {
+          "code": "sorted(totals.items(), key=lambda item: item[1], reverse=True)[:n]",
+          "text": "ترتيب الأزواج (الاسم، القيمة) تنازلياً حسب القيمة ثم أخذ أول `n`."
+        }
+      ],
+      "expected_output": [
+        "إلكترونيات: 138,901",
+        "ملابس: 105,294",
+        "أغذية: 81,064",
+        "المنزل: 79,384",
+        "كتب: 25,077",
+        "أعلى 3 منتجات: ['ساعة ذكية', 'حذاء رياضي', 'طقم أواني']",
+        "أعلى مدينة: [('الرياض', 137117.5)]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الموسمية: الإيراد الشهري وتفكيك الأشهر اللافتة",
+      "code": [
+        "import csv",
+        "",
+        "def load_orders(path):",
+        "    orders = []",
+        "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+        "        for row in csv.DictReader(f):",
+        "            price = int(row[\"unit_price\"])",
+        "            qty = int(row[\"quantity\"])",
+        "            discount = float(row[\"discount\"])",
+        "            orders.append({",
+        "                \"order_id\": row[\"order_id\"],",
+        "                \"date\": row[\"order_date\"],",
+        "                \"month\": int(row[\"order_date\"][5:7]),",
+        "                \"city\": row[\"city\"],",
+        "                \"category\": row[\"category\"],",
+        "                \"product\": row[\"product\"],",
+        "                \"qty\": qty,",
+        "                \"revenue\": round(price * qty * (1 - discount), 2),",
+        "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+        "            })",
+        "    return orders",
+        "",
+        "def revenue_by(orders, key):",
+        "    totals = {}",
+        "    for o in orders:",
+        "        totals[o[key]] = totals.get(o[key], 0) + o[\"revenue\"]",
+        "    return {k: round(v, 2) for k, v in totals.items()}",
+        "",
+        "",
+        "def top_n(totals, n=3):",
+        "    return sorted(totals.items(), key=lambda item: item[1], reverse=True)[:n]",
+        "",
+        "orders = load_orders(\"store_sales.csv\")",
+        "by_month = revenue_by(orders, \"month\")",
+        "",
+        "best = max(by_month, key=by_month.get)",
+        "worst = min(by_month, key=by_month.get)",
+        "average = sum(by_month.values()) / 12",
+        "print(\"أعلى شهر:\", best, \"| أدنى شهر:\", worst)",
+        "print(f\"نوفمبر أعلى من متوسط الأشهر بنسبة {by_month[11] / average - 1:.0%}\")",
+        "",
+        "for category in (\"أغذية\", \"إلكترونيات\"):",
+        "    cat_orders = [o for o in orders if o[\"category\"] == category]",
+        "    cat_by_month = revenue_by(cat_orders, \"month\")",
+        "    peak = max(cat_by_month, key=cat_by_month.get)",
+        "    typical = sorted(cat_by_month.values())[6]",
+        "    print(f\"{category}: الذروة في الشهر {peak} ({cat_by_month[peak]:,.0f}) مقابل {typical:,.0f} في شهر معتاد\")"
+      ],
+      "explanation": [
+        {
+          "code": "max(by_month, key=by_month.get)",
+          "text": "المفتاح (الشهر) الذي قيمته أعلى."
+        },
+        {
+          "code": "by_month[11] / average - 1",
+          "text": "الزيادة النسبية عن المتوسط، معروضة كنسبة مئوية بـ `:.0%`."
+        },
+        {
+          "code": "cat_orders = [...]",
+          "text": "نصفّي طلبات الفئة ثم نعيد استخدام نفس الدوال عليها: هذا هو التفكيك."
+        },
+        {
+          "code": "sorted(cat_by_month.values())[6]",
+          "text": "القيمة الوسطى بين الأشهر الاثني عشر (الوسيط تقريباً) تمثل \"الشهر المعتاد\" للمقارنة."
+        }
+      ],
+      "expected_output": [
+        "أعلى شهر: 11 | أدنى شهر: 2",
+        "نوفمبر أعلى من متوسط الأشهر بنسبة 49%",
+        "أغذية: الذروة في الشهر 3 (12,670) مقابل 6,101 في شهر معتاد",
+        "إلكترونيات: الذروة في الشهر 11 (25,404) مقابل 10,455 في شهر معتاد"
+      ],
+      "after": [
+        "النتيجة تكشف قصة البيانات: الأغذية تبلغ ذروتها في مارس (رمضان) بضعف مستواها المعتاد تقريباً، والإلكترونيات تبلغ ذروتها في نوفمبر (عروض الجمعة البيضاء). ملاحظة مثل هذه تقود قرارات المخزون والتسويق، وهي أهم للإدارة من الأرقام نفسها."
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "قرّب النتائج عند **العرض** فقط، واحتفظ بالقيم الكاملة أثناء الحساب؛ التقريب المبكر يراكم الأخطاء.",
+        "المتوسط الشهري هنا بسيط لأن كل الأشهر موجودة. في بيانات ناقصة تأكد أن المقام صحيح.",
+        "الترتيب حسب الإيراد وحده قد يخفي أشياء: منتج رخيص بكمية ضخمة ومنتج غالٍ بكمية قليلة قد يتساويان. جرّب الكمية أيضاً."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "حساب المتوسط مع التقييمات المفقودة",
+          "wrong": [
+            "ratings = [5, None, 4]",
+            "print(sum(ratings) / len(ratings))"
+          ],
+          "error": "TypeError: unsupported operand type(s) for +: 'int' and 'NoneType'",
+          "error_type": "TypeError",
+          "why": "`sum` لا تجمع `None` مع الأرقام. صفِّ القيم المفقودة أولاً.",
+          "fix": [
+            "ratings = [5, None, 4]",
+            "valid = [r for r in ratings if r is not None]",
+            "print(sum(valid) / len(valid))"
+          ]
+        },
+        {
+          "title": "ترتيب القاموس بدلاً من قيمه",
+          "wrong": [
+            "totals = {\"كتب\": 250, \"أغذية\": 800}",
+            "print(sorted(totals, reverse=True))"
+          ],
+          "why": "`sorted(totals)` ترتب **المفاتيح** أبجدياً، وليس حسب الإيراد.",
+          "fix": [
+            "totals = {\"كتب\": 250, \"أغذية\": 800}",
+            "print(sorted(totals.items(), key=lambda kv: kv[1], reverse=True))"
+          ]
+        },
+        {
+          "title": "قسمة عدد صحيح في مؤشر النسبة ثم التقريب المبكر",
+          "wrong": [
+            "values = [10.4, 10.4, 10.4]",
+            "print(sum(round(v) for v in values))"
+          ],
+          "why": "تقريب كل إيراد إلى عدد صحيح قبل الجمع يراكم الفروق. اجمع القيم الكاملة ثم قرّب مرة واحدة.",
+          "fix": [
+            "values = [10.4, 10.4, 10.4]",
+            "print(round(sum(values)))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "لوحة مؤشرات المدن",
+    "prompt": [
+      "مستخدماً `load_orders` ودوال التجميع، أنشئ مؤشرات المدن:"
+    ],
+    "requirements": [
+      "`orders_count`: قاموس المدينة ← عدد الطلبات.",
+      "`city_revenue`: قاموس المدينة ← الإيراد (مقرب لمنزلتين)، باستخدام `revenue_by`.",
+      "`city_aov`: قاموس المدينة ← متوسط قيمة الطلب (الإيراد ÷ عدد الطلبات، مقرب لمنزلتين).",
+      "`top_aov_city`: المدينة ذات أعلى متوسط قيمة طلب."
+    ],
+    "starter_code": [
+      "import csv",
+      "",
+      "def load_orders(path):",
+      "    orders = []",
+      "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+      "        for row in csv.DictReader(f):",
+      "            price = int(row[\"unit_price\"])",
+      "            qty = int(row[\"quantity\"])",
+      "            discount = float(row[\"discount\"])",
+      "            orders.append({",
+      "                \"order_id\": row[\"order_id\"],",
+      "                \"date\": row[\"order_date\"],",
+      "                \"month\": int(row[\"order_date\"][5:7]),",
+      "                \"city\": row[\"city\"],",
+      "                \"category\": row[\"category\"],",
+      "                \"product\": row[\"product\"],",
+      "                \"qty\": qty,",
+      "                \"revenue\": round(price * qty * (1 - discount), 2),",
+      "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+      "            })",
+      "    return orders",
+      "",
+      "def revenue_by(orders, key):",
+      "    totals = {}",
+      "    for o in orders:",
+      "        totals[o[key]] = totals.get(o[key], 0) + o[\"revenue\"]",
+      "    return {k: round(v, 2) for k, v in totals.items()}",
+      "",
+      "",
+      "def top_n(totals, n=3):",
+      "    return sorted(totals.items(), key=lambda item: item[1], reverse=True)[:n]",
+      "",
+      "",
+      "orders = load_orders(\"store_sales.csv\")",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "_cnt, _rev = {}, {}",
+      "for _o in orders:",
+      "    _cnt[_o[\"city\"]] = _cnt.get(_o[\"city\"], 0) + 1",
+      "    _rev[_o[\"city\"]] = _rev.get(_o[\"city\"], 0) + _o[\"revenue\"]",
+      "_rev = {k: round(v, 2) for k, v in _rev.items()}",
+      "_aov = {c: round(_rev[c] / _cnt[c], 2) for c in _cnt}",
+      "assert orders_count == _cnt, \"orders_count غير صحيح\"",
+      "assert city_revenue == _rev, \"city_revenue غير صحيح\"",
+      "assert city_aov == _aov, f\"city_aov غير صحيح: {city_aov}\"",
+      "assert top_aov_city == max(_aov, key=_aov.get), f\"top_aov_city يجب أن تكون {max(_aov, key=_aov.get)}\""
+    ],
+    "hints": [
+      "عدد الطلبات: نمط العدّ `d[k] = d.get(k, 0) + 1`.",
+      "`city_revenue = revenue_by(orders, \"city\")`.",
+      "`city_aov` بـ Dict Comprehension على مفاتيح `orders_count`."
+    ],
+    "solution": [
+      "import csv",
+      "",
+      "def load_orders(path):",
+      "    orders = []",
+      "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+      "        for row in csv.DictReader(f):",
+      "            price = int(row[\"unit_price\"])",
+      "            qty = int(row[\"quantity\"])",
+      "            discount = float(row[\"discount\"])",
+      "            orders.append({",
+      "                \"order_id\": row[\"order_id\"],",
+      "                \"date\": row[\"order_date\"],",
+      "                \"month\": int(row[\"order_date\"][5:7]),",
+      "                \"city\": row[\"city\"],",
+      "                \"category\": row[\"category\"],",
+      "                \"product\": row[\"product\"],",
+      "                \"qty\": qty,",
+      "                \"revenue\": round(price * qty * (1 - discount), 2),",
+      "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+      "            })",
+      "    return orders",
+      "",
+      "def revenue_by(orders, key):",
+      "    totals = {}",
+      "    for o in orders:",
+      "        totals[o[key]] = totals.get(o[key], 0) + o[\"revenue\"]",
+      "    return {k: round(v, 2) for k, v in totals.items()}",
+      "",
+      "",
+      "def top_n(totals, n=3):",
+      "    return sorted(totals.items(), key=lambda item: item[1], reverse=True)[:n]",
+      "",
+      "",
+      "orders = load_orders(\"store_sales.csv\")",
+      "",
+      "orders_count = {}",
+      "for o in orders:",
+      "    orders_count[o[\"city\"]] = orders_count.get(o[\"city\"], 0) + 1",
+      "",
+      "city_revenue = revenue_by(orders, \"city\")",
+      "city_aov = {city: round(city_revenue[city] / orders_count[city], 2) for city in orders_count}",
+      "top_aov_city = max(city_aov, key=city_aov.get)",
+      "",
+      "for city, value in top_n(city_aov, 6):",
+      "    print(city, value)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "متوسط قيمة الطلب AOV يُحسب بـ:",
+    "options": [
+      "عدد الطلبات ÷ الإيراد",
+      "الإيراد الإجمالي ÷ عدد الطلبات",
+      "أعلى طلب ÷ أقل طلب",
+      "مجموع الكميات ÷ عدد المنتجات"
+    ],
+    "answer": 1,
+    "explanation": "AOV = الإيراد ÷ عدد الطلبات، ويجيب عن: كم ينفق العميل في الطلب الواحد في المتوسط؟"
+  },
+  "summary": [
+    "المؤشرات الأساسية: الإيراد، وعدد الطلبات، ومتوسط قيمة الطلب، ومتوسط التقييم.",
+    "دالة تجميع عامة بعمود كمعامل تغنيك عن تكرار الكود، وهي فكرة `groupby`.",
+    "رتّب الأزواج حسب القيمة بـ `key=lambda item: item[1]`.",
+    "فكّك الأرقام اللافتة (الشهر ثم الفئة) لتصل إلى القصة وراءها."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

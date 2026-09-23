@@ -1,0 +1,479 @@
+{
+  "slug": "python-project-report",
+  "course": "python-basics",
+  "module": "python-project",
+  "order": 28,
+  "title": "كتابة تقرير نصي، ولماذا نحتاج Pandas",
+  "title_en": "Writing the Report",
+  "minutes": 30,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تبني تقريراً نصياً منسقاً من نتائج التحليل وتحفظه في ملف.",
+    "ترسم رسماً بيانياً نصياً بسيطاً للإيراد الشهري.",
+    "تكتب ملاحظات Insights واضحة مبنية على الأرقام.",
+    "تقارن الحل بـ Python الخالصة مع Pandas لتفهم ما ستضيفه المكتبات."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "التحليل لا ينتهي عند الأرقام",
+      "body": [
+        "التقرير هو ما يصل إلى صاحب القرار. التقرير الجيد، حتى لو كان نصياً، له بنية ثابتة:",
+        {
+          "ol": [
+            "**العنوان والفترة**: ماذا نحلل ولأي فترة.",
+            "**المؤشرات الرئيسية**: 3 إلى 5 أرقام بتنسيق واضح (فواصل الآلاف، والوحدة).",
+            "**التفاصيل**: الإيراد حسب الشهر والفئة والمدينة، مرتباً.",
+            "**الملاحظات Insights**: جمل قصيرة تقول ماذا تعني الأرقام، وكل جملة مدعومة برقم.",
+            "**التوصيات**: ماذا نفعل بناءً على ذلك."
+          ]
+        },
+        "ونبني التقرير **كقائمة أسطر** ثم ندمجها بـ `\"\\n\".join(lines)`. هكذا نستطيع طباعته أو حفظه في ملف أو إرساله بنفس الكود."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "رأيت في الدرسين السابقين كم يحتاج كل مؤشر من كود: حلقات وقواميس ودوال تجميع وتحويل أنواع يدوي. هذا الفهم مهم لأنك تعرف الآن **ما يحدث فعلاً** عند التجميع. لكنه أيضاً يوضح لماذا يستخدم كل محللي البيانات Pandas: نفس التحليل يُكتب في أسطر قليلة، وأسرع، ومع أنواع تُكتشف تلقائياً. في آخر مثال في هذا الدرس سترى المقارنة بعينك."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "قائمة أسطر ثم `join`: كلما بنيت نصاً طويلاً من أجزاء.",
+            "الرسم النصي بـ `█`: لمعاينة سريعة في الطرفية أو في سجل. وللعرض الحقيقي ستتعلم Matplotlib في مستوى التصور.",
+            "Python الخالصة: لمهام صغيرة وبدون مكتبات. Pandas: لأي تحليل جدولي حقيقي."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "رسم نصي للإيراد الشهري",
+      "code": [
+        "import csv",
+        "",
+        "def load_orders(path):",
+        "    orders = []",
+        "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+        "        for row in csv.DictReader(f):",
+        "            price = int(row[\"unit_price\"])",
+        "            qty = int(row[\"quantity\"])",
+        "            discount = float(row[\"discount\"])",
+        "            orders.append({",
+        "                \"order_id\": row[\"order_id\"],",
+        "                \"date\": row[\"order_date\"],",
+        "                \"month\": int(row[\"order_date\"][5:7]),",
+        "                \"city\": row[\"city\"],",
+        "                \"category\": row[\"category\"],",
+        "                \"product\": row[\"product\"],",
+        "                \"qty\": qty,",
+        "                \"revenue\": round(price * qty * (1 - discount), 2),",
+        "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+        "            })",
+        "    return orders",
+        "",
+        "def revenue_by(orders, key):",
+        "    totals = {}",
+        "    for o in orders:",
+        "        totals[o[key]] = totals.get(o[key], 0) + o[\"revenue\"]",
+        "    return {k: round(v, 2) for k, v in totals.items()}",
+        "",
+        "",
+        "def top_n(totals, n=3):",
+        "    return sorted(totals.items(), key=lambda item: item[1], reverse=True)[:n]",
+        "",
+        "MONTHS = [\"يناير\", \"فبراير\", \"مارس\", \"أبريل\", \"مايو\", \"يونيو\",",
+        "          \"يوليو\", \"أغسطس\", \"سبتمبر\", \"أكتوبر\", \"نوفمبر\", \"ديسمبر\"]",
+        "",
+        "",
+        "def bar(value, max_value, width=30):",
+        "    return \"█\" * round(value / max_value * width)",
+        "",
+        "orders = load_orders(\"store_sales.csv\")",
+        "by_month = revenue_by(orders, \"month\")",
+        "peak = max(by_month.values())",
+        "",
+        "for m in range(1, 13):",
+        "    print(f\"{MONTHS[m - 1]:<7} {by_month[m]:>9,.0f} {bar(by_month[m], peak)}\")"
+      ],
+      "explanation": [
+        {
+          "code": "\"█\" * round(value / max_value * width)",
+          "text": "طول الشريط يتناسب مع القيمة، وأعلى شهر يأخذ العرض الكامل (30 رمزاً)."
+        },
+        {
+          "code": "{MONTHS[m - 1]:<7}",
+          "text": "`<7` محاذاة لليسار بعرض 7 حروف، و `>9` محاذاة لليمين بعرض 9، فتصطف الأعمدة."
+        },
+        {
+          "code": "for m in range(1, 13)",
+          "text": "نمر على الأشهر بالترتيب الزمني وليس بترتيب القاموس."
+        }
+      ],
+      "expected_output": [
+        "يناير      36,403 █████████████████████",
+        "فبراير     24,449 ██████████████",
+        "مارس       45,481 ██████████████████████████",
+        "أبريل      41,942 ████████████████████████",
+        "مايو       36,561 █████████████████████",
+        "يونيو      27,338 ███████████████",
+        "يوليو      27,587 ████████████████",
+        "أغسطس      32,411 ██████████████████",
+        "سبتمبر     32,551 ██████████████████",
+        "أكتوبر     31,902 ██████████████████",
+        "نوفمبر     53,225 ██████████████████████████████",
+        "ديسمبر     39,870 ██████████████████████"
+      ],
+      "run_note": "المحاذاة بالمسافات تظهر بشكل مثالي مع خط ثابت العرض. في النصوص العربية قد تنحرف قليلاً حسب الخط."
+    },
+    {
+      "type": "example",
+      "title": "بناء التقرير الكامل وحفظه",
+      "code": [
+        "import csv",
+        "",
+        "def load_orders(path):",
+        "    orders = []",
+        "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+        "        for row in csv.DictReader(f):",
+        "            price = int(row[\"unit_price\"])",
+        "            qty = int(row[\"quantity\"])",
+        "            discount = float(row[\"discount\"])",
+        "            orders.append({",
+        "                \"order_id\": row[\"order_id\"],",
+        "                \"date\": row[\"order_date\"],",
+        "                \"month\": int(row[\"order_date\"][5:7]),",
+        "                \"city\": row[\"city\"],",
+        "                \"category\": row[\"category\"],",
+        "                \"product\": row[\"product\"],",
+        "                \"qty\": qty,",
+        "                \"revenue\": round(price * qty * (1 - discount), 2),",
+        "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+        "            })",
+        "    return orders",
+        "",
+        "def revenue_by(orders, key):",
+        "    totals = {}",
+        "    for o in orders:",
+        "        totals[o[key]] = totals.get(o[key], 0) + o[\"revenue\"]",
+        "    return {k: round(v, 2) for k, v in totals.items()}",
+        "",
+        "",
+        "def top_n(totals, n=3):",
+        "    return sorted(totals.items(), key=lambda item: item[1], reverse=True)[:n]",
+        "",
+        "MONTHS = [\"يناير\", \"فبراير\", \"مارس\", \"أبريل\", \"مايو\", \"يونيو\",",
+        "          \"يوليو\", \"أغسطس\", \"سبتمبر\", \"أكتوبر\", \"نوفمبر\", \"ديسمبر\"]",
+        "",
+        "",
+        "def bar(value, max_value, width=30):",
+        "    return \"█\" * round(value / max_value * width)",
+        "",
+        "",
+        "def build_report(orders):",
+        "    total = sum(o[\"revenue\"] for o in orders)",
+        "    ratings = [o[\"rating\"] for o in orders if o[\"rating\"] is not None]",
+        "    by_month = revenue_by(orders, \"month\")",
+        "    best_month = max(by_month, key=by_month.get)",
+        "    categories = top_n(revenue_by(orders, \"category\"), 5)",
+        "",
+        "    lines = [",
+        "        \"تقرير مبيعات متجر CodeWay - عام 2025\",",
+        "        \"=\" * 40,",
+        "        f\"الإيراد الإجمالي: {total:,.0f} ريال\",",
+        "        f\"عدد الطلبات: {len(orders):,}\",",
+        "        f\"متوسط قيمة الطلب: {total / len(orders):.2f} ريال\",",
+        "        f\"متوسط التقييم: {sum(ratings) / len(ratings):.2f} من 5\",",
+        "        \"\",",
+        "        \"الإيراد حسب الفئة:\",",
+        "    ]",
+        "    for name, value in categories:",
+        "        lines.append(f\"  - {name}: {value:,.0f} ({value / total:.0%})\")",
+        "    lines += [",
+        "        \"\",",
+        "        \"ملاحظات:\",",
+        "        f\"  1. أعلى شهر هو {MONTHS[best_month - 1]} بإيراد {by_month[best_month]:,.0f} ريال.\",",
+        "        f\"  2. {categories[0][0]} هي الفئة الأولى بنسبة {categories[0][1] / total:.0%} من الإيراد.\",",
+        "    ]",
+        "    return \"\\n\".join(lines)",
+        "",
+        "",
+        "orders = load_orders(\"store_sales.csv\")",
+        "report = build_report(orders)",
+        "with open(\"sales_report.txt\", \"w\", encoding=\"utf-8\") as f:",
+        "    f.write(report)",
+        "print(report)"
+      ],
+      "explanation": [
+        {
+          "code": "lines = [...]",
+          "text": "التقرير قائمة أسطر: سهلة الإضافة والترتيب."
+        },
+        {
+          "code": "{value / total:.0%}",
+          "text": "حصة كل فئة من الإيراد كنسبة مئوية؛ تعطي معنى للرقم المطلق."
+        },
+        {
+          "code": "\"\\n\".join(lines)",
+          "text": "ندمج الأسطر مرة واحدة في النهاية."
+        },
+        {
+          "code": "open(\"sales_report.txt\", \"w\", ...)",
+          "text": "نفس النص يُطبع ويُحفظ في ملف يمكن إرساله."
+        }
+      ],
+      "expected_output": [
+        "تقرير مبيعات متجر CodeWay - عام 2025",
+        "========================================",
+        "الإيراد الإجمالي: 429,719 ريال",
+        "عدد الطلبات: 1,700",
+        "متوسط قيمة الطلب: 252.78 ريال",
+        "متوسط التقييم: 4.02 من 5",
+        "",
+        "الإيراد حسب الفئة:",
+        "  - إلكترونيات: 138,901 (32%)",
+        "  - ملابس: 105,294 (25%)",
+        "  - أغذية: 81,064 (19%)",
+        "  - المنزل: 79,384 (18%)",
+        "  - كتب: 25,077 (6%)",
+        "",
+        "ملاحظات:",
+        "  1. أعلى شهر هو نوفمبر بإيراد 53,225 ريال.",
+        "  2. إلكترونيات هي الفئة الأولى بنسبة 32% من الإيراد."
+      ]
+    },
+    {
+      "type": "example",
+      "title": "المقارنة: نفس التحليل بـ Pandas",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "df[\"month\"] = pd.to_datetime(df[\"order_date\"]).dt.month",
+        "",
+        "print(f\"الإيراد الإجمالي: {df['revenue'].sum():,.0f}\")",
+        "print(f\"متوسط التقييم: {df['rating'].mean():.2f}\")",
+        "print(df.groupby(\"category\")[\"revenue\"].sum().sort_values(ascending=False).round(0).head(3))",
+        "print(\"أعلى شهر:\", df.groupby(\"month\")[\"revenue\"].sum().idxmax())"
+      ],
+      "explanation": [
+        {
+          "code": "pd.read_csv(\"store_sales.csv\")",
+          "text": "سطر واحد بدلاً من دالة `load_orders` كاملة، والأنواع تُكتشف تلقائياً."
+        },
+        {
+          "code": "df[\"unit_price\"] * df[\"quantity\"] * ...",
+          "text": "العملية تُطبّق على العمود كله دفعة واحدة، بدون حلقة."
+        },
+        {
+          "code": "df['rating'].mean()",
+          "text": "المتوسط يتجاهل القيم المفقودة تلقائياً، وهو القرار نفسه الذي اتخذناه يدوياً."
+        },
+        {
+          "code": "df.groupby(\"category\")[\"revenue\"].sum()",
+          "text": "دالة `revenue_by` كلها في تعبير واحد."
+        }
+      ],
+      "expected_output": [
+        "الإيراد الإجمالي: 429,719",
+        "متوسط التقييم: 4.02",
+        "category",
+        "إلكترونيات    138901.0",
+        "ملابس         105294.0",
+        "أغذية          81064.0",
+        "Name: revenue, dtype: float64",
+        "أعلى شهر: 11"
+      ],
+      "run_note": "أول تشغيل يحمّل Pandas داخل المتصفح وقد يأخذ بضع ثوانٍ. هذا الكود هو بالضبط ما ستتعلمه في كورس Pandas."
+    },
+    {
+      "type": "notes",
+      "items": [
+        "كل ملاحظة في التقرير يجب أن تحمل رقماً يدعمها: \"نوفمبر أعلى شهر بإيراد 53 ألف\" أفضل من \"نوفمبر كان جيداً\".",
+        "الحصص المئوية تجعل الأرقام قابلة للمقارنة بين فترات أو متاجر بأحجام مختلفة.",
+        "لاحظ أن نتائج Pandas تطابق نتائجك اليدوية تماماً. عندما تنتقل إلى أداة جديدة، قارن نتائجها بحساب تعرفه للتأكد.",
+        "في مشروع Pandas القادم (المشروع 1 في المسار) ستعيد هذا التحليل كاملاً بـ Pandas وتضيف رسوماً بيانية حقيقية."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "بناء نص طويل بالإضافة المتكررة داخل حلقة كبيرة",
+          "wrong": [
+            "text = \"\"",
+            "for i in range(3):",
+            "    text += f\"سطر {i}\\n\"",
+            "print(text)"
+          ],
+          "why": "`text += ...` في حلقة ضخمة تنشئ نصاً جديداً في كل دورة وتبطئ البرنامج. اجمع الأسطر في قائمة ثم `join`.",
+          "fix": [
+            "lines = [f\"سطر {i}\" for i in range(3)]",
+            "print(\"\\n\".join(lines))"
+          ]
+        },
+        {
+          "title": "قسمة على صفر في الرسم النصي",
+          "wrong": [
+            "values = [0, 0]",
+            "peak = max(values)",
+            "print([round(v / peak * 10) for v in values])"
+          ],
+          "error": "ZeroDivisionError: division by zero",
+          "error_type": "ZeroDivisionError",
+          "why": "إذا كانت كل القيم صفراً (فترة بلا مبيعات) فالقيمة العظمى صفر. عالج الحالة قبل القسمة.",
+          "fix": [
+            "values = [0, 0]",
+            "peak = max(values) or 1",
+            "print([round(v / peak * 10) for v in values])"
+          ]
+        },
+        {
+          "title": "ملاحظة بلا رقم",
+          "wrong": [
+            "print(\"المبيعات كانت ممتازة هذا العام\")"
+          ],
+          "why": "\"المبيعات كانت ممتازة\" لا تساعد في قرار. اربط كل ملاحظة برقم ومقارنة.",
+          "fix": [
+            "growth = 0.46",
+            "print(f\"نوفمبر أعلى من متوسط الأشهر بنسبة {growth:.0%}\")"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "قسم المدن في التقرير",
+    "prompt": [
+      "اكتب دالة `city_section(orders)` ترجع **قائمة أسطر** لقسم المدن في التقرير:"
+    ],
+    "requirements": [
+      "السطر الأول: `الإيراد حسب المدينة:`",
+      "ثم سطر لكل مدينة مرتبة تنازلياً حسب الإيراد بالشكل: `  - الرياض: 137,501 (32%)` أي الإيراد بفاصل الآلاف بدون كسور، ثم الحصة من الإجمالي بنسبة مئوية بدون كسور.",
+      "استخدم `revenue_by` و `top_n` الموجودتين."
+    ],
+    "starter_code": [
+      "import csv",
+      "",
+      "def load_orders(path):",
+      "    orders = []",
+      "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+      "        for row in csv.DictReader(f):",
+      "            price = int(row[\"unit_price\"])",
+      "            qty = int(row[\"quantity\"])",
+      "            discount = float(row[\"discount\"])",
+      "            orders.append({",
+      "                \"order_id\": row[\"order_id\"],",
+      "                \"date\": row[\"order_date\"],",
+      "                \"month\": int(row[\"order_date\"][5:7]),",
+      "                \"city\": row[\"city\"],",
+      "                \"category\": row[\"category\"],",
+      "                \"product\": row[\"product\"],",
+      "                \"qty\": qty,",
+      "                \"revenue\": round(price * qty * (1 - discount), 2),",
+      "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+      "            })",
+      "    return orders",
+      "",
+      "def revenue_by(orders, key):",
+      "    totals = {}",
+      "    for o in orders:",
+      "        totals[o[key]] = totals.get(o[key], 0) + o[\"revenue\"]",
+      "    return {k: round(v, 2) for k, v in totals.items()}",
+      "",
+      "",
+      "def top_n(totals, n=3):",
+      "    return sorted(totals.items(), key=lambda item: item[1], reverse=True)[:n]",
+      "",
+      "",
+      "def city_section(orders):",
+      "    lines = []",
+      "    # اكتب الحل هنا",
+      "    return lines",
+      "",
+      "",
+      "orders = load_orders(\"store_sales.csv\")",
+      "print(\"\\n\".join(city_section(orders)))"
+    ],
+    "tests": [
+      "_lines = city_section(orders)",
+      "assert isinstance(_lines, list), \"الدالة يجب أن ترجع قائمة أسطر\"",
+      "assert _lines[0] == \"الإيراد حسب المدينة:\", \"السطر الأول يجب أن يكون: الإيراد حسب المدينة:\"",
+      "_rev = revenue_by(orders, \"city\")",
+      "_total = sum(o[\"revenue\"] for o in orders)",
+      "_exp = [f\"  - {c}: {v:,.0f} ({v / _total:.0%})\" for c, v in sorted(_rev.items(), key=lambda kv: kv[1], reverse=True)]",
+      "assert len(_lines) == 1 + len(_exp), f\"يجب أن يكون هناك سطر لكل مدينة ({len(_exp)} مدن)\"",
+      "assert _lines[1:] == _exp, f\"أسطر المدن غير مطابقة. المتوقع أولاً: {_exp[0]!r}، والموجود: {_lines[1] if len(_lines) > 1 else None!r}\""
+    ],
+    "hints": [
+      "الإجمالي: `sum(o[\"revenue\"] for o in orders)`.",
+      "لكل المدن مرتبة: `top_n(by_city, len(by_city))`.",
+      "التنسيق: `f\"  - {city}: {value:,.0f} ({value / total:.0%})\"`."
+    ],
+    "solution": [
+      "import csv",
+      "",
+      "def load_orders(path):",
+      "    orders = []",
+      "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+      "        for row in csv.DictReader(f):",
+      "            price = int(row[\"unit_price\"])",
+      "            qty = int(row[\"quantity\"])",
+      "            discount = float(row[\"discount\"])",
+      "            orders.append({",
+      "                \"order_id\": row[\"order_id\"],",
+      "                \"date\": row[\"order_date\"],",
+      "                \"month\": int(row[\"order_date\"][5:7]),",
+      "                \"city\": row[\"city\"],",
+      "                \"category\": row[\"category\"],",
+      "                \"product\": row[\"product\"],",
+      "                \"qty\": qty,",
+      "                \"revenue\": round(price * qty * (1 - discount), 2),",
+      "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+      "            })",
+      "    return orders",
+      "",
+      "def revenue_by(orders, key):",
+      "    totals = {}",
+      "    for o in orders:",
+      "        totals[o[key]] = totals.get(o[key], 0) + o[\"revenue\"]",
+      "    return {k: round(v, 2) for k, v in totals.items()}",
+      "",
+      "",
+      "def top_n(totals, n=3):",
+      "    return sorted(totals.items(), key=lambda item: item[1], reverse=True)[:n]",
+      "",
+      "",
+      "def city_section(orders):",
+      "    total = sum(o[\"revenue\"] for o in orders)",
+      "    by_city = revenue_by(orders, \"city\")",
+      "    lines = [\"الإيراد حسب المدينة:\"]",
+      "    for city, value in top_n(by_city, len(by_city)):",
+      "        lines.append(f\"  - {city}: {value:,.0f} ({value / total:.0%})\")",
+      "    return lines",
+      "",
+      "",
+      "orders = load_orders(\"store_sales.csv\")",
+      "print(\"\\n\".join(city_section(orders)))"
+    ]
+  },
+  "check": {
+    "type": "true_false",
+    "prompt": "في Pandas يتجاهل `df[\"rating\"].mean()` القيم المفقودة تلقائياً عند حساب المتوسط.",
+    "answer": true,
+    "explanation": "Pandas تستبعد القيم المفقودة NaN من المتوسط افتراضياً، وهو نفس القرار الذي طبّقته يدوياً بتحويل الفارغ إلى `None` واستبعاده."
+  },
+  "summary": [
+    "التقرير الجيد: عنوان، ومؤشرات رئيسية، وتفاصيل مرتبة، وملاحظات مدعومة بأرقام، وتوصيات.",
+    "ابنِ النص كقائمة أسطر ثم `\"\\n\".join`، واحفظه في ملف بنفس الكود.",
+    "الحصص المئوية والمحاذاة بـ `:<` و `:>` تجعل التقرير مقروءاً.",
+    "Pandas تختصر كل ما كتبته يدوياً، وفهمك لما يحدث تحت الغطاء يجعلك تستخدمها بثقة."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

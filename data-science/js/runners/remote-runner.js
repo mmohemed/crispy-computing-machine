@@ -4,10 +4,11 @@
  * العقد المتوقع من الـ API (يُفعّل بوضع runners.python = 'remote' و remote.endpoint في config.js):
  *
  *   POST {endpoint}
- *   { "language": "python", "code": "...", "tests": "..." | null, "stdin": "..." | null }
+ *   { "language": "python", "code": "...", "tests": "..." | null, "stdin": "..." | null,
+ *     "files": ["store_sales.csv"] }   ← أسماء ملفات datasets/ التي يجب توفيرها في مجلد التنفيذ
  *
  *   200 OK
- *   { "stdout": "...", "error": null | {type, message, line, text}, "tests": null | {passed, message} }
+ *   { "stdout": "...", "error": null | {type, message, line, text}, "tests": null | {passed, message}, "images": [] }
  *
  * متطلبات أمان الـ Backend (انظر docs/ARCHITECTURE.md):
  *   حاوية معزولة لكل تنفيذ (Docker + gVisor أو Judge0)، بلا شبكة، مع حدود CPU/ذاكرة/وقت،
@@ -27,7 +28,7 @@ export function createRemoteRunner(language) {
         },
         isReady: () => Boolean(CONFIG.remote.endpoint),
         async warmUp() {},
-        async run({ code, tests = null, stdin = null }) {
+        async run({ code, tests = null, stdin = null, files = [] }) {
             if (!CONFIG.remote.endpoint) {
                 throw new Error('لم يُحدَّد عنوان خادم التنفيذ في CONFIG.remote.endpoint');
             }
@@ -39,7 +40,7 @@ export function createRemoteRunner(language) {
                 const res = await fetch(CONFIG.remote.endpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', ...CONFIG.remote.headers },
-                    body: JSON.stringify({ language, code, tests, stdin }),
+                    body: JSON.stringify({ language, code, tests, stdin, files: files.map((f) => f.name) }),
                     signal: controller.signal,
                     credentials: 'same-origin',
                 });

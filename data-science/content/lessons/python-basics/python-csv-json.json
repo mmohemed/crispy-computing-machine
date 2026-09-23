@@ -1,0 +1,366 @@
+{
+  "slug": "python-csv-json",
+  "course": "python-basics",
+  "module": "python-pro",
+  "order": 24,
+  "title": "ملفات CSV و JSON",
+  "title_en": "CSV & JSON Files",
+  "minutes": 30,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تقرأ ملفات CSV بـ `csv.reader` و `csv.DictReader` بشكل صحيح.",
+    "تكتب ملفات CSV بـ `csv.DictWriter`.",
+    "تقرأ JSON وتكتبه بـ `json.load` و `json.dump` مع النص العربي.",
+    "تختار بين CSV و JSON حسب شكل البيانات."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "صيغتا البيانات الأكثر انتشاراً",
+      "body": [
+        "**CSV** (Comma-Separated Values) جدول نصي: كل سطر صف، والقيم مفصولة بفواصل، والسطر الأول غالباً أسماء الأعمدة. **JSON** (JavaScript Object Notation) يمثل بيانات متداخلة، وشكله يطابق تقريباً قواميس Python وقوائمها. أغلب واجهات API ترجع JSON.",
+        "في درس الملفات قرأت CSV بـ `split(\",\")`. هذا ينكسر عندما تحتوي قيمة على فاصلة، مثل `\"جدة، حي الروضة\"`، لأن CSV الصحيح يضع هذه القيمة بين علامتي تنصيص. الوحدة `csv` تفهم هذه القواعد كلها.",
+        {
+          "table": {
+            "head": [
+              "الأداة",
+              "ماذا تعطيك"
+            ],
+            "rows": [
+              [
+                "`csv.reader(f)`",
+                "كل صف قائمة نصوص"
+              ],
+              [
+                "`csv.DictReader(f)`",
+                "كل صف قاموس: اسم العمود ← القيمة (**الأكثر استخداماً**)"
+              ],
+              [
+                "`csv.DictWriter(f, fieldnames)`",
+                "تكتب قواميس كصفوف"
+              ],
+              [
+                "`json.load(f)` / `json.loads(text)`",
+                "من ملف أو نص JSON إلى قواميس وقوائم"
+              ],
+              [
+                "`json.dump(obj, f)` / `json.dumps(obj)`",
+                "من كائنات Python إلى ملف أو نص JSON"
+              ]
+            ]
+          }
+        },
+        "تذكّر: كل القيم التي يقرؤها `csv` **نصوص**، فحوّل الأرقام بنفسك. أما JSON فيحفظ الأنواع: الأرقام أرقام، و `true` تصبح `True`، و `null` تصبح `None`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "الـ CSV هو صيغة التصدير الافتراضية لأغلب الأنظمة (Excel، أنظمة المبيعات، قواعد البيانات)، و JSON هو لغة الويب وواجهات API وملفات الإعدادات. قبل أن تصل إلى Pandas، التي ستقرأ الاثنين بسطر واحد، يجب أن تفهم بنيتهما لتعرف ماذا تفعل عندما يكون الملف غير نظيف أو متداخلاً."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "**CSV**: بيانات جدولية مسطحة (صفوف وأعمدة ثابتة) تريد فتحها في Excel أو Pandas.",
+            "**JSON**: بيانات متداخلة (طلب فيه قائمة منتجات)، أو إعدادات، أو تبادل مع API.",
+            "استخدم `DictReader` بدلاً من `reader` حتى تصل للقيم بأسماء الأعمدة؛ فلا ينكسر الكود إذا تغيّر ترتيبها."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "قراءة ملف المبيعات بـ DictReader",
+      "intro": [
+        "الملف `store_sales.csv` متاح في هذا الدرس، وهو نفس الملف الذي ستحلله في مشروع الوحدة القادمة (قاموس أعمدته في `datasets/README.md`)."
+      ],
+      "code": [
+        "import csv",
+        "",
+        "with open(\"store_sales.csv\", encoding=\"utf-8\", newline=\"\") as f:",
+        "    reader = csv.DictReader(f)",
+        "    print(reader.fieldnames)",
+        "    first = next(reader)",
+        "    count = 1 + sum(1 for _ in reader)",
+        "",
+        "print(first[\"order_id\"], first[\"city\"], first[\"product\"])",
+        "print(type(first[\"unit_price\"]))",
+        "print(\"عدد الطلبات:\", count)"
+      ],
+      "explanation": [
+        {
+          "code": "newline=\"\"",
+          "text": "توصية الوحدة `csv` عند فتح الملفات، حتى تتعامل هي مع نهايات الأسطر بشكل صحيح."
+        },
+        {
+          "code": "reader.fieldnames",
+          "text": "أسماء الأعمدة من السطر الأول."
+        },
+        {
+          "code": "first[\"city\"]",
+          "text": "كل صف قاموس، فنصل للقيم بأسماء الأعمدة."
+        },
+        {
+          "code": "type(first[\"unit_price\"])",
+          "text": "القيم نصوص حتى لو كانت أرقاماً. التحويل مسؤوليتك."
+        },
+        {
+          "code": "sum(1 for _ in reader)",
+          "text": "نعدّ بقية الصفوف بـ Generator دون تحميلها في الذاكرة."
+        }
+      ],
+      "expected_output": [
+        "['order_id', 'order_date', 'city', 'category', 'product', 'unit_price', 'quantity', 'discount', 'payment_method', 'customer_type', 'rating']",
+        "ORD-10001 جدة قميص قطني",
+        "<class 'str'>",
+        "عدد الطلبات: 1700"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "القيم التي تحتوي فواصل، والكتابة بـ DictWriter",
+      "code": [
+        "import csv",
+        "",
+        "rows = [",
+        "    {\"branch\": \"جدة، حي الروضة\", \"sales\": 540},",
+        "    {\"branch\": \"الرياض\", \"sales\": 420},",
+        "]",
+        "with open(\"branches.csv\", \"w\", encoding=\"utf-8\", newline=\"\") as f:",
+        "    writer = csv.DictWriter(f, fieldnames=[\"branch\", \"sales\"])",
+        "    writer.writeheader()",
+        "    writer.writerows(rows)",
+        "",
+        "with open(\"branches.csv\", encoding=\"utf-8\") as f:",
+        "    print(f.read())",
+        "",
+        "with open(\"branches.csv\", encoding=\"utf-8\", newline=\"\") as f:",
+        "    for row in csv.DictReader(f):",
+        "        print(row[\"branch\"], \"|\", int(row[\"sales\"]) * 2)"
+      ],
+      "explanation": [
+        {
+          "code": "csv.DictWriter(f, fieldnames=[...])",
+          "text": "نحدد ترتيب الأعمدة، ثم `writeheader` تكتب سطر الأسماء."
+        },
+        {
+          "code": "print(f.read())",
+          "text": "لاحظ أن الوحدة `csv` لم تضع الفرع بين علامتي تنصيص: الفاصلة العربية `،` ليست الفاصل `,`."
+        },
+        {
+          "code": "int(row[\"sales\"]) * 2",
+          "text": "القراءة تعيد النصوص، فنحوّل قبل الحساب."
+        }
+      ],
+      "expected_output": [
+        "branch,sales",
+        "جدة، حي الروضة,540",
+        "الرياض,420",
+        "",
+        "جدة، حي الروضة | 1080",
+        "الرياض | 840"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "JSON: قراءة بيانات متداخلة وكتابتها",
+      "code": [
+        "import json",
+        "",
+        "api_response = '''",
+        "{\"order_id\": \"A7\", \"paid\": true, \"coupon\": null,",
+        " \"items\": [{\"name\": \"قهوة\", \"qty\": 2, \"price\": 18.5},",
+        "           {\"name\": \"كيك\", \"qty\": 1, \"price\": 35}]}",
+        "'''",
+        "order = json.loads(api_response)",
+        "print(order[\"paid\"], order[\"coupon\"])",
+        "total = sum(i[\"qty\"] * i[\"price\"] for i in order[\"items\"])",
+        "print(\"الإجمالي:\", total)",
+        "",
+        "order[\"total\"] = total",
+        "with open(\"order.json\", \"w\", encoding=\"utf-8\") as f:",
+        "    json.dump(order, f, ensure_ascii=False, indent=2)",
+        "",
+        "with open(\"order.json\", encoding=\"utf-8\") as f:",
+        "    saved = json.load(f)",
+        "print(saved[\"items\"][0][\"name\"], saved[\"total\"])",
+        "print(json.dumps({\"city\": \"جدة\"}), json.dumps({\"city\": \"جدة\"}, ensure_ascii=False))"
+      ],
+      "explanation": [
+        {
+          "code": "json.loads(api_response)",
+          "text": "`loads` (s = string) من نص. `true` أصبحت `True` و `null` أصبحت `None`."
+        },
+        {
+          "code": "order[\"items\"]",
+          "text": "قائمة قواميس داخل قاموس: بنية متداخلة لا يمثلها CSV مباشرة."
+        },
+        {
+          "code": "ensure_ascii=False, indent=2",
+          "text": "`ensure_ascii=False` يحفظ العربية كما هي، و `indent` يجعل الملف مقروءاً."
+        },
+        {
+          "code": "json.dumps(...) مرتين",
+          "text": "بدون `ensure_ascii=False` تُحوّل الحروف العربية إلى رموز `\\u...`."
+        }
+      ],
+      "expected_output": [
+        "True None",
+        "الإجمالي: 72.0",
+        "قهوة 72.0",
+        "{\"city\": \"\\u062c\\u062f\\u0629\"} {\"city\": \"جدة\"}"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "افتح ملفات CSV بـ `newline=\"\"` و `encoding=\"utf-8\"`. وإذا أنشأ Excel الملف على Windows فقد تحتاج `encoding=\"utf-8-sig\"` لتجاهل رمز BOM في أوله.",
+        "بعض الملفات تستخدم `;` أو Tab فاصلاً: `csv.reader(f, delimiter=\";\")`.",
+        "JSON لا يدعم الصفوف (تُحفظ قوائم) ولا مفاتيح غير نصية (تتحول لنصوص) ولا التواريخ (احفظها نصوص ISO).",
+        "في Pandas: `pd.read_csv` و `pd.read_json` و `df.to_csv`. ستفهمها أسرع بعد هذا الدرس."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "حساب قيم CSV دون تحويلها",
+          "wrong": [
+            "import csv, io",
+            "f = io.StringIO(\"qty\\n1\\n2\\n\")",
+            "total = \"\"",
+            "for row in csv.DictReader(f):",
+            "    total += row[\"qty\"]",
+            "print(total)"
+          ],
+          "why": "كل القيم نصوص، و `+` بين نصين تدمجهما: النتيجة `\"12\"` بدل 3.",
+          "fix": [
+            "import csv, io",
+            "f = io.StringIO(\"qty\\n1\\n2\\n\")",
+            "total = 0",
+            "for row in csv.DictReader(f):",
+            "    total += int(row[\"qty\"])",
+            "print(total)"
+          ]
+        },
+        {
+          "title": "اسم عمود غير موجود",
+          "wrong": [
+            "import csv",
+            "with open(\"store_sales.csv\", encoding=\"utf-8\", newline=\"\") as f:",
+            "    row = next(csv.DictReader(f))",
+            "print(row[\"Price\"])"
+          ],
+          "error": "KeyError: 'Price'",
+          "error_type": "KeyError",
+          "why": "أسماء الأعمدة حساسة للحروف والمسافات. اطبع `reader.fieldnames` لتعرف الأسماء الحقيقية.",
+          "fix": [
+            "import csv",
+            "with open(\"store_sales.csv\", encoding=\"utf-8\", newline=\"\") as f:",
+            "    row = next(csv.DictReader(f))",
+            "print(row[\"unit_price\"])"
+          ]
+        },
+        {
+          "title": "كتابة كائن غير مدعوم في JSON",
+          "wrong": [
+            "import json",
+            "from datetime import date",
+            "json.dumps({\"day\": date(2025, 1, 1)})"
+          ],
+          "error": "TypeError: Object of type date is not JSON serializable",
+          "error_type": "TypeError",
+          "why": "JSON لا يعرف كائنات `date`. حوّلها إلى نص ISO قبل الحفظ.",
+          "fix": [
+            "import json",
+            "from datetime import date",
+            "print(json.dumps({\"day\": date(2025, 1, 1).isoformat()}))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "من CSV إلى ملخص JSON",
+    "prompt": [
+      "اقرأ `store_sales.csv` واكتب ملخصاً في ملف JSON:"
+    ],
+    "requirements": [
+      "`orders_by_city`: قاموس المدينة ← عدد الطلبات.",
+      "`units_by_category`: قاموس الفئة ← مجموع الكميات `quantity` (أعداد صحيحة).",
+      "اكتب قاموساً `{\"orders_by_city\": ..., \"units_by_category\": ...}` في ملف `summary.json` مع `ensure_ascii=False`.",
+      "استخدم `csv.DictReader` و `json.dump`."
+    ],
+    "starter_code": [
+      "import csv",
+      "import json",
+      "",
+      "orders_by_city = {}",
+      "units_by_category = {}",
+      "",
+      "# اقرأ الملف واملأ القاموسين ثم اكتب summary.json"
+    ],
+    "tests": [
+      "import json as _json",
+      "from collections import Counter as _C",
+      "import csv as _csv",
+      "with open(\"store_sales.csv\", encoding=\"utf-8\", newline=\"\") as _f:",
+      "    _rows = list(_csv.DictReader(_f))",
+      "_cities = _C(r[\"city\"] for r in _rows)",
+      "_units = {}",
+      "for r in _rows:",
+      "    _units[r[\"category\"]] = _units.get(r[\"category\"], 0) + int(r[\"quantity\"])",
+      "assert orders_by_city == dict(_cities), \"orders_by_city لا يطابق عدد الطلبات في كل مدينة\"",
+      "assert units_by_category == _units, \"units_by_category لا يطابق مجموع الكميات في كل فئة (هل حوّلت quantity إلى int؟)\"",
+      "with open(\"summary.json\", encoding=\"utf-8\") as _f:",
+      "    _raw = _f.read()",
+      "assert \"الرياض\" in _raw, \"احفظ الملف مع ensure_ascii=False حتى تظهر العربية كما هي\"",
+      "_saved = _json.loads(_raw)",
+      "assert _saved == {\"orders_by_city\": dict(_cities), \"units_by_category\": _units}, \"محتوى summary.json غير صحيح\""
+    ],
+    "hints": [
+      "نمط العدّ والتجميع من درس القواميس داخل حلقة `for row in csv.DictReader(f)`.",
+      "لا تنسَ `int(row[\"quantity\"])`.",
+      "`json.dump(summary, f, ensure_ascii=False, indent=2)`."
+    ],
+    "solution": [
+      "import csv",
+      "import json",
+      "",
+      "orders_by_city = {}",
+      "units_by_category = {}",
+      "",
+      "with open(\"store_sales.csv\", encoding=\"utf-8\", newline=\"\") as f:",
+      "    for row in csv.DictReader(f):",
+      "        city = row[\"city\"]",
+      "        orders_by_city[city] = orders_by_city.get(city, 0) + 1",
+      "        cat = row[\"category\"]",
+      "        units_by_category[cat] = units_by_category.get(cat, 0) + int(row[\"quantity\"])",
+      "",
+      "summary = {\"orders_by_city\": orders_by_city, \"units_by_category\": units_by_category}",
+      "with open(\"summary.json\", \"w\", encoding=\"utf-8\") as f:",
+      "    json.dump(summary, f, ensure_ascii=False, indent=2)",
+      "",
+      "print(orders_by_city)",
+      "print(units_by_category)"
+    ]
+  },
+  "check": {
+    "type": "true_false",
+    "prompt": "عند قراءة ملف CSV بـ `csv.DictReader` تصل الأعمدة الرقمية أرقاماً جاهزة للحساب.",
+    "answer": false,
+    "explanation": "كل القيم في CSV نصوص، والوحدة `csv` لا تخمّن الأنواع. حوّلها بـ `int()` أو `float()`. (Pandas في المقابل تحاول استنتاج الأنواع تلقائياً.)"
+  },
+  "summary": [
+    "`csv.DictReader` يعطي كل صف قاموساً بأسماء الأعمدة، والقيم كلها نصوص.",
+    "`csv.DictWriter` مع `writeheader` و `writerows` للكتابة، وافتح الملفات بـ `newline=\"\"`.",
+    "`json.load/loads` للقراءة و `json.dump/dumps` للكتابة، مع `ensure_ascii=False` للعربية.",
+    "CSV للجداول المسطحة، و JSON للبيانات المتداخلة وواجهات API."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

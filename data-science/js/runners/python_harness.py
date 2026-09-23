@@ -12,12 +12,21 @@ CodeWay Python harness.
         "stdout": "...",                       # كل ما طبعه الكود
         "error": None | {type, message, line, text},
         "tests": None | {"passed": bool, "message": str},
+        "images": ["<base64 png>", ...],       # رسوم matplotlib التي أنشأها الكود
     }
 """
+import base64
 import builtins
 import io
+import os
 import sys
 import traceback
+import warnings
+
+# الرسوم تُحفظ كصور PNG (لا توجد نافذة عرض في المتصفح أو في أداة الفحص)
+os.environ['MPLBACKEND'] = 'Agg'
+warnings.filterwarnings('ignore', message='.*non-interactive.*')
+warnings.filterwarnings('ignore', message='.*Glyph.*missing from.*font.*')
 
 USER_FILENAME = '<main.py>'
 TESTS_FILENAME = '<tests>'
@@ -41,6 +50,19 @@ def _format_error(exc):
     }
 
 
+def _collect_figures():
+    plt = sys.modules.get('matplotlib.pyplot')
+    if plt is None:
+        return []
+    images = []
+    for num in plt.get_fignums():
+        buf = io.BytesIO()
+        plt.figure(num).savefig(buf, format='png', dpi=100, bbox_inches='tight')
+        images.append(base64.b64encode(buf.getvalue()).decode('ascii'))
+    plt.close('all')
+    return images
+
+
 def run(code, tests=None, stdin=None):
     out = io.StringIO()
     pending_input = list((stdin or '').splitlines())
@@ -54,7 +76,7 @@ def run(code, tests=None, stdin=None):
         return value
 
     namespace = {'__name__': '__main__', '__builtins__': builtins, 'input': fake_input}
-    result = {'stdout': '', 'error': None, 'tests': None}
+    result = {'stdout': '', 'error': None, 'tests': None, 'images': []}
 
     old_out, old_err = sys.stdout, sys.stderr
     sys.stdout = sys.stderr = out
@@ -68,6 +90,10 @@ def run(code, tests=None, stdin=None):
         sys.stdout, sys.stderr = old_out, old_err
 
     result['stdout'] = out.getvalue()
+    try:
+        result['images'] = _collect_figures()
+    except Exception:  # noqa: BLE001 - فشل حفظ الرسم لا يجب أن يخفي نتيجة الكود
+        result['images'] = []
 
     if tests:
         if result['error'] is not None:
@@ -78,6 +104,8 @@ def run(code, tests=None, stdin=None):
         else:
             namespace['__output__'] = result['stdout']
             namespace['__code__'] = code
+            old_out = sys.stdout
+            sys.stdout = io.StringIO()  # ما تطبعه دوال الطالب أثناء الاختبار لا يظهر في المخرجات
             try:
                 exec(compile(tests, TESTS_FILENAME, 'exec'), namespace)
                 result['tests'] = {'passed': True, 'message': ''}
@@ -88,5 +116,7 @@ def run(code, tests=None, stdin=None):
                     'passed': False,
                     'message': f'تعذّر التحقق من الحل: {type(exc).__name__}: {exc}',
                 }
+            finally:
+                sys.stdout = old_out
 
     return result

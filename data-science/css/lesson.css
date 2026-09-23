@@ -1030,3 +1030,28 @@
     .q-card { padding: 18px 14px; }
     .syllabus-module > summary { flex-wrap: wrap; }
 }
+
+/* --------------------------------------------------------------------------
+   الرسوم وملفات البيانات في المخرجات
+   -------------------------------------------------------------------------- */
+.output-images {
+    display: grid;
+    gap: 12px;
+    padding: 0 18px 16px;
+}
+
+.output-images img {
+    max-width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--cw-border);
+}
+
+.files-note {
+    margin-top: 10px;
+    color: var(--cw-muted);
+    font-size: 0.9rem;
+}
+
+.files-note i { color: var(--cw-gold); margin-left: 6px; }
+.files-note code { direction: ltr; unicode-bidi: isolate; color: var(--cw-cyan); }

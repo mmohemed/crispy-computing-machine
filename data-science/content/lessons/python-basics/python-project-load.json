@@ -1,0 +1,385 @@
+{
+  "slug": "python-project-load",
+  "course": "python-basics",
+  "module": "python-project",
+  "order": 26,
+  "title": "قراءة ملف المبيعات وتنظيمه",
+  "title_en": "Loading the Sales File",
+  "minutes": 30,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تفهم Dataset حقيقياً من قاموس بياناته قبل كتابة أي كود.",
+    "تكتب دالة تحميل تحوّل كل صف إلى قاموس بأنواع صحيحة.",
+    "تحسب عموداً مشتقاً (الإيراد) وتتعامل مع القيم المفقودة.",
+    "تتحقق من سلامة البيانات بعد التحميل (Sanity checks)."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "المشروع: ماذا نريد أن نعرف؟",
+      "body": [
+        "في هذه الوحدة تحلل ملف مبيعات متجر إلكتروني لسنة 2025 كاملة (`store_sales.csv`، 1,700 طلب)، باستخدام Python وحدها: القوائم والقواميس والدوال ووحدة `csv`. الهدف أن تجيب إدارة المتجر عن أسئلة حقيقية:",
+        {
+          "ol": [
+            "كم الإيراد الإجمالي؟ وكم طلباً؟ وما متوسط قيمة الطلب؟",
+            "كيف تتوزع المبيعات على أشهر السنة؟ وأي الأشهر هي الأقوى والأضعف؟",
+            "ما أكثر الفئات والمنتجات والمدن إيراداً؟",
+            "ما متوسط تقييم العملاء؟"
+          ]
+        },
+        "أول خطوة في أي مشروع ليست الكود، بل **فهم البيانات**: ماذا يمثل كل صف؟ ما أعمدته وأنواعها؟ هل توجد قيم مفقودة؟",
+        {
+          "table": {
+            "head": [
+              "العمود",
+              "النوع بعد التحويل",
+              "ملاحظة"
+            ],
+            "rows": [
+              [
+                "`order_id`",
+                "نص",
+                "رقم الطلب الفريد"
+              ],
+              [
+                "`order_date`",
+                "نص ISO، ونستخرج منه الشهر",
+                "`2025-03-14`"
+              ],
+              [
+                "`city` و `category` و `product`",
+                "نص",
+                "قيم فئوية"
+              ],
+              [
+                "`unit_price` و `quantity`",
+                "`int`",
+                "السعر قبل الخصم والكمية"
+              ],
+              [
+                "`discount`",
+                "`float`",
+                "0 أو 0.05 أو 0.1 أو 0.2"
+              ],
+              [
+                "`rating`",
+                "`int` أو `None`",
+                "**فارغ** إذا لم يقيّم العميل"
+              ]
+            ]
+          }
+        },
+        "**العمود المشتق**: الإيراد غير موجود في الملف. نحسبه لكل طلب: `revenue = unit_price × quantity × (1 − discount)`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "أغلب أخطاء التحليل تبدأ من التحميل: رقم قُرئ كنص فأعطى نتيجة خاطئة بصمت، أو قيمة فارغة حُسبت صفراً فخفضت المتوسط. لذلك نجمع كل التحويلات في دالة واحدة `load_orders`، فتحصل بقية المشروع على بيانات نظيفة بأنواع صحيحة، ونختبر هذه الدالة مرة واحدة."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "ابدأ كل مشروع بدالة تحميل واحدة تعيد بيانات بأنواع صحيحة.",
+            "بعد التحميل مباشرة افحص: عدد الصفوف، وأول صف وآخر صف، والقيم المفقودة، والنطاقات المنطقية (لا أسعار سالبة، ولا تواريخ خارج السنة).",
+            "لا تعدّل الملف الأصلي؛ كل التحويلات تتم في الكود حتى يمكن إعادتها."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "النظرة الأولى على الملف",
+      "code": [
+        "with open(\"store_sales.csv\", encoding=\"utf-8\") as f:",
+        "    for i, line in enumerate(f):",
+        "        print(line.strip())",
+        "        if i == 3:",
+        "            break"
+      ],
+      "explanation": [
+        {
+          "code": "for i, line in enumerate(f)",
+          "text": "نقرأ أول أسطر الملف كما هي قبل أي تحويل، لنرى الشكل الحقيقي للبيانات."
+        },
+        {
+          "code": "if i == 3: break",
+          "text": "أربعة أسطر تكفي: سطر العناوين وثلاثة طلبات. لاحظ التقييم الفارغ في الطلب الثاني."
+        }
+      ],
+      "expected_output": [
+        "order_id,order_date,city,category,product,unit_price,quantity,discount,payment_method,customer_type,rating",
+        "ORD-10001,2025-01-01,جدة,ملابس,قميص قطني,79,1,0,بطاقة,عائد,3",
+        "ORD-10002,2025-01-01,جدة,إلكترونيات,لوحة مفاتيح,129,1,0,الدفع عند الاستلام,عائد,",
+        "ORD-10003,2025-01-02,جدة,إلكترونيات,شاحن سريع,59,4,0.1,تحويل بنكي,جديد,5"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "دالة التحميل",
+      "code": [
+        "import csv",
+        "",
+        "def load_orders(path):",
+        "    orders = []",
+        "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+        "        for row in csv.DictReader(f):",
+        "            price = int(row[\"unit_price\"])",
+        "            qty = int(row[\"quantity\"])",
+        "            discount = float(row[\"discount\"])",
+        "            orders.append({",
+        "                \"order_id\": row[\"order_id\"],",
+        "                \"date\": row[\"order_date\"],",
+        "                \"month\": int(row[\"order_date\"][5:7]),",
+        "                \"city\": row[\"city\"],",
+        "                \"category\": row[\"category\"],",
+        "                \"product\": row[\"product\"],",
+        "                \"qty\": qty,",
+        "                \"revenue\": round(price * qty * (1 - discount), 2),",
+        "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+        "            })",
+        "    return orders",
+        "",
+        "orders = load_orders(\"store_sales.csv\")",
+        "print(len(orders))",
+        "print(orders[0])",
+        "print(orders[-1][\"date\"], orders[-1][\"revenue\"])"
+      ],
+      "explanation": [
+        {
+          "code": "int(row[\"unit_price\"])",
+          "text": "كل قيم CSV نصوص؛ نحوّل الأرقام هنا مرة واحدة."
+        },
+        {
+          "code": "int(row[\"order_date\"][5:7])",
+          "text": "الشهر من التاريخ بالاقتطاع: الحرفان 5 و 6 في `2025-03-14` هما `03`. (يمكن أيضاً استخدام `date.fromisoformat`.)"
+        },
+        {
+          "code": "round(price * qty * (1 - discount), 2)",
+          "text": "العمود المشتق: الإيراد بعد الخصم مقرباً لهللتين."
+        },
+        {
+          "code": "int(row[\"rating\"]) if row[\"rating\"] else None",
+          "text": "التقييم الفارغ يصبح `None` وليس صفراً، حتى لا يخفض المتوسط."
+        }
+      ],
+      "expected_output": [
+        "1700",
+        "{'order_id': 'ORD-10001', 'date': '2025-01-01', 'month': 1, 'city': 'جدة', 'category': 'ملابس', 'product': 'قميص قطني', 'qty': 1, 'revenue': 79.0, 'rating': 3}",
+        "2025-12-31 195.0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "فحوصات السلامة بعد التحميل",
+      "code": [
+        "import csv",
+        "",
+        "def load_orders(path):",
+        "    orders = []",
+        "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+        "        for row in csv.DictReader(f):",
+        "            price = int(row[\"unit_price\"])",
+        "            qty = int(row[\"quantity\"])",
+        "            discount = float(row[\"discount\"])",
+        "            orders.append({",
+        "                \"order_id\": row[\"order_id\"],",
+        "                \"date\": row[\"order_date\"],",
+        "                \"month\": int(row[\"order_date\"][5:7]),",
+        "                \"city\": row[\"city\"],",
+        "                \"category\": row[\"category\"],",
+        "                \"product\": row[\"product\"],",
+        "                \"qty\": qty,",
+        "                \"revenue\": round(price * qty * (1 - discount), 2),",
+        "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+        "            })",
+        "    return orders",
+        "",
+        "orders = load_orders(\"store_sales.csv\")",
+        "",
+        "ids = [o[\"order_id\"] for o in orders]",
+        "print(\"طلبات مكررة:\", len(ids) - len(set(ids)))",
+        "print(\"تقييمات مفقودة:\", sum(1 for o in orders if o[\"rating\"] is None))",
+        "print(\"أصغر وأكبر إيراد:\", min(o[\"revenue\"] for o in orders), max(o[\"revenue\"] for o in orders))",
+        "print(\"أول وآخر تاريخ:\", min(o[\"date\"] for o in orders), max(o[\"date\"] for o in orders))",
+        "print(\"المدن:\", sorted({o[\"city\"] for o in orders}))"
+      ],
+      "explanation": [
+        {
+          "code": "len(ids) - len(set(ids))",
+          "text": "إذا كان الفرق صفراً فلا يوجد رقم طلب مكرر."
+        },
+        {
+          "code": "o[\"rating\"] is None",
+          "text": "نعرف حجم القيم المفقودة قبل حساب متوسط التقييم."
+        },
+        {
+          "code": "min(o[\"date\"] ...)",
+          "text": "تواريخ ISO تُقارن كنصوص بشكل صحيح، فنتأكد أن البيانات داخل 2025."
+        },
+        {
+          "code": "{o[\"city\"] for o in orders}",
+          "text": "Set Comprehension للقيم الفريدة: نتأكد أنه لا توجد مدن مكتوبة بأشكال مختلفة."
+        }
+      ],
+      "expected_output": [
+        "طلبات مكررة: 0",
+        "تقييمات مفقودة: 205",
+        "أصغر وأكبر إيراد: 36.0 1596.0",
+        "أول وآخر تاريخ: 2025-01-01 2025-12-31",
+        "المدن: ['أبها', 'الدمام', 'الرياض', 'المدينة', 'جدة', 'مكة']"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "قرار تحويل التقييم الفارغ إلى `None` قرار تحليلي يجب توثيقه: 12% من الطلبات بلا تقييم، والمتوسط سيُحسب من الطلبات المقيّمة فقط.",
+        "قرّبنا الإيراد لمنزلتين لأنه مبلغ مالي. في الحسابات الكبيرة جداً قد تُستخدم الوحدة `decimal` لتجنب أخطاء الكسور.",
+        "القاموس لكل طلب مريح، لكنه يستهلك ذاكرة أكبر من جدول Pandas. هذا مقبول مع 1,700 صف، وسترى الفرق مع البيانات الكبيرة."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "اعتبار التقييم الفارغ صفراً",
+          "wrong": [
+            "rating = int(\"\" or 0)",
+            "print(rating)"
+          ],
+          "why": "`int(row[\"rating\"] or 0)` تجعل كل طلب بلا تقييم كأنه تقييم 0، فينخفض المتوسط بشكل مضلل. الصحيح `None` ثم استبعادها عند الحساب.",
+          "fix": [
+            "raw = \"\"",
+            "rating = int(raw) if raw else None",
+            "print(rating)"
+          ]
+        },
+        {
+          "title": "تحويل الخصم إلى int",
+          "wrong": [
+            "discount = int(\"0.1\")"
+          ],
+          "error": "ValueError: invalid literal for int() with base 10: '0.1'",
+          "error_type": "ValueError",
+          "why": "الخصم نسبة عشرية مثل `0.1`. `int` لا تقبل نصاً عشرياً.",
+          "fix": [
+            "discount = float(\"0.1\")",
+            "print(discount)"
+          ]
+        },
+        {
+          "title": "نسيان الخصم عند حساب الإيراد",
+          "wrong": [
+            "price, qty, discount = 149, 2, 0.2",
+            "print(price * qty)"
+          ],
+          "why": "`price * qty` وحدها تعطي الإيراد قبل الخصم، فيكون الإجمالي أعلى من الحقيقة بدون أي رسالة خطأ.",
+          "fix": [
+            "price, qty, discount = 149, 2, 0.2",
+            "print(price * qty * (1 - discount))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "دالة التحميل الخاصة بك",
+    "prompt": [
+      "اكتب دالة `load_orders(path)` بنفسك (دون النسخ من المثال إن استطعت) تحقق المطلوب التالي:"
+    ],
+    "requirements": [
+      "ترجع قائمة قواميس، قاموس لكل طلب، بالمفاتيح: `order_id` و `date` و `month` (int) و `city` و `category` و `product` و `qty` (int) و `revenue` (float مقرب لمنزلتين) و `rating` (int أو `None`).",
+      "بعد الدالة احسب `total_orders` (عدد الطلبات) و `missing_ratings` (عدد التقييمات المفقودة)."
+    ],
+    "starter_code": [
+      "import csv",
+      "",
+      "",
+      "def load_orders(path):",
+      "    orders = []",
+      "    # اقرأ الملف وحوّل كل صف",
+      "    return orders",
+      "",
+      "",
+      "orders = load_orders(\"store_sales.csv\")",
+      "total_orders = 0",
+      "missing_ratings = 0",
+      "print(total_orders, missing_ratings)"
+    ],
+    "tests": [
+      "import csv as _csv",
+      "with open(\"store_sales.csv\", encoding=\"utf-8\", newline=\"\") as _f:",
+      "    _rows = list(_csv.DictReader(_f))",
+      "_o = load_orders(\"store_sales.csv\")",
+      "assert len(_o) == len(_rows), f\"عدد الطلبات المحمّلة {len(_o)} لا يساوي عدد صفوف الملف {len(_rows)}\"",
+      "_first = _o[0]",
+      "for _k in [\"order_id\", \"date\", \"month\", \"city\", \"category\", \"product\", \"qty\", \"revenue\", \"rating\"]:",
+      "    assert _k in _first, f\"المفتاح {_k} غير موجود في القاموس\"",
+      "assert isinstance(_first[\"month\"], int) and isinstance(_first[\"qty\"], int), \"month و qty يجب أن يكونا int\"",
+      "_r = _rows[2]",
+      "_expected = round(int(_r[\"unit_price\"]) * int(_r[\"quantity\"]) * (1 - float(_r[\"discount\"])), 2)",
+      "assert _o[2][\"revenue\"] == _expected, f\"إيراد الطلب الثالث يجب أن يكون {_expected}، والموجود {_o[2]['revenue']}\"",
+      "assert _o[1][\"rating\"] is None, \"التقييم الفارغ يجب أن يصبح None\"",
+      "assert total_orders == len(_rows), \"total_orders غير صحيح\"",
+      "assert missing_ratings == sum(1 for r in _rows if not r[\"rating\"]), \"missing_ratings غير صحيح\""
+    ],
+    "hints": [
+      "`csv.DictReader` ثم لكل صف أنشئ قاموساً جديداً بالأنواع الصحيحة.",
+      "الشهر: `int(row[\"order_date\"][5:7])`.",
+      "التقييم: `int(row[\"rating\"]) if row[\"rating\"] else None`."
+    ],
+    "solution": [
+      "import csv",
+      "",
+      "def load_orders(path):",
+      "    orders = []",
+      "    with open(path, encoding=\"utf-8\", newline=\"\") as f:",
+      "        for row in csv.DictReader(f):",
+      "            price = int(row[\"unit_price\"])",
+      "            qty = int(row[\"quantity\"])",
+      "            discount = float(row[\"discount\"])",
+      "            orders.append({",
+      "                \"order_id\": row[\"order_id\"],",
+      "                \"date\": row[\"order_date\"],",
+      "                \"month\": int(row[\"order_date\"][5:7]),",
+      "                \"city\": row[\"city\"],",
+      "                \"category\": row[\"category\"],",
+      "                \"product\": row[\"product\"],",
+      "                \"qty\": qty,",
+      "                \"revenue\": round(price * qty * (1 - discount), 2),",
+      "                \"rating\": int(row[\"rating\"]) if row[\"rating\"] else None,",
+      "            })",
+      "    return orders",
+      "",
+      "",
+      "orders = load_orders(\"store_sales.csv\")",
+      "total_orders = len(orders)",
+      "missing_ratings = sum(1 for o in orders if o[\"rating\"] is None)",
+      "print(total_orders, missing_ratings)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "لماذا نحوّل التقييم الفارغ إلى `None` بدلاً من `0`؟",
+    "options": [
+      "لأن `None` أسرع في الحساب",
+      "لأن الصفر قيمة حقيقية تخفض المتوسط، أما `None` فتعني \"غير معروف\" ونستبعدها",
+      "لأن `int` لا تقبل الصفر",
+      "لا فرق بينهما"
+    ],
+    "answer": 1,
+    "explanation": "لو اعتبرنا الطلبات غير المقيّمة صفراً لانخفض متوسط التقييم كأن العملاء غير راضين، وهذا استنتاج خاطئ."
+  },
+  "summary": [
+    "ابدأ بفهم البيانات: ماذا يمثل الصف، وما الأعمدة وأنواعها، وأين القيم المفقودة.",
+    "دالة تحميل واحدة تحوّل الأنواع وتحسب الأعمدة المشتقة مثل الإيراد.",
+    "القيم المفقودة `None` وليست صفراً، والقرار يُوثّق.",
+    "فحوصات السلامة بعد التحميل: العدد، والمكررات، والنطاقات، والقيم الفريدة."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

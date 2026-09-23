@@ -1,0 +1,306 @@
+{
+  "slug": "python-lambda-map-filter",
+  "course": "python-basics",
+  "module": "python-pro",
+  "order": 18,
+  "title": "lambda و map و filter و sorted(key)",
+  "title_en": "Lambda, map, filter",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تكتب دوال صغيرة بدون اسم باستخدام `lambda`.",
+    "ترتب القوائم حسب معيار تختاره بـ `sorted(key=...)`.",
+    "تستخدم `max` و `min` مع `key` للبحث عن الأعلى حسب حقل.",
+    "تفهم `map` و `filter` وتعرف متى يكون الـ Comprehension أوضح منهما."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "الدالة كقيمة",
+      "body": [
+        "في Python الدالة قيمة مثل أي قيمة أخرى: يمكن تخزينها في متغير، أو **تمريرها لدالة أخرى**. وهذه الفكرة هي أساس ما ستفعله لاحقاً في Pandas مع `apply`.",
+        "`lambda` تعرّف دالة صغيرة في سطر واحد بدون اسم: `lambda x: x * 2` تعني \"دالة تأخذ `x` وترجع `x * 2`\". جسمها تعبير واحد فقط، وقيمته هي ما يُرجع تلقائياً (بدون كلمة `return`).",
+        {
+          "table": {
+            "head": [
+              "الأداة",
+              "ماذا تفعل",
+              "مثال"
+            ],
+            "rows": [
+              [
+                "`sorted(items, key=f)`",
+                "ترتب حسب ناتج `f` لكل عنصر",
+                "`sorted(orders, key=lambda o: o[\"amount\"])`"
+              ],
+              [
+                "`max(items, key=f)`",
+                "العنصر الذي ناتج `f` له الأكبر",
+                "`max(emps, key=lambda e: e[1])`"
+              ],
+              [
+                "`map(f, items)`",
+                "تطبّق `f` على كل عنصر",
+                "`list(map(str.upper, names))`"
+              ],
+              [
+                "`filter(f, items)`",
+                "تبقي العناصر التي `f` لها `True`",
+                "`list(filter(lambda x: x > 0, nums))`"
+              ]
+            ]
+          }
+        },
+        "`map` و `filter` ترجعان كائناً \"كسولاً\"، لذلك نحوّل الناتج بـ `list()` لنراه."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "البيانات نادراً ما تكون أرقاماً مجردة؛ غالباً سجلات: طلبات، وموظفون، ومنتجات. ترتيب السجلات حسب المبلغ، أو إيجاد الموظف الأعلى راتباً، يحتاج أن تخبر Python **بأي حقل يقارن**. هذه هي وظيفة `key`، و `lambda` هي أقصر طريقة لكتابتها."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`lambda` مع `key=` في `sorted` و `max` و `min`: الاستخدام الأهم والأكثر شيوعاً.",
+            "`lambda` لدالة قصيرة تُستخدم مرة واحدة. إذا احتجتها في أكثر من مكان أو كانت معقدة فعرّفها بـ `def` واعطها اسماً.",
+            "`map` و `filter` مقبولتان، لكن الـ Comprehension أوضح غالباً في Python. ستراهما في أكواد الآخرين فيجب أن تفهمهما."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الترتيب حسب حقل",
+      "code": [
+        "orders = [",
+        "    {\"id\": \"A1\", \"city\": \"جدة\", \"amount\": 250},",
+        "    {\"id\": \"A2\", \"city\": \"الرياض\", \"amount\": 90},",
+        "    {\"id\": \"A3\", \"city\": \"أبها\", \"amount\": 410},",
+        "]",
+        "",
+        "by_amount = sorted(orders, key=lambda o: o[\"amount\"])",
+        "print([o[\"id\"] for o in by_amount])",
+        "",
+        "top = sorted(orders, key=lambda o: o[\"amount\"], reverse=True)[0]",
+        "print(\"أكبر طلب:\", top[\"id\"], top[\"amount\"])"
+      ],
+      "explanation": [
+        {
+          "code": "key=lambda o: o[\"amount\"]",
+          "text": "لكل طلب `o` أعطِ `sorted` قيمة `amount` ليرتب عليها. الطلبات نفسها لا تتغير."
+        },
+        {
+          "code": "reverse=True",
+          "text": "ترتيب تنازلي، ثم `[0]` تعطي الأكبر."
+        }
+      ],
+      "expected_output": [
+        "['A2', 'A1', 'A3']",
+        "أكبر طلب: A3 410"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "max و min مع key، والترتيب بمعيارين",
+      "code": [
+        "employees = [(\"منى\", \"المالية\", 9200), (\"سامي\", \"التقنية\", 7800),",
+        "             (\"هند\", \"التقنية\", 11000), (\"فهد\", \"المالية\", 9200)]",
+        "",
+        "richest = max(employees, key=lambda e: e[2])",
+        "print(\"الأعلى راتباً:\", richest[0])",
+        "",
+        "ordered = sorted(employees, key=lambda e: (e[1], -e[2]))",
+        "for name, dept, salary in ordered:",
+        "    print(dept, name, salary)"
+      ],
+      "explanation": [
+        {
+          "code": "max(employees, key=lambda e: e[2])",
+          "text": "قارن بالعنصر الثالث (الراتب) وأرجع السجل كاملاً."
+        },
+        {
+          "code": "key=lambda e: (e[1], -e[2])",
+          "text": "المفتاح صف: رتّب حسب القسم أولاً، ثم حسب الراتب تنازلياً داخل القسم (الإشارة السالبة تعكس الترتيب للأرقام)."
+        }
+      ],
+      "expected_output": [
+        "الأعلى راتباً: هند",
+        "التقنية هند 11000",
+        "التقنية سامي 7800",
+        "المالية منى 9200",
+        "المالية فهد 9200"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "map و filter ومقارنتهما بالـ Comprehension",
+      "code": [
+        "raw_prices = [\"18.5\", \"12\", \"35\", \"0\"]",
+        "",
+        "prices = list(map(float, raw_prices))",
+        "print(prices)",
+        "",
+        "positive = list(filter(lambda p: p > 0, prices))",
+        "print(positive)",
+        "",
+        "same = [p for p in (float(x) for x in raw_prices) if p > 0]",
+        "print(same == positive)",
+        "",
+        "names = [\"noura\", \"ali\"]",
+        "print(list(map(str.title, names)))"
+      ],
+      "explanation": [
+        {
+          "code": "map(float, raw_prices)",
+          "text": "نمرر الدالة `float` نفسها (بدون أقواس) لتُطبّق على كل عنصر."
+        },
+        {
+          "code": "filter(lambda p: p > 0, prices)",
+          "text": "تبقي العناصر التي تعيد لها الدالة `True`."
+        },
+        {
+          "code": "same == positive",
+          "text": "الـ Comprehension يعطي النتيجة نفسها، وغالباً يكون أوضح."
+        },
+        {
+          "code": "map(str.title, names)",
+          "text": "يمكن تمرير دوال النصوص أيضاً: `str.title` هي نفس `name.title()`."
+        }
+      ],
+      "expected_output": [
+        "[18.5, 12.0, 35.0, 0.0]",
+        "[18.5, 12.0, 35.0]",
+        "True",
+        "['Noura', 'Ali']"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`lambda` تعبير واحد فقط: لا `if` متعدد الأسطر، ولا حلقات، ولا `return`. استخدم `def` عندما تحتاج أكثر من ذلك.",
+        "مرّر الدالة نفسها بدون أقواس: `key=len` صحيحة، أما `key=len()` فتستدعيها فوراً وتسبب خطأ.",
+        "ترتيب Python **مستقر**: العناصر المتساوية في المفتاح تحافظ على ترتيبها الأصلي، وهذا مفيد عند الترتيب على مراحل.",
+        "`sorted` ترجع قائمة جديدة، و `list.sort(key=...)` ترتب القائمة نفسها."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "استدعاء الدالة بدل تمريرها",
+          "wrong": [
+            "words = [\"بيانات\", \"علم\"]",
+            "print(sorted(words, key=len()))"
+          ],
+          "error": "TypeError: len() takes exactly one argument (0 given)",
+          "error_type": "TypeError",
+          "why": "`key=len()` تستدعي `len` بدون وسيط قبل الترتيب. المطلوب تمرير الدالة نفسها.",
+          "fix": [
+            "words = [\"بيانات\", \"علم\"]",
+            "print(sorted(words, key=len))"
+          ]
+        },
+        {
+          "title": "طباعة map مباشرة",
+          "wrong": [
+            "print(map(str.upper, [\"a\", \"b\"]))"
+          ],
+          "why": "`map` ترجع كائناً كسولاً وليس قائمة، فيُطبع شيء مثل `<map object at 0x...>`. حوّله بـ `list()`.",
+          "fix": [
+            "print(list(map(str.upper, [\"a\", \"b\"])))"
+          ]
+        },
+        {
+          "title": "استخدام return داخل lambda",
+          "wrong": [
+            "double = lambda x: return x * 2"
+          ],
+          "error": "SyntaxError: invalid syntax",
+          "error_type": "SyntaxError",
+          "why": "جسم `lambda` تعبير، وقيمته تُرجع تلقائياً. كلمة `return` غير مسموحة.",
+          "fix": [
+            "double = lambda x: x * 2",
+            "print(double(4))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "ترتيب المنتجات",
+    "prompt": [
+      "لديك قائمة منتجات، كل منتج صف (الاسم، الفئة، السعر، عدد المبيعات)."
+    ],
+    "requirements": [
+      "`by_sales`: أسماء المنتجات مرتبة تنازلياً حسب عدد المبيعات.",
+      "`cheapest`: اسم أرخص منتج (استخدم `min` مع `key`).",
+      "`by_category`: قائمة الصفوف مرتبة حسب الفئة أبجدياً، ثم حسب السعر من الأعلى إلى الأقل داخل الفئة.",
+      "`revenues`: قائمة إيراد كل منتج (السعر × المبيعات) باستخدام `map` و `lambda`."
+    ],
+    "starter_code": [
+      "products = [",
+      "    (\"سماعة\", \"إلكترونيات\", 149, 40),",
+      "    (\"قميص\", \"ملابس\", 79, 95),",
+      "    (\"شاحن\", \"إلكترونيات\", 59, 120),",
+      "    (\"جاكيت\", \"ملابس\", 199, 30),",
+      "]",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "assert by_sales == [\"شاحن\", \"قميص\", \"سماعة\", \"جاكيت\"], f\"by_sales غير صحيحة: {by_sales}\"",
+      "assert cheapest == \"شاحن\", f\"cheapest غير صحيح: {cheapest}\"",
+      "assert [p[0] for p in by_category] == [\"سماعة\", \"شاحن\", \"جاكيت\", \"قميص\"], f\"ترتيب by_category غير صحيح: {[p[0] for p in by_category]}\"",
+      "assert revenues == [5960, 7505, 7080, 5970], f\"revenues غير صحيحة: {revenues}\"",
+      "assert \"lambda\" in __code__ and \"map(\" in __code__, \"استخدم lambda و map\""
+    ],
+    "hints": [
+      "المبيعات في الموضع 3 والسعر في الموضع 2 من كل صف.",
+      "للترتيب بمعيارين: `key=lambda p: (p[1], -p[2])`.",
+      "`min(...)` ترجع الصف كاملاً، فخذ الاسم بـ `[0]`."
+    ],
+    "solution": [
+      "products = [",
+      "    (\"سماعة\", \"إلكترونيات\", 149, 40),",
+      "    (\"قميص\", \"ملابس\", 79, 95),",
+      "    (\"شاحن\", \"إلكترونيات\", 59, 120),",
+      "    (\"جاكيت\", \"ملابس\", 199, 30),",
+      "]",
+      "",
+      "by_sales = [p[0] for p in sorted(products, key=lambda p: p[3], reverse=True)]",
+      "cheapest = min(products, key=lambda p: p[2])[0]",
+      "by_category = sorted(products, key=lambda p: (p[1], -p[2]))",
+      "revenues = list(map(lambda p: p[2] * p[3], products))",
+      "",
+      "print(by_sales, cheapest)",
+      "print([p[0] for p in by_category])",
+      "print(revenues)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "words = [\"data\", \"ai\", \"python\"]",
+      "print(sorted(words, key=len))"
+    ],
+    "options": [
+      "['ai', 'data', 'python']",
+      "['python', 'data', 'ai']",
+      "['ai', 'python', 'data']",
+      "['data', 'ai', 'python']"
+    ],
+    "answer": 0,
+    "explanation": "`key=len` ترتب حسب عدد الحروف: 2 ثم 4 ثم 6."
+  },
+  "summary": [
+    "`lambda args: expr` دالة قصيرة بلا اسم ترجع قيمة التعبير.",
+    "`key=` في `sorted` و `max` و `min` تحدد المعيار؛ والصف كمفتاح يرتب بعدة معايير.",
+    "`map` و `filter` ترجعان كائناً كسولاً فاستخدم `list()`؛ والـ Comprehension بديل أوضح غالباً.",
+    "مرّر الدالة بدون أقواس: `key=len`."
+  ]
+}

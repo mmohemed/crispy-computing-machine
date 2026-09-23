@@ -241,6 +241,7 @@ async function render(catalog) {
             createPlayground(host, {
                 code: joinLines(sec.code),
                 stdin: sec.stdin != null ? joinLines(sec.stdin) : null,
+                files: lesson.files || [],
                 storageKey: `${lesson.slug}:example-${i}`,
                 title: 'عدّل على المثال',
             }).run();
@@ -255,6 +256,7 @@ async function render(catalog) {
         code: joinLines(ex.starter_code),
         tests: joinLines(ex.tests),
         stdin: ex.stdin != null ? joinLines(ex.stdin) : null,
+        files: lesson.files || [],
         storageKey: `${lesson.slug}:exercise`,
         title: 'حلّ التمرين هنا',
         onResult: (result, withTests) => {

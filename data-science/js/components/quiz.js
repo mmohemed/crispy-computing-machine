@@ -117,6 +117,7 @@ export function renderQuestion(container, q, { index = null, total = null, stora
     createPlayground(pgHost, {
         code: joinLines(q.starter_code),
         tests: joinLines(q.tests),
+        files: q.files || [],
         storageKey: storagePrefix ? `${storagePrefix}:${q.id}` : null,
         title: q.type === 'fix_code' ? 'صحّح هذا الكود' : 'اكتب حلك هنا',
         checkLabel: 'تحقق من الإجابة',

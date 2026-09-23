@@ -2,13 +2,15 @@
  * واجهة تشغيل الكود الموحدة.
  *
  *   const runner = await getRunner('python');
- *   const result = await runner.run({ code, tests, stdin });
+ *   const result = await runner.run({ code, tests, stdin, files });
+ *   files: [{ name: 'store_sales.csv', url: 'https://.../datasets/store_sales.csv' }]
  *
  * الشكل الموحد للنتيجة (من أي مشغّل):
  *   {
  *     stdout: string,
  *     error: null | { type, message, line, text },
  *     tests: null | { passed: boolean, message: string },
+ *     images: string[]   // رسوم matplotlib بصيغة PNG base64
  *     durationMs: number
  *   }
  *

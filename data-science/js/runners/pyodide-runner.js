@@ -77,7 +77,7 @@ export function createPyodideRunner() {
             return ready;
         },
 
-        async run({ code, tests = null, stdin = null }) {
+        async run({ code, tests = null, stdin = null, files = [] }) {
             if (!worker) boot();
             try {
                 await ready;
@@ -107,7 +107,7 @@ export function createPyodideRunner() {
                     clearTimeout(timer);
                     resolve(r);
                 };
-                worker.postMessage({ type: 'run', id, code, tests, stdin });
+                worker.postMessage({ type: 'run', id, code, tests, stdin, files });
             });
             emit('idle');
             return { ...result, durationMs: Math.round(performance.now() - started) };

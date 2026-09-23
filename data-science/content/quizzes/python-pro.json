@@ -1,0 +1,291 @@
+{
+  "slug": "python-pro",
+  "course": "python-basics",
+  "module": "python-pro",
+  "title": "اختبار الوحدة: Python بأسلوب محترف",
+  "intro": [
+    "يغطي هذا الاختبار دروس الوحدة الثانية: Comprehensions و lambda والمعاملات المرنة والنطاق والأصناف و Generators والتواريخ وملفات CSV و JSON و pip.",
+    "أسئلة الكود تُصحّح بتشغيل كودك فعلياً، وبعد كل إجابة يظهر الشرح."
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "print([n * 2 for n in [3, 8, 1, 6] if n > 2])"
+      ],
+      "options": [
+        "[6, 16, 12]",
+        "[6, 16, 2, 12]",
+        "[3, 8, 6]",
+        "[16, 12]"
+      ],
+      "answer": 0,
+      "explanation": "الشرط يبقي 3 و 8 و 6، ثم يُضاعف كل منها.",
+      "lesson": "python-comprehensions"
+    },
+    {
+      "id": "q2",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "names = [\"a\", \"b\"]",
+        "ages = [30, 25]",
+        "print({n: a for n, a in zip(names, ages)})"
+      ],
+      "options": [
+        "{'a': 30, 'b': 25}",
+        "[('a', 30), ('b', 25)]",
+        "{'a', 30, 'b', 25}",
+        "{30: 'a', 25: 'b'}"
+      ],
+      "answer": 0,
+      "explanation": "Dict Comprehension مع `zip`: الاسم مفتاح والعمر قيمة.",
+      "lesson": "python-comprehensions"
+    },
+    {
+      "id": "q3",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "items = [(\"قلم\", 5), (\"دفتر\", 12), (\"مسطرة\", 3)]",
+        "print(max(items, key=lambda i: i[1])[0])"
+      ],
+      "options": [
+        "قلم",
+        "دفتر",
+        "مسطرة",
+        "12"
+      ],
+      "answer": 1,
+      "explanation": "`key` تقارن بالسعر (الموضع 1)، و `max` ترجع الصف كاملاً فنأخذ الاسم بـ `[0]`.",
+      "lesson": "python-lambda-map-filter"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "prompt": "ماذا يطبع `print(map(str.upper, [\"a\"]))`؟",
+      "options": [
+        "`['A']`",
+        "`A`",
+        "كائن map مثل `<map object at 0x...>`",
+        "خطأ TypeError"
+      ],
+      "answer": 2,
+      "explanation": "`map` كسولة وترجع كائناً وليس قائمة؛ نحتاج `list(...)` لرؤية العناصر.",
+      "lesson": "python-lambda-map-filter"
+    },
+    {
+      "id": "q5",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "def f(*args, **kwargs):",
+        "    return len(args), sorted(kwargs)",
+        "print(f(1, 2, 3, x=1, a=2))"
+      ],
+      "options": [
+        "(3, ['a', 'x'])",
+        "(5, [])",
+        "(3, ['x', 'a'])",
+        "(2, ['a', 'x'])"
+      ],
+      "answer": 0,
+      "explanation": "ثلاث قيم موضعية في `args`، ومفتاحان في `kwargs` نرتبهما أبجدياً.",
+      "lesson": "python-args-kwargs"
+    },
+    {
+      "id": "q6",
+      "type": "true_false",
+      "prompt": "إذا أسندت قيمة لمتغير داخل دالة، يصبح هذا المتغير محلياً في الدالة كلها ولا يغيّر المتغير العام الذي يحمل نفس الاسم.",
+      "answer": true,
+      "explanation": "الإسناد داخل الدالة ينشئ اسماً محلياً. لتعديل العام تحتاج `global`، والأفضل تمرير القيمة وإرجاعها.",
+      "lesson": "python-scope"
+    },
+    {
+      "id": "q7",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "class Counter:",
+        "    def __init__(self):",
+        "        self.n = 0",
+        "    def add(self, k=1):",
+        "        self.n += k",
+        "        return self",
+        "",
+        "c = Counter()",
+        "c.add().add(5)",
+        "print(c.n)"
+      ],
+      "options": [
+        "1",
+        "5",
+        "6",
+        "0"
+      ],
+      "answer": 2,
+      "explanation": "`add` ترجع `self`، فيمكن سلسلة الاستدعاءات: 0 ثم 1 ثم 6.",
+      "lesson": "python-oop"
+    },
+    {
+      "id": "q8",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "def gen():",
+        "    yield 1",
+        "    yield 2",
+        "g = gen()",
+        "print(next(g), list(g), list(g))"
+      ],
+      "options": [
+        "1 [2] []",
+        "1 [1, 2] [1, 2]",
+        "1 [2] [2]",
+        "[1, 2] [] []"
+      ],
+      "answer": 0,
+      "explanation": "`next` تأخذ 1، ثم `list` تستهلك الباقي 2، والمرة الثالثة لا يبقى شيء.",
+      "lesson": "python-iterators-generators"
+    },
+    {
+      "id": "q9",
+      "type": "mcq",
+      "prompt": "أي تعبير يحوّل النص `\"25/12/2025\"` إلى تاريخ؟",
+      "options": [
+        "`datetime.strftime(\"25/12/2025\", \"%d/%m/%Y\")`",
+        "`datetime.strptime(\"25/12/2025\", \"%d/%m/%Y\")`",
+        "`date(\"25/12/2025\")`",
+        "`datetime.strptime(\"25/12/2025\", \"%Y-%m-%d\")`"
+      ],
+      "answer": 1,
+      "explanation": "`strptime` من نص إلى تاريخ، والصيغة يجب أن تطابق النص: يوم/شهر/سنة.",
+      "lesson": "python-datetime"
+    },
+    {
+      "id": "q10",
+      "type": "true_false",
+      "prompt": "`json.dumps({\"city\": \"جدة\"})` بدون أي معاملات إضافية يُظهر الكلمة العربية كما هي.",
+      "answer": false,
+      "explanation": "افتراضياً تُحوّل الحروف غير الإنجليزية إلى رموز `\\u...`. نحتاج `ensure_ascii=False`.",
+      "lesson": "python-csv-json"
+    },
+    {
+      "id": "q11",
+      "type": "mcq",
+      "prompt": "لماذا نثبّت أرقام الإصدارات في `requirements.txt`؟",
+      "options": [
+        "لأن pip لا يعمل بدونها",
+        "لضمان أن يحصل أي شخص يشغّل المشروع على نفس المكتبات ونفس النتائج",
+        "لتسريع التثبيت فقط",
+        "لأن Git يرفض الملف بدونها"
+      ],
+      "answer": 1,
+      "explanation": "قابلية التكرار: تغيّر إصدار مكتبة قد يغيّر النتائج أو يوقف الكود.",
+      "lesson": "python-venv-pip"
+    },
+    {
+      "id": "q12",
+      "type": "fix_code",
+      "prompt": "هذا الكود يجب أن يعطي قائمة الأسعار بعد خصم 10% للأسعار التي تزيد على 100 فقط، ويترك الباقي كما هو. صحّحه.",
+      "starter_code": [
+        "prices = [80, 150, 200, 50]",
+        "discounted = [p * 0.9 for p in prices if p > 100 else p]",
+        "print(discounted)"
+      ],
+      "tests": [
+        "assert discounted == [80, 135.0, 180.0, 50], f\"discounted غير صحيحة: {discounted}\""
+      ],
+      "solution": [
+        "prices = [80, 150, 200, 50]",
+        "discounted = [p * 0.9 if p > 100 else p for p in prices]",
+        "print(discounted)"
+      ],
+      "hints": [
+        "الشرط في النهاية للتصفية فقط ولا يقبل `else`.",
+        "انقل `if ... else ...` إلى قبل `for`."
+      ],
+      "explanation": "عندما نريد قيمة لكل عنصر (وليس تصفية) يوضع التعبير الشرطي `a if cond else b` في بداية الـ Comprehension.",
+      "lesson": "python-comprehensions"
+    },
+    {
+      "id": "q13",
+      "type": "write_code",
+      "prompt": "اكتب صنفاً `Wallet` له: `__init__(self, owner)` يبدأ الرصيد `balance` بصفر، و `deposit(self, amount)` تضيف المبلغ، و `withdraw(self, amount)` تسحب وترفع `ValueError` إذا لم يكفِ الرصيد.",
+      "starter_code": [
+        "class Wallet:",
+        "    pass",
+        "",
+        "w = Wallet(\"سارة\")",
+        "w.deposit(100)",
+        "w.withdraw(30)",
+        "print(w.balance)"
+      ],
+      "tests": [
+        "w = Wallet(\"سارة\")",
+        "assert w.owner == \"سارة\" and w.balance == 0, \"ابدأ برصيد 0 وخزّن owner\"",
+        "w.deposit(100)",
+        "w.withdraw(30)",
+        "assert w.balance == 70, f\"الرصيد يجب أن يكون 70، والموجود {w.balance}\"",
+        "try:",
+        "    w.withdraw(500)",
+        "    raise AssertionError(\"السحب أكثر من الرصيد يجب أن يرفع ValueError\")",
+        "except ValueError:",
+        "    pass",
+        "assert w.balance == 70, \"السحب المرفوض يجب ألا يغيّر الرصيد\""
+      ],
+      "solution": [
+        "class Wallet:",
+        "    def __init__(self, owner):",
+        "        self.owner = owner",
+        "        self.balance = 0",
+        "",
+        "    def deposit(self, amount):",
+        "        self.balance += amount",
+        "",
+        "    def withdraw(self, amount):",
+        "        if amount > self.balance:",
+        "            raise ValueError(\"الرصيد لا يكفي\")",
+        "        self.balance -= amount",
+        "",
+        "w = Wallet(\"سارة\")",
+        "w.deposit(100)",
+        "w.withdraw(30)",
+        "print(w.balance)"
+      ],
+      "hints": [
+        "`self.balance = 0` في `__init__`.",
+        "في `withdraw` افحص أولاً ثم اطرح."
+      ],
+      "explanation": "الخصائص على `self`، والتحقق يسبق التعديل حتى لا يتغير الرصيد عند الرفض.",
+      "lesson": "python-oop"
+    },
+    {
+      "id": "q14",
+      "type": "write_code",
+      "prompt": "سؤال تطبيقي: رتّب الموظفين في `staff` حسب القسم أبجدياً، ثم حسب الراتب من الأعلى داخل كل قسم، وخزّن **الأسماء فقط** بالترتيب في `ordered_names`.",
+      "starter_code": [
+        "staff = [(\"منى\", \"مالية\", 9200), (\"سامي\", \"تقنية\", 7800), (\"هند\", \"تقنية\", 11000), (\"فهد\", \"مالية\", 9900)]",
+        "",
+        "ordered_names = []"
+      ],
+      "tests": [
+        "assert ordered_names == [\"هند\", \"سامي\", \"فهد\", \"منى\"], f\"ordered_names غير صحيحة: {ordered_names}\""
+      ],
+      "solution": [
+        "staff = [(\"منى\", \"مالية\", 9200), (\"سامي\", \"تقنية\", 7800), (\"هند\", \"تقنية\", 11000), (\"فهد\", \"مالية\", 9900)]",
+        "",
+        "ordered_names = [s[0] for s in sorted(staff, key=lambda s: (s[1], -s[2]))]",
+        "print(ordered_names)"
+      ],
+      "hints": [
+        "`sorted(staff, key=lambda s: (s[1], -s[2]))`.",
+        "ثم Comprehension لأخذ الاسم من كل صف."
+      ],
+      "explanation": "مفتاح الترتيب صف `(القسم، -الراتب)`: الإشارة السالبة تعكس ترتيب الرقم.",
+      "lesson": "python-lambda-map-filter"
+    }
+  ]
+}

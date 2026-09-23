@@ -15,14 +15,15 @@ async function render(catalog) {
     const quiz = await loadQuiz(QUIZ_SLUG);
     const course = getCourse(catalog, quiz.course);
     const modIndex = course.modules.findIndex((m) => m.quiz && m.quiz.slug === QUIZ_SLUG);
-    const mod = course.modules[modIndex];
+    const mod = modIndex >= 0 ? course.modules[modIndex] : null;
+    const scopeLabel = mod ? `اختبار الوحدة ${modIndex + 1}` : 'الاختبار النهائي';
     const total = quiz.questions.length;
     const passScore = Math.ceil(total * CONFIG.quiz.passRatio);
     const prev = progress.getQuiz(QUIZ_SLUG);
 
     // الدرس التالي بعد الوحدة
     const all = courseLessons(course);
-    const nextLesson = all.find((l) => l.moduleIndex > modIndex && isPublished(l));
+    const nextLesson = mod ? all.find((l) => l.moduleIndex > modIndex && isPublished(l)) : null;
 
     document.title = `${quiz.title} | ${course.title} | CodeWay`;
 
@@ -32,10 +33,10 @@ async function render(catalog) {
             <a href="${homePage()}">علم البيانات</a><i class="fas fa-chevron-left sep"></i>
             <a href="${roadmapPage('level-' + course.level)}">المستوى ${course.level}</a><i class="fas fa-chevron-left sep"></i>
             <a href="${coursePage(course.slug)}">${escapeHtml(course.title)}</a><i class="fas fa-chevron-left sep"></i>
-            <span>اختبار الوحدة ${modIndex + 1}</span>
+            <span>${scopeLabel}</span>
         </nav>
         <header class="lesson-head">
-            <div class="kicker">الوحدة ${modIndex + 1}: ${escapeHtml(mod.title)}</div>
+            <div class="kicker">${mod ? `الوحدة ${modIndex + 1}: ${escapeHtml(mod.title)}` : `${escapeHtml(course.title)}: كل الوحدات`}</div>
             <h1 class="gradient-text">${escapeHtml(quiz.title)}</h1>
             <div class="prose">${quiz.intro.map((t) => `<p>${inline(t)}</p>`).join('')}</div>
             <div class="lesson-meta">
@@ -88,7 +89,7 @@ async function render(catalog) {
             <section class="glass-card quiz-summary">
                 <div class="score gradient-text">${score}/${total}</div>
                 <p>${passed
-                    ? 'أحسنت! اجتزت اختبار الوحدة. أنت جاهز للانتقال إلى الوحدة التالية.'
+                    ? (mod ? 'أحسنت! اجتزت اختبار الوحدة. أنت جاهز للانتقال إلى الوحدة التالية.' : 'أحسنت! اجتزت الاختبار النهائي للكورس. أنت جاهز للكورس التالي في المسار.')
                     : `تحتاج ${passScore} إجابات صحيحة على الأقل. راجع الدروس المقترحة ثم أعد المحاولة، فالهدف هو الفهم وليس الدرجة.`}</p>
                 ${review.length ? `<p style="font-size:1rem">دروس ننصحك بمراجعتها: ${review.map((l) => `<a href="${lessonPage(course.slug, l.slug)}">${escapeHtml(l.title)}</a>`).join(' · ')}</p>` : ''}
                 <div class="hero-actions" style="justify-content:center">

@@ -1,0 +1,301 @@
+{
+  "slug": "python-args-kwargs",
+  "course": "python-basics",
+  "module": "python-pro",
+  "order": 19,
+  "title": "*args و **kwargs",
+  "title_en": "*args & **kwargs",
+  "minutes": 20,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تكتب دوال تقبل عدداً غير محدد من القيم بـ `*args`.",
+    "تكتب دوال تقبل معاملات مسماة إضافية بـ `**kwargs`.",
+    "تفك القوائم والقواميس عند الاستدعاء بـ `*` و `**`.",
+    "تفهم ترتيب أنواع المعاملات في تعريف الدالة."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "دوال مرنة في عدد مدخلاتها",
+      "body": [
+        "بعض الدوال لا تعرف مسبقاً كم قيمة ستستقبل. `print` مثلاً تقبل أي عدد من القيم. يمكنك كتابة دوال بهذه المرونة:",
+        {
+          "list": [
+            "`*args`: تجمع كل القيم **الموضعية** الإضافية في **صف tuple**.",
+            "`**kwargs`: تجمع كل القيم **المسماة** الإضافية (`name=value`) في **قاموس dict**."
+          ]
+        },
+        "الأسماء `args` و `kwargs` عُرف متفق عليه؛ المهم هو النجمة والنجمتان.",
+        "والعكس صحيح عند **الاستدعاء**: `f(*my_list)` تفك القائمة إلى قيم منفصلة، و `f(**my_dict)` تفك القاموس إلى معاملات مسماة.",
+        {
+          "h": "الترتيب في التعريف"
+        },
+        {
+          "code": [
+            "def f(required, optional=10, *args, keyword_only=False, **kwargs):",
+            "    ..."
+          ],
+          "label": "الترتيب الصحيح"
+        },
+        "المعاملات العادية أولاً، ثم ذات القيم الافتراضية، ثم `*args`، ثم المعاملات المسماة فقط، ثم `**kwargs` أخيراً."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "ستقرأ هذه الصيغة كثيراً في توثيق المكتبات: `pd.read_csv(filepath, **kwargs)` و `plt.plot(*args, **kwargs)`. فهمها يجعل التوثيق مفهوماً. وستحتاجها عندما تكتب دالة تغلّف دالة أخرى وتمرر لها الإعدادات كما هي، أو دالة تحسب مؤشراً على أي عدد من القيم."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`*args`: عندما يكون عدد القيم متغيراً بطبيعته (مجموع، متوسط، دمج).",
+            "`**kwargs`: عندما تمرر إعدادات اختيارية لدالة أخرى، أو تقبل حقولاً وصفية مرنة.",
+            "لا تستخدمهما لمجرد الاختصار: المعاملات الصريحة المسماة توثّق الدالة وتكشف الأخطاء الإملائية."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "*args: متوسط أي عدد من القيم",
+      "code": [
+        "def average(*values):",
+        "    if not values:",
+        "        return None",
+        "    return sum(values) / len(values)",
+        "",
+        "print(average(80, 90))",
+        "print(average(70, 85, 90, 65))",
+        "print(average())",
+        "",
+        "scores = [60, 75, 90]",
+        "print(average(*scores))"
+      ],
+      "explanation": [
+        {
+          "code": "def average(*values):",
+          "text": "كل القيم الممررة تُجمع في صف اسمه `values`."
+        },
+        {
+          "code": "if not values:",
+          "text": "الصف الفارغ `False`، فنرجع `None` بدل القسمة على صفر."
+        },
+        {
+          "code": "average(*scores)",
+          "text": "النجمة عند الاستدعاء تفك القائمة: كأنك كتبت `average(60, 75, 90)`."
+        }
+      ],
+      "expected_output": [
+        "85.0",
+        "77.5",
+        "None",
+        "75.0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "**kwargs: حقول وصفية مرنة",
+      "code": [
+        "def make_record(order_id, amount, **details):",
+        "    record = {\"order_id\": order_id, \"amount\": amount}",
+        "    record.update(details)",
+        "    return record",
+        "",
+        "r1 = make_record(\"A1\", 250)",
+        "r2 = make_record(\"A2\", 90, city=\"جدة\", coupon=\"WELCOME\")",
+        "print(r1)",
+        "print(r2)",
+        "print(type(r2))"
+      ],
+      "explanation": [
+        {
+          "code": "**details",
+          "text": "أي معامل مسمى غير `order_id` و `amount` يُجمع في القاموس `details`."
+        },
+        {
+          "code": "record.update(details)",
+          "text": "`update` تضيف كل مفاتيح قاموس إلى قاموس آخر."
+        }
+      ],
+      "expected_output": [
+        "{'order_id': 'A1', 'amount': 250}",
+        "{'order_id': 'A2', 'amount': 90, 'city': 'جدة', 'coupon': 'WELCOME'}",
+        "<class 'dict'>"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "تمرير الإعدادات لدالة أخرى وفك القاموس",
+      "code": [
+        "def format_money(value, currency=\"ر.س\", decimals=2):",
+        "    return f\"{value:,.{decimals}f} {currency}\"",
+        "",
+        "def report_line(label, value, **format_options):",
+        "    return f\"{label}: {format_money(value, **format_options)}\"",
+        "",
+        "print(report_line(\"الإيراد\", 1234567.891))",
+        "print(report_line(\"الإيراد\", 1234567.891, decimals=0))",
+        "",
+        "settings = {\"currency\": \"USD\", \"decimals\": 1}",
+        "print(format_money(1234.5, **settings))"
+      ],
+      "explanation": [
+        {
+          "code": "**format_options",
+          "text": "`report_line` لا تهتم بتفاصيل التنسيق؛ تجمعها وتمررها كما هي."
+        },
+        {
+          "code": "format_money(value, **format_options)",
+          "text": "النجمتان عند الاستدعاء تفكان القاموس إلى `decimals=0` مثلاً."
+        },
+        {
+          "code": "f\"{value:,.{decimals}f}\"",
+          "text": "يمكن وضع متغير داخل صيغة التنسيق نفسها."
+        }
+      ],
+      "expected_output": [
+        "الإيراد: 1,234,567.89 ر.س",
+        "الإيراد: 1,234,568 ر.س",
+        "1,234.5 USD"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`args` صف و `kwargs` قاموس: تتعامل معهما بكل أدوات الصفوف والقواميس.",
+        "بعد `*args` في التعريف، أي معامل تكتبه لا يُمرر إلا بالاسم (keyword-only)، وهذا مفيد لإجبار الوضوح.",
+        "`**kwargs` تبتلع الأخطاء الإملائية بصمت: `desimals=0` لن تسبب خطأ في `report_line` بل عند وصولها للدالة الداخلية."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "ترتيب خاطئ للمعاملات",
+          "wrong": [
+            "def f(**kwargs, *args):",
+            "    pass"
+          ],
+          "error": "SyntaxError: arguments cannot follow var-keyword argument",
+          "error_type": "SyntaxError",
+          "why": "`**kwargs` يجب أن تكون الأخيرة في التعريف.",
+          "fix": [
+            "def f(*args, **kwargs):",
+            "    print(args, kwargs)",
+            "",
+            "f(1, 2, x=3)"
+          ]
+        },
+        {
+          "title": "تمرير القائمة بدون فك",
+          "wrong": [
+            "def total(*values):",
+            "    return sum(values)",
+            "",
+            "print(total([1, 2, 3]))"
+          ],
+          "error": "TypeError: unsupported operand type(s) for +: 'int' and 'list'",
+          "error_type": "TypeError",
+          "why": "بدون النجمة تصل القائمة كقيمة واحدة، فيصبح `values` صفاً فيه قائمة واحدة ولا يمكن جمعها مع صفر.",
+          "fix": [
+            "def total(*values):",
+            "    return sum(values)",
+            "",
+            "print(total(*[1, 2, 3]))"
+          ]
+        },
+        {
+          "title": "مفتاح مكرر عند فك القاموس",
+          "wrong": [
+            "def f(value, decimals=2):",
+            "    return round(value, decimals)",
+            "",
+            "opts = {\"decimals\": 1}",
+            "print(f(3.14159, decimals=3, **opts))"
+          ],
+          "error": "TypeError: __main__.f() got multiple values for keyword argument 'decimals'",
+          "error_type": "TypeError",
+          "why": "القاموس يحتوي `decimals` وأعطيناها قيمة صريحة أيضاً، فوصلت مرتين.",
+          "fix": [
+            "def f(value, decimals=2):",
+            "    return round(value, decimals)",
+            "",
+            "opts = {\"decimals\": 1}",
+            "print(f(3.14159, **opts))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "دالة ملخص مرنة",
+    "prompt": [
+      "اكتب دالة `summarize(*values, **options)` ترجع نصاً يلخص القيم."
+    ],
+    "requirements": [
+      "إذا لم تُمرر أي قيمة ترجع النص `\"لا توجد قيم\"`.",
+      "وإلا ترجع نصاً بالشكل: `العدد: 3 | المتوسط: 20.00` (المتوسط بمنزلتين).",
+      "إذا مُرر `show_max=True` تضيف في النهاية: ` | الأعلى: 30`.",
+      "إذا مُرر `label=\"...\"` يبدأ النص بالتسمية ثم نقطتين ومسافة، مثل `المبيعات: العدد: ...`."
+    ],
+    "starter_code": [
+      "def summarize(*values, **options):",
+      "    # اكتب الحل هنا",
+      "    pass",
+      "",
+      "",
+      "print(summarize(10, 20, 30))",
+      "print(summarize(10, 20, 30, show_max=True, label=\"المبيعات\"))"
+    ],
+    "tests": [
+      "assert summarize() == \"لا توجد قيم\", \"بدون قيم يجب أن ترجع: لا توجد قيم\"",
+      "assert summarize(10, 20, 30) == \"العدد: 3 | المتوسط: 20.00\", f\"الناتج غير صحيح: {summarize(10, 20, 30)!r}\"",
+      "assert summarize(5) == \"العدد: 1 | المتوسط: 5.00\", \"قيمة واحدة: العدد 1 والمتوسط 5.00\"",
+      "got = summarize(10, 20, 30, show_max=True, label=\"المبيعات\")",
+      "assert got == \"المبيعات: العدد: 3 | المتوسط: 20.00 | الأعلى: 30\", f\"الناتج مع الخيارات غير صحيح: {got!r}\"",
+      "data = [4, 8]",
+      "assert summarize(*data) == \"العدد: 2 | المتوسط: 6.00\", \"يجب أن تعمل مع فك قائمة\""
+    ],
+    "hints": [
+      "`values` صف: `len(values)` و `sum(values)`.",
+      "`options` قاموس: `options.get(\"show_max\")` ترجع `None` إذا لم يُمرر.",
+      "المتوسط بمنزلتين: `f\"{avg:.2f}\"`."
+    ],
+    "solution": [
+      "def summarize(*values, **options):",
+      "    if not values:",
+      "        return \"لا توجد قيم\"",
+      "    text = f\"العدد: {len(values)} | المتوسط: {sum(values) / len(values):.2f}\"",
+      "    if options.get(\"show_max\"):",
+      "        text += f\" | الأعلى: {max(values)}\"",
+      "    if \"label\" in options:",
+      "        text = f\"{options['label']}: {text}\"",
+      "    return text",
+      "",
+      "",
+      "print(summarize(10, 20, 30))",
+      "print(summarize(10, 20, 30, show_max=True, label=\"المبيعات\"))"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "داخل الدالة `def f(*args, **kwargs)`، ما نوع `args` و `kwargs` عند استدعاء `f(1, 2, x=3)`؟",
+    "options": [
+      "`args` قائمة و `kwargs` قائمة",
+      "`args` صف `(1, 2)` و `kwargs` قاموس `{'x': 3}`",
+      "`args` قاموس و `kwargs` صف",
+      "كلاهما قاموس"
+    ],
+    "answer": 1,
+    "explanation": "القيم الموضعية تُجمع في صف، والمسماة في قاموس."
+  },
+  "summary": [
+    "`*args` تجمع القيم الموضعية الإضافية في صف، و `**kwargs` تجمع المسماة في قاموس.",
+    "عند الاستدعاء: `f(*lst)` تفك القائمة، و `f(**d)` تفك القاموس.",
+    "الترتيب: عادية، افتراضية، `*args`، مسماة فقط، `**kwargs`.",
+    "تظهر كثيراً في توثيق المكتبات، ومفيدة لتمرير الإعدادات بين الدوال."
+  ]
+}

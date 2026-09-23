@@ -6,6 +6,19 @@
 let pyodide = null;
 let runFn = null;
 let readyPromise = null;
+const fileCache = new Map();
+
+/** يكتب ملفات البيانات (مثل datasets/store_sales.csv) في نظام ملفات Pyodide قبل التشغيل. */
+async function writeFiles(files) {
+    for (const f of files || []) {
+        if (!fileCache.has(f.url)) {
+            const res = await fetch(f.url);
+            if (!res.ok) throw new Error(`تعذّر تحميل ملف البيانات ${f.name} (${res.status})`);
+            fileCache.set(f.url, new Uint8Array(await res.arrayBuffer()));
+        }
+        pyodide.FS.writeFile(f.name, fileCache.get(f.url));
+    }
+}
 
 async function init(indexURL, harnessURL) {
     importScripts(indexURL + 'pyodide.js');
@@ -32,6 +45,7 @@ self.onmessage = async (event) => {
         try {
             await readyPromise;
             // تحميل المكتبات المستوردة تلقائياً (numpy, pandas, ...) عند الحاجة
+            await writeFiles(msg.files);
             await pyodide.loadPackagesFromImports(msg.code);
             if (msg.tests) await pyodide.loadPackagesFromImports(msg.tests);
             const pyResult = runFn(msg.code, msg.tests || null, msg.stdin || null);

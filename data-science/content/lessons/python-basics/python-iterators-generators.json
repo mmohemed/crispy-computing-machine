@@ -1,0 +1,340 @@
+{
+  "slug": "python-iterators-generators",
+  "course": "python-basics",
+  "module": "python-pro",
+  "order": 22,
+  "title": "Iterators و Generators",
+  "title_en": "Iterators & Generators",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تفهم ما يحدث داخل حلقة `for` باستخدام `iter` و `next`.",
+    "تكتب دوال Generator باستخدام `yield`.",
+    "تستخدم Generator Expressions مع `sum` و `max` و `any`.",
+    "تعرف لماذا توفّر Generators الذاكرة مع الملفات والبيانات الكبيرة."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "كيف تعمل for فعلاً؟",
+      "body": [
+        "أي شيء يمكن المرور عليه بـ `for` (قائمة، نص، ملف، قاموس) يسمى **iterable**. عندما تبدأ الحلقة يطلب Python منه **iterator** بـ `iter()`، ثم يطلب العنصر التالي بـ `next()` مرة بعد مرة، حتى يرفع الـ iterator خطأ `StopIteration` فتنتهي الحلقة بهدوء.",
+        "الـ **Generator** طريقة سهلة لصنع iterator بنفسك: دالة عادية لكن بدل `return` تستخدم `yield`. في كل مرة يُطلب عنصر تعمل الدالة حتى تصل إلى `yield` فتعطي قيمة و**تتوقف مؤقتاً** محتفظة بحالتها، ثم تكمل من نفس النقطة عند الطلب التالي.",
+        {
+          "table": {
+            "head": [
+              "",
+              "قائمة",
+              "Generator"
+            ],
+            "rows": [
+              [
+                "متى تُحسب القيم؟",
+                "كلها فوراً",
+                "واحدة عند الطلب (كسولة lazy)"
+              ],
+              [
+                "الذاكرة",
+                "تحتفظ بكل العناصر",
+                "عنصر واحد في كل لحظة"
+              ],
+              [
+                "إعادة المرور",
+                "ممكنة مرات كثيرة",
+                "مرة واحدة فقط"
+              ],
+              [
+                "الكتابة",
+                "`[x * 2 for x in data]`",
+                "`(x * 2 for x in data)`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "البيانات الحقيقية قد تكون أكبر من ذاكرة جهازك: ملف سجلات من عشرة ملايين سطر مثلاً. إذا قرأته كله في قائمة قد يتوقف البرنامج. أما المرور عليه سطراً سطراً بـ Generator فيستهلك ذاكرة سطر واحد فقط. وهذه الفكرة نفسها تستخدمها Pandas عند قراءة الملفات الضخمة على دفعات (`chunksize`)، وتستخدمها أطر التعلم العميق لتغذية النموذج بالبيانات دفعة بعد دفعة."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "Generator Expression داخل `sum` و `max` و `min` و `any` و `all`: لا حاجة لبناء قائمة مؤقتة.",
+            "دالة Generator لقراءة ملف كبير ومعالجته سطراً سطراً.",
+            "عندما تحتاج المرور على البيانات أكثر من مرة، أو تحتاج `len` أو الفهرسة، استخدم قائمة."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "ما تحت حلقة for",
+      "code": [
+        "cities = [\"الرياض\", \"جدة\", \"أبها\"]",
+        "it = iter(cities)",
+        "print(next(it))",
+        "print(next(it))",
+        "print(next(it))",
+        "try:",
+        "    next(it)",
+        "except StopIteration:",
+        "    print(\"انتهت العناصر\")"
+      ],
+      "explanation": [
+        {
+          "code": "it = iter(cities)",
+          "text": "نطلب iterator من القائمة، كما تفعل `for` في الخلفية."
+        },
+        {
+          "code": "next(it)",
+          "text": "كل استدعاء يعطي العنصر التالي."
+        },
+        {
+          "code": "except StopIteration:",
+          "text": "بعد آخر عنصر يُرفع `StopIteration`، و `for` تلتقطه تلقائياً وتنهي الحلقة."
+        }
+      ],
+      "expected_output": [
+        "الرياض",
+        "جدة",
+        "أبها",
+        "انتهت العناصر"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "دالة Generator بـ yield",
+      "code": [
+        "def read_valid_amounts(lines):",
+        "    for line in lines:",
+        "        line = line.strip()",
+        "        if not line or not line.isdigit():",
+        "            continue",
+        "        yield int(line)",
+        "",
+        "raw = [\"120\", \"\", \"abc\", \"95\", \"300\"]",
+        "gen = read_valid_amounts(raw)",
+        "print(type(gen).__name__)",
+        "print(next(gen))",
+        "print(list(gen))",
+        "print(list(gen))"
+      ],
+      "explanation": [
+        {
+          "code": "yield int(line)",
+          "text": "تعطي قيمة وتتوقف مؤقتاً. عند الطلب التالي تكمل الحلقة من حيث توقفت."
+        },
+        {
+          "code": "type(gen).__name__",
+          "text": "استدعاء الدالة لا ينفذها؛ يرجع كائن `generator` جاهزاً للطلب."
+        },
+        {
+          "code": "print(list(gen))",
+          "text": "`list` تسحب كل ما تبقى: 95 و 300 (القيمة 120 سُحبت بـ `next`)."
+        },
+        {
+          "code": "print(list(gen)) مرة ثانية",
+          "text": "الـ Generator استُهلك، فالمرور الثاني يعطي قائمة فارغة."
+        }
+      ],
+      "expected_output": [
+        "generator",
+        "120",
+        "[95, 300]",
+        "[]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "Generator Expressions مع الدوال المجمّعة",
+      "code": [
+        "orders = [250, 90, 410, 35, 180]",
+        "",
+        "total_large = sum(a for a in orders if a >= 100)",
+        "has_big = any(a > 400 for a in orders)",
+        "all_positive = all(a > 0 for a in orders)",
+        "biggest_small = max(a for a in orders if a < 200)",
+        "",
+        "print(total_large, has_big, all_positive, biggest_small)",
+        "",
+        "squares = (n * n for n in range(1_000_000))",
+        "print(next(squares), next(squares), next(squares))"
+      ],
+      "explanation": [
+        {
+          "code": "sum(a for a in orders if a >= 100)",
+          "text": "بدون أقواس مربعة: لا تُبنى قائمة مؤقتة، و `sum` تسحب القيم واحدة واحدة."
+        },
+        {
+          "code": "any / all",
+          "text": "`any` تتوقف عند أول `True`، و `all` عند أول `False`، فلا تمر على كل البيانات بلا داعٍ."
+        },
+        {
+          "code": "(n * n for n in range(1_000_000))",
+          "text": "مليون عنصر لا تُحسب مسبقاً؛ نحسب فقط ما نطلبه. و `_` داخل الرقم فاصل للقراءة فقط."
+        }
+      ],
+      "expected_output": [
+        "840 True True 180",
+        "0 1 4"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "الـ Generator يُستهلك مرة واحدة. إذا احتجت المرور مرتين فحوّله إلى قائمة بـ `list(gen)`، أو أنشئه من جديد.",
+        "الملف المفتوح بـ `open` هو نفسه iterator على الأسطر، ولهذا تعمل `for line in f` بكفاءة مع الملفات الكبيرة.",
+        "`len()` لا تعمل مع Generator لأنه لا يعرف طوله مسبقاً.",
+        "`range` ليست قائمة ولا Generator، بل تسلسل كسول يمكن المرور عليه مرات كثيرة."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "المرور على Generator مرتين",
+          "wrong": [
+            "amounts = (a for a in [10, 20, 30])",
+            "total = sum(amounts)",
+            "count = sum(1 for _ in amounts)",
+            "print(total / count)"
+          ],
+          "error": "ZeroDivisionError: division by zero",
+          "error_type": "ZeroDivisionError",
+          "why": "المرور الأول (داخل `sum`) استهلك كل العناصر، فالمرور الثاني فارغ والقسمة على صفر.",
+          "fix": [
+            "amounts = [a for a in [10, 20, 30]]",
+            "total = sum(amounts)",
+            "count = len(amounts)",
+            "print(total / count)"
+          ]
+        },
+        {
+          "title": "استخدام len مع Generator",
+          "wrong": [
+            "gen = (x for x in range(5))",
+            "print(len(gen))"
+          ],
+          "error": "TypeError: object of type 'generator' has no len()",
+          "error_type": "TypeError",
+          "why": "الـ Generator لا يعرف عدد عناصره قبل إنتاجها.",
+          "fix": [
+            "gen = (x for x in range(5))",
+            "print(sum(1 for _ in gen))"
+          ]
+        },
+        {
+          "title": "استخدام return بدل yield",
+          "wrong": [
+            "def evens(n):",
+            "    for i in range(n):",
+            "        if i % 2 == 0:",
+            "            return i",
+            "",
+            "print(evens(10))"
+          ],
+          "why": "`return` تنهي الدالة عند أول عنصر، فتحصل على قيمة واحدة بدل سلسلة.",
+          "fix": [
+            "def evens(n):",
+            "    for i in range(n):",
+            "        if i % 2 == 0:",
+            "            yield i",
+            "",
+            "print(list(evens(10)))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "قراءة سجلات على دفعات",
+    "prompt": [
+      "اكتب دالتي Generator لمعالجة سجلات دخول بدون تحميلها كلها في قائمة:"
+    ],
+    "requirements": [
+      "`parse_logs(lines)`: لكل سطر بالشكل `\"user,seconds\"` تعطي صفاً `(user, seconds)` حيث `seconds` عدد صحيح، وتتجاهل الأسطر التالفة (ليس فيها فاصلة واحدة، أو الثانية ليست أرقاماً).",
+      "`batches(items, size)`: تعطي قوائم بحجم `size` من العناصر، والأخيرة قد تكون أصغر.",
+      "`total_seconds`: مجموع الثواني في `logs` باستخدام Generator Expression مع `parse_logs`."
+    ],
+    "starter_code": [
+      "def parse_logs(lines):",
+      "    pass",
+      "",
+      "",
+      "def batches(items, size):",
+      "    pass",
+      "",
+      "",
+      "logs = [\"u1,30\", \"u2,45\", \"broken\", \"u1,x\", \"u3,120\", \"u2,15\"]",
+      "total_seconds = 0",
+      "print(total_seconds)",
+      "print(list(batches([1, 2, 3, 4, 5], 2)))"
+    ],
+    "tests": [
+      "import types",
+      "g = parse_logs([\"a,1\"])",
+      "assert isinstance(g, types.GeneratorType), \"parse_logs يجب أن تكون Generator (استخدم yield)\"",
+      "assert list(parse_logs([\"u1,30\", \"bad\", \"u2,x\", \"u3,5\"])) == [(\"u1\", 30), (\"u3\", 5)], \"parse_logs تتجاهل الأسطر التالفة وتحوّل الثواني إلى int\"",
+      "assert isinstance(batches([1], 1), types.GeneratorType), \"batches يجب أن تكون Generator\"",
+      "assert list(batches([1, 2, 3, 4, 5], 2)) == [[1, 2], [3, 4], [5]], \"batches([1..5], 2) يجب أن تعطي [[1, 2], [3, 4], [5]]\"",
+      "assert list(batches([], 3)) == [], \"قائمة فارغة لا تعطي أي دفعة\"",
+      "assert total_seconds == 210, f\"total_seconds يجب أن يكون 210، والموجود {total_seconds}\""
+    ],
+    "hints": [
+      "في `parse_logs`: قسّم بـ `split(\",\")` وتحقق من الطول و `isdigit()` ثم `yield`.",
+      "في `batches`: اجمع في قائمة مؤقتة، وعندما يصل طولها إلى `size` أعطها بـ `yield` وابدأ قائمة جديدة. لا تنسَ الدفعة الأخيرة."
+    ],
+    "solution": [
+      "def parse_logs(lines):",
+      "    for line in lines:",
+      "        parts = line.strip().split(\",\")",
+      "        if len(parts) != 2 or not parts[1].isdigit():",
+      "            continue",
+      "        yield parts[0], int(parts[1])",
+      "",
+      "",
+      "def batches(items, size):",
+      "    batch = []",
+      "    for item in items:",
+      "        batch.append(item)",
+      "        if len(batch) == size:",
+      "            yield batch",
+      "            batch = []",
+      "    if batch:",
+      "        yield batch",
+      "",
+      "",
+      "logs = [\"u1,30\", \"u2,45\", \"broken\", \"u1,x\", \"u3,120\", \"u2,15\"]",
+      "total_seconds = sum(seconds for user, seconds in parse_logs(logs))",
+      "print(total_seconds)",
+      "print(list(batches([1, 2, 3, 4, 5], 2)))"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "gen = (x * 10 for x in [1, 2, 3])",
+      "print(sum(gen), sum(gen))"
+    ],
+    "options": [
+      "60 60",
+      "60 0",
+      "0 60",
+      "60 None"
+    ],
+    "answer": 1,
+    "explanation": "المرور الأول استهلك الـ Generator فأعطى 60، والثاني لا يجد عناصر فمجموعه 0."
+  },
+  "summary": [
+    "`for` تستخدم `iter()` و `next()` في الخلفية وتتوقف عند `StopIteration`.",
+    "دالة فيها `yield` تصبح Generator ينتج القيم عند الطلب ويحتفظ بحالته.",
+    "`(expr for x in data)` مع `sum` و `max` و `any` و `all` توفر الذاكرة.",
+    "الـ Generator يُستهلك مرة واحدة، ولا يدعم `len`."
+  ]
+}

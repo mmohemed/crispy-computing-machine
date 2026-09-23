@@ -1,0 +1,379 @@
+{
+  "slug": "python-oop",
+  "course": "python-basics",
+  "module": "python-pro",
+  "order": 21,
+  "title": "الأصناف والكائنات",
+  "title_en": "Classes & Objects",
+  "minutes": 35,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تعرّف صنفاً Class بخصائص ودوال.",
+    "تنشئ كائنات Objects منه وتستخدم `__init__` و `self`.",
+    "تكتب دوالاً Methods تغيّر حالة الكائن أو تحسب منها.",
+    "تستخدم `__repr__` والوراثة Inheritance بشكل أساسي، وتربط ذلك بما ستراه في Pandas و Scikit-learn."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "الصنف قالب، والكائن نسخة منه",
+      "body": [
+        "حتى الآن فصلت البيانات (قواميس وقوائم) عن الدوال التي تعمل عليها. **البرمجة كائنية التوجه OOP** تجمعهما في وحدة واحدة: **الصنف class** قالب يصف نوعاً من الأشياء، ماذا يحمل من بيانات (**خصائص attributes**) وماذا يستطيع أن يفعل (**دوال methods**). و**الكائن object** نسخة محددة من هذا القالب.",
+        {
+          "code": [
+            "class Product:",
+            "    def __init__(self, name, price):",
+            "        self.name = name        # خاصية",
+            "        self.price = price",
+            "",
+            "    def with_vat(self):         # دالة",
+            "        return self.price * 1.15",
+            "",
+            "p = Product(\"سماعة\", 149)       # كائن"
+          ],
+          "label": "الشكل العام"
+        },
+        {
+          "list": [
+            "`__init__` تُستدعى تلقائياً عند إنشاء الكائن، ووظيفتها تجهيز خصائصه.",
+            "`self` هو الكائن نفسه. كل method تستقبله كأول معامل، و Python يمرره تلقائياً عند كتابة `p.with_vat()`.",
+            "أسماء الأصناف تُكتب بأسلوب `PascalCase`: `Product` و `SalesReport`."
+          ]
+        },
+        "وأنت تستخدم الكائنات منذ أول درس: كل نص كائن من الصنف `str` ولذلك له دوال مثل `.upper()`. وفي Pandas سيكون `df` كائناً من الصنف `DataFrame`، وفي Scikit-learn النموذج كائن تدرّبه بـ `model.fit()`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "لن تكتب في علم البيانات أصنافاً كثيرة غالباً، لكنك **ستستخدم** أصناف المكتبات طوال الوقت. فهم `self` والخصائص والدوال يجعل عبارات مثل `df.shape` (خاصية) و `df.head()` (دالة) و `model.fit(X, y)` (دالة تغيّر حالة النموذج) مفهومة. وعندما تكبر مشاريعك ستحتاج أحياناً صنفاً يجمع خطوات تنظيف أو تقرير متكرر في مكان واحد."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "عندما تتكرر مجموعة بيانات مع نفس العمليات عليها (حساب، مخزون، تقرير).",
+            "عندما يكون للشيء **حالة تتغير** عبر الوقت (رصيد، نموذج يُدرّب).",
+            "إذا كانت مجرد بيانات بلا سلوك فالقاموس أو الصف يكفي؛ لا تنشئ صنفاً بلا حاجة."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "صنف منتج",
+      "code": [
+        "class Product:",
+        "    def __init__(self, name, price, stock=0):",
+        "        self.name = name",
+        "        self.price = price",
+        "        self.stock = stock",
+        "",
+        "    def with_vat(self, rate=0.15):",
+        "        return round(self.price * (1 + rate), 2)",
+        "",
+        "    def sell(self, qty):",
+        "        if qty > self.stock:",
+        "            raise ValueError(f\"المخزون لا يكفي: المتوفر {self.stock}\")",
+        "        self.stock -= qty",
+        "        return self.price * qty",
+        "",
+        "headphones = Product(\"سماعة\", 149, stock=10)",
+        "charger = Product(\"شاحن\", 59)",
+        "",
+        "print(headphones.name, headphones.with_vat())",
+        "print(headphones.sell(3), headphones.stock)",
+        "print(charger.stock)"
+      ],
+      "explanation": [
+        {
+          "code": "def __init__(self, name, price, stock=0):",
+          "text": "يُستدعى عند `Product(...)`. نخزن القيم في `self` لتصبح خصائص للكائن."
+        },
+        {
+          "code": "def sell(self, qty):",
+          "text": "دالة تغيّر حالة الكائن: تنقص المخزون وترجع قيمة البيع."
+        },
+        {
+          "code": "headphones.sell(3)",
+          "text": "يمرر Python الكائن `headphones` كـ `self` تلقائياً، و `3` كـ `qty`."
+        },
+        {
+          "code": "charger.stock",
+          "text": "كل كائن له خصائصه المستقلة: مخزون الشاحن 0 لم يتأثر ببيع السماعة."
+        }
+      ],
+      "expected_output": [
+        "سماعة 171.35",
+        "447 7",
+        "0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "__repr__ وكائنات داخل قائمة",
+      "code": [
+        "class Order:",
+        "    def __init__(self, order_id, amount, city):",
+        "        self.order_id = order_id",
+        "        self.amount = amount",
+        "        self.city = city",
+        "",
+        "    def __repr__(self):",
+        "        return f\"Order({self.order_id}, {self.amount}, {self.city})\"",
+        "",
+        "    def is_large(self, threshold=200):",
+        "        return self.amount >= threshold",
+        "",
+        "orders = [Order(\"A1\", 250, \"جدة\"), Order(\"A2\", 90, \"الرياض\"), Order(\"A3\", 410, \"أبها\")]",
+        "print(orders[0])",
+        "",
+        "large = [o for o in orders if o.is_large()]",
+        "print(large)",
+        "print(sum(o.amount for o in orders))"
+      ],
+      "explanation": [
+        {
+          "code": "def __repr__(self):",
+          "text": "دالة خاصة تحدد كيف يُعرض الكائن عند طباعته. بدونها سترى شيئاً مثل `<__main__.Order object at 0x...>`."
+        },
+        {
+          "code": "o.is_large()",
+          "text": "كل ما تعلمته (Comprehensions والدوال) يعمل مع الكائنات أيضاً."
+        },
+        {
+          "code": "sum(o.amount for o in orders)",
+          "text": "مجموع خاصية من قائمة كائنات."
+        }
+      ],
+      "expected_output": [
+        "Order(A1, 250, جدة)",
+        "[Order(A1, 250, جدة), Order(A3, 410, أبها)]",
+        "750"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الوراثة: صنف يبني على صنف",
+      "code": [
+        "class Account:",
+        "    def __init__(self, owner, balance=0):",
+        "        self.owner = owner",
+        "        self.balance = balance",
+        "",
+        "    def deposit(self, amount):",
+        "        self.balance += amount",
+        "",
+        "    def describe(self):",
+        "        return f\"{self.owner}: {self.balance}\"",
+        "",
+        "class SavingsAccount(Account):",
+        "    def __init__(self, owner, balance=0, rate=0.03):",
+        "        super().__init__(owner, balance)",
+        "        self.rate = rate",
+        "",
+        "    def add_interest(self):",
+        "        self.deposit(round(self.balance * self.rate, 2))",
+        "",
+        "s = SavingsAccount(\"ريم\", 1000)",
+        "s.deposit(500)",
+        "s.add_interest()",
+        "print(s.describe())",
+        "print(isinstance(s, Account))"
+      ],
+      "explanation": [
+        {
+          "code": "class SavingsAccount(Account):",
+          "text": "الصنف الجديد **يرث** كل خصائص ودوال `Account`، ويضيف عليها."
+        },
+        {
+          "code": "super().__init__(owner, balance)",
+          "text": "نستدعي تجهيز الصنف الأب ثم نضيف الخاصية الجديدة."
+        },
+        {
+          "code": "s.deposit(500)",
+          "text": "دالة موروثة لم نكتبها في الصنف الجديد."
+        },
+        {
+          "code": "isinstance(s, Account)",
+          "text": "حساب التوفير هو أيضاً حساب. في Scikit-learn كل النماذج ترث من أصناف أساسية مشتركة، ولذلك لها نفس الدوال `fit` و `predict`."
+        }
+      ],
+      "expected_output": [
+        "ريم: 1545.0",
+        "True"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "لا تنسَ `self` كأول معامل في كل method، ولا تنسَ `self.` عند الوصول إلى الخصائص داخل الصنف.",
+        "الخاصية بدون أقواس `df.shape`، والدالة بأقواس `df.head()`. هذا الفرق نفسه ستراه في كل المكتبات.",
+        "الدوال التي تبدأ وتنتهي بشرطتين مثل `__init__` و `__repr__` تسمى dunder methods، ويستدعيها Python تلقائياً في مواقف محددة.",
+        "في Python الحديثة توجد `dataclasses` التي تختصر كتابة `__init__` و `__repr__` لأصناف البيانات. ستراها في أكواد المشاريع لاحقاً."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "نسيان self في تعريف الدالة",
+          "wrong": [
+            "class Box:",
+            "    def size():",
+            "        return 3",
+            "",
+            "print(Box().size())"
+          ],
+          "error": "TypeError: Box.size() takes 0 positional arguments but 1 was given",
+          "error_type": "TypeError",
+          "why": "Python يمرر الكائن تلقائياً كأول وسيط، والدالة لم تُعرّف معاملاً يستقبله.",
+          "fix": [
+            "class Box:",
+            "    def size(self):",
+            "        return 3",
+            "",
+            "print(Box().size())"
+          ]
+        },
+        {
+          "title": "نسيان self. عند الوصول للخاصية",
+          "wrong": [
+            "class Product:",
+            "    def __init__(self, price):",
+            "        self.price = price",
+            "    def double(self):",
+            "        return price * 2",
+            "",
+            "print(Product(5).double())"
+          ],
+          "error": "NameError: name 'price' is not defined",
+          "error_type": "NameError",
+          "why": "`price` وحدها متغير غير معرّف داخل الدالة؛ الخاصية اسمها `self.price`.",
+          "fix": [
+            "class Product:",
+            "    def __init__(self, price):",
+            "        self.price = price",
+            "    def double(self):",
+            "        return self.price * 2",
+            "",
+            "print(Product(5).double())"
+          ]
+        },
+        {
+          "title": "استدعاء الصنف بدون القيم المطلوبة",
+          "wrong": [
+            "class Product:",
+            "    def __init__(self, name, price):",
+            "        self.name = name",
+            "        self.price = price",
+            "",
+            "p = Product(\"قلم\")"
+          ],
+          "error": "TypeError: Product.__init__() missing 1 required positional argument: 'price'",
+          "error_type": "TypeError",
+          "why": "`__init__` تطلب `name` و `price`.",
+          "fix": [
+            "class Product:",
+            "    def __init__(self, name, price):",
+            "        self.name = name",
+            "        self.price = price",
+            "",
+            "p = Product(\"قلم\", 5)",
+            "print(p.name, p.price)"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "صنف سلة المشتريات",
+    "prompt": [
+      "اكتب صنفاً `Cart` يمثل سلة مشتريات:"
+    ],
+    "requirements": [
+      "`__init__(self, customer)`: يخزن اسم العميل وقائمة فارغة `self.items`.",
+      "`add(self, name, price, qty=1)`: يضيف صفاً `(name, price, qty)` إلى `items`.",
+      "`total(self)`: يرجع مجموع السعر × الكمية لكل العناصر.",
+      "`apply_coupon(self, percent)`: يرجع الإجمالي بعد خصم النسبة المعطاة (مثلاً 10 تعني 10%) مقرباً لمنزلتين، ويرفع `ValueError` إذا كانت النسبة خارج المدى 0 إلى 50."
+    ],
+    "starter_code": [
+      "class Cart:",
+      "    pass",
+      "",
+      "",
+      "cart = Cart(\"نورة\")",
+      "cart.add(\"قهوة\", 18.5, 2)",
+      "cart.add(\"كيك\", 35)",
+      "print(cart.total())",
+      "print(cart.apply_coupon(10))"
+    ],
+    "tests": [
+      "c = Cart(\"نورة\")",
+      "assert c.customer == \"نورة\", \"خزّن اسم العميل في self.customer\"",
+      "assert c.items == [], \"items يجب أن تبدأ قائمة فارغة\"",
+      "c.add(\"قهوة\", 18.5, 2)",
+      "c.add(\"كيك\", 35)",
+      "assert c.items == [(\"قهوة\", 18.5, 2), (\"كيك\", 35, 1)], f\"items غير صحيحة: {c.items}\"",
+      "assert c.total() == 72.0, f\"total يجب أن يكون 72.0، والموجود {c.total()}\"",
+      "assert c.apply_coupon(10) == 64.8, f\"apply_coupon(10) يجب أن ترجع 64.8، وأعادت {c.apply_coupon(10)}\"",
+      "assert c.total() == 72.0, \"apply_coupon يجب ألا تغيّر الإجمالي الأصلي\"",
+      "try:",
+      "    c.apply_coupon(80)",
+      "    raise AssertionError(\"apply_coupon(80) يجب أن ترفع ValueError\")",
+      "except ValueError:",
+      "    pass",
+      "other = Cart(\"علي\")",
+      "assert other.items == [], \"كل سلة يجب أن تبدأ فارغة ومستقلة عن غيرها\""
+    ],
+    "hints": [
+      "في `__init__`: `self.customer = customer` و `self.items = []`.",
+      "`total` تستطيع استخدام `sum` مع Generator: `sum(p * q for n, p, q in self.items)`.",
+      "داخل `apply_coupon` استدعِ `self.total()` ولا تعدّل `items`."
+    ],
+    "solution": [
+      "class Cart:",
+      "    def __init__(self, customer):",
+      "        self.customer = customer",
+      "        self.items = []",
+      "",
+      "    def add(self, name, price, qty=1):",
+      "        self.items.append((name, price, qty))",
+      "",
+      "    def total(self):",
+      "        return sum(price * qty for name, price, qty in self.items)",
+      "",
+      "    def apply_coupon(self, percent):",
+      "        if not 0 <= percent <= 50:",
+      "            raise ValueError(\"نسبة الخصم يجب أن تكون بين 0 و 50\")",
+      "        return round(self.total() * (1 - percent / 100), 2)",
+      "",
+      "",
+      "cart = Cart(\"نورة\")",
+      "cart.add(\"قهوة\", 18.5, 2)",
+      "cart.add(\"كيك\", 35)",
+      "print(cart.total())",
+      "print(cart.apply_coupon(10))"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "في `df.head()` و `df.shape`، أيهما دالة وأيهما خاصية؟",
+    "options": [
+      "كلاهما دالة",
+      "`head()` دالة (بأقواس) و `shape` خاصية",
+      "`shape` دالة و `head()` خاصية",
+      "كلاهما خاصية"
+    ],
+    "answer": 1,
+    "explanation": "الأقواس تعني استدعاء دالة تُنفّذ عملاً، وبدونها نقرأ قيمة مخزنة في الكائن."
+  },
+  "summary": [
+    "`class` قالب، والكائن نسخة منه بخصائصه المستقلة.",
+    "`__init__` تجهز الخصائص، و `self` هو الكائن نفسه ويُمرر تلقائياً.",
+    "الدوال Methods تحسب من حالة الكائن أو تغيّرها، و `__repr__` تحدد شكل الطباعة.",
+    "الوراثة `class B(A)` تعيد استخدام صنف موجود؛ وكل مكتبات البيانات مبنية على هذه الأفكار."
+  ]
+}

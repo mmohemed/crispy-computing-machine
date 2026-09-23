@@ -1,0 +1,358 @@
+{
+  "slug": "python-datetime",
+  "course": "python-basics",
+  "module": "python-pro",
+  "order": 23,
+  "title": "التواريخ والأوقات",
+  "title_en": "Dates & Times",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تنشئ تواريخ وأوقاتاً بالوحدة `datetime`.",
+    "تحوّل النصوص إلى تواريخ بـ `strptime` والعكس بـ `strftime`.",
+    "تحسب الفروق وتضيف مدداً باستخدام `timedelta`.",
+    "تستخرج الشهر ويوم الأسبوع لتجميع البيانات الزمنية."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "التاريخ ليس نصاً",
+      "body": [
+        "في ملف CSV يصل التاريخ نصاً مثل `\"2025-03-14\"`. كنص لا تستطيع أن تسأل: كم يوماً بين تاريخين؟ ما يوم الأسبوع؟ ما الطلبات في الربع الأول؟ لذلك نحوّله إلى كائن **تاريخ** حقيقي.",
+        {
+          "table": {
+            "head": [
+              "الصنف",
+              "يمثل",
+              "مثال"
+            ],
+            "rows": [
+              [
+                "`date`",
+                "يوم (سنة، شهر، يوم)",
+                "`date(2025, 3, 14)`"
+              ],
+              [
+                "`datetime`",
+                "يوم ووقت",
+                "`datetime(2025, 3, 14, 21, 30)`"
+              ],
+              [
+                "`timedelta`",
+                "مدة زمنية",
+                "`timedelta(days=7)`"
+              ]
+            ]
+          }
+        },
+        {
+          "h": "التحويل بين النص والتاريخ"
+        },
+        {
+          "list": [
+            "`datetime.strptime(text, format)`: **p**arse، من نص إلى تاريخ.",
+            "`dt.strftime(format)`: **f**ormat، من تاريخ إلى نص.",
+            "`date.fromisoformat(\"2025-03-14\")`: أسرع طريقة للصيغة القياسية ISO."
+          ]
+        },
+        {
+          "table": {
+            "head": [
+              "الرمز",
+              "المعنى",
+              "مثال"
+            ],
+            "rows": [
+              [
+                "`%Y`",
+                "السنة بأربعة أرقام",
+                "`2025`"
+              ],
+              [
+                "`%m`",
+                "الشهر برقمين",
+                "`03`"
+              ],
+              [
+                "`%d`",
+                "اليوم برقمين",
+                "`14`"
+              ],
+              [
+                "`%H:%M`",
+                "الساعة والدقيقة (24 ساعة)",
+                "`21:30`"
+              ],
+              [
+                "`%A` / `%B`",
+                "اسم اليوم / الشهر بالإنجليزية",
+                "`Friday` / `March`"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "الزمن من أهم أبعاد التحليل: المبيعات الشهرية، والموسمية (رمضان، والجمعة البيضاء)، ومدة التوصيل، وعمر العميل منذ آخر شراء (Recency). كلها تبدأ بتحويل النص إلى تاريخ ثم الحساب عليه. وستستخدم نفس الأفكار لاحقاً في Pandas مع `pd.to_datetime` و `.dt`."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "حوّل التاريخ فور قراءته من الملف، قبل أي مقارنة أو ترتيب أو تجميع.",
+            "استخدم `timedelta` للإضافة والطرح، ولا تحسب الأيام يدوياً (الأشهر ليست متساوية والسنوات الكبيسة موجودة).",
+            "استخدم صيغة ISO `YYYY-MM-DD` عند حفظ التواريخ؛ فهي تُرتب نصياً بشكل صحيح وتفهمها كل الأدوات."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "من نص إلى تاريخ والعكس",
+      "code": [
+        "from datetime import datetime, date",
+        "",
+        "d = date.fromisoformat(\"2025-03-14\")",
+        "print(d.year, d.month, d.day)",
+        "print(d.strftime(\"%d/%m/%Y\"))",
+        "print(d.strftime(\"%A\"))",
+        "",
+        "ts = datetime.strptime(\"14/03/2025 21:30\", \"%d/%m/%Y %H:%M\")",
+        "print(ts)",
+        "print(ts.hour, ts.isoformat())"
+      ],
+      "explanation": [
+        {
+          "code": "date.fromisoformat(\"2025-03-14\")",
+          "text": "الصيغة القياسية لا تحتاج تحديد format."
+        },
+        {
+          "code": "d.strftime(\"%d/%m/%Y\")",
+          "text": "من تاريخ إلى نص بالشكل الذي نريده للعرض."
+        },
+        {
+          "code": "d.strftime(\"%A\")",
+          "text": "اسم اليوم: 14 مارس 2025 كان يوم جمعة."
+        },
+        {
+          "code": "datetime.strptime(..., \"%d/%m/%Y %H:%M\")",
+          "text": "عندما يكون النص بصيغة أخرى نصف شكله بالرموز بالضبط."
+        }
+      ],
+      "expected_output": [
+        "2025 3 14",
+        "14/03/2025",
+        "Friday",
+        "2025-03-14 21:30:00",
+        "21 2025-03-14T21:30:00"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الفروق والإضافة: مدة التوصيل",
+      "code": [
+        "from datetime import date, timedelta",
+        "",
+        "ordered = date(2025, 11, 27)",
+        "delivered = date(2025, 12, 3)",
+        "delay = delivered - ordered",
+        "print(delay.days, \"أيام\")",
+        "",
+        "promised = ordered + timedelta(days=5)",
+        "print(\"الموعد المتوقع:\", promised)",
+        "print(\"تأخر؟\", delivered > promised)",
+        "",
+        "print(date(2024, 3, 1) - date(2024, 2, 1))",
+        "print(date(2025, 3, 1) - date(2025, 2, 1))"
+      ],
+      "explanation": [
+        {
+          "code": "delivered - ordered",
+          "text": "طرح تاريخين يعطي `timedelta`، و `.days` عدد الأيام."
+        },
+        {
+          "code": "ordered + timedelta(days=5)",
+          "text": "إضافة مدة تعطي تاريخاً جديداً، مع احتساب نهاية الشهر تلقائياً."
+        },
+        {
+          "code": "delivered > promised",
+          "text": "التواريخ تُقارن مباشرة."
+        },
+        {
+          "code": "2024 مقابل 2025",
+          "text": "فبراير 2024 فيه 29 يوماً (سنة كبيسة). لهذا لا نحسب الأيام يدوياً."
+        }
+      ],
+      "expected_output": [
+        "6 أيام",
+        "الموعد المتوقع: 2025-12-02",
+        "تأخر؟ True",
+        "29 days, 0:00:00",
+        "28 days, 0:00:00"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "تجميع الطلبات حسب الشهر ويوم الأسبوع",
+      "code": [
+        "from datetime import date",
+        "from collections import Counter",
+        "",
+        "order_dates = [\"2025-03-02\", \"2025-03-14\", \"2025-11-28\", \"2025-11-28\", \"2025-11-29\", \"2025-06-10\"]",
+        "dates = [date.fromisoformat(d) for d in order_dates]",
+        "",
+        "by_month = Counter(d.month for d in dates)",
+        "print(sorted(by_month.items()))",
+        "",
+        "weekday_names = [\"الاثنين\", \"الثلاثاء\", \"الأربعاء\", \"الخميس\", \"الجمعة\", \"السبت\", \"الأحد\"]",
+        "by_weekday = Counter(weekday_names[d.weekday()] for d in dates)",
+        "print(by_weekday.most_common(1))",
+        "",
+        "first, last = min(dates), max(dates)",
+        "print(first, last, (last - first).days)"
+      ],
+      "explanation": [
+        {
+          "code": "d.month",
+          "text": "استخراج الشهر لتجميع الطلبات شهرياً."
+        },
+        {
+          "code": "d.weekday()",
+          "text": "رقم اليوم: 0 للاثنين حتى 6 للأحد. نستخدمه كموضع في قائمة الأسماء العربية."
+        },
+        {
+          "code": "min(dates), max(dates)",
+          "text": "التواريخ قابلة للمقارنة، فتعمل معها `min` و `max` و `sorted`."
+        }
+      ],
+      "expected_output": [
+        "[(3, 2), (6, 1), (11, 3)]",
+        "[('الجمعة', 3)]",
+        "2025-03-02 2025-11-29 272"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`weekday()` تبدأ من الاثنين = 0. أما `isoweekday()` فتبدأ من الاثنين = 1.",
+        "`strftime(\"%A\")` تعطي الأسماء بالإنجليزية؛ للعربية استخدم قائمة أسماء كما في المثال.",
+        "`datetime.now()` تعطي الوقت الحالي، ونتيجتها تتغير في كل تشغيل؛ لا تستخدمها في تحليل تريد تكراره بنفس النتائج، بل ثبّت تاريخ التحليل.",
+        "المناطق الزمنية موضوع مستقل (`zoneinfo`). البيانات هنا كلها بتوقيت واحد."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "صيغة لا تطابق النص",
+          "wrong": [
+            "from datetime import datetime",
+            "datetime.strptime(\"14/03/2025\", \"%Y-%m-%d\")"
+          ],
+          "error": "ValueError: time data '14/03/2025' does not match format '%Y-%m-%d'",
+          "error_type": "ValueError",
+          "why": "النص بصيغة يوم/شهر/سنة، والصيغة المعطاة سنة-شهر-يوم.",
+          "fix": [
+            "from datetime import datetime",
+            "print(datetime.strptime(\"14/03/2025\", \"%d/%m/%Y\"))"
+          ]
+        },
+        {
+          "title": "مقارنة تواريخ بصيغة غير ISO كنصوص",
+          "wrong": [
+            "print(\"02/12/2025\" > \"15/01/2025\")"
+          ],
+          "why": "النصوص تُقارن حرفاً حرفاً: `\"02/12/2025\"` أصغر من `\"15/01/2025\"` لأن `0` أصغر من `1`، رغم أن ديسمبر بعد يناير. حوّل إلى تاريخ أولاً.",
+          "fix": [
+            "from datetime import datetime",
+            "f = \"%d/%m/%Y\"",
+            "print(datetime.strptime(\"02/12/2025\", f) > datetime.strptime(\"15/01/2025\", f))"
+          ]
+        },
+        {
+          "title": "طرح رقم من تاريخ مباشرة",
+          "wrong": [
+            "from datetime import date",
+            "print(date(2025, 1, 10) - 7)"
+          ],
+          "error": "TypeError: unsupported operand type(s) for -: 'datetime.date' and 'int'",
+          "error_type": "TypeError",
+          "why": "لا يمكن طرح عدد من تاريخ؛ المدة يجب أن تكون `timedelta`.",
+          "fix": [
+            "from datetime import date, timedelta",
+            "print(date(2025, 1, 10) - timedelta(days=7))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تحليل تواريخ الاشتراكات",
+    "prompt": [
+      "لديك تواريخ آخر شراء لعملاء بصيغة `يوم/شهر/سنة`، وتاريخ التحليل ثابت: 31 ديسمبر 2025."
+    ],
+    "requirements": [
+      "`parsed`: قائمة كائنات `date` من `raw_dates` بنفس الترتيب.",
+      "`recency`: قائمة عدد الأيام من كل تاريخ حتى تاريخ التحليل.",
+      "`inactive`: عدد العملاء الذين مضى على آخر شراء لهم أكثر من 90 يوماً.",
+      "`busiest_month`: رقم الشهر الذي تكرر أكثر في التواريخ."
+    ],
+    "starter_code": [
+      "from datetime import date, datetime",
+      "",
+      "analysis_date = date(2025, 12, 31)",
+      "raw_dates = [\"15/11/2025\", \"03/03/2025\", \"28/11/2025\", \"20/06/2025\", \"30/11/2025\", \"01/12/2025\"]",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "from datetime import date as _d",
+      "assert parsed == [_d(2025, 11, 15), _d(2025, 3, 3), _d(2025, 11, 28), _d(2025, 6, 20), _d(2025, 11, 30), _d(2025, 12, 1)], f\"parsed غير صحيحة: {parsed}\"",
+      "assert recency == [46, 303, 33, 194, 31, 30], f\"recency غير صحيحة: {recency}\"",
+      "assert inactive == 2, f\"inactive يجب أن يكون 2، والموجود {inactive}\"",
+      "assert busiest_month == 11, f\"busiest_month يجب أن يكون 11، والموجود {busiest_month}\""
+    ],
+    "hints": [
+      "`datetime.strptime(text, \"%d/%m/%Y\").date()` تعطي `date` بدون وقت.",
+      "`(analysis_date - d).days` لعدد الأيام.",
+      "للشهر الأكثر تكراراً: `Counter(...).most_common(1)[0][0]`."
+    ],
+    "solution": [
+      "from datetime import date, datetime",
+      "from collections import Counter",
+      "",
+      "analysis_date = date(2025, 12, 31)",
+      "raw_dates = [\"15/11/2025\", \"03/03/2025\", \"28/11/2025\", \"20/06/2025\", \"30/11/2025\", \"01/12/2025\"]",
+      "",
+      "parsed = [datetime.strptime(d, \"%d/%m/%Y\").date() for d in raw_dates]",
+      "recency = [(analysis_date - d).days for d in parsed]",
+      "inactive = sum(1 for r in recency if r > 90)",
+      "busiest_month = Counter(d.month for d in parsed).most_common(1)[0][0]",
+      "",
+      "print(recency, inactive, busiest_month)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "ما ناتج `date(2025, 3, 1) - date(2025, 2, 1)`؟",
+    "options": [
+      "رقم 28",
+      "`timedelta` قيمتها 28 يوماً",
+      "نص `\"28 days\"`",
+      "خطأ لأن الشهرين مختلفان"
+    ],
+    "answer": 1,
+    "explanation": "طرح تاريخين يعطي كائن `timedelta`، وفبراير 2025 فيه 28 يوماً. للحصول على الرقم استخدم `.days`."
+  },
+  "summary": [
+    "`date` و `datetime` و `timedelta` من الوحدة `datetime`.",
+    "`strptime` من نص إلى تاريخ، و `strftime` من تاريخ إلى نص، و `fromisoformat` لصيغة ISO.",
+    "طرح تاريخين يعطي `timedelta`، والإضافة تكون بـ `timedelta(days=...)`.",
+    "`.month` و `.weekday()` لتجميع البيانات زمنياً؛ واحفظ التواريخ بصيغة ISO."
+  ]
+}

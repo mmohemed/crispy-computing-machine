@@ -1,0 +1,332 @@
+{
+  "slug": "python-basics-final",
+  "course": "python-basics",
+  "module": null,
+  "title": "الاختبار النهائي: Python لعلم البيانات",
+  "intro": [
+    "الاختبار النهائي للكورس يجمع الوحدات الثلاث: الأساسيات، والأسلوب المحترف، ومشروع تحليل المبيعات.",
+    "بعض الأسئلة التطبيقية تستخدم ملف `store_sales.csv` مباشرة. النجاح يتطلب 70% من الإجابات الصحيحة."
+  ],
+  "questions": [
+    {
+      "id": "f1",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "print(\"5\" * 3, int(\"5\") * 3)"
+      ],
+      "options": [
+        "555 15",
+        "15 15",
+        "555 555",
+        "خطأ TypeError"
+      ],
+      "answer": 0,
+      "explanation": "النص × رقم يكرر النص، والعدد × رقم ضرب عادي.",
+      "lesson": "python-data-types"
+    },
+    {
+      "id": "f2",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "amount = 250",
+        "label = \"كبير\" if amount > 200 else \"صغير\"",
+        "if amount > 100 and label == \"صغير\":",
+        "    label = \"متوسط\"",
+        "print(label)"
+      ],
+      "options": [
+        "كبير",
+        "صغير",
+        "متوسط",
+        "لا شيء"
+      ],
+      "answer": 0,
+      "explanation": "250 > 200 فالتصنيف `كبير`، والشرط الثاني خاطئ لأن التصنيف ليس `صغير`.",
+      "lesson": "python-conditions"
+    },
+    {
+      "id": "f3",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "count = 0",
+        "for x in [5, -1, 8, 0, -3, 2]:",
+        "    if x < 0:",
+        "        continue",
+        "    if x == 0:",
+        "        break",
+        "    count += 1",
+        "print(count)"
+      ],
+      "options": [
+        "2",
+        "3",
+        "4",
+        "1"
+      ],
+      "answer": 0,
+      "explanation": "5 تُعدّ، و -1 تُتجاوز، و 8 تُعدّ، ثم 0 توقف الحلقة: العدد 2.",
+      "lesson": "python-loops"
+    },
+    {
+      "id": "f4",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "counts = {}",
+        "for c in \"banana\":",
+        "    counts[c] = counts.get(c, 0) + 1",
+        "print(counts)"
+      ],
+      "options": [
+        "{'b': 1, 'a': 3, 'n': 2}",
+        "{'a': 3, 'b': 1, 'n': 2}",
+        "{'b': 1, 'n': 2, 'a': 3}",
+        "{'banana': 1}"
+      ],
+      "answer": 0,
+      "explanation": "نمط العدّ على حروف النص، والمفاتيح بترتيب ظهورها الأول.",
+      "lesson": "python-dictionaries"
+    },
+    {
+      "id": "f5",
+      "type": "true_false",
+      "prompt": "`sorted(lst)` تغيّر القائمة `lst` نفسها.",
+      "answer": false,
+      "explanation": "`sorted` ترجع قائمة جديدة، أما `lst.sort()` فترتب القائمة نفسها وترجع `None`.",
+      "lesson": "python-lists"
+    },
+    {
+      "id": "f6",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "print(f\"{1234.5:,.1f} | {0.256:.0%}\")"
+      ],
+      "options": [
+        "1,234.5 | 26%",
+        "1234.5 | 0.26",
+        "1,234.50 | 25.6%",
+        "1,235 | 26%"
+      ],
+      "answer": 0,
+      "explanation": "`,.1f` فاصل آلاف ومنزلة عشرية، و `.0%` نسبة مئوية بدون كسور.",
+      "lesson": "python-strings"
+    },
+    {
+      "id": "f7",
+      "type": "mcq",
+      "prompt": "ما أفضل طريقة للتعامل مع قيمة قد لا تتحول إلى رقم داخل حلقة على بيانات ملف؟",
+      "options": [
+        "`except:` بدون نوع حتى نلتقط كل شيء",
+        "`try: int(v)` مع `except ValueError:` وتسجيل القيمة المرفوضة",
+        "تجاهل المشكلة لأن Python ستصححها",
+        "تحويل كل القيم إلى صفر مسبقاً"
+      ],
+      "answer": 1,
+      "explanation": "التقط النوع المتوقع فقط، ولا تخفِ المشكلة: عدّ أو سجّل القيم المرفوضة.",
+      "lesson": "python-exceptions"
+    },
+    {
+      "id": "f8",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "print(sorted({len(w) for w in ['data', 'ai', 'sql', 'ml']}))"
+      ],
+      "options": [
+        "[2, 3, 4]",
+        "[4, 2, 3, 2]",
+        "[2, 2, 3, 4]",
+        "{2, 3, 4}"
+      ],
+      "answer": 0,
+      "explanation": "Set Comprehension يحذف الأطوال المكررة، ثم `sorted` ترجع قائمة مرتبة.",
+      "lesson": "python-comprehensions"
+    },
+    {
+      "id": "f9",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "def price(base, vat=0.15, discount=0):",
+        "    return round(base * (1 - discount) * (1 + vat), 2)",
+        "print(price(100, discount=0.5))"
+      ],
+      "options": [
+        "57.5",
+        "50.0",
+        "65.0",
+        "57.49"
+      ],
+      "answer": 0,
+      "explanation": "100 × 0.5 = 50، ثم × 1.15 = 57.5. المعامل بالاسم يسمح بتجاوز `vat`.",
+      "lesson": "python-functions"
+    },
+    {
+      "id": "f10",
+      "type": "mcq",
+      "prompt": "لماذا نفضّل `sum(x for x in data)` على `sum([x for x in data])` مع البيانات الكبيرة؟",
+      "options": [
+        "لأنها تعطي نتيجة مختلفة",
+        "لأنها لا تبني قائمة مؤقتة في الذاكرة",
+        "لأن الثانية خطأ نحوي",
+        "لأن الأولى تعمل مع النصوص فقط"
+      ],
+      "answer": 1,
+      "explanation": "Generator Expression ينتج القيم واحدة واحدة، فلا تُحجز ذاكرة لكل العناصر.",
+      "lesson": "python-iterators-generators"
+    },
+    {
+      "id": "f11",
+      "type": "true_false",
+      "prompt": "عند حساب متوسط تقييم العملاء، يجب اعتبار التقييم المفقود صفراً حتى لا نفقد أي طلب.",
+      "answer": false,
+      "explanation": "الصفر قيمة حقيقية ستخفض المتوسط بشكل مضلل؛ القيمة المفقودة تُستبعد ويُذكر عددها.",
+      "lesson": "python-project-load"
+    },
+    {
+      "id": "f12",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "from datetime import date, timedelta",
+        "d = date(2025, 2, 25) + timedelta(days=5)",
+        "print(d.month, d.day)"
+      ],
+      "options": [
+        "3 2",
+        "2 30",
+        "3 1",
+        "3 5"
+      ],
+      "answer": 0,
+      "explanation": "فبراير 2025 فيه 28 يوماً: 25 + 5 أيام = 2 مارس.",
+      "lesson": "python-datetime"
+    },
+    {
+      "id": "f13",
+      "type": "fix_code",
+      "prompt": "الدالة التالية يجب أن ترجع نسبة القيم الأكبر من `threshold` كنسبة مئوية مقربة لمنزلة واحدة، وترجع `0.0` لقائمة فارغة. فيها خطآن؛ صحّحهما.",
+      "starter_code": [
+        "def share_above(values, threshold):",
+        "    count = 0",
+        "    for v in values:",
+        "        if v > threshold:",
+        "            count += 1",
+        "    print(round(count / len(values) * 100, 1))",
+        "",
+        "print(share_above([10, 50, 70, 90], 40))"
+      ],
+      "tests": [
+        "assert share_above([10, 50, 70, 90], 40) == 75.0, \"share_above([10, 50, 70, 90], 40) يجب أن ترجع 75.0\"",
+        "assert share_above([], 5) == 0.0, \"القائمة الفارغة يجب أن ترجع 0.0 بدل القسمة على صفر\"",
+        "assert share_above([1, 2, 3], 1) == 66.7, \"share_above([1, 2, 3], 1) يجب أن ترجع 66.7\""
+      ],
+      "solution": [
+        "def share_above(values, threshold):",
+        "    if not values:",
+        "        return 0.0",
+        "    count = 0",
+        "    for v in values:",
+        "        if v > threshold:",
+        "            count += 1",
+        "    return round(count / len(values) * 100, 1)",
+        "",
+        "print(share_above([10, 50, 70, 90], 40))"
+      ],
+      "hints": [
+        "استبدل `print` بـ `return`.",
+        "افحص `if not values:` في البداية."
+      ],
+      "explanation": "الدالة كانت تطبع بدل أن ترجع، ولا تعالج القائمة الفارغة (قسمة على صفر).",
+      "lesson": "python-functions"
+    },
+    {
+      "id": "f14",
+      "type": "write_code",
+      "prompt": "سؤال تطبيقي على `store_sales.csv`: احسب `payment_share`، وهو قاموس طريقة الدفع ← نسبة عدد الطلبات بها من كل الطلبات (نسبة مئوية مقربة لمنزلة واحدة). ثم خزّن في `top_payment` طريقة الدفع الأكثر استخداماً.",
+      "starter_code": [
+        "import csv",
+        "",
+        "payment_share = {}",
+        "# اقرأ الملف واحسب المطلوب"
+      ],
+      "tests": [
+        "import csv as _csv",
+        "from collections import Counter as _C",
+        "with open(\"store_sales.csv\", encoding=\"utf-8\", newline=\"\") as _f:",
+        "    _rows = list(_csv.DictReader(_f))",
+        "_c = _C(r[\"payment_method\"] for r in _rows)",
+        "_exp = {k: round(v / len(_rows) * 100, 1) for k, v in _c.items()}",
+        "assert payment_share == _exp, f\"payment_share غير صحيح. المتوقع: {_exp}\"",
+        "assert top_payment == _c.most_common(1)[0][0], f\"top_payment يجب أن تكون {_c.most_common(1)[0][0]}\""
+      ],
+      "solution": [
+        "import csv",
+        "from collections import Counter",
+        "",
+        "with open(\"store_sales.csv\", encoding=\"utf-8\", newline=\"\") as f:",
+        "    methods = [row[\"payment_method\"] for row in csv.DictReader(f)]",
+        "",
+        "counts = Counter(methods)",
+        "payment_share = {m: round(n / len(methods) * 100, 1) for m, n in counts.items()}",
+        "top_payment = counts.most_common(1)[0][0]",
+        "print(payment_share, top_payment)"
+      ],
+      "hints": [
+        "اجمع عمود `payment_method` في قائمة أثناء القراءة.",
+        "`Counter(methods).most_common(1)[0][0]` للأكثر استخداماً."
+      ],
+      "explanation": "العدّ بـ `Counter` ثم تحويل الأعداد إلى نسب بـ Dict Comprehension.",
+      "lesson": "python-project-analyze",
+      "files": [
+        "datasets/store_sales.csv"
+      ]
+    },
+    {
+      "id": "f15",
+      "type": "write_code",
+      "prompt": "سؤال تطبيقي: من `store_sales.csv` أنشئ `product_units`: قاموس المنتج ← مجموع الكميات المباعة، ثم خزّن `top3` قائمة بأسماء أكثر 3 منتجات كمية مرتبة تنازلياً.",
+      "starter_code": [
+        "import csv",
+        "",
+        "product_units = {}",
+        "top3 = []"
+      ],
+      "tests": [
+        "import csv as _csv",
+        "with open(\"store_sales.csv\", encoding=\"utf-8\", newline=\"\") as _f:",
+        "    _rows = list(_csv.DictReader(_f))",
+        "_u = {}",
+        "for r in _rows:",
+        "    _u[r[\"product\"]] = _u.get(r[\"product\"], 0) + int(r[\"quantity\"])",
+        "assert product_units == _u, \"product_units غير صحيح (هل حوّلت quantity إلى int؟)\"",
+        "assert top3 == [k for k, v in sorted(_u.items(), key=lambda kv: kv[1], reverse=True)[:3]], f\"top3 غير صحيحة: {top3}\""
+      ],
+      "solution": [
+        "import csv",
+        "",
+        "product_units = {}",
+        "with open(\"store_sales.csv\", encoding=\"utf-8\", newline=\"\") as f:",
+        "    for row in csv.DictReader(f):",
+        "        name = row[\"product\"]",
+        "        product_units[name] = product_units.get(name, 0) + int(row[\"quantity\"])",
+        "",
+        "top3 = [name for name, units in sorted(product_units.items(), key=lambda kv: kv[1], reverse=True)[:3]]",
+        "print(top3)"
+      ],
+      "hints": [
+        "`int(row[\"quantity\"])` قبل الجمع.",
+        "`sorted(d.items(), key=lambda kv: kv[1], reverse=True)[:3]`."
+      ],
+      "explanation": "نمط التجميع مع التحويل إلى `int`، ثم الترتيب حسب القيمة.",
+      "lesson": "python-csv-json",
+      "files": [
+        "datasets/store_sales.csv"
+      ]
+    }
+  ]
+}

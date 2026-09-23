@@ -1,0 +1,307 @@
+{
+  "slug": "python-comprehensions",
+  "course": "python-basics",
+  "module": "python-pro",
+  "order": 17,
+  "title": "List و Dict Comprehensions",
+  "title_en": "Comprehensions",
+  "minutes": 25,
+  "level": "مبتدئ - متوسط",
+  "objectives": [
+    "تكتب List Comprehension لتحويل قائمة أو تصفيتها في سطر واحد.",
+    "تكتب Dict و Set Comprehensions.",
+    "تحوّل حلقة `for` مع `append` إلى Comprehension والعكس.",
+    "تعرف متى يصبح الـ Comprehension أقل وضوحاً من الحلقة العادية."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "حلقة كاملة في تعبير واحد",
+      "body": [
+        "في الوحدة الأولى كتبت هذا النمط مرات كثيرة: قائمة فارغة، ثم حلقة، ثم `append`. الـ **List Comprehension** يكتب النمط نفسه في سطر واحد يُقرأ تقريباً كجملة: \"أعطني `x * 2` لكل `x` في `numbers` إذا كان `x` موجباً\".",
+        {
+          "code": [
+            "# الشكل الطويل",
+            "result = []",
+            "for x in numbers:",
+            "    if x > 0:",
+            "        result.append(x * 2)",
+            "",
+            "# الشكل المختصر",
+            "result = [x * 2 for x in numbers if x > 0]"
+          ],
+          "label": "المقارنة"
+        },
+        {
+          "table": {
+            "head": [
+              "الجزء",
+              "في المثال",
+              "دوره"
+            ],
+            "rows": [
+              [
+                "التعبير",
+                "`x * 2`",
+                "ما يوضع في القائمة الجديدة"
+              ],
+              [
+                "الحلقة",
+                "`for x in numbers`",
+                "المصدر الذي نمر عليه"
+              ],
+              [
+                "الشرط (اختياري)",
+                "`if x > 0`",
+                "يقرر أي العناصر تدخل"
+              ]
+            ]
+          }
+        },
+        "ونفس الفكرة تعمل مع القواميس `{k: v for ...}` ومع المجموعات `{x for ...}`.",
+        "إذا أردت قيمة مختلفة حسب الشرط (وليس تصفية) فضع التعبير الشرطي في البداية: `[\"ناجح\" if s >= 60 else \"راسب\" for s in scores]`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "تحويل عمود وتصفية قيم هما أكثر عمليتين في تجهيز البيانات. الـ Comprehension يجعلها قصيرة وواضحة، وهو أسرع قليلاً من الحلقة مع `append`. وستراه في كل مكان في أكواد علم البيانات: تجهيز أسماء الأعمدة، وتنظيف قوائم القيم، وبناء قواميس البحث."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "عندما تبني قائمة أو قاموساً جديداً من مجموعة موجودة بتحويل بسيط أو تصفية.",
+            "عندما يكون التعبير قصيراً ويُقرأ في سطر واحد.",
+            "**لا تستخدمه** إذا احتجت عدة خطوات، أو `print`، أو شروطاً متداخلة كثيرة؛ الحلقة العادية أوضح حينها.",
+            "لا تستخدمه لمجرد تنفيذ فعل (مثل الطباعة) دون الحاجة للقائمة الناتجة."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "تحويل وتصفية",
+      "code": [
+        "prices = [120, 45, 300, 80, 15]",
+        "",
+        "with_vat = [round(p * 1.15, 2) for p in prices]",
+        "expensive = [p for p in prices if p >= 100]",
+        "labels = [\"غالي\" if p >= 100 else \"عادي\" for p in prices]",
+        "",
+        "print(with_vat)",
+        "print(expensive)",
+        "print(labels)"
+      ],
+      "explanation": [
+        {
+          "code": "[round(p * 1.15, 2) for p in prices]",
+          "text": "تحويل كل عنصر: السعر مع الضريبة."
+        },
+        {
+          "code": "[p for p in prices if p >= 100]",
+          "text": "تصفية: الشرط في النهاية يقرر من يدخل القائمة."
+        },
+        {
+          "code": "[\"غالي\" if p >= 100 else \"عادي\" for p in prices]",
+          "text": "التعبير الشرطي في البداية يعطي قيمة لكل عنصر، فطول الناتج يساوي طول المصدر."
+        }
+      ],
+      "expected_output": [
+        "[138.0, 51.75, 345.0, 92.0, 17.25]",
+        "[120, 300]",
+        "['غالي', 'عادي', 'غالي', 'عادي', 'عادي']"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "تنظيف أسماء الأعمدة ونصوص من ملف",
+      "code": [
+        "raw_columns = [\" Order ID\", \"City \", \"unit price\", \" Quantity\"]",
+        "columns = [c.strip().lower().replace(\" \", \"_\") for c in raw_columns]",
+        "print(columns)",
+        "",
+        "raw = [\"120\", \"\", \"95\", \"N/A\", \"80\"]",
+        "amounts = [int(v) for v in raw if v.isdigit()]",
+        "print(amounts, sum(amounts))"
+      ],
+      "explanation": [
+        {
+          "code": "c.strip().lower().replace(...)",
+          "text": "سلسلة دوال النصوص من الوحدة الأولى داخل Comprehension: أسماء أعمدة موحدة بأسلوب `snake_case`."
+        },
+        {
+          "code": "if v.isdigit()",
+          "text": "`isdigit` تتحقق أن النص أرقام فقط، فتستبعد الفارغ و `N/A`."
+        }
+      ],
+      "expected_output": [
+        "['order_id', 'city', 'unit_price', 'quantity']",
+        "[120, 95, 80] 295"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "Dict و Set Comprehensions",
+      "code": [
+        "products = [\"قهوة\", \"شاي\", \"عصير\"]",
+        "prices = [18, 12, 15]",
+        "",
+        "price_of = {name: price for name, price in zip(products, prices)}",
+        "print(price_of)",
+        "",
+        "discounted = {k: v * 0.9 for k, v in price_of.items() if v > 12}",
+        "print(discounted)",
+        "",
+        "orders = [\"جدة\", \"الرياض\", \"جدة\", \"أبها\"]",
+        "cities = {c for c in orders}",
+        "print(sorted(cities))"
+      ],
+      "explanation": [
+        {
+          "code": "zip(products, prices)",
+          "text": "`zip` تمشي على القائمتين معاً وتعطي أزواجاً (الاسم، السعر)."
+        },
+        {
+          "code": "{name: price for ...}",
+          "text": "Dict Comprehension: `المفتاح: القيمة` قبل `for`."
+        },
+        {
+          "code": "{k: v * 0.9 for k, v in price_of.items() if v > 12}",
+          "text": "تحويل قاموس إلى قاموس جديد مع تصفية."
+        },
+        {
+          "code": "{c for c in orders}",
+          "text": "أقواس معقوفة بدون `:` تعني مجموعة set، فتختفي المدن المكررة."
+        }
+      ],
+      "expected_output": [
+        "{'قهوة': 18, 'شاي': 12, 'عصير': 15}",
+        "{'قهوة': 16.2, 'عصير': 13.5}",
+        "['أبها', 'الرياض', 'جدة']"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "إذا احتاج الـ Comprehension أكثر من سطر ليُقرأ، أو احتجت أن تشرحه بتعليق طويل، فاكتبه حلقة عادية.",
+        "`zip` تتوقف عند أقصر قائمة، فتأكد أن القوائم بنفس الطول.",
+        "متغير الحلقة داخل الـ Comprehension لا يظهر خارجه، على عكس الحلقة العادية.",
+        "الأقواس العادية `(x for x in ...)` لا تنشئ صفاً بل **Generator**، وستتعلمه في درس Iterators و Generators."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "وضع else في مكان الشرط",
+          "wrong": [
+            "scores = [70, 40]",
+            "result = [s for s in scores if s >= 60 else 0]"
+          ],
+          "error": "SyntaxError: invalid syntax",
+          "error_type": "SyntaxError",
+          "why": "`if` في النهاية للتصفية فقط ولا تقبل `else`. إذا أردت قيمتين فضع التعبير الشرطي كاملاً في البداية.",
+          "fix": [
+            "scores = [70, 40]",
+            "result = [s if s >= 60 else 0 for s in scores]",
+            "print(result)"
+          ]
+        },
+        {
+          "title": "استخدام Comprehension للطباعة فقط",
+          "wrong": [
+            "names = [\"أ\", \"ب\", \"ج\"]",
+            "[print(n) for n in names]"
+          ],
+          "why": "الكود يطبع فعلاً، لكنه ينشئ قائمة `[None, None, None]` لا يحتاجها أحد. الحلقة العادية هي الأداة الصحيحة هنا.",
+          "fix": [
+            "names = [\"أ\", \"ب\", \"ج\"]",
+            "for n in names:",
+            "    print(n)"
+          ]
+        },
+        {
+          "title": "نسيان تحويل النوع قبل الحساب",
+          "wrong": [
+            "raw = [\"10\", \"20\"]",
+            "print(sum([v for v in raw]))"
+          ],
+          "error": "TypeError: unsupported operand type(s) for +: 'int' and 'str'",
+          "error_type": "TypeError",
+          "why": "القيم نصوص، فـ `sum` لا تستطيع جمعها. حوّل داخل الـ Comprehension.",
+          "fix": [
+            "raw = [\"10\", \"20\"]",
+            "print(sum([int(v) for v in raw]))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تجهيز بيانات الطلاب",
+    "prompt": [
+      "لديك قائمة درجات وأسماء. استخدم Comprehensions فقط (بدون `append`):"
+    ],
+    "requirements": [
+      "`passed_names`: أسماء الطلاب الذين درجتهم 60 فأكثر.",
+      "`curved`: كل الدرجات بعد إضافة 5 درجات، بشرط ألا تتجاوز أي درجة 100.",
+      "`grade_of`: قاموس اسم الطالب ← درجته.",
+      "`status`: قائمة فيها `\"ناجح\"` أو `\"راسب\"` لكل طالب بنفس الترتيب."
+    ],
+    "starter_code": [
+      "names = [\"سلمى\", \"خالد\", \"رهف\", \"ماجد\", \"لمى\"]",
+      "scores = [88, 52, 97, 60, 41]",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "assert passed_names == [\"سلمى\", \"رهف\", \"ماجد\"], f\"passed_names غير صحيحة: {passed_names}\"",
+      "assert curved == [93, 57, 100, 65, 46], f\"curved غير صحيحة: {curved}\"",
+      "assert grade_of == {\"سلمى\": 88, \"خالد\": 52, \"رهف\": 97, \"ماجد\": 60, \"لمى\": 41}, f\"grade_of غير صحيح: {grade_of}\"",
+      "assert status == [\"ناجح\", \"راسب\", \"ناجح\", \"ناجح\", \"راسب\"], f\"status غير صحيحة: {status}\"",
+      "assert \"append\" not in __code__, \"حاول بدون append\""
+    ],
+    "hints": [
+      "`zip(names, scores)` تعطيك الاسم والدرجة معاً.",
+      "`min(s + 5, 100)` تمنع تجاوز 100.",
+      "للتصنيف: `\"ناجح\" if s >= 60 else \"راسب\"` في بداية الـ Comprehension."
+    ],
+    "solution": [
+      "names = [\"سلمى\", \"خالد\", \"رهف\", \"ماجد\", \"لمى\"]",
+      "scores = [88, 52, 97, 60, 41]",
+      "",
+      "passed_names = [n for n, s in zip(names, scores) if s >= 60]",
+      "curved = [min(s + 5, 100) for s in scores]",
+      "grade_of = {n: s for n, s in zip(names, scores)}",
+      "status = [\"ناجح\" if s >= 60 else \"راسب\" for s in scores]",
+      "",
+      "print(passed_names, curved)",
+      "print(grade_of)",
+      "print(status)"
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "print([x ** 2 for x in range(5) if x % 2 == 0])"
+    ],
+    "options": [
+      "[0, 4, 16]",
+      "[0, 1, 4, 9, 16]",
+      "[4, 16]",
+      "[1, 9]"
+    ],
+    "answer": 0,
+    "explanation": "`range(5)` تولّد 0 إلى 4، والشرط يبقي الزوجية 0 و 2 و 4، ومربعاتها 0 و 4 و 16."
+  },
+  "summary": [
+    "`[expr for x in items if cond]` يختصر حلقة `for` مع `append`.",
+    "الشرط في النهاية للتصفية، و `a if cond else b` في البداية لاختيار القيمة.",
+    "`{k: v for ...}` قاموس، و `{x for ...}` مجموعة، و `zip` تمشي على قائمتين معاً.",
+    "إذا صعبت القراءة فالحلقة العادية أفضل."
+  ]
+}

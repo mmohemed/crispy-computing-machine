@@ -10,6 +10,7 @@
  *   });
  */
 import { escapeHtml } from '../core/dom.js';
+import { url } from '../core/paths.js';
 import { progress } from '../core/progress-store.js';
 import { ERROR_HINTS, getRunner } from '../runners/runner.js';
 
@@ -86,16 +87,37 @@ function formatError(error) {
         + (hint || lineInfo ? `<span class="err-hint">${lineInfo ? `📍 ${lineInfo}. ` : ''}${escapeHtml(hint)}</span>` : '');
 }
 
+/** ملفات البيانات: "datasets/store_sales.csv" → { name: "store_sales.csv", url: رابط كامل } */
+export function resolveFiles(paths = []) {
+    return paths.map((p) => ({
+        name: p.split('/').pop(),
+        url: new URL(url(p), location.href).href,
+    }));
+}
+
+function renderImages(box, images = []) {
+    let wrap = box.querySelector('.output-images');
+    if (!wrap) {
+        wrap = document.createElement('div');
+        wrap.className = 'output-images';
+        box.appendChild(wrap);
+    }
+    wrap.innerHTML = images.map((b64, i) => `<img alt="رسم بياني ${i + 1} من ناتج الكود" src="data:image/png;base64,${b64}">`).join('');
+    wrap.hidden = images.length === 0;
+}
+
 export function renderOutput(pre, result) {
     pre.classList.remove('muted');
     let html = '';
     if (result.stdout) html += escapeHtml(result.stdout);
     if (result.error) html += (html && !html.endsWith('\n') ? '\n' : '') + formatError(result.error);
+    const images = result.images || [];
     if (!html) {
         pre.classList.add('muted');
-        html = 'انتهى التنفيذ بدون أي مخرجات. استخدم print() لعرض النتائج.';
+        html = images.length ? 'تم إنشاء الرسم البياني:' : 'انتهى التنفيذ بدون أي مخرجات. استخدم print() لعرض النتائج.';
     }
     pre.innerHTML = html;
+    renderImages(pre.parentElement, images);
 }
 
 /**
@@ -107,6 +129,7 @@ export function createPlayground(container, opts) {
         language = 'python',
         tests = null,
         stdin = null,
+        files = [],
         storageKey = null,
         title = 'محرر الكود',
         checkLabel = 'تحقق من الحل',
@@ -135,6 +158,7 @@ export function createPlayground(container, opts) {
             <div class="cb-head"><span><i class="fas fa-terminal"></i> Output · المخرجات</span><span class="run-time"></span></div>
             <pre class="muted">اضغط "تشغيل الكود" لرؤية النتيجة هنا.</pre>
         </div>
+        ${files.length ? `<div class="files-note"><i class="fas fa-database"></i> ملفات متاحة لكودك: ${files.map((f) => `<code>${escapeHtml(f.split('/').pop())}</code>`).join(' ')}</div>` : ''}
         <div class="feedback" role="status"></div>`;
 
     const host = container.querySelector('.editor-host');
@@ -176,6 +200,7 @@ export function createPlayground(container, opts) {
             code: editor.getValue(),
             tests: withTests ? tests : null,
             stdin: stdinEl ? stdinEl.value : null,
+            files: resolveFiles(files),
         });
 
         off && off();
@@ -204,6 +229,7 @@ export function createPlayground(container, opts) {
         if (storageKey) progress.clearCode(storageKey);
         outPre.className = 'muted';
         outPre.textContent = 'اضغط "تشغيل الكود" لرؤية النتيجة هنا.';
+        renderImages(outPre.parentElement, []);
         feedback.className = 'feedback';
     });
 
