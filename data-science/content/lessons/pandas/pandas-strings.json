@@ -1,0 +1,363 @@
+{
+  "slug": "pandas-strings",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "order": 15,
+  "title": "النصوص .str",
+  "title_en": "String Methods",
+  "minutes": 25,
+  "level": "متوسط",
+  "objectives": [
+    "تطبق دوال النصوص على عمود كامل عبر `.str`.",
+    "تنظف النصوص: `strip` و `replace` و `lower`.",
+    "تبحث وتستخرج أجزاء من النص: `contains` و `startswith` و `split` و `extract`.",
+    "تفهم كيف تتعامل دوال `.str` مع القيم المفقودة."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "دوال النص على عمود كامل",
+      "body": [
+        "في Python تكتب `\"  جدة \".strip()` لنص واحد. في Pandas لا تحتاج حلقة: `df[\"city\"].str.strip()` تطبق الدالة على كل قيم العمود. البوابة `.str` تعطيك نفس دوال النصوص التي تعرفها تقريباً، بشكل متجه.",
+        {
+          "table": {
+            "head": [
+              "الدالة",
+              "مثال",
+              "النتيجة"
+            ],
+            "rows": [
+              [
+                "`str.strip()`",
+                "`\" جدة \"`",
+                "`\"جدة\"`"
+              ],
+              [
+                "`str.lower()` / `upper()`",
+                "`\"Sales\"`",
+                "`\"sales\"`"
+              ],
+              [
+                "`str.replace(a, b)`",
+                "`\"14,700\"` مع `(\",\", \"\")`",
+                "`\"14700\"`"
+              ],
+              [
+                "`str.len()`",
+                "`\"رواية\"`",
+                "`5`"
+              ],
+              [
+                "`str.contains(p)`",
+                "هل يحتوي النص على `p`؟",
+                "`True` / `False`"
+              ],
+              [
+                "`str.startswith(p)`",
+                "هل يبدأ بـ `p`؟",
+                "`True` / `False`"
+              ],
+              [
+                "`str.split(sep)`",
+                "`\"ORD-10005\"` مع `\"-\"`",
+                "`[\"ORD\", \"10005\"]`"
+              ],
+              [
+                "`str[a:b]`",
+                "`\"2025-03-14\"` مع `[:7]`",
+                "`\"2025-03\"`"
+              ],
+              [
+                "`str.extract(regex)`",
+                "استخراج نمط بتعبير نمطي",
+                "عمود جديد"
+              ]
+            ]
+          }
+        },
+        "إذا كانت القيمة مفقودة `NaN` تبقى النتيجة `NaN` بدل أن يحدث خطأ، على عكس Python العادية."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "النصوص أكثر أنواع البيانات فوضى: مسافات زائدة، حروف كبيرة وصغيرة، رموز عملة داخل الأرقام، أرقام مدمجة داخل رموز. قبل أي `groupby` أو دمج يجب أن تكون القيم النصية موحدة، وإلا عُدّت `\"جدة\"` و `\"جدة \"` مدينتين. و `.str` أداتك لهذا في كل كورس تنظيف البيانات."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "تنظيف عمود نصي قبل التجميع أو الدمج.",
+            "استخراج معلومة من نص: رقم من رمز، أو نطاق من بريد إلكتروني، أو سنة من نص.",
+            "إنشاء قناع تصفية بكلمة: المنتجات التي اسمها يحتوي \"ذكي\"."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "تنظيف عمود فيه فوضى",
+      "code": [
+        "import pandas as pd",
+        "",
+        "raw = pd.Series([\"  الرياض\", \"جدة \", \"Riyadh\", \"جده\", \"الرياض\", None, \"JEDDAH\"])",
+        "",
+        "s = raw.str.strip()",
+        "s = s.str.replace(\"ه\", \"ة\", regex=False)",
+        "s = s.str.lower().replace({\"riyadh\": \"الرياض\", \"jeddah\": \"جدة\"})",
+        "print(s.tolist())",
+        "print(s.value_counts(dropna=False))"
+      ],
+      "explanation": [
+        {
+          "code": "raw.str.strip()",
+          "text": "تحذف المسافات من البداية والنهاية."
+        },
+        {
+          "code": "replace(\"ه\", \"ة\", regex=False)",
+          "text": "توحيد التاء المربوطة. `regex=False` تعني أن النص حرفي وليس نمطاً. احذر: هذا الاستبدال يغير **كل** هاء في النص، فاستخدمه فقط في عمود تعرف قيمه."
+        },
+        {
+          "code": "str.lower().replace({...})",
+          "text": "بعد توحيد الحروف الإنجليزية الصغيرة نستبدل القيم الإنجليزية بالعربية. `replace` بقاموس تستبدل القيمة **كاملة**."
+        },
+        {
+          "code": "None",
+          "text": "القيمة المفقودة بقيت مفقودة دون خطأ."
+        }
+      ],
+      "expected_output": [
+        "['الرياض', 'جدة', 'الرياض', 'جدة', 'الرياض', None, 'جدة']",
+        "الرياض    3",
+        "جدة       3",
+        "None      1",
+        "Name: count, dtype: int64"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "البحث والتقسيم",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "",
+        "num = df[\"order_id\"].str.split(\"-\").str[1].astype(int)",
+        "print(num.min(), num.max())",
+        "",
+        "has_word = df[\"product\"].str.contains(\"ذكية|لاسلكية\", regex=True)",
+        "print(df.loc[has_word, \"product\"].unique().tolist())",
+        "",
+        "df[\"month\"] = df[\"order_date\"].str[:7]",
+        "print(df[\"month\"].nunique(), df[\"product\"].str.len().max())"
+      ],
+      "explanation": [
+        {
+          "code": "str.split(\"-\").str[1]",
+          "text": "نقسم `ORD-10005` إلى جزأين ونأخذ الثاني. `.str[1]` تعمل على قوائم أيضاً."
+        },
+        {
+          "code": "astype(int)",
+          "text": "الجزء الناتج نص، فنحوله إلى رقم."
+        },
+        {
+          "code": "str.contains(\"ذكية|لاسلكية\")",
+          "text": "`|` في التعبير النمطي تعني \"أو\"."
+        },
+        {
+          "code": "str[:7]",
+          "text": "القص يعمل كما في النصوص العادية."
+        }
+      ],
+      "expected_output": [
+        "10001 11700",
+        "['سماعة لاسلكية', 'ساعة ذكية']",
+        "12 13"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "extract بالتعبيرات النمطية",
+      "code": [
+        "import pandas as pd",
+        "",
+        "notes = pd.Series([",
+        "    \"الراتب 9500 ريال\",",
+        "    \"راتب: 12,300 SAR\",",
+        "    \"لا يوجد\",",
+        "    \"7800ر.س\",",
+        "])",
+        "digits = notes.str.replace(\",\", \"\", regex=False).str.extract(r\"(\\d+)\")[0]",
+        "print(digits.tolist())",
+        "print(pd.to_numeric(digits).tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "str.replace(\",\", \"\")",
+          "text": "نحذف فاصلة الآلاف أولاً لكي يُقرأ الرقم كاملاً."
+        },
+        {
+          "code": "str.extract(r\"(\\d+)\")",
+          "text": "`\\d+` تعني رقماً أو أكثر متتالية، والأقواس تحدد ما نستخرجه. النتيجة DataFrame، و `[0]` تأخذ أول عمود."
+        },
+        {
+          "code": "pd.to_numeric",
+          "text": "تحول النصوص إلى أرقام. السطر الذي لا يحتوي رقماً أصبح `NaN`."
+        }
+      ],
+      "expected_output": [
+        "['9500', '12300', nan, '7800']",
+        "[9500.0, 12300.0, nan, 7800.0]"
+      ],
+      "after": [
+        "التعبيرات النمطية Regular Expressions لغة صغيرة لوصف أنماط النص. يكفيك الآن: `\\d` رقم، و `+` مرة أو أكثر، و `|` أو، و `^` بداية النص، و `$` نهايته."
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`str.replace` في Pandas 2 تعتبر النص حرفياً افتراضياً (`regex=False`). إذا أردت نمطاً فاكتب `regex=True`.",
+        "`str.contains` على عمود فيه `NaN` ترجع `NaN` في تلك الصفوف، فيفشل استخدامها كقناع. اكتب `str.contains(\"x\", na=False)`.",
+        "`Series.replace({...})` تستبدل القيمة كاملة، و `Series.str.replace(a, b)` تستبدل جزءاً داخل النص. فرق مهم.",
+        "دوال `.str` تعمل على الأعمدة النصية فقط. على عمود أرقام تحصل على خطأ `Can only use .str accessor with string values`."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "contains على عمود فيه مفقود",
+          "wrong": [
+            "import pandas as pd",
+            "s = pd.Series([\"ساعة ذكية\", None, \"رواية\"])",
+            "print(s[s.str.contains(\"ذكية\")])"
+          ],
+          "error": "ValueError: Cannot mask with non-boolean array containing NA / NaN values",
+          "error_type": "ValueError",
+          "why": "`NaN` داخل القناع يجعل التصفية تفشل. `na=False` تعتبر المفقود \"لا يحتوي\".",
+          "fix": [
+            "import pandas as pd",
+            "s = pd.Series([\"ساعة ذكية\", None, \"رواية\"])",
+            "print(s[s.str.contains(\"ذكية\", na=False)])"
+          ]
+        },
+        {
+          "title": "نسيان .str",
+          "wrong": [
+            "import pandas as pd",
+            "s = pd.Series([\" جدة\", \"مكة \"])",
+            "print(s.strip())"
+          ],
+          "error": "AttributeError: 'Series' object has no attribute 'strip'",
+          "error_type": "AttributeError",
+          "why": "`Series` ليس لها دالة `strip` مباشرة. دوال النص تمر عبر `.str`.",
+          "fix": [
+            "import pandas as pd",
+            "s = pd.Series([\" جدة\", \"مكة \"])",
+            "print(s.str.strip().tolist())"
+          ]
+        },
+        {
+          "title": "replace بدل str.replace",
+          "wrong": [
+            "import pandas as pd",
+            "s = pd.Series([\"14,700\", \"9,200\"])",
+            "print(s.replace(\",\", \"\").tolist())"
+          ],
+          "why": "`Series.replace(\",\", \"\")` تبحث عن قيمة تساوي `\",\"` بالكامل، فلا تغير `\"14,700\"`.",
+          "fix": [
+            "import pandas as pd",
+            "s = pd.Series([\"14,700\", \"9,200\"])",
+            "print(s.str.replace(\",\", \"\").astype(int).tolist())"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تنظيف قائمة منتجات",
+    "prompt": [
+      "لديك قائمة منتجات جاءت من مورّد بتنسيق غير منتظم. أنشئ من `raw`:"
+    ],
+    "requirements": [
+      "`name`: اسم المنتج بعد حذف المسافات من الطرفين.",
+      "`code`: رمز المنتج بعد الشرطة، مثل `SKU-0042` ← `42` كعدد صحيح.",
+      "`price`: السعر كعدد عشري، بعد حذف `SAR` وفواصل الآلاف والمسافات.",
+      "`is_digital`: `True` إذا كان الاسم يحتوي كلمة `رقمي` أو `إلكتروني`."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "raw = pd.DataFrame({",
+      "    \"sku\": [\"SKU-0042\", \"SKU-0107\", \"SKU-0009\", \"SKU-1300\"],",
+      "    \"name\": [\"  كتاب رقمي\", \"حقيبة جلد \", \" بطاقة هدية إلكترونية \", \"ساعة حائط\"],",
+      "    \"price\": [\"49 SAR\", \"1,250 SAR\", \" 100 SAR\", \"2,075SAR\"],",
+      "})",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "assert name.tolist() == [\"كتاب رقمي\", \"حقيبة جلد\", \"بطاقة هدية إلكترونية\", \"ساعة حائط\"], f\"name غير صحيحة: {name.tolist()}\"",
+      "assert code.tolist() == [42, 107, 9, 1300], f\"code غير صحيحة: {code.tolist()}\"",
+      "assert str(code.dtype).startswith(\"int\"), \"code يجب أن يكون عدداً صحيحاً\"",
+      "assert price.tolist() == [49.0, 1250.0, 100.0, 2075.0], f\"price غير صحيحة: {price.tolist()}\"",
+      "assert price.dtype == \"float64\", \"price يجب أن تكون float\"",
+      "assert is_digital.tolist() == [True, False, True, False], f\"is_digital غير صحيحة: {is_digital.tolist()}\""
+    ],
+    "hints": [
+      "`astype(int)` تقبل `\"0042\"` وتعطي 42.",
+      "اربط عدة `.str.replace` متتالية ثم `str.strip()` ثم `astype(float)`.",
+      "`str.contains(\"رقمي|إلكتروني\", regex=True)`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "raw = pd.DataFrame({",
+      "    \"sku\": [\"SKU-0042\", \"SKU-0107\", \"SKU-0009\", \"SKU-1300\"],",
+      "    \"name\": [\"  كتاب رقمي\", \"حقيبة جلد \", \" بطاقة هدية إلكترونية \", \"ساعة حائط\"],",
+      "    \"price\": [\"49 SAR\", \"1,250 SAR\", \" 100 SAR\", \"2,075SAR\"],",
+      "})",
+      "",
+      "name = raw[\"name\"].str.strip()",
+      "code = raw[\"sku\"].str.split(\"-\").str[1].astype(int)",
+      "price = (raw[\"price\"].str.replace(\"SAR\", \"\")",
+      "                     .str.replace(\",\", \"\")",
+      "                     .str.strip()",
+      "                     .astype(float))",
+      "is_digital = name.str.contains(\"رقمي|إلكتروني\", regex=True)",
+      "",
+      "print(name.tolist())",
+      "print(code.tolist(), price.tolist(), is_digital.tolist())"
+    ],
+    "solution_explanation": [
+      "الأقواس حول السلسلة الطويلة تسمح بكتابتها على عدة أسطر، وهو أسلوب شائع لخطوات التنظيف المتتالية."
+    ]
+  },
+  "check": {
+    "type": "predict_output",
+    "prompt": "ما ناتج الكود التالي؟",
+    "code": [
+      "import pandas as pd",
+      "s = pd.Series([\"a-1\", \"b-22\", \"c-3\"])",
+      "print(s.str.split(\"-\").str[1].str.len().tolist())"
+    ],
+    "options": [
+      "[1, 2, 1]",
+      "[3, 4, 3]",
+      "['1', '22', '3']",
+      "[1, 22, 3]"
+    ],
+    "answer": 0,
+    "explanation": "بعد التقسيم نأخذ الجزء الثاني (`\"1\"` و `\"22\"` و `\"3\"`)، ثم طول كل نص."
+  },
+  "summary": [
+    "`.str` تطبق دوال النص على العمود كله، والمفقود يبقى مفقوداً.",
+    "التنظيف: `strip` و `lower` و `str.replace`؛ والاستبدال الكامل للقيم: `replace({...})`.",
+    "البحث والاستخراج: `contains(..., na=False)` و `split().str[i]` و `extract(regex)`."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

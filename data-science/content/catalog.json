@@ -1065,76 +1065,76 @@
               "title": "groupby",
               "title_en": "GroupBy",
               "minutes": 30,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-agg",
               "title": "التجميع المتعدد agg",
               "title_en": "Multiple Aggregations",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-pivot",
               "title": "pivot_table و crosstab",
               "title_en": "Pivot Tables",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-merge",
               "title": "merge و join و concat",
               "title_en": "Merging Data",
               "minutes": 35,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-reshape",
               "title": "melt و pivot و stack",
               "title_en": "Reshaping",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-strings",
               "title": "النصوص .str",
               "title_en": "String Methods",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-dates",
               "title": "التواريخ .dt",
               "title_en": "Datetime",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-resample",
               "title": "resample والتجميع الزمني",
               "title_en": "Resampling",
               "minutes": 25,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-categoricals",
               "title": "Categoricals",
               "title_en": "Categoricals",
               "minutes": 15,
-              "status": "planned"
+              "status": "published"
             },
             {
               "slug": "pandas-performance",
               "title": "الأداء والذاكرة",
               "title_en": "Performance & Memory",
               "minutes": 20,
-              "status": "planned"
+              "status": "published"
             }
           ],
           "quiz": {
             "slug": "quiz-pandas-transform",
             "title": "اختبار الوحدة: التجميع والدمج",
-            "status": "planned"
+            "status": "published"
           }
         }
       ]

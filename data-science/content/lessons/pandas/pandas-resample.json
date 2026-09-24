@@ -1,0 +1,341 @@
+{
+  "slug": "pandas-resample",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "order": 17,
+  "title": "resample والتجميع الزمني",
+  "title_en": "Resampling",
+  "minutes": 25,
+  "level": "متوسط",
+  "objectives": [
+    "تجمع البيانات حسب فترات زمنية (يوم، أسبوع، شهر) بـ `resample`.",
+    "تحسب المتوسط المتحرك بـ `rolling` لتنعيم السلسلة.",
+    "تحسب نسبة التغير بين الفترات بـ `pct_change`.",
+    "ترسم سلسلة زمنية بخط واضح."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "groupby للزمن",
+      "body": [
+        "`resample` هي `groupby` مصممة للتواريخ: تقسم الصفوف إلى فترات متساوية وتطبق دالة. تحتاج أن يكون التاريخ هو **الفهرس** (أو تمرر `on=\"order_date\"`).",
+        {
+          "table": {
+            "head": [
+              "الرمز",
+              "الفترة"
+            ],
+            "rows": [
+              [
+                "`\"D\"`",
+                "يوم"
+              ],
+              [
+                "`\"W\"`",
+                "أسبوع (ينتهي الأحد)"
+              ],
+              [
+                "`\"ME\"`",
+                "شهر (تسمية بنهاية الشهر)"
+              ],
+              [
+                "`\"MS\"`",
+                "شهر (تسمية ببداية الشهر)"
+              ],
+              [
+                "`\"QE\"`",
+                "ربع سنة"
+              ]
+            ]
+          }
+        },
+        "الفرق عن `groupby(dt.month)`: `resample` تنشئ **كل** الفترات حتى لو لم تحتو طلبات (فيظهر اليوم الفارغ بصفر)، وتبقي الفهرس تاريخاً حقيقياً مرتباً مناسباً للرسم.",
+        "أما `rolling(7)` فتحسب لكل نقطة إحصاءً على آخر 7 نقاط: متوسط متحرك يخفي التذبذب اليومي ويظهر الاتجاه."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "المبيعات اليومية متذبذبة جداً: يوم فيه 15 طلباً ويوم فيه 2. من الصعب رؤية الاتجاه بدون تجميع أو تنعيم. أسئلة مثل \"هل المبيعات تنمو؟\" و\"كم نمونا عن الشهر الماضي؟\" و\"متى الذروة؟\" تُجاب بـ `resample` و `rolling` و `pct_change`، وهي الأساس لتحليل السلاسل الزمنية في المستويات المتقدمة."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`resample` لتحويل الطلبات الفردية إلى سلسلة يومية أو أسبوعية أو شهرية.",
+            "`rolling` لرؤية الاتجاه في سلسلة متذبذبة.",
+            "`pct_change` لنسب النمو بين فترة والتي قبلها."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "من الطلبات إلى سلسلة شهرية",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "df[\"order_date\"] = pd.to_datetime(df[\"order_date\"])",
+        "ts = df.set_index(\"order_date\")",
+        "",
+        "monthly = ts[\"revenue\"].resample(\"ME\").sum().round(0)",
+        "print(monthly.head(4))",
+        "",
+        "growth = monthly.pct_change().mul(100).round(1)",
+        "print(growth.head(4).tolist())",
+        "print(monthly.idxmax().strftime(\"%Y-%m\"), monthly.max())"
+      ],
+      "explanation": [
+        {
+          "code": "set_index(\"order_date\")",
+          "text": "التاريخ أصبح الفهرس، وهو شرط `resample`."
+        },
+        {
+          "code": "resample(\"ME\").sum()",
+          "text": "مجموع الإيراد لكل شهر. الفهرس آخر يوم في كل شهر."
+        },
+        {
+          "code": "pct_change()",
+          "text": "(هذا الشهر − السابق) ÷ السابق. أول قيمة `NaN` لأنه لا يوجد شهر قبلها."
+        },
+        {
+          "code": "strftime(\"%Y-%m\")",
+          "text": "تنسيق التاريخ كنص للعرض."
+        }
+      ],
+      "expected_output": [
+        "order_date",
+        "2025-01-31    36403.0",
+        "2025-02-28    24449.0",
+        "2025-03-31    45481.0",
+        "2025-04-30    41942.0",
+        "Freq: ME, Name: revenue, dtype: float64",
+        "[nan, -32.8, 86.0, -7.8]",
+        "2025-11 53225.0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "يومي ومتوسط متحرك مع رسم",
+      "expects_chart": true,
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "import matplotlib.pyplot as plt",
+        "",
+        "df[\"order_date\"] = pd.to_datetime(df[\"order_date\"])",
+        "daily = df.resample(\"D\", on=\"order_date\")[\"revenue\"].sum()",
+        "smooth = daily.rolling(14, center=True).mean()",
+        "",
+        "print(len(daily), (daily == 0).sum())",
+        "print(round(daily.std(), 1), round(smooth.std(), 1))",
+        "",
+        "fig, ax = plt.subplots(figsize=(9, 3.5))",
+        "ax.plot(daily.index, daily.values, color=\"#9aa5b1\", linewidth=0.8, label=\"daily\")",
+        "ax.plot(smooth.index, smooth.values, color=\"#e0218a\", linewidth=2.2, label=\"14-day average\")",
+        "ax.set_title(\"Daily revenue 2025\")",
+        "ax.legend()",
+        "plt.tight_layout()",
+        "plt.show()"
+      ],
+      "explanation": [
+        {
+          "code": "resample(\"D\", on=\"order_date\")",
+          "text": "بدلاً من جعل التاريخ فهرساً، نمرره بـ `on`."
+        },
+        {
+          "code": "len(daily), (daily == 0).sum()",
+          "text": "365 يوماً كاملة. لا يوجد هنا يوم بلا طلبات، لكن لو وُجد لظهر بقيمة 0 لأن `resample` تنشئ كل الأيام في المدى."
+        },
+        {
+          "code": "rolling(14, center=True).mean()",
+          "text": "متوسط 14 يوماً حول كل يوم. أول وآخر 7 أيام `NaN` لعدم وجود نافذة كاملة."
+        },
+        {
+          "code": "std",
+          "text": "الانحراف المعياري للسلسلة المنعّمة أقل بكثير: التذبذب اليومي اختفى وبقي الاتجاه."
+        }
+      ],
+      "expected_output": [
+        "365 0",
+        "621.7 265.5"
+      ],
+      "after": [
+        "في الرسم يظهر الخط المنعّم أعلى ذروة في أواخر نوفمبر (موسم تخفيضات نهاية العام في هذه البيانات)، وارتفاعاً آخر في مارس وأبريل، وانخفاضاً في فبراير والصيف. الخط اليومي يخفي هذه الصورة في الضوضاء."
+      ]
+    },
+    {
+      "type": "example",
+      "title": "أسبوعي لكل فئة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "df[\"order_date\"] = pd.to_datetime(df[\"order_date\"])",
+        "weekly = (df.set_index(\"order_date\")",
+        "            .groupby(\"category\")[\"revenue\"]",
+        "            .resample(\"W\").sum())",
+        "print(weekly.loc[\"أغذية\"].head(3).round(0))",
+        "",
+        "peak = weekly.groupby(level=\"category\").idxmax()",
+        "print(peak.map(lambda t: t[1].strftime(\"%m-%d\")))"
+      ],
+      "explanation": [
+        {
+          "code": ".groupby(\"category\")[\"revenue\"].resample(\"W\")",
+          "text": "سلسلة أسبوعية منفصلة لكل فئة. الفهرس (فئة، أسبوع)."
+        },
+        {
+          "code": "weekly.loc[\"أغذية\"]",
+          "text": "اختيار المستوى الأول من الفهرس يعطي سلسلة فئة واحدة."
+        },
+        {
+          "code": "groupby(level=\"category\").idxmax()",
+          "text": "لكل فئة: الأسبوع صاحب أعلى إيراد. `idxmax` ترجع (فئة، تاريخ)، فنأخذ التاريخ `t[1]`."
+        }
+      ],
+      "expected_output": [
+        "order_date",
+        "2025-01-05    1152.0",
+        "2025-01-12    1761.0",
+        "2025-01-19    1079.0",
+        "Freq: W-SUN, Name: revenue, dtype: float64",
+        "category",
+        "أغذية         03-16",
+        "إلكترونيات    11-30",
+        "المنزل        08-17",
+        "كتب           03-16",
+        "ملابس         09-14",
+        "Name: revenue, dtype: object"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "في Pandas 2.2 رموز نهاية الفترة أصبحت `\"ME\"` و `\"QE\"` و `\"YE\"`. الرموز القديمة `\"M\"` و `\"Q\"` تعمل مع تحذير Deprecation، وستجدها في كود قديم كثير.",
+        "`rolling(n)` تعتمد على عدد **الصفوف**، لذلك استخدمها بعد `resample(\"D\")` وليس على الطلبات الخام، وإلا صار \"آخر 7\" يعني آخر 7 طلبات وليس 7 أيام.",
+        "`resample` تحتاج دالة بعدها (`sum` أو `mean` أو `size`...). `resample(\"ME\")` وحدها لا تحسب شيئاً."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "resample بدون فهرس تاريخ",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+            "print(df.resample(\"ME\").size())"
+          ],
+          "error": "TypeError: Only valid with DatetimeIndex, TimedeltaIndex or PeriodIndex, but got an instance of 'RangeIndex'",
+          "error_type": "TypeError",
+          "why": "الفهرس ما زال أرقاماً 0، 1، 2... ولا يعرف `resample` أي عمود هو التاريخ.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+            "print(df.resample(\"ME\", on=\"order_date\").size().head(3))"
+          ]
+        },
+        {
+          "title": "متوسط متحرك على الطلبات الخام",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+            "print(len(df[\"quantity\"].rolling(7).mean()))"
+          ],
+          "why": "`rolling(7)` على صفوف الطلبات تحسب متوسط آخر 7 **طلبات**، وليس آخر 7 أيام. جمّع يومياً أولاً.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+            "daily = df.resample(\"D\", on=\"order_date\")[\"quantity\"].sum()",
+            "print(len(daily.rolling(7).mean()))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "لوحة المؤشرات الأسبوعية",
+    "prompt": [
+      "من ملف المبيعات أنشئ:"
+    ],
+    "requirements": [
+      "`weekly_orders`: عدد الطلبات لكل أسبوع (`resample(\"W\")` مع `size()`).",
+      "`best_week`: تاريخ نهاية الأسبوع صاحب أكبر عدد طلبات كنص `\"YYYY-MM-DD\"`.",
+      "`monthly_rev`: مجموع الإيراد الشهري (`\"ME\"`).",
+      "`biggest_jump`: رقم الشهر (1–12) صاحب أعلى نسبة نمو عن الشهر السابق."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "",
+      "df[\"order_date\"] = pd.to_datetime(df[\"order_date\"])",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "_t = df.set_index(\"order_date\")",
+      "_w = _t.resample(\"W\").size()",
+      "assert weekly_orders.tolist() == _w.tolist(), \"weekly_orders غير صحيحة\"",
+      "assert best_week == _w.idxmax().strftime(\"%Y-%m-%d\"), f\"best_week يجب أن يكون {_w.idxmax().strftime('%Y-%m-%d')}\"",
+      "_m = _t[\"revenue\"].resample(\"ME\").sum()",
+      "assert (monthly_rev.round(6) == _m.round(6)).all() and len(monthly_rev) == 12, \"monthly_rev غير صحيحة\"",
+      "assert biggest_jump == _m.pct_change().idxmax().month, \"biggest_jump غير صحيح\""
+    ],
+    "hints": [
+      "`df.set_index(\"order_date\").resample(\"W\").size()`.",
+      "`idxmax()` ترجع `Timestamp`، ثم `strftime(\"%Y-%m-%d\")`.",
+      "`monthly_rev.pct_change().idxmax().month`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "",
+      "df[\"order_date\"] = pd.to_datetime(df[\"order_date\"])",
+      "",
+      "ts = df.set_index(\"order_date\")",
+      "weekly_orders = ts.resample(\"W\").size()",
+      "best_week = weekly_orders.idxmax().strftime(\"%Y-%m-%d\")",
+      "",
+      "monthly_rev = ts[\"revenue\"].resample(\"ME\").sum()",
+      "biggest_jump = monthly_rev.pct_change().idxmax().month",
+      "",
+      "print(best_week, weekly_orders.max())",
+      "print(biggest_jump)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "لماذا نستخدم `resample(\"D\")` قبل `rolling(7)` على بيانات الطلبات؟",
+    "options": [
+      "لأن `rolling` لا تعمل على التواريخ",
+      "لكي يصبح كل صف يوماً واحداً فتعني النافذة 7 أيام، وتظهر الأيام بلا طلبات",
+      "لأن `resample` ترتب البيانات فقط",
+      "لتحويل التاريخ إلى نص"
+    ],
+    "answer": 1,
+    "explanation": "`rolling` تعد صفوفاً. بعد التجميع اليومي يصبح كل صف يوماً."
+  },
+  "summary": [
+    "`resample(رمز)` + دالة = تجميع زمني، مع التاريخ فهرساً أو عبر `on=`.",
+    "`rolling(n).mean()` متوسط متحرك يظهر الاتجاه، بعد التجميع اليومي.",
+    "`pct_change()` نسبة النمو عن الفترة السابقة."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

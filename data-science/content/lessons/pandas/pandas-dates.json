@@ -1,0 +1,336 @@
+{
+  "slug": "pandas-dates",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "order": 16,
+  "title": "التواريخ .dt",
+  "title_en": "Datetime",
+  "minutes": 25,
+  "level": "متوسط",
+  "objectives": [
+    "تحول عموداً نصياً إلى تاريخ بـ `pd.to_datetime`.",
+    "تستخرج أجزاء التاريخ عبر `.dt`: السنة، والشهر، واليوم، واليوم من الأسبوع.",
+    "تحسب الفروق بين التواريخ وتضيف مدداً زمنية.",
+    "تصفي حسب فترات زمنية."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "التاريخ ليس نصاً",
+      "body": [
+        "عند قراءة CSV يبقى عمود `order_date` نصاً (`object`). يمكن قص النص كما فعلنا (`str[:7]`)، لكن النص لا يعرف أن فبراير 28 يوماً، ولا يستطيع حساب \"كم يوماً بين تاريخين\" أو \"ما يوم الأسبوع\". التحويل إلى نوع `datetime64` يعطيك كل هذا.",
+        {
+          "table": {
+            "head": [
+              "الخاصية عبر `.dt`",
+              "مثال لـ 2025-03-14"
+            ],
+            "rows": [
+              [
+                "`year` / `month` / `day`",
+                "2025 / 3 / 14"
+              ],
+              [
+                "`dayofweek`",
+                "4 (الاثنين = 0 ... الأحد = 6)"
+              ],
+              [
+                "`day_name()`",
+                "`Friday`"
+              ],
+              [
+                "`quarter`",
+                "1"
+              ],
+              [
+                "`to_period(\"M\")`",
+                "`2025-03`"
+              ],
+              [
+                "`is_month_end`",
+                "`False`"
+              ]
+            ]
+          }
+        },
+        "والفرق بين تاريخين نوع خاص `Timedelta`: `(d2 - d1).dt.days` يعطي عدد الأيام. ولإضافة مدة: `d + pd.Timedelta(days=30)` أو `pd.DateOffset(months=1)`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "الوقت من أهم أبعاد التحليل: الاتجاه الشهري، وأيام الذروة، والموسمية، ومدة بقاء العميل، وعمر الموظف في الشركة. وكثير من خصائص نماذج تعلم الآلة تُشتق من التواريخ: يوم الأسبوع، وهل هو نهاية الشهر، وعدد الأيام منذ آخر شراء."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "حوّل عمود التاريخ في أول خطوة بعد القراءة: `parse_dates=[\"order_date\"]` أو `pd.to_datetime`.",
+            "استخرج الشهر أو اليوم من الأسبوع لتجمع حسبه.",
+            "احسب مدداً: عمر الحساب، وأيام التوصيل، وسنوات الخبرة."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "التحويل والاستخراج",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+        "print(df[\"order_date\"].dtype)",
+        "print(df[\"order_date\"].min().date(), df[\"order_date\"].max().date())",
+        "",
+        "df[\"month\"] = df[\"order_date\"].dt.month",
+        "df[\"weekday\"] = df[\"order_date\"].dt.dayofweek",
+        "days_ar = [\"الاثنين\", \"الثلاثاء\", \"الأربعاء\", \"الخميس\", \"الجمعة\", \"السبت\", \"الأحد\"]",
+        "df[\"weekday_name\"] = df[\"weekday\"].map(dict(enumerate(days_ar)))",
+        "print(df.groupby([\"weekday\", \"weekday_name\"]).size())"
+      ],
+      "explanation": [
+        {
+          "code": "parse_dates=[\"order_date\"]",
+          "text": "التحويل وقت القراءة. النوع أصبح `datetime64[ns]`."
+        },
+        {
+          "code": ".min().date()",
+          "text": "أقدم تاريخ. `.date()` لعرضه بدون وقت."
+        },
+        {
+          "code": ".dt.dayofweek",
+          "text": "رقم اليوم: الاثنين 0 والأحد 6."
+        },
+        {
+          "code": "dict(enumerate(days_ar))",
+          "text": "قاموس {0: \"الاثنين\", ...} لتحويل الرقم إلى اسم عربي، لأن `day_name()` تعطي الأسماء بالإنجليزية."
+        },
+        {
+          "code": "groupby([\"weekday\", \"weekday_name\"])",
+          "text": "التجميع بالرقم أولاً يحفظ ترتيب الأيام الصحيح بدل الترتيب الأبجدي."
+        }
+      ],
+      "expected_output": [
+        "datetime64[ns]",
+        "2025-01-01 2025-12-31",
+        "weekday  weekday_name",
+        "0        الاثنين         237",
+        "1        الثلاثاء        232",
+        "2        الأربعاء        204",
+        "3        الخميس          276",
+        "4        الجمعة          282",
+        "5        السبت           223",
+        "6        الأحد           246",
+        "dtype: int64"
+      ],
+      "after": [
+        "الخميس والجمعة أعلى أيام الطلبات، والأربعاء والسبت أقلها. الفرق بين أعلى يوم وأقل يوم نحو 38% في عدد الطلبات، وهي ملاحظة تستحق التحقق على سنوات أخرى قبل بناء قرار تسويقي عليها."
+      ]
+    },
+    {
+      "type": "example",
+      "title": "فروق التواريخ والمدد",
+      "code": [
+        "import pandas as pd",
+        "",
+        "orders = pd.DataFrame({",
+        "    \"ordered\": pd.to_datetime([\"2025-03-01\", \"2025-03-03\", \"2025-03-28\"]),",
+        "    \"delivered\": pd.to_datetime([\"2025-03-04\", \"2025-03-10\", \"2025-04-02\"]),",
+        "})",
+        "orders[\"days\"] = (orders[\"delivered\"] - orders[\"ordered\"]).dt.days",
+        "orders[\"promise\"] = orders[\"ordered\"] + pd.Timedelta(days=5)",
+        "orders[\"late\"] = orders[\"delivered\"] > orders[\"promise\"]",
+        "print(orders)",
+        "print(orders[\"days\"].mean())"
+      ],
+      "explanation": [
+        {
+          "code": "(delivered - ordered)",
+          "text": "طرح تاريخين يعطي `Timedelta`، و `.dt.days` تحولها إلى عدد أيام."
+        },
+        {
+          "code": "pd.Timedelta(days=5)",
+          "text": "مدة ثابتة نضيفها إلى كل تاريخ: موعد التوصيل الموعود."
+        },
+        {
+          "code": "delivered > promise",
+          "text": "مقارنة التواريخ مباشرة. التاريخ في مارس والتسليم في أبريل يُحسب صحيحاً دون أي جهد."
+        }
+      ],
+      "expected_output": [
+        "     ordered  delivered  days    promise   late",
+        "0 2025-03-01 2025-03-04     3 2025-03-06  False",
+        "1 2025-03-03 2025-03-10     7 2025-03-08   True",
+        "2 2025-03-28 2025-04-02     5 2025-04-02  False",
+        "5.0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "التصفية بالفترات",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+        "",
+        "ramadan = df[df[\"order_date\"].between(\"2025-03-01\", \"2025-03-29\")]",
+        "print(len(ramadan))",
+        "",
+        "h2 = df[df[\"order_date\"] >= \"2025-07-01\"]",
+        "print(len(h2), h2[\"order_date\"].dt.month.min())",
+        "",
+        "by_q = df.groupby(df[\"order_date\"].dt.quarter).size()",
+        "print(by_q.to_dict())"
+      ],
+      "explanation": [
+        {
+          "code": "between(\"2025-03-01\", \"2025-03-29\")",
+          "text": "Pandas تحول النصوص تلقائياً إلى تاريخ للمقارنة. `between` شاملة للطرفين."
+        },
+        {
+          "code": ">= \"2025-07-01\"",
+          "text": "النصف الثاني من السنة."
+        },
+        {
+          "code": "groupby(df[\"order_date\"].dt.quarter)",
+          "text": "يمكن التجميع بـ Series مشتقة مباشرة دون إنشاء عمود."
+        }
+      ],
+      "expected_output": [
+        "180",
+        "865 7",
+        "{1: 437, 2: 398, 3: 351, 4: 514}"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "إذا كانت الصيغة معروفة فحددها: `pd.to_datetime(s, format=\"%d/%m/%Y\")`. هذا أسرع ويمنع تفسير `03/05` كمارس بدل مايو.",
+        "`errors=\"coerce\"` تحول القيم التي لا يمكن قراءتها إلى `NaT` (التاريخ المفقود) بدل إيقاف الكود. ستحتاجها كثيراً في كورس التنظيف.",
+        "`pd.Timedelta` لا تقبل الأشهر لأن طول الشهر متغير. لإضافة شهر استخدم `pd.DateOffset(months=1)`.",
+        "التاريخ المفقود اسمه `NaT` (Not a Time) ويعامل مثل `NaN` في `isna()`."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "استخدام .dt على عمود نصي",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "print(df[\"order_date\"].dt.month.head(2))"
+          ],
+          "error": "AttributeError: Can only use .dt accessor with datetimelike values",
+          "error_type": "AttributeError",
+          "why": "العمود ما زال نصاً لأننا لم نحوله. حوّله أولاً.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"order_date\"] = pd.to_datetime(df[\"order_date\"])",
+            "print(df[\"order_date\"].dt.month.head(2).tolist())"
+          ]
+        },
+        {
+          "title": "التجميع باسم اليوم يفسد الترتيب",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+            "print(df.groupby(df[\"order_date\"].dt.day_name()).size().index[:3].tolist())"
+          ],
+          "why": "أسماء الأيام تُرتب أبجدياً، فيظهر الأربعاء قبل الاثنين. اجمع بالرقم (أو بالرقم والاسم معاً).",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+            "print(df.groupby(df[\"order_date\"].dt.dayofweek).size().index[:3].tolist())"
+          ]
+        },
+        {
+          "title": "إضافة أشهر بـ Timedelta",
+          "wrong": [
+            "import pandas as pd",
+            "print(pd.Timestamp(\"2025-01-31\") + pd.Timedelta(months=1))"
+          ],
+          "error": "ValueError: cannot construct a Timedelta from the passed arguments, allowed keywords are [weeks, days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds]",
+          "error_type": "ValueError",
+          "why": "`Timedelta` مدة ثابتة بالأيام والساعات، والشهر ليس له طول ثابت.",
+          "fix": [
+            "import pandas as pd",
+            "print(pd.Timestamp(\"2025-01-31\") + pd.DateOffset(months=1))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "متى يشتري العملاء؟",
+    "prompt": [
+      "اقرأ الملف مع تحويل `order_date` إلى تاريخ، ثم:"
+    ],
+    "requirements": [
+      "`busiest_month`: رقم الشهر (1–12) الذي فيه أكبر عدد طلبات.",
+      "`weekend_share`: نسبة الطلبات يومي الجمعة والسبت (`dayofweek` 4 و 5)، مقربة لثلاث منازل.",
+      "`days_since`: عمود في `df` بعدد الأيام من تاريخ الطلب حتى `2025-12-31`.",
+      "`last_30`: جدول بالطلبات التي `days_since` لها أقل من 30."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "import pandas as _pd",
+      "_d = _pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+      "assert busiest_month == _d[\"order_date\"].dt.month.value_counts().idxmax(), \"busiest_month غير صحيح\"",
+      "assert weekend_share == round(float(_d[\"order_date\"].dt.dayofweek.isin([4, 5]).mean()), 3), \"weekend_share غير صحيحة\"",
+      "_days = (_pd.Timestamp(\"2025-12-31\") - _d[\"order_date\"]).dt.days",
+      "assert df[\"days_since\"].tolist() == _days.tolist(), \"days_since غير صحيح\"",
+      "assert len(last_30) == int((_days < 30).sum()), f\"last_30 يجب أن يكون {int((_days < 30).sum())} صفاً\""
+    ],
+    "hints": [
+      "`value_counts().idxmax()` على `dt.month`.",
+      "`dt.dayofweek.isin([4, 5]).mean()` نسبة.",
+      "`(pd.Timestamp(\"2025-12-31\") - df[\"order_date\"]).dt.days`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+      "",
+      "busiest_month = df[\"order_date\"].dt.month.value_counts().idxmax()",
+      "weekend_share = round(float(df[\"order_date\"].dt.dayofweek.isin([4, 5]).mean()), 3)",
+      "df[\"days_since\"] = (pd.Timestamp(\"2025-12-31\") - df[\"order_date\"]).dt.days",
+      "last_30 = df[df[\"days_since\"] < 30]",
+      "",
+      "print(busiest_month, weekend_share, len(last_30))"
+    ],
+    "solution_explanation": [
+      "`days_since` هي \"الحداثة\" Recency في تحليل RFM للعملاء، وستستخدمها في المشروع 4."
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "ما نوع ناتج `pd.Timestamp(\"2025-03-10\") - pd.Timestamp(\"2025-03-01\")`؟",
+    "options": [
+      "عدد صحيح 9",
+      "`Timedelta` بمقدار 9 أيام",
+      "نص `\"9 days\"`",
+      "خطأ: لا يمكن طرح التواريخ"
+    ],
+    "answer": 1,
+    "explanation": "طرح تاريخين يعطي مدة `Timedelta`، ومنها تأخذ الأيام بـ `.days` (أو `.dt.days` لعمود)."
+  },
+  "summary": [
+    "حوّل التاريخ مبكراً: `parse_dates` أو `pd.to_datetime(format=..., errors=\"coerce\")`.",
+    "`.dt` تعطي السنة والشهر واليوم ورقم يوم الأسبوع والربع.",
+    "طرح تاريخين = `Timedelta` ← `.dt.days`؛ والأشهر بـ `DateOffset`.",
+    "اجمع بأرقام الأيام والأشهر للحفاظ على الترتيب الزمني."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

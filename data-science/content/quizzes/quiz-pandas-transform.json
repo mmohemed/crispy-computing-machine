@@ -1,0 +1,306 @@
+{
+  "slug": "quiz-pandas-transform",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "title": "اختبار الوحدة: التجميع والدمج",
+  "intro": [
+    "يغطي هذا الاختبار groupby و agg و transform والجداول المحورية والدمج وإعادة التشكيل والنصوص والتواريخ و resample والفئات والأداء.",
+    "أسئلة الكود تعمل على `store_sales.csv` و `products.csv`."
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "df = pd.DataFrame({'c': ['a', 'b', 'a', 'b', 'a'], 'v': [1, 2, 3, None, 5]})",
+        "print(df.groupby('c').size().tolist(), df.groupby('c')['v'].count().tolist())"
+      ],
+      "options": [
+        "[3, 2] [3, 1]",
+        "[3, 2] [3, 2]",
+        "[3, 1] [3, 2]",
+        "[2, 3] [1, 3]"
+      ],
+      "answer": 0,
+      "explanation": "`size` تعد الصفوف (3 و 2)، و `count` تتجاهل المفقود في `v` (3 و 1).",
+      "lesson": "pandas-groupby"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "prompt": "أي كود يعطي جدولاً فيه عمودان باسمي `orders` و `total` لكل مدينة؟",
+      "options": [
+        "`df.groupby(\"city\").agg(orders=(\"order_id\", \"count\"), total=(\"revenue\", \"sum\"))`",
+        "`df.groupby(\"city\").agg([\"count\", \"sum\"])`",
+        "`df.groupby(\"city\")[\"orders\", \"total\"].sum()`",
+        "`df.agg(orders=\"count\", total=\"sum\").groupby(\"city\")`"
+      ],
+      "answer": 0,
+      "explanation": "التجميع المسمى: `الاسم=(\"العمود\", \"الدالة\")`.",
+      "lesson": "pandas-agg"
+    },
+    {
+      "id": "q3",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "df = pd.DataFrame({'g': ['x', 'x', 'y'], 'v': [2, 4, 9]})",
+        "print(df.groupby('g')['v'].transform('mean').tolist())"
+      ],
+      "options": [
+        "[3.0, 3.0, 9.0]",
+        "[3.0, 9.0]",
+        "[2, 4, 9]",
+        "[6.0, 6.0, 9.0]"
+      ],
+      "answer": 0,
+      "explanation": "`transform` تضع متوسط المجموعة أمام كل صف: المجموعة x متوسطها 3.",
+      "lesson": "pandas-agg"
+    },
+    {
+      "id": "q4",
+      "type": "true_false",
+      "prompt": "القيمة الافتراضية لـ `aggfunc` في `pivot_table` هي `sum`.",
+      "answer": false,
+      "explanation": "الافتراضية `mean`، لذلك اكتب `aggfunc` صراحة دائماً.",
+      "lesson": "pandas-pivot"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "prompt": "في `pd.crosstab(df[\"city\"], df[\"payment\"], normalize=\"index\")` ما الذي يكون مجموعه 1؟",
+      "options": [
+        "كل عمود",
+        "كل صف (كل مدينة)",
+        "الجدول كله",
+        "القطر فقط"
+      ],
+      "answer": 1,
+      "explanation": "`\"index\"` يقسم كل صف على مجموعه.",
+      "lesson": "pandas-pivot"
+    },
+    {
+      "id": "q6",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "a = pd.DataFrame({'k': [1, 2, 3]})",
+        "b = pd.DataFrame({'k': [2, 3, 3, 4], 'v': [10, 20, 30, 40]})",
+        "print(len(a.merge(b, on='k', how='left')), len(a.merge(b, on='k', how='inner')))"
+      ],
+      "options": [
+        "4 3",
+        "3 2",
+        "3 3",
+        "5 4"
+      ],
+      "answer": 0,
+      "explanation": "المفتاح 3 مكرر في `b`، فيطابق صفين. الأيسر: 1 (بلا مطابقة) + 2 + 3×2 = 4 صفوف، والداخلي: 1 + 2 = 3.",
+      "lesson": "pandas-merge"
+    },
+    {
+      "id": "q7",
+      "type": "mcq",
+      "prompt": "ما فائدة `validate=\"many_to_one\"` في `merge`؟",
+      "options": [
+        "تسرّع الدمج",
+        "تحذف المكررات تلقائياً",
+        "تعطي خطأ إذا كان المفتاح مكرراً في الجدول الأيمن بدل مضاعفة الصفوف بصمت",
+        "تحوّل نوع المفتاح"
+      ],
+      "answer": 2,
+      "explanation": "تحمي من أخطر أخطاء الدمج: تضخم الصفوف بسبب مفتاح مكرر في الجدول المرجعي.",
+      "lesson": "pandas-merge"
+    },
+    {
+      "id": "q8",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "w = pd.DataFrame({'id': [1, 2], 'a': [5, 6], 'b': [7, 8]})",
+        "long = w.melt(id_vars='id')",
+        "print(long.shape, long.columns.tolist())"
+      ],
+      "options": [
+        "(4, 3) ['id', 'variable', 'value']",
+        "(2, 3) ['id', 'a', 'b']",
+        "(4, 2) ['variable', 'value']",
+        "(6, 2) ['id', 'value']"
+      ],
+      "answer": 0,
+      "explanation": "صفان × عمودين قياس = 4 صفوف، والأسماء الافتراضية `variable` و `value`.",
+      "lesson": "pandas-reshape"
+    },
+    {
+      "id": "q9",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "s = pd.Series(['1,200 SAR', ' 90 SAR'])",
+        "print(s.str.replace(',', '').str.replace('SAR', '').str.strip().astype(int).sum())"
+      ],
+      "options": [
+        "1290",
+        "1200",
+        "'1200 90'",
+        "خطأ ValueError"
+      ],
+      "answer": 0,
+      "explanation": "بعد حذف الفاصلة و SAR والمسافات: 1200 و 90.",
+      "lesson": "pandas-strings"
+    },
+    {
+      "id": "q10",
+      "type": "mcq",
+      "prompt": "كيف تحسب عدد الأيام بين عمودي التاريخ `start` و `end`؟",
+      "options": [
+        "`(df[\"end\"] - df[\"start\"]).days`",
+        "`(df[\"end\"] - df[\"start\"]).dt.days`",
+        "`df[\"end\"].dt.day - df[\"start\"].dt.day`",
+        "`pd.Timedelta(df[\"end\"], df[\"start\"])`"
+      ],
+      "answer": 1,
+      "explanation": "الفرق عمود `Timedelta`، والوصول إلى الأيام لعمود يمر عبر `.dt`. أما طرح `dt.day` فيطرح رقم اليوم في الشهر فقط ويخطئ عبر الأشهر.",
+      "lesson": "pandas-dates"
+    },
+    {
+      "id": "q11",
+      "type": "true_false",
+      "prompt": "`df.resample(\"ME\").sum()` تعمل مباشرة على أي جدول فيه عمود تاريخ، حتى لو كان الفهرس أرقاماً 0، 1، 2.",
+      "answer": false,
+      "explanation": "تحتاج فهرساً من التواريخ، أو تمرير العمود بـ `on=\"order_date\"`.",
+      "lesson": "pandas-resample"
+    },
+    {
+      "id": "q12",
+      "type": "predict_output",
+      "prompt": "ما ناتج الكود التالي؟",
+      "code": [
+        "import pandas as pd",
+        "t = pd.CategoricalDtype(['low', 'mid', 'high'], ordered=True)",
+        "s = pd.Series(['high', 'low', 'mid'], dtype=t)",
+        "print(s.sort_values().tolist(), (s >= 'mid').sum())"
+      ],
+      "options": [
+        "['low', 'mid', 'high'] 2",
+        "['high', 'low', 'mid'] 2",
+        "['low', 'mid', 'high'] 1",
+        "['high', 'mid', 'low'] 2"
+      ],
+      "answer": 0,
+      "explanation": "الترتيب حسب الفئات المعرفة، و `mid` و `high` أكبر من أو تساوي `mid`.",
+      "lesson": "pandas-categoricals"
+    },
+    {
+      "id": "q13",
+      "type": "mcq",
+      "prompt": "أي بديل متجه مناسب لـ `df[\"q\"].apply(lambda x: \"كبير\" if x >= 3 else \"عادي\")`؟",
+      "options": [
+        "`np.where(df[\"q\"] >= 3, \"كبير\", \"عادي\")`",
+        "`df.iterrows()`",
+        "`df[\"q\"].map(lambda x: ...)`",
+        "`df.apply(..., axis=1)`"
+      ],
+      "answer": 0,
+      "explanation": "`np.where` تحسب الشرط للعمود كله دفعة واحدة.",
+      "lesson": "pandas-performance"
+    },
+    {
+      "id": "q14",
+      "type": "fix_code",
+      "prompt": "الكود التالي يجب أن يحسب إجمالي الربح لكل فئة، لكن فيه ثلاثة أخطاء (نوع الدمج، ومعادلة الربح، ودالة التجميع). صحّحه.",
+      "starter_code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "products = pd.read_csv(\"products.csv\")[[\"product\", \"unit_cost\"]]",
+        "",
+        "m = df.merge(products, on=\"product\", how=\"right\")",
+        "m[\"profit\"] = m[\"unit_price\"] * (1 - m[\"discount\"]) - m[\"unit_cost\"]",
+        "profit_by_cat = m.groupby(\"category\")[\"profit\"].mean()",
+        "print(profit_by_cat.round(0))"
+      ],
+      "tests": [
+        "import pandas as _pd",
+        "_d = _pd.read_csv(\"store_sales.csv\")",
+        "_p = _pd.read_csv(\"products.csv\")[[\"product\", \"unit_cost\"]]",
+        "_m = _d.merge(_p, on=\"product\", how=\"left\")",
+        "_m[\"profit\"] = (_m[\"unit_price\"] * (1 - _m[\"discount\"]) - _m[\"unit_cost\"]) * _m[\"quantity\"]",
+        "_e = _m.groupby(\"category\")[\"profit\"].sum()",
+        "assert \"how=\\\"left\\\"\" in __code__ or \"how='left'\" in __code__, \"استخدم دمجاً أيسر لكي تبقى كل الطلبات\"",
+        "assert (profit_by_cat.round(4) == _e.round(4)).all(), \"profit_by_cat غير صحيح: الربح × الكمية، ثم المجموع\""
+      ],
+      "solution": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "products = pd.read_csv(\"products.csv\")[[\"product\", \"unit_cost\"]]",
+        "",
+        "m = df.merge(products, on=\"product\", how=\"left\")",
+        "m[\"profit\"] = (m[\"unit_price\"] * (1 - m[\"discount\"]) - m[\"unit_cost\"]) * m[\"quantity\"]",
+        "profit_by_cat = m.groupby(\"category\")[\"profit\"].sum()",
+        "print(profit_by_cat.round(0))"
+      ],
+      "hints": [
+        "الجدول الأساسي على اليسار: أي نوع دمج يبقيه كاملاً؟",
+        "الربح للطلب = ربح الوحدة × الكمية."
+      ],
+      "explanation": "الطلبات هي الجدول الأساسي فالدمج `left`. ربح الوحدة يُضرب في الكمية. والإجمالي `sum` وليس `mean`.",
+      "lesson": "pandas-merge",
+      "files": [
+        "datasets/store_sales.csv",
+        "datasets/products.csv"
+      ]
+    },
+    {
+      "id": "q15",
+      "type": "write_code",
+      "prompt": "سؤال تطبيقي: أنشئ `monthly` = جدولاً فيه لكل شهر (`resample(\"ME\")`) عمودان: `orders` (عدد الطلبات) و `revenue` (مجموع الإيراد). ثم خزّن في `best_month_name` اسم الشهر صاحب أعلى إيراد كنص `\"YYYY-MM\"`، وفي `avg_growth` متوسط نسب النمو الشهرية للإيراد (من `pct_change`) مقرباً لثلاث منازل كـ `float`.",
+      "starter_code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "# اكتب الحل هنا"
+      ],
+      "tests": [
+        "import pandas as _pd",
+        "_t = df.set_index(\"order_date\")",
+        "_m = _t.resample(\"ME\").agg(orders=(\"order_id\", \"count\"), revenue=(\"revenue\", \"sum\"))",
+        "assert list(monthly.columns) == [\"orders\", \"revenue\"], \"أعمدة monthly يجب أن تكون orders و revenue\"",
+        "assert monthly[\"orders\"].tolist() == _m[\"orders\"].tolist(), \"orders غير صحيحة\"",
+        "assert best_month_name == _m[\"revenue\"].idxmax().strftime(\"%Y-%m\"), \"best_month_name غير صحيح\"",
+        "assert avg_growth == round(float(_m[\"revenue\"].pct_change().mean()), 3), \"avg_growth غير صحيح\""
+      ],
+      "solution": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "monthly = df.resample(\"ME\", on=\"order_date\").agg(orders=(\"order_id\", \"count\"), revenue=(\"revenue\", \"sum\"))",
+        "best_month_name = monthly[\"revenue\"].idxmax().strftime(\"%Y-%m\")",
+        "avg_growth = round(float(monthly[\"revenue\"].pct_change().mean()), 3)",
+        "print(monthly.round(0))",
+        "print(best_month_name, avg_growth)"
+      ],
+      "hints": [
+        "`df.resample(\"ME\", on=\"order_date\").agg(orders=(...), revenue=(...))`.",
+        "`idxmax()` ترجع تاريخاً، نسّقه بـ `strftime`."
+      ],
+      "explanation": "`resample` تقبل `agg` بالتجميع المسمى مثل `groupby` تماماً. و `pct_change().mean()` تتجاهل أول قيمة `NaN`.",
+      "lesson": "pandas-resample",
+      "files": [
+        "datasets/store_sales.csv",
+        "datasets/products.csv"
+      ]
+    }
+  ]
+}

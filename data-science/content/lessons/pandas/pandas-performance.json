@@ -1,0 +1,360 @@
+{
+  "slug": "pandas-performance",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "order": 19,
+  "title": "الأداء والذاكرة",
+  "title_en": "Performance & Memory",
+  "minutes": 20,
+  "level": "متوسط",
+  "objectives": [
+    "تقيس حجم الجدول في الذاكرة وتقلله باختيار الأنواع المناسبة.",
+    "تفهم لماذا العمليات المتجهة أسرع بكثير من `apply` والحلقات.",
+    "تقرأ من الملفات ما تحتاجه فقط بـ `usecols` و `dtype`.",
+    "تعرف ترتيب الأدوات من الأسرع إلى الأبطأ."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "من أين يأتي البطء؟",
+      "body": [
+        "Pandas سريعة لأنها تنفذ العمليات على أعمدة كاملة بكود مكتوب بـ C (عبر NumPy). عندما تكتب حلقة أو `apply` بدالة Python، تخرج من هذا المسار السريع وتعود إلى Python صفاً بصف. الفرق يصل إلى عشرات أو مئات المرات.",
+        {
+          "table": {
+            "head": [
+              "الأسلوب",
+              "السرعة",
+              "مثال"
+            ],
+            "rows": [
+              [
+                "عملية متجهة على الأعمدة",
+                "الأسرع",
+                "`df[\"a\"] * df[\"b\"]`"
+              ],
+              [
+                "دوال Pandas الجاهزة",
+                "سريعة جداً",
+                "`groupby().sum()` و `str.contains` و `np.where`"
+              ],
+              [
+                "`map` بقاموس",
+                "سريعة",
+                "`df[\"city\"].map(regions)`"
+              ],
+              [
+                "`apply` على عمود",
+                "بطيئة",
+                "`df[\"a\"].apply(my_func)`"
+              ],
+              [
+                "`apply(axis=1)` على الصفوف",
+                "بطيئة جداً",
+                "`df.apply(f, axis=1)`"
+              ],
+              [
+                "حلقة `for` مع `iterrows`",
+                "الأبطأ",
+                "`for i, row in df.iterrows():`"
+              ]
+            ]
+          }
+        },
+        "والذاكرة: كل عمود `int64` يأخذ 8 بايت للصف، و `int8` بايتاً واحداً. والنصوص `object` هي الأكبر عادة، ونوع `category` يقلصها كثيراً."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "بيانات التدريب على 1700 صف لا تظهر فيها المشكلة. لكن في العمل الحقيقي تتعامل مع ملايين الصفوف، وحلقة واحدة قد تحول دقيقة إلى ساعة، أو يفشل الملف في التحميل لأنه أكبر من الذاكرة. عادة التفكير بالأعمدة بدل الصفوف توفر عليك هذا من البداية."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "دائماً: ابدأ بالعملية المتجهة، ولا تكتب `apply` إلا إذا لم تجد بديلاً.",
+            "عند ملف كبير: `usecols` لقراءة الأعمدة المطلوبة فقط، و `dtype` لأنواع أصغر.",
+            "قبل التحسين: قِس. `memory_usage(deep=True)` للذاكرة، و `timeit` للزمن."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "قياس الزمن: متجه مقابل apply",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "import timeit",
+        "",
+        "big = pd.concat([df] * 20, ignore_index=True)",
+        "print(len(big))",
+        "",
+        "def vectorized():",
+        "    return big[\"unit_price\"] * big[\"quantity\"] * (1 - big[\"discount\"])",
+        "",
+        "def with_apply():",
+        "    return big.apply(lambda r: r[\"unit_price\"] * r[\"quantity\"] * (1 - r[\"discount\"]), axis=1)",
+        "",
+        "t_vec = min(timeit.repeat(vectorized, number=3, repeat=3)) / 3",
+        "t_app = min(timeit.repeat(with_apply, number=1, repeat=2))",
+        "print(f\"vectorized: {t_vec * 1000:.2f} ms\")",
+        "print(f\"apply     : {t_app * 1000:.0f} ms\")",
+        "print(f\"apply is ~{t_app / t_vec:.0f}x slower\")",
+        "print(vectorized().equals(with_apply()))"
+      ],
+      "explanation": [
+        {
+          "code": "pd.concat([df] * 20)",
+          "text": "نكرر البيانات 20 مرة (34,000 صف) ليظهر الفرق بوضوح."
+        },
+        {
+          "code": "timeit.repeat",
+          "text": "نشغل كل دالة عدة مرات ونأخذ أسرع زمن لتقليل أثر العوامل الخارجية."
+        },
+        {
+          "code": "apply(..., axis=1)",
+          "text": "تستدعي دالة Python لكل صف: 34,000 استدعاء."
+        },
+        {
+          "code": ".equals",
+          "text": "النتيجة نفسها تماماً. الفرق في الزمن فقط."
+        }
+      ],
+      "expected_output": [
+        "34000",
+        "vectorized: 0.25 ms",
+        "apply     : 199 ms",
+        "apply is ~809x slower",
+        "True"
+      ],
+      "output_varies": true,
+      "run_note": "الأزمنة تختلف حسب جهازك والمتصفح، لكن الفرق الكبير بين الأسلوبين ثابت."
+    },
+    {
+      "type": "example",
+      "title": "تقليل الذاكرة بالأنواع",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "before = df.memory_usage(deep=True).sum()",
+        "",
+        "small = df.copy()",
+        "for col in [\"city\", \"category\", \"product\", \"payment_method\", \"customer_type\"]:",
+        "    small[col] = small[col].astype(\"category\")",
+        "small[\"quantity\"] = small[\"quantity\"].astype(\"int8\")",
+        "small[\"unit_price\"] = small[\"unit_price\"].astype(\"int16\")",
+        "small[\"discount\"] = small[\"discount\"].astype(\"float32\")",
+        "",
+        "after = small.memory_usage(deep=True).sum()",
+        "print(f\"{before / 1024:.0f} KB -> {after / 1024:.0f} KB ({after / before:.0%})\")",
+        "print(small.dtypes.astype(str).value_counts().to_dict())"
+      ],
+      "explanation": [
+        {
+          "code": "astype(\"category\")",
+          "text": "الأعمدة النصية ذات القيم القليلة: أكبر توفير."
+        },
+        {
+          "code": "astype(\"int8\")",
+          "text": "الكمية من 1 إلى 5 تكفيها `int8` (من −128 إلى 127)."
+        },
+        {
+          "code": "astype(\"int16\")",
+          "text": "الأسعار حتى 32,767 تكفيها `int16`."
+        },
+        {
+          "code": "after / before",
+          "text": "الحجم الجديد كنسبة من القديم."
+        }
+      ],
+      "expected_output": [
+        "1070 KB -> 259 KB (24%)",
+        "{'category': 5, 'object': 2, 'int16': 1, 'int8': 1, 'float32': 1, 'float64': 1}"
+      ],
+      "output_varies": true,
+      "run_note": "حجم النصوص في الذاكرة يختلف بين الأنظمة (مثل 32-bit و 64-bit)، فقد ترى أرقاماً مختلفة قليلاً."
+    },
+    {
+      "type": "example",
+      "title": "قراءة ما تحتاجه فقط",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(",
+        "    \"store_sales.csv\",",
+        "    usecols=[\"order_date\", \"city\", \"unit_price\", \"quantity\"],",
+        "    dtype={\"city\": \"category\", \"quantity\": \"int8\"},",
+        "    parse_dates=[\"order_date\"],",
+        ")",
+        "print(df.dtypes)",
+        "print(df.shape)"
+      ],
+      "explanation": [
+        {
+          "code": "usecols=[...]",
+          "text": "يقرأ 4 أعمدة فقط من 11، فلا تُحمّل الأعمدة الأخرى في الذاكرة أصلاً."
+        },
+        {
+          "code": "dtype={...}",
+          "text": "الأنواع الصغيرة من لحظة القراءة."
+        },
+        {
+          "code": "parse_dates",
+          "text": "التاريخ جاهز دون خطوة إضافية."
+        }
+      ],
+      "expected_output": [
+        "order_date    datetime64[ns]",
+        "city                category",
+        "unit_price             int64",
+        "quantity                int8",
+        "dtype: object",
+        "(1700, 4)"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "قبل تصغير نوع رقمي تأكد من المدى: `df[\"col\"].min()` و `max()`. قيمة خارج مدى `int8` تنقلب إلى رقم خاطئ بصمت.",
+        "`np.where` و `np.select` بديل متجه لأغلب الشروط التي يكتبها المبتدئ داخل `apply`.",
+        "للملفات الأكبر من الذاكرة: `read_csv(..., chunksize=100_000)` يقرأ الملف على دفعات تعالج كلاً منها ثم تجمع النتائج.",
+        "صيغة Parquet أسرع وأصغر من CSV وتحفظ الأنواع. ستراها في مستوى هندسة البيانات."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "iterrows لتعديل عمود",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"p\": [10, 20], \"q\": [1, 3]})",
+            "for i, row in df.iterrows():",
+            "    row[\"total\"] = row[\"p\"] * row[\"q\"]",
+            "print(\"total\" in df.columns)"
+          ],
+          "why": "حلقة على الصفوف بطيئة، وتعديل `row` داخل `iterrows` لا يغير الجدول الأصلي أصلاً. العملية المتجهة أسرع وصحيحة.",
+          "fix": [
+            "import pandas as pd",
+            "df = pd.DataFrame({\"p\": [10, 20], \"q\": [1, 3]})",
+            "df[\"total\"] = df[\"p\"] * df[\"q\"]",
+            "print(df[\"total\"].tolist())"
+          ]
+        },
+        {
+          "title": "تصغير نوع دون فحص المدى",
+          "wrong": [
+            "import numpy as np",
+            "prices = np.array([99, 400, 1250])",
+            "print(prices.astype(np.int8).tolist())"
+          ],
+          "why": "السعر 400 لا يتسع في `int8` (أقصاه 127)، فتتحول القيم إلى أرقام خاطئة بدون أي تحذير عند استخدام NumPy مباشرة. افحص المدى أولاً.",
+          "fix": [
+            "import numpy as np",
+            "prices = np.array([99, 400, 1250])",
+            "print(prices.max() <= np.iinfo(np.int16).max, prices.astype(np.int16).tolist())"
+          ]
+        },
+        {
+          "title": "apply لشرط بسيط",
+          "wrong": [
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"size\"] = df[\"quantity\"].apply(lambda q: \"كبير\" if q >= 3 else \"عادي\")",
+            "print(df[\"size\"].value_counts().to_dict())"
+          ],
+          "why": "الكود صحيح لكنه بطيء بلا داع. `np.where` تعطي النتيجة نفسها بعملية متجهة.",
+          "fix": [
+            "import numpy as np",
+            "import pandas as pd",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"size\"] = np.where(df[\"quantity\"] >= 3, \"كبير\", \"عادي\")",
+            "print(df[\"size\"].value_counts().to_dict())"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "أعد كتابتها بدون apply",
+    "prompt": [
+      "الكود في المحرر يستخدم `apply` ثلاث مرات. أعد كتابة الأعمدة الثلاثة بعمليات متجهة لتعطي النتائج نفسها تماماً:"
+    ],
+    "requirements": [
+      "`net`: السعر × الكمية × (1 − الخصم).",
+      "`tier`: `\"مرتفع\"` إذا `net >= 500`، و `\"متوسط\"` إذا `net >= 150`، وإلا `\"منخفض\"` (استخدم `np.select`).",
+      "`is_weekend`: `True` إذا كان تاريخ الطلب جمعة أو سبت.",
+      "لا تستخدم `apply` ولا حلقات في حلك."
+    ],
+    "starter_code": [
+      "import numpy as np",
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+      "",
+      "# النسخة البطيئة (للمقارنة، لا تعدّلها)",
+      "slow_net = df.apply(lambda r: r[\"unit_price\"] * r[\"quantity\"] * (1 - r[\"discount\"]), axis=1)",
+      "slow_tier = slow_net.apply(lambda v: \"مرتفع\" if v >= 500 else (\"متوسط\" if v >= 150 else \"منخفض\"))",
+      "slow_weekend = df[\"order_date\"].apply(lambda d: d.dayofweek in (4, 5))",
+      "",
+      "# اكتب الحل المتجه هنا في الأعمدة df[\"net\"] و df[\"tier\"] و df[\"is_weekend\"]"
+    ],
+    "tests": [
+      "assert \"apply(\" not in __code__.split(\"# اكتب الحل المتجه\")[-1], \"لا تستخدم apply في حلك\"",
+      "assert \"for \" not in __code__.split(\"# اكتب الحل المتجه\")[-1], \"لا تستخدم حلقات في حلك\"",
+      "assert np.allclose(df[\"net\"], slow_net), \"net لا تطابق النسخة البطيئة\"",
+      "assert (df[\"tier\"] == slow_tier).all(), \"tier لا تطابق النسخة البطيئة\"",
+      "assert (df[\"is_weekend\"] == slow_weekend).all(), \"is_weekend لا تطابق النسخة البطيئة\""
+    ],
+    "hints": [
+      "`np.select(conditions, choices, default=...)` يختار أول شرط صحيح بالترتيب.",
+      "ضع الشرط الأعلى (`>= 500`) أولاً.",
+      "`df[\"order_date\"].dt.dayofweek.isin([4, 5])`."
+    ],
+    "solution": [
+      "import numpy as np",
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\", parse_dates=[\"order_date\"])",
+      "",
+      "# النسخة البطيئة (للمقارنة، لا تعدّلها)",
+      "slow_net = df.apply(lambda r: r[\"unit_price\"] * r[\"quantity\"] * (1 - r[\"discount\"]), axis=1)",
+      "slow_tier = slow_net.apply(lambda v: \"مرتفع\" if v >= 500 else (\"متوسط\" if v >= 150 else \"منخفض\"))",
+      "slow_weekend = df[\"order_date\"].apply(lambda d: d.dayofweek in (4, 5))",
+      "",
+      "# اكتب الحل المتجه هنا في الأعمدة df[\"net\"] و df[\"tier\"] و df[\"is_weekend\"]",
+      "df[\"net\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "df[\"tier\"] = np.select([df[\"net\"] >= 500, df[\"net\"] >= 150], [\"مرتفع\", \"متوسط\"], default=\"منخفض\")",
+      "df[\"is_weekend\"] = df[\"order_date\"].dt.dayofweek.isin([4, 5])",
+      "",
+      "print(df[\"tier\"].value_counts().to_dict(), round(df[\"is_weekend\"].mean(), 3))"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "أي أسلوب هو الأسرع عادة لحساب عمود جديد من عمودين في Pandas؟",
+    "options": [
+      "`for i, row in df.iterrows()`",
+      "`df.apply(f, axis=1)`",
+      "عملية متجهة: `df[\"a\"] * df[\"b\"]`",
+      "`df[\"a\"].apply(f)`"
+    ],
+    "answer": 2,
+    "explanation": "العملية المتجهة تعمل على العمود كله بكود C، بينما الأساليب الأخرى تستدعي Python لكل صف."
+  },
+  "summary": [
+    "فكر بالأعمدة لا بالصفوف: متجه ← دوال جاهزة ← `map` ← `apply` ← `iterrows`.",
+    "`memory_usage(deep=True)` للقياس، و `category` والأنواع الأصغر للتقليل بعد فحص المدى.",
+    "`usecols` و `dtype` و `parse_dates` عند القراءة لملفات كبيرة."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

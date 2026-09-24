@@ -1,0 +1,327 @@
+{
+  "slug": "pandas-reshape",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "order": 14,
+  "title": "melt و pivot و stack",
+  "title_en": "Reshaping",
+  "minutes": 25,
+  "level": "متوسط",
+  "objectives": [
+    "تفرق بين الشكل العريض Wide والشكل الطويل Long للبيانات.",
+    "تحول العريض إلى طويل بـ `melt`، والطويل إلى عريض بـ `pivot`.",
+    "تستخدم `stack` و `unstack` مع الفهارس المتعددة الناتجة من `groupby`."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "نفس البيانات بشكلين",
+      "body": [
+        "جدول مبيعات شهرية لكل فئة يمكن كتابته بشكلين:",
+        {
+          "table": {
+            "head": [
+              "الشكل",
+              "كيف يبدو",
+              "مناسب لـ"
+            ],
+            "rows": [
+              [
+                "**عريض Wide**",
+                "صف لكل فئة، وعمود لكل شهر (`يناير`، `فبراير`، ...)",
+                "القراءة البشرية والتقارير"
+              ],
+              [
+                "**طويل Long**",
+                "صف لكل (فئة، شهر)، وعمود واحد للقيمة",
+                "`groupby` والرسم والنمذجة"
+              ]
+            ]
+          }
+        },
+        "البيانات المرتبة Tidy Data لها قاعدة بسيطة: كل متغير في عمود، وكل ملاحظة في صف. في الشكل العريض \"الشهر\" متغير مخفي داخل أسماء الأعمدة؛ والشكل الطويل يخرجه إلى عمود خاص.",
+        {
+          "list": [
+            "`melt`: عريض ← طويل. أعمدة كثيرة تتحول إلى عمودين: اسم العمود القديم وقيمته.",
+            "`pivot`: طويل ← عريض. قيم عمود تصبح أسماء أعمدة. (مثل `pivot_table` لكن بدون تجميع، وتفشل إذا تكررت التركيبة.)",
+            "`unstack`: ينقل آخر مستوى من الفهرس إلى الأعمدة، و `stack` العكس."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "البيانات تأتي غالباً عريضة: ملف Excel فيه عمود لكل شهر، أو درجات الطالب في عمود لكل مادة. لكن معظم أدوات التحليل تحتاجها طويلة: لتجمع حسب الشهر أو ترسم خطاً لكل مادة، يجب أن يكون الشهر أو المادة عموداً. تحويل الشكل مهارة صغيرة توفر حلقات وكوداً معقداً."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`melt` عندما تكون أسماء الأعمدة قيماً لمتغير (سنوات، أشهر، مواد، أسئلة استبيان).",
+            "`pivot` لعرض نتيجة طويلة كجدول مقارنة.",
+            "`unstack` بعد `groupby` بعمودين لتحويل النتيجة إلى شبكة."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "من عريض إلى طويل بـ melt",
+      "code": [
+        "import pandas as pd",
+        "",
+        "wide = pd.DataFrame({",
+        "    \"student\": [\"ريم\", \"فهد\", \"سارة\"],",
+        "    \"math\": [78, 64, 91],",
+        "    \"science\": [82, 70, 88],",
+        "    \"english\": [69, 75, 94],",
+        "})",
+        "long = wide.melt(id_vars=\"student\", var_name=\"subject\", value_name=\"score\")",
+        "print(long)",
+        "print(long.groupby(\"subject\")[\"score\"].mean().round(1))"
+      ],
+      "explanation": [
+        {
+          "code": "id_vars=\"student\"",
+          "text": "العمود الذي يبقى كما هو ويتكرر مع كل قيمة."
+        },
+        {
+          "code": "var_name=\"subject\"",
+          "text": "اسم العمود الجديد الذي يحتوي أسماء الأعمدة القديمة."
+        },
+        {
+          "code": "value_name=\"score\"",
+          "text": "اسم عمود القيم."
+        },
+        {
+          "code": "groupby(\"subject\")",
+          "text": "بعد التحويل أصبح المتوسط لكل مادة سطراً واحداً."
+        }
+      ],
+      "expected_output": [
+        "  student  subject  score",
+        "0     ريم     math     78",
+        "1     فهد     math     64",
+        "2    سارة     math     91",
+        "3     ريم  science     82",
+        "4     فهد  science     70",
+        "5    سارة  science     88",
+        "6     ريم  english     69",
+        "7     فهد  english     75",
+        "8    سارة  english     94",
+        "subject",
+        "english    79.3",
+        "math       77.7",
+        "science    80.0",
+        "Name: score, dtype: float64"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "من طويل إلى عريض بـ pivot",
+      "code": [
+        "import pandas as pd",
+        "",
+        "long = pd.DataFrame({",
+        "    \"month\": [\"01\", \"01\", \"02\", \"02\", \"03\", \"03\"],",
+        "    \"channel\": [\"متجر\", \"تطبيق\", \"متجر\", \"تطبيق\", \"متجر\", \"تطبيق\"],",
+        "    \"orders\": [120, 80, 115, 96, 118, 121],",
+        "})",
+        "wide = long.pivot(index=\"month\", columns=\"channel\", values=\"orders\")",
+        "print(wide)",
+        "wide[\"app_share_%\"] = (wide[\"تطبيق\"] / wide.sum(axis=1) * 100).round(1)",
+        "print(wide[\"app_share_%\"].tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "pivot(index=\"month\", columns=\"channel\", values=\"orders\")",
+          "text": "صف لكل شهر، وعمود لكل قناة."
+        },
+        {
+          "code": "wide.sum(axis=1)",
+          "text": "بعد التحويل صار حساب حصة التطبيق من كل شهر عملية على أعمدة."
+        }
+      ],
+      "expected_output": [
+        "channel  تطبيق  متجر",
+        "month               ",
+        "01          80   120",
+        "02          96   115",
+        "03         121   118",
+        "[40.0, 45.5, 50.6]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "unstack بعد groupby",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "df[\"month\"] = df[\"order_date\"].str[5:7]",
+        "g = df.groupby([\"month\", \"category\"])[\"revenue\"].sum()",
+        "print(g.head(3).round(0))",
+        "",
+        "grid = g.unstack().round(-2)",
+        "print(grid.head(3))",
+        "",
+        "back = grid.stack()",
+        "print(len(g), grid.shape, len(back))"
+      ],
+      "explanation": [
+        {
+          "code": "groupby([\"month\", \"category\"])",
+          "text": "النتيجة Series طويلة بفهرس من مستويين (شهر، فئة)."
+        },
+        {
+          "code": "unstack()",
+          "text": "المستوى الأخير (الفئة) ينتقل إلى الأعمدة: 12 شهراً × 5 فئات. و `round(-2)` تقرب لأقرب مئة."
+        },
+        {
+          "code": "stack()",
+          "text": "العكس: من الشبكة إلى Series طويلة من 60 قيمة."
+        }
+      ],
+      "expected_output": [
+        "month  category  ",
+        "01     أغذية          5798.0",
+        "       إلكترونيات    14740.0",
+        "       المنزل         8372.0",
+        "Name: revenue, dtype: float64",
+        "category    أغذية  إلكترونيات  المنزل     كتب   ملابس",
+        "month                                                ",
+        "01         5800.0     14700.0  8400.0  1600.0  5900.0",
+        "02         4000.0      7600.0  3800.0  1100.0  7900.0",
+        "03        12700.0     14000.0  6400.0  3800.0  8700.0",
+        "60 (12, 5) 60"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`pivot` تفشل إذا تكررت أي تركيبة (index، columns)، لأنها لا تعرف أي قيمة تضع. في هذه الحالة استخدم `pivot_table` مع `aggfunc`.",
+        "بعد `melt` يكون عمود `var_name` نصياً. إذا كانت أسماء الأعمدة سنوات أو أشهر فحوّلها إلى أرقام أو تواريخ.",
+        "`unstack(level=0)` تنقل المستوى الأول بدل الأخير، ويمكن تمرير اسم المستوى: `unstack(\"month\")`."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "pivot مع تركيبات مكررة",
+          "wrong": [
+            "import pandas as pd",
+            "long = pd.DataFrame({\"m\": [1, 1, 1], \"c\": [\"a\", \"a\", \"b\"], \"v\": [5, 7, 3]})",
+            "print(long.pivot(index=\"m\", columns=\"c\", values=\"v\"))"
+          ],
+          "error": "ValueError: Index contains duplicate entries, cannot reshape",
+          "error_type": "ValueError",
+          "why": "في الجدول طلبان لنفس الشهر والقناة، و `pivot` لا تجمع. استخدم `pivot_table` وحدد كيف تجمع.",
+          "fix": [
+            "import pandas as pd",
+            "long = pd.DataFrame({\"m\": [1, 1, 1], \"c\": [\"a\", \"a\", \"b\"], \"v\": [5, 7, 3]})",
+            "print(long.pivot_table(index=\"m\", columns=\"c\", values=\"v\", aggfunc=\"sum\"))"
+          ]
+        },
+        {
+          "title": "نسيان id_vars في melt",
+          "wrong": [
+            "import pandas as pd",
+            "wide = pd.DataFrame({\"student\": [\"ريم\"], \"math\": [78], \"science\": [82]})",
+            "print(wide.melt())"
+          ],
+          "why": "بدون `id_vars` تتحول **كل** الأعمدة، بما فيها اسم الطالب، فيضيع الربط بين الدرجة وصاحبها.",
+          "fix": [
+            "import pandas as pd",
+            "wide = pd.DataFrame({\"student\": [\"ريم\"], \"math\": [78], \"science\": [82]})",
+            "print(wide.melt(id_vars=\"student\", var_name=\"subject\", value_name=\"score\"))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "تقرير المبيعات الربعي",
+    "prompt": [
+      "لديك جدول عريض بمبيعات كل فرع في كل ربع. حوّله ثم أعد تشكيله:"
+    ],
+    "requirements": [
+      "`long`: الشكل الطويل بثلاثة أعمدة بالترتيب `branch` و `quarter` و `sales`.",
+      "`best_quarter`: قاموس {الفرع: الربع صاحب أعلى مبيعات} (استخدم `groupby` و `idxmax` على `long`).",
+      "`by_quarter`: شكل عريض جديد فيه الأرباع صفوف والفروع أعمدة (بـ `pivot` من `long`)."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "wide = pd.DataFrame({",
+      "    \"branch\": [\"الرياض\", \"جدة\", \"الدمام\"],",
+      "    \"Q1\": [410, 305, 190],",
+      "    \"Q2\": [395, 330, 205],",
+      "    \"Q3\": [450, 310, 240],",
+      "    \"Q4\": [520, 360, 230],",
+      "})",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "assert list(long.columns) == [\"branch\", \"quarter\", \"sales\"], f\"أعمدة long: {list(long.columns)}\"",
+      "assert len(long) == 12, \"long يجب أن يكون 12 صفاً\"",
+      "assert best_quarter == {\"الدمام\": \"Q3\", \"الرياض\": \"Q4\", \"جدة\": \"Q4\"}, f\"best_quarter غير صحيح: {best_quarter}\"",
+      "assert by_quarter.shape == (4, 3) and list(by_quarter.index) == [\"Q1\", \"Q2\", \"Q3\", \"Q4\"], \"by_quarter يجب أن يكون الأرباع صفوفاً\"",
+      "assert by_quarter.loc[\"Q3\", \"الدمام\"] == 240, \"قيم by_quarter غير صحيحة\""
+    ],
+    "hints": [
+      "`wide.melt(id_vars=\"branch\", var_name=\"quarter\", value_name=\"sales\")`.",
+      "`idxmax` بعد `groupby` تعطي رقم الصف الأعلى في كل مجموعة، فاستخدمه مع `loc` لأخذ الربع.",
+      "`long.pivot(index=\"quarter\", columns=\"branch\", values=\"sales\")`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "wide = pd.DataFrame({",
+      "    \"branch\": [\"الرياض\", \"جدة\", \"الدمام\"],",
+      "    \"Q1\": [410, 305, 190],",
+      "    \"Q2\": [395, 330, 205],",
+      "    \"Q3\": [450, 310, 240],",
+      "    \"Q4\": [520, 360, 230],",
+      "})",
+      "",
+      "long = wide.melt(id_vars=\"branch\", var_name=\"quarter\", value_name=\"sales\")",
+      "",
+      "idx = long.groupby(\"branch\")[\"sales\"].idxmax()",
+      "best_quarter = dict(zip(long.loc[idx, \"branch\"], long.loc[idx, \"quarter\"]))",
+      "",
+      "by_quarter = long.pivot(index=\"quarter\", columns=\"branch\", values=\"sales\")",
+      "",
+      "print(long.head())",
+      "print(best_quarter)",
+      "print(by_quarter)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "لديك جدول فيه عمود لكل سنة (`2021` و `2022` و `2023`) وتريد رسم خط لتطور كل منتج عبر السنوات. ما الخطوة الأولى المناسبة؟",
+    "options": [
+      "`pivot`",
+      "`melt` لتصبح السنة عموداً",
+      "`concat`",
+      "`unstack`"
+    ],
+    "answer": 1,
+    "explanation": "السنة متغير مخفي في أسماء الأعمدة، و `melt` تخرجه إلى عمود فيسهل التجميع والرسم."
+  },
+  "summary": [
+    "العريض للقراءة، والطويل للتحليل: كل متغير في عمود.",
+    "`melt(id_vars, var_name, value_name)`: عريض ← طويل.",
+    "`pivot(index, columns, values)`: طويل ← عريض بدون تجميع؛ وإذا تكررت التركيبات فـ `pivot_table`.",
+    "`unstack` / `stack` بين الفهرس المتعدد والشبكة."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

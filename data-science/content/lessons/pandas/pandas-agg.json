@@ -1,0 +1,331 @@
+{
+  "slug": "pandas-agg",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "order": 11,
+  "title": "التجميع المتعدد agg",
+  "title_en": "Multiple Aggregations",
+  "minutes": 25,
+  "level": "متوسط",
+  "objectives": [
+    "تحسب عدة مقاييس لكل مجموعة في خطوة واحدة بـ `agg`.",
+    "تستخدم التجميع المسمى Named Aggregation لأعمدة نتيجة واضحة.",
+    "تكتب دالة تجميع خاصة بك.",
+    "تستخدم `transform` لإضافة إحصاء المجموعة إلى كل صف."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "من رقم واحد إلى جدول ملخص",
+      "body": [
+        "`groupby(...).sum()` تعطي مقياساً واحداً. لكن ملخص أي مجموعة يحتاج عادة عدة مقاييس معاً: عدد الطلبات، والإيراد الكلي، ومتوسط السلة، ومتوسط التقييم. `agg` تحسبها كلها وتضعها في جدول.",
+        {
+          "table": {
+            "head": [
+              "الصيغة",
+              "النتيجة"
+            ],
+            "rows": [
+              [
+                "`g[\"revenue\"].agg([\"sum\", \"mean\"])`",
+                "عمودان باسم الدالة"
+              ],
+              [
+                "`g.agg({\"revenue\": \"sum\", \"rating\": \"mean\"})`",
+                "دالة مختلفة لكل عمود"
+              ],
+              [
+                "`g.agg(orders=(\"order_id\", \"count\"), total=(\"revenue\", \"sum\"))`",
+                "**تجميع مسمى**: أنت تختار اسم كل عمود ناتج"
+              ]
+            ]
+          }
+        },
+        "التجميع المسمى هو الأوضح والأكثر استخداماً: كل عمود في النتيجة يُكتب `الاسم_الجديد=(\"العمود\", \"الدالة\")`.",
+        "و `transform` تختلف عن `agg`: بدل أن تعطي صفاً لكل مجموعة، تعطي قيمة لكل **صف أصلي** (إحصاء مجموعته)، فيمكن وضعها كعمود جديد في الجدول نفسه."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "جدول الملخص هو أول شيء يطلبه أي مدير: \"أعطني أداء كل مدينة\". والتجميع المسمى يعطيك جدولاً بأسماء واضحة جاهزاً للتقرير أو الرسم. أما `transform` فتجيب عن أسئلة مثل: هل هذا الطلب أعلى من متوسط مدينته؟ وهو نوع من الخصائص تستخدمه كثيراً في تعلم الآلة."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`agg` مع أسماء: لبناء جدول ملخص من عدة مقاييس.",
+            "دالة خاصة داخل `agg`: عندما لا توجد دالة جاهزة، مثل نطاق القيم (الأكبر − الأصغر) أو نسبة شرط.",
+            "`transform`: لمقارنة كل صف بمجموعته، أو لتعويض المفقود بمتوسط المجموعة (في كورس التنظيف)."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "جدول ملخص بالتجميع المسمى",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "summary = df.groupby(\"city\").agg(",
+        "    orders=(\"order_id\", \"count\"),",
+        "    revenue=(\"revenue\", \"sum\"),",
+        "    avg_basket=(\"revenue\", \"mean\"),",
+        "    avg_rating=(\"rating\", \"mean\"),",
+        ").round(1)",
+        "print(summary.sort_values(\"revenue\", ascending=False))"
+      ],
+      "explanation": [
+        {
+          "code": "orders=(\"order_id\", \"count\")",
+          "text": "عمود جديد اسمه `orders`: عدد أرقام الطلبات في المدينة."
+        },
+        {
+          "code": "avg_basket=(\"revenue\", \"mean\")",
+          "text": "متوسط قيمة الطلب الواحد (السلة)."
+        },
+        {
+          "code": "avg_rating=(\"rating\", \"mean\")",
+          "text": "متوسط التقييم، والمفقود مستبعد تلقائياً."
+        },
+        {
+          "code": ".round(1)",
+          "text": "تقريب كل الأعمدة الرقمية دفعة واحدة."
+        }
+      ],
+      "expected_output": [
+        "         orders   revenue  avg_basket  avg_rating",
+        "city                                             ",
+        "الرياض      555  137117.5       247.1         3.9",
+        "جدة         398  100333.2       252.1         4.1",
+        "الدمام      247   61883.0       250.5         4.1",
+        "مكة         174   47788.8       274.6         4.1",
+        "المدينة     163   42504.6       260.8         4.0",
+        "أبها        163   40092.0       246.0         4.0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "دالة تجميع خاصة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "def price_range(s):",
+        "    return s.max() - s.min()",
+        "",
+        "def share_rated(s):",
+        "    return round(s.notna().mean() * 100, 1)",
+        "",
+        "result = df.groupby(\"category\").agg(",
+        "    products=(\"product\", \"nunique\"),",
+        "    price_range=(\"unit_price\", price_range),",
+        "    rated_pct=(\"rating\", share_rated),",
+        ")",
+        "print(result)"
+      ],
+      "explanation": [
+        {
+          "code": "def price_range(s)",
+          "text": "الدالة تستقبل Series المجموعة وترجع قيمة واحدة."
+        },
+        {
+          "code": "share_rated",
+          "text": "نسبة الطلبات التي قيّمها العملاء في كل فئة."
+        },
+        {
+          "code": "(\"unit_price\", price_range)",
+          "text": "نمرر الدالة نفسها (بدون أقواس) بدل اسم دالة جاهزة."
+        }
+      ],
+      "expected_output": [
+        "            products  price_range  rated_pct",
+        "category                                    ",
+        "أغذية              3          115       88.3",
+        "إلكترونيات         4          340       90.8",
+        "المنزل             3          210       87.9",
+        "كتب                2           75       84.3",
+        "ملابس              3          170       85.9"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "transform: إحصاء المجموعة لكل صف",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "df[\"city_avg\"] = df.groupby(\"city\")[\"revenue\"].transform(\"mean\")",
+        "df[\"above_city_avg\"] = df[\"revenue\"] > df[\"city_avg\"]",
+        "",
+        "print(df[[\"city\", \"revenue\", \"city_avg\", \"above_city_avg\"]].head(4).round(1))",
+        "print(len(df), len(df[\"city_avg\"]))",
+        "print(round(df[\"above_city_avg\"].mean(), 3))"
+      ],
+      "explanation": [
+        {
+          "code": "transform(\"mean\")",
+          "text": "تحسب متوسط كل مدينة، ثم تضعه أمام كل طلب من تلك المدينة. الطول = طول الجدول."
+        },
+        {
+          "code": "df[\"revenue\"] > df[\"city_avg\"]",
+          "text": "مقارنة كل طلب بمتوسط مدينته."
+        },
+        {
+          "code": "mean()",
+          "text": "نسبة الطلبات الأعلى من متوسط مدينتها. أقل من النصف لأن توزيع الإيراد ملتوٍ: قلة من الطلبات الكبيرة ترفع المتوسط."
+        }
+      ],
+      "expected_output": [
+        "     city  revenue  city_avg  above_city_avg",
+        "0     جدة     79.0     252.1           False",
+        "1     جدة    129.0     252.1           False",
+        "2     جدة    212.4     252.1           False",
+        "3  الرياض     89.0     247.1           False",
+        "1700 1700",
+        "0.339"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`agg([\"sum\", \"mean\"])` بقائمة تعطي أعمدة بعنوانين (MultiIndex في الأعمدة). التجميع المسمى يتجنب هذا ويعطي أسماء بسيطة.",
+        "الدوال الجاهزة كنصوص (`\"sum\"` و `\"mean\"`) أسرع بكثير من الدوال الخاصة، لأنها منفذة داخلياً بشكل متجه. استخدم الدوال الخاصة عند الحاجة فقط.",
+        "`transform` تحافظ على الفهرس الأصلي، لذلك يمكن إسناد نتيجتها مباشرة كعمود دون أي دمج."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "استدعاء الدالة الخاصة بدل تمريرها",
+          "wrong": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "def price_range(s):",
+            "    return s.max() - s.min()",
+            "print(df.groupby(\"category\").agg(r=(\"unit_price\", price_range())))"
+          ],
+          "error": "TypeError: price_range() missing 1 required positional argument: 's'",
+          "error_type": "TypeError",
+          "why": "`price_range()` بأقواس تستدعي الدالة فوراً بدون مدخلات. في `agg` مرر الدالة نفسها بدون أقواس.",
+          "fix": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "def price_range(s):",
+            "    return s.max() - s.min()",
+            "print(df.groupby(\"category\").agg(r=(\"unit_price\", price_range)))"
+          ]
+        },
+        {
+          "title": "استخدام agg بدل transform لإضافة عمود",
+          "wrong": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "df[\"city_avg\"] = df.groupby(\"city\")[\"revenue\"].agg(\"mean\")",
+            "print(df[\"city_avg\"].isna().sum())"
+          ],
+          "why": "`agg` تعطي 6 قيم (واحدة لكل مدينة)، والجدول فيه 1700 صف، فيوضع `NaN` في كل الصفوف لأن الفهارس لا تتطابق. `transform` تعطي قيمة لكل صف.",
+          "fix": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "df[\"city_avg\"] = df.groupby(\"city\")[\"revenue\"].transform(\"mean\")",
+            "print(df[\"city_avg\"].isna().sum())"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "بطاقة أداء المنتجات",
+    "prompt": [
+      "ابنِ جدول `report` لكل منتج بالتجميع المسمى، ثم أضف عموداً على `df`:"
+    ],
+    "requirements": [
+      "أعمدة `report`: `orders` (عدد الطلبات)، و `units` (مجموع الكميات)، و `revenue` (مجموع الإيراد مقرباً لمنزلتين)، و `avg_rating` (متوسط التقييم مقرباً لمنزلتين).",
+      "رتّب `report` تنازلياً حسب `revenue`.",
+      "أضف إلى `df` عموداً `share_of_product` = إيراد الطلب ÷ إجمالي إيراد منتجه (باستخدام `transform`)."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "_g = df.groupby(\"product\")",
+      "assert list(report.columns) == [\"orders\", \"units\", \"revenue\", \"avg_rating\"], f\"أعمدة report غير صحيحة: {list(report.columns)}\"",
+      "assert report.index.tolist() == _g[\"revenue\"].sum().round(2).sort_values(ascending=False).index.tolist(), \"رتّب report حسب revenue تنازلياً\"",
+      "assert report[\"units\"].to_dict() == _g[\"quantity\"].sum().to_dict(), \"units غير صحيحة\"",
+      "assert report[\"revenue\"].to_dict() == _g[\"revenue\"].sum().round(2).to_dict(), \"revenue غير صحيحة\"",
+      "assert report[\"avg_rating\"].to_dict() == _g[\"rating\"].mean().round(2).to_dict(), \"avg_rating غير صحيحة\"",
+      "assert \"share_of_product\" in df.columns, \"أضف share_of_product إلى df\"",
+      "assert abs(df.groupby(\"product\")[\"share_of_product\"].sum() - 1).max() < 1e-9, \"مجموع share_of_product لكل منتج يجب أن يكون 1\""
+    ],
+    "hints": [
+      "`units=(\"quantity\", \"sum\")` داخل `agg`.",
+      "`round(2)` بعد `agg`، ثم `sort_values(\"revenue\", ascending=False)`.",
+      "`df.groupby(\"product\")[\"revenue\"].transform(\"sum\")` تعطي إجمالي المنتج أمام كل طلب."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "",
+      "report = df.groupby(\"product\").agg(",
+      "    orders=(\"order_id\", \"count\"),",
+      "    units=(\"quantity\", \"sum\"),",
+      "    revenue=(\"revenue\", \"sum\"),",
+      "    avg_rating=(\"rating\", \"mean\"),",
+      ").round(2).sort_values(\"revenue\", ascending=False)",
+      "",
+      "df[\"share_of_product\"] = df[\"revenue\"] / df.groupby(\"product\")[\"revenue\"].transform(\"sum\")",
+      "",
+      "print(report.head())",
+      "print(round(df.loc[df[\"product\"] == \"عسل سدر\", \"share_of_product\"].sum(), 6))"
+    ],
+    "solution_explanation": [
+      "مجموع حصص طلبات أي منتج = 1، وهذا فحص سريع لصحة `transform`."
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "لديك جدول فيه 1700 صف و 6 مدن. كم قيمة ترجع `df.groupby(\"city\")[\"revenue\"].transform(\"mean\")`؟",
+    "options": [
+      "6",
+      "1700",
+      "1",
+      "12"
+    ],
+    "answer": 1,
+    "explanation": "`transform` ترجع قيمة لكل صف أصلي (متوسط مدينته)، بينما `agg` ترجع 6 قيم."
+  },
+  "summary": [
+    "التجميع المسمى: `g.agg(new=(\"col\", \"func\"), ...)` لجدول ملخص بأسماء واضحة.",
+    "يمكن تمرير دالة خاصة تستقبل Series المجموعة وترجع قيمة واحدة.",
+    "`transform` ترجع إحصاء المجموعة لكل صف، فتضاف كعمود مباشرة."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

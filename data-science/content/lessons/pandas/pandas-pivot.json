@@ -1,0 +1,333 @@
+{
+  "slug": "pandas-pivot",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "order": 12,
+  "title": "pivot_table و crosstab",
+  "title_en": "Pivot Tables",
+  "minutes": 25,
+  "level": "متوسط",
+  "objectives": [
+    "تبني جدولاً محورياً بصفوف وأعمدة ومقياس بـ `pivot_table`.",
+    "تضيف الإجماليات وتملأ الخلايا الفارغة.",
+    "تحسب جداول التكرار والنسب بين فئتين بـ `crosstab`.",
+    "تقرأ الجدول المحوري وتستخرج منه ملاحظة."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "الجدول المحوري = groupby بعمودين في شكل شبكة",
+      "body": [
+        "إذا جمّعت حسب المدينة والفئة معاً بـ `groupby` تحصل على قائمة طويلة من 30 سطراً. الجدول المحوري Pivot Table يعرض النتيجة نفسها كشبكة: المدن صفوف، والفئات أعمدة، وفي كل خلية المقياس. نفس فكرة الجدول المحوري في Excel.",
+        {
+          "table": {
+            "head": [
+              "المعامل",
+              "المعنى في `pivot_table`"
+            ],
+            "rows": [
+              [
+                "`index`",
+                "ما يظهر في الصفوف"
+              ],
+              [
+                "`columns`",
+                "ما يظهر في الأعمدة"
+              ],
+              [
+                "`values`",
+                "العمود الذي نقيسه"
+              ],
+              [
+                "`aggfunc`",
+                "الدالة: `\"sum\"` أو `\"mean\"` أو `\"count\"` ... (الافتراضي `mean`)"
+              ],
+              [
+                "`margins=True`",
+                "يضيف صف وعمود الإجمالي `All`"
+              ],
+              [
+                "`fill_value=0`",
+                "قيمة للخلايا التي لا توجد لها بيانات"
+              ]
+            ]
+          }
+        },
+        "و `pd.crosstab(a, b)` حالة خاصة: تعدّ كم مرة ظهرت كل تركيبة من فئتين. ومع `normalize` تعطي نسباً بدل الأعداد."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "الشبكة تسهّل المقارنة في اتجاهين معاً: تقرأ السطر لترى أداء مدينة عبر الفئات، وتقرأ العمود لترى أداء فئة عبر المدن. وهي الشكل المثالي لخريطة حرارية Heatmap، ولأسئلة مثل: \"هل طريقة الدفع تختلف حسب المدينة؟\"."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`pivot_table`: مقياس رقمي عبر فئتين (مبيعات المدينة × الفئة، أو المتوسط الشهري لكل فئة).",
+            "`crosstab`: عد التكرارات أو النسب بين فئتين (المدينة × طريقة الدفع).",
+            "`crosstab(..., normalize=\"index\")`: لمقارنة التوزيع بين صفوف مختلفة الحجم."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "إيراد المدينة × الفئة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "pt = pd.pivot_table(df, index=\"city\", columns=\"category\",",
+        "                    values=\"revenue\", aggfunc=\"sum\", margins=True, margins_name=\"الإجمالي\")",
+        "print((pt / 1000).round(1))"
+      ],
+      "explanation": [
+        {
+          "code": "index=\"city\", columns=\"category\"",
+          "text": "المدن صفوف، والفئات أعمدة."
+        },
+        {
+          "code": "values=\"revenue\", aggfunc=\"sum\"",
+          "text": "في كل خلية: مجموع الإيراد لتلك المدينة والفئة."
+        },
+        {
+          "code": "margins=True",
+          "text": "يضيف صف وعمود الإجمالي، وسميناه `الإجمالي` بدل `All`."
+        },
+        {
+          "code": "/ 1000",
+          "text": "نعرض بالآلاف لتسهيل القراءة."
+        }
+      ],
+      "expected_output": [
+        "category  أغذية  إلكترونيات  المنزل   كتب  ملابس  الإجمالي",
+        "city                                                      ",
+        "أبها        6.7        12.8     7.5   2.2   10.9      40.1",
+        "الدمام     11.5        23.3    11.7   2.9   12.5      61.9",
+        "الرياض     24.3        40.9    25.9   7.4   38.6     137.1",
+        "المدينة     8.9        13.9     7.0   3.0    9.8      42.5",
+        "جدة        22.0        30.5    16.4   6.5   25.0     100.3",
+        "مكة         7.8        17.6    10.9   3.0    8.4      47.8",
+        "الإجمالي   81.1       138.9    79.4  25.1  105.3     429.7"
+      ],
+      "after": [
+        "اقرأ الجدول في الاتجاهين: الإلكترونيات أعلى فئة في كل مدينة، والرياض أعلى مدينة في كل فئة تقريباً. الجدول يجيب عن سؤالين في نظرة واحدة."
+      ]
+    },
+    {
+      "type": "example",
+      "title": "المتوسط مع ملء الفراغ",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "df[\"month\"] = df[\"order_date\"].str[:7]",
+        "q1 = df[df[\"month\"] <= \"2025-03\"]",
+        "pt = q1.pivot_table(index=\"product\", columns=\"month\", values=\"quantity\",",
+        "                    aggfunc=\"sum\", fill_value=0)",
+        "print(pt.head(5))",
+        "print(pt.shape)"
+      ],
+      "explanation": [
+        {
+          "code": "df[\"order_date\"].str[:7]",
+          "text": "أول 7 أحرف من التاريخ = السنة والشهر. (التواريخ بشكلها الصحيح في درس لاحق.)"
+        },
+        {
+          "code": "q1.pivot_table(...)",
+          "text": "يمكن استدعاؤها من الجدول مباشرة بدل `pd.pivot_table(df, ...)`."
+        },
+        {
+          "code": "fill_value=0",
+          "text": "أي منتج لم يُبع في شهر يأخذ 0 بدل `NaN`."
+        }
+      ],
+      "expected_output": [
+        "month       2025-01  2025-02  2025-03",
+        "product                              ",
+        "تمر فاخر         24       14       87",
+        "جاكيت            13       13       11",
+        "حذاء رياضي        8       19       21",
+        "رواية             3       13       16",
+        "ساعة ذكية        26       10       18",
+        "(15, 3)"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "crosstab: التكرارات والنسب",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "counts = pd.crosstab(df[\"city\"], df[\"payment_method\"])",
+        "print(counts)",
+        "",
+        "pct = pd.crosstab(df[\"city\"], df[\"payment_method\"], normalize=\"index\").mul(100).round(1)",
+        "print(pct[\"الدفع عند الاستلام\"].sort_values(ascending=False))"
+      ],
+      "explanation": [
+        {
+          "code": "pd.crosstab(a, b)",
+          "text": "عدد الطلبات لكل مدينة وطريقة دفع."
+        },
+        {
+          "code": "normalize=\"index\"",
+          "text": "كل صف يُقسم على مجموعه، فتصبح القيم نسباً مجموعها 100% لكل مدينة."
+        },
+        {
+          "code": "pct[\"الدفع عند الاستلام\"]",
+          "text": "نقارن نسبة الدفع عند الاستلام بين المدن بعدل رغم اختلاف أعداد الطلبات."
+        }
+      ],
+      "expected_output": [
+        "payment_method  الدفع عند الاستلام  بطاقة  تحويل بنكي  محفظة إلكترونية",
+        "city                                                                  ",
+        "أبها                            30     70          13               50",
+        "الدمام                          34    124          24               65",
+        "الرياض                         114    248          54              139",
+        "المدينة                         35     78          13               37",
+        "جدة                             70    177          45              106",
+        "مكة                             30     80          19               45",
+        "city",
+        "المدينة    21.5",
+        "الرياض     20.5",
+        "أبها       18.4",
+        "جدة        17.6",
+        "مكة        17.2",
+        "الدمام     13.8",
+        "Name: الدفع عند الاستلام, dtype: float64"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "`aggfunc` الافتراضية في `pivot_table` هي `mean`، وليست `sum`. اكتبها دائماً صراحة لتجنب المفاجآت.",
+        "في `crosstab` الخيار `normalize=\"index\"` يجعل كل **صف** 100%، و `\"columns\"` يجعل كل **عمود** 100%، و `True` يجعل الجدول كله 100%. اختر حسب السؤال.",
+        "الجدول المحوري نتيجة للعرض والقراءة. إذا أردت متابعة التحليل عليه فتذكر أن الأعمدة أصبحت قيم فئة (أسماء الفئات)."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "نسيان aggfunc",
+          "wrong": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "pt = df.pivot_table(index=\"city\", values=\"revenue\")",
+            "print(pt.round(0).head(2))"
+          ],
+          "why": "بدون `aggfunc` يُحسب **المتوسط**، فتظن أنك ترى إجمالي الإيراد وأنت ترى متوسط الطلب.",
+          "fix": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "pt = df.pivot_table(index=\"city\", values=\"revenue\", aggfunc=\"sum\")",
+            "print(pt.round(0).head(2))"
+          ]
+        },
+        {
+          "title": "الاتجاه الخاطئ لـ normalize",
+          "wrong": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "pct = pd.crosstab(df[\"city\"], df[\"payment_method\"], normalize=\"columns\")",
+            "print(pct.sum(axis=1).round(2).head(2))"
+          ],
+          "why": "السؤال \"كيف يدفع عملاء كل مدينة؟\" يحتاج أن يكون كل صف (مدينة) 100%. `normalize=\"columns\"` تجيب سؤالاً آخر: \"من أين يأتي مستخدمو كل طريقة دفع؟\".",
+          "fix": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "pct = pd.crosstab(df[\"city\"], df[\"payment_method\"], normalize=\"index\")",
+            "print(pct.sum(axis=1).round(2).head(2))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "خريطة التقييمات",
+    "prompt": [
+      "أجب عن سؤالين بجداول محورية:"
+    ],
+    "requirements": [
+      "`rating_pt`: متوسط التقييم لكل فئة (صفوف) ونوع عميل (أعمدة)، مقرباً لمنزلتين.",
+      "`worst_cell`: tuple من (الفئة، نوع العميل) صاحب أقل متوسط تقييم في `rating_pt`.",
+      "`new_share`: جدول `crosstab` لنسبة العملاء الجدد والعائدين في كل فئة، حيث كل صف مجموعه 1، مقرباً لثلاث منازل."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "_pt = df.pivot_table(index=\"category\", columns=\"customer_type\", values=\"rating\", aggfunc=\"mean\").round(2)",
+      "assert rating_pt.equals(_pt), \"rating_pt غير صحيح: متوسط rating، الفئة صفوف ونوع العميل أعمدة\"",
+      "_s = _pt.stack()",
+      "assert tuple(worst_cell) == _s.idxmin(), f\"worst_cell يجب أن تكون {_s.idxmin()}\"",
+      "_c = pd.crosstab(df[\"category\"], df[\"customer_type\"], normalize=\"index\").round(3)",
+      "assert new_share.equals(_c), \"new_share غير صحيح\""
+    ],
+    "hints": [
+      "`pivot_table(index=..., columns=..., values=\"rating\", aggfunc=\"mean\")`.",
+      "`stack()` تحول الشبكة إلى Series فهرسها (صف، عمود)، ثم `idxmin()`.",
+      "`pd.crosstab(df[\"category\"], df[\"customer_type\"], normalize=\"index\")`."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "",
+      "rating_pt = df.pivot_table(index=\"category\", columns=\"customer_type\",",
+      "                           values=\"rating\", aggfunc=\"mean\").round(2)",
+      "worst_cell = rating_pt.stack().idxmin()",
+      "new_share = pd.crosstab(df[\"category\"], df[\"customer_type\"], normalize=\"index\").round(3)",
+      "",
+      "print(rating_pt)",
+      "print(worst_cell)",
+      "print(new_share)"
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "تريد معرفة: \"من بين كل طلبات الدفع عند الاستلام، كم نسبة ما جاء من كل مدينة؟\". أي خيار صحيح في `pd.crosstab(df[\"city\"], df[\"payment_method\"], normalize=...)`؟",
+    "options": [
+      "`\"index\"`",
+      "`\"columns\"`",
+      "`True`",
+      "لا حاجة لـ normalize"
+    ],
+    "answer": 1,
+    "explanation": "السؤال يجعل طريقة الدفع (العمود) هي الكل = 100%، فنقسم كل عمود على مجموعه."
+  },
+  "summary": [
+    "`pivot_table(index, columns, values, aggfunc)` شبكة مقياس عبر فئتين. اكتب `aggfunc` دائماً.",
+    "`margins=True` للإجماليات، و `fill_value` للخلايا الفارغة.",
+    "`crosstab` للتكرارات، ومع `normalize` للنسب بالاتجاه الذي يطرحه السؤال."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

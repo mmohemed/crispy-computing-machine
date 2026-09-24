@@ -1,0 +1,304 @@
+{
+  "slug": "pandas-categoricals",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "order": 18,
+  "title": "Categoricals",
+  "title_en": "Categoricals",
+  "minutes": 15,
+  "level": "متوسط",
+  "objectives": [
+    "تفهم نوع `category` ومتى يفيد.",
+    "تنشئ فئات مرتبة Ordered لترتيب منطقي غير أبجدي.",
+    "تتعامل مع الفئات غير المستخدمة في `groupby`."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "عمود بقيم قليلة متكررة",
+      "body": [
+        "عمود `city` فيه 1700 قيمة لكن 6 مدن فقط. كنوع `object` يخزن كل صف نصاً كاملاً. نوع `category` يخزن قائمة المدن مرة واحدة، وكل صف رقماً صغيراً يشير إلى مدينته. النتيجة: ذاكرة أقل، وعمليات أسرع، وإمكانية تحديد **ترتيب** للقيم.",
+        {
+          "table": {
+            "head": [
+              "",
+              "`object`",
+              "`category`"
+            ],
+            "rows": [
+              [
+                "التخزين",
+                "نص كامل لكل صف",
+                "رمز رقمي لكل صف + قائمة الفئات مرة واحدة"
+              ],
+              [
+                "الترتيب",
+                "أبجدي فقط",
+                "أي ترتيب تحدده (`ordered=True`)"
+              ],
+              [
+                "القيم المسموحة",
+                "أي نص",
+                "الفئات المعرفة فقط"
+              ],
+              [
+                "الأنسب لـ",
+                "نصوص حرة (أسماء، ملاحظات)",
+                "قيم قليلة متكررة (مدينة، مستوى، تقييم)"
+              ]
+            ]
+          }
+        },
+        "الفئات المرتبة Ordered مهمة للمتغيرات الترتيبية: `ابتدائي < ثانوي < جامعي < دراسات عليا`، أو `منخفض < متوسط < مرتفع`. بدونها يرتبها Pandas أبجدياً فيضع `جامعي` قبل `ثانوي`."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "الترتيب الصحيح يجعل الجداول والرسوم منطقية مباشرة (من الأقل إلى الأعلى) بدون إعادة ترتيب يدوية في كل مرة، ويسمح بمقارنات مثل \"كل من مستواه أعلى من ثانوي\". والذاكرة مهمة عندما تكبر البيانات إلى ملايين الصفوف."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "لمتغير ترتيبي (مستويات، شرائح عمرية، تقييم نصي): فئات مرتبة.",
+            "لعمود نصي بقيم قليلة في جدول كبير: لتقليل الذاكرة.",
+            "لا تستخدمها لنصوص حرة كثيرة القيم (أسماء، عناوين): لا فائدة."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "فئات مرتبة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "levels = [\"ابتدائي\", \"ثانوي\", \"جامعي\", \"دراسات عليا\"]",
+        "s = pd.Series([\"جامعي\", \"ثانوي\", \"دراسات عليا\", \"ابتدائي\", \"جامعي\", \"ثانوي\"])",
+        "",
+        "print(sorted(s.unique()))",
+        "",
+        "edu = pd.Categorical(s, categories=levels, ordered=True)",
+        "s2 = pd.Series(edu)",
+        "print(s2.sort_values().tolist())",
+        "print((s2 > \"ثانوي\").tolist())",
+        "print(s2.cat.codes.tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "sorted(s.unique())",
+          "text": "الترتيب الأبجدي: `جامعي` قبل `ثانوي`، وهو غير منطقي."
+        },
+        {
+          "code": "categories=levels, ordered=True",
+          "text": "نحدد الفئات المسموحة وترتيبها."
+        },
+        {
+          "code": "s2 > \"ثانوي\"",
+          "text": "مع الترتيب تصبح المقارنة ممكنة: من مستواه أعلى من ثانوي."
+        },
+        {
+          "code": "cat.codes",
+          "text": "الرموز الرقمية المخزنة فعلاً: موقع كل قيمة في قائمة الفئات."
+        }
+      ],
+      "expected_output": [
+        "['ابتدائي', 'ثانوي', 'جامعي', 'دراسات عليا']",
+        "['ابتدائي', 'ثانوي', 'ثانوي', 'جامعي', 'جامعي', 'دراسات عليا']",
+        "[True, False, True, False, True, False]",
+        "[2, 1, 3, 0, 2, 1]"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الترتيب في groupby والفئات الفارغة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "df[\"basket\"] = pd.cut(df[\"revenue\"], bins=[0, 100, 300, 600, 2000],",
+        "                      labels=[\"صغيرة\", \"متوسطة\", \"كبيرة\", \"كبيرة جداً\"])",
+        "print(df[\"basket\"].dtype, df[\"basket\"].cat.ordered)",
+        "print(df.groupby(\"basket\", observed=False).size())",
+        "",
+        "small = df[df[\"revenue\"] < 250]",
+        "print(small.groupby(\"basket\", observed=True).size().index.tolist())",
+        "print(small.groupby(\"basket\", observed=False).size().index.tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "pd.cut(...)",
+          "text": "تعطي نوع `category` مرتباً تلقائياً حسب ترتيب الحدود."
+        },
+        {
+          "code": "groupby(\"basket\", observed=False)",
+          "text": "النتيجة بترتيب الفئات المنطقي، وليس الأبجدي."
+        },
+        {
+          "code": "observed=True",
+          "text": "يعرض فقط الفئات الموجودة فعلاً في البيانات."
+        },
+        {
+          "code": "observed=False",
+          "text": "يعرض كل الفئات المعرفة، والفارغة بقيمة 0. مفيد للتقارير الثابتة الشكل."
+        }
+      ],
+      "expected_output": [
+        "category True",
+        "basket",
+        "صغيرة         371",
+        "متوسطة        892",
+        "كبيرة         329",
+        "كبيرة جداً    108",
+        "dtype: int64",
+        "['صغيرة', 'متوسطة']",
+        "['صغيرة', 'متوسطة', 'كبيرة', 'كبيرة جداً']"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "الذاكرة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "before = df[\"city\"].memory_usage(deep=True)",
+        "after = df[\"city\"].astype(\"category\").memory_usage(deep=True)",
+        "print(before > after * 10)",
+        "print(df[\"city\"].astype(\"category\").cat.categories.tolist())"
+      ],
+      "explanation": [
+        {
+          "code": "memory_usage(deep=True)",
+          "text": "الحجم الحقيقي بالبايت بما فيه النصوص نفسها."
+        },
+        {
+          "code": "before > after * 10",
+          "text": "عمود `category` أصغر بأكثر من عشر مرات في هذا المثال. الأرقام الدقيقة تختلف حسب النظام، لذلك نطبع المقارنة فقط."
+        },
+        {
+          "code": "cat.categories",
+          "text": "قائمة الفئات مخزنة مرة واحدة ومرتبة."
+        }
+      ],
+      "expected_output": [
+        "True",
+        "['أبها', 'الدمام', 'الرياض', 'المدينة', 'جدة', 'مكة']"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "إسناد قيمة غير موجودة في الفئات يعطي خطأ: `Cannot setitem on a Categorical with a new category`. أضفها أولاً بـ `cat.add_categories`.",
+        "في Pandas 2.2 يظهر تحذير إذا جمعت بعمود `category` دون تحديد `observed`. اكتبه دائماً صراحة.",
+        "`cat.rename_categories` لإعادة تسمية الفئات، و `cat.remove_unused_categories()` لحذف الفارغة.",
+        "`read_csv(..., dtype={\"city\": \"category\"})` تقرأ العمود مباشرة كفئات."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "إسناد قيمة خارج الفئات",
+          "wrong": [
+            "import pandas as pd",
+            "s = pd.Series([\"جدة\", \"مكة\"], dtype=\"category\")",
+            "s[0] = \"أبها\""
+          ],
+          "error": "TypeError: Cannot setitem on a Categorical with a new category (أبها), set the categories first",
+          "error_type": "TypeError",
+          "why": "العمود من نوع `category` يقبل فقط الفئات المعرفة.",
+          "fix": [
+            "import pandas as pd",
+            "s = pd.Series([\"جدة\", \"مكة\"], dtype=\"category\")",
+            "s = s.cat.add_categories([\"أبها\"])",
+            "s[0] = \"أبها\"",
+            "print(s.tolist())"
+          ]
+        },
+        {
+          "title": "مقارنة فئات غير مرتبة",
+          "wrong": [
+            "import pandas as pd",
+            "s = pd.Series([\"منخفض\", \"مرتفع\"], dtype=\"category\")",
+            "print(s > \"منخفض\")"
+          ],
+          "error": "TypeError: Unordered Categoricals can only compare equality or not",
+          "error_type": "TypeError",
+          "why": "بدون `ordered=True` لا معنى لـ \"أكبر من\".",
+          "fix": [
+            "import pandas as pd",
+            "t = pd.CategoricalDtype([\"منخفض\", \"متوسط\", \"مرتفع\"], ordered=True)",
+            "s = pd.Series([\"منخفض\", \"مرتفع\"], dtype=t)",
+            "print((s > \"منخفض\").tolist())"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "مستوى رضا العملاء",
+    "prompt": [
+      "حوّل التقييم إلى مستوى نصي مرتب:"
+    ],
+    "requirements": [
+      "`df[\"level\"]`: فئة مرتبة بالقيم `ضعيف` (تقييم 1–2)، و `مقبول` (3)، و `ممتاز` (4–5)، باستخدام `pd.cut`.",
+      "`counts`: عدد الطلبات في كل مستوى بالترتيب المنطقي (ضعيف ← ممتاز)، باستخدام `groupby(..., observed=False).size()`.",
+      "`good_or_better`: نسبة الطلبات المقيمة التي مستواها `>= \"مقبول\"`، مقربة لثلاث منازل (استبعد غير المقيّم)."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "assert df[\"level\"].dtype == \"category\" and df[\"level\"].cat.ordered, \"level يجب أن تكون فئة مرتبة\"",
+      "assert df[\"level\"].cat.categories.tolist() == [\"ضعيف\", \"مقبول\", \"ممتاز\"], \"الفئات أو ترتيبها غير صحيح\"",
+      "assert counts.index.tolist() == [\"ضعيف\", \"مقبول\", \"ممتاز\"], \"counts يجب أن تكون بالترتيب المنطقي\"",
+      "_r = df[\"rating\"]",
+      "assert counts.tolist() == [int((_r <= 2).sum()), int((_r == 3).sum()), int((_r >= 4).sum())], \"أعداد counts غير صحيحة\"",
+      "_rated = _r.dropna()",
+      "assert good_or_better == round(float((_rated >= 3).mean()), 3), \"good_or_better غير صحيحة\""
+    ],
+    "hints": [
+      "الحدود `[0, 2, 3, 5]` مع `right=True` الافتراضي: (0–2] و (2–3] و (3–5].",
+      "`pd.cut` تعطي فئة مرتبة تلقائياً.",
+      "بعد `dropna()` قارن `rated >= \"مقبول\"` ثم خذ المتوسط."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "",
+      "df[\"level\"] = pd.cut(df[\"rating\"], bins=[0, 2, 3, 5], labels=[\"ضعيف\", \"مقبول\", \"ممتاز\"])",
+      "counts = df.groupby(\"level\", observed=False).size()",
+      "",
+      "rated = df[\"level\"].dropna()",
+      "good_or_better = round(float((rated >= \"مقبول\").mean()), 3)",
+      "",
+      "print(counts)",
+      "print(good_or_better)"
+    ]
+  },
+  "check": {
+    "type": "true_false",
+    "prompt": "في عمود `category` مرتب بالفئات `[\"صغير\", \"متوسط\", \"كبير\"]`، يعطي `sort_values()` الترتيب الأبجدي للنصوص.",
+    "answer": false,
+    "explanation": "الفئة المرتبة تُرتب حسب ترتيب الفئات الذي حددته، وهذه أهم فائدة لها."
+  },
+  "summary": [
+    "`category` = قائمة فئات مرة واحدة + رمز رقمي لكل صف: ذاكرة أقل وترتيب مخصص.",
+    "المتغيرات الترتيبية: `pd.Categorical(..., categories=[...], ordered=True)` أو `pd.cut`.",
+    "حدد `observed` في `groupby` مع الفئات: `False` لعرض الفارغة."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

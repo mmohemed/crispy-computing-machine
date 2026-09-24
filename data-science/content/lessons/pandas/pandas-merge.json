@@ -1,0 +1,377 @@
+{
+  "slug": "pandas-merge",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "order": 13,
+  "title": "merge و join و concat",
+  "title_en": "Merging Data",
+  "minutes": 35,
+  "level": "متوسط",
+  "objectives": [
+    "تدمج جدولين بمفتاح مشترك باستخدام `merge`.",
+    "تفرق بين أنواع الدمج `inner` و `left` و `right` و `outer`.",
+    "تتحقق من نتيجة الدمج بـ `indicator` و `validate` وعدد الصفوف.",
+    "تكدّس جداول بنفس الأعمدة بـ `concat`."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "البيانات الحقيقية في أكثر من جدول",
+      "body": [
+        "ملف المبيعات فيه سعر البيع لكن ليس فيه **تكلفة** المنتج. التكلفة في جدول آخر `products.csv` يديره قسم المشتريات. لحساب الربح نحتاج أن نضع التكلفة بجانب كل طلب، بمطابقة اسم المنتج في الجدولين. هذا هو الدمج Merge (مثل `VLOOKUP` في Excel و `JOIN` في SQL).",
+        "`pd.merge(left, right, on=\"key\", how=...)` تبحث لكل صف في الجدول الأيسر عن الصفوف المطابقة في الأيمن بقيمة المفتاح.",
+        {
+          "table": {
+            "head": [
+              "`how`",
+              "يبقي",
+              "الصفوف بلا مطابقة"
+            ],
+            "rows": [
+              [
+                "`inner` (الافتراضي)",
+                "الصفوف الموجودة في الجدولين فقط",
+                "تُحذف من الطرفين"
+              ],
+              [
+                "`left`",
+                "كل صفوف الأيسر",
+                "أعمدة الأيمن تصبح `NaN`"
+              ],
+              [
+                "`right`",
+                "كل صفوف الأيمن",
+                "أعمدة الأيسر تصبح `NaN`"
+              ],
+              [
+                "`outer`",
+                "كل الصفوف من الجدولين",
+                "`NaN` في الطرف الناقص"
+              ]
+            ]
+          }
+        },
+        "أما `pd.concat([df1, df2])` فلا تطابق شيئاً: تضع الجداول فوق بعضها (صفوف أكثر بنفس الأعمدة)، مثل دمج ملفات مبيعات شهرية."
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "قواعد البيانات مصممة لتقسيم المعلومات إلى جداول (طلبات، منتجات، عملاء) لتجنب التكرار. التحليل يحتاج جمعها مرة أخرى. والدمج من أكثر مصادر الأخطاء الصامتة: مفتاح مكرر في الجدول الأيمن يضاعف الصفوف ويضخم المجاميع دون أي رسالة خطأ. لهذا نتعلم الدمج مع طرق التحقق منه."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "`left` هو الأكثر استخداماً في التحليل: الجدول الأساسي (الطلبات) يبقى كاملاً، ونضيف له معلومات من جدول مرجعي.",
+            "`inner` عندما تريد فقط ما يوجد في المصدرين.",
+            "`outer` مع `indicator=True` لمقارنة مصدرين ومعرفة ما ينقص كل منهما.",
+            "`concat` لتكديس ملفات متشابهة البنية (شهر بعد شهر، فرع بعد فرع)."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "إضافة التكلفة وحساب الربح",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "products = pd.read_csv(\"products.csv\")",
+        "print(products.shape, products[\"product\"].is_unique)",
+        "",
+        "merged = df.merge(products[[\"product\", \"unit_cost\", \"supplier\"]], on=\"product\", how=\"left\",",
+        "                  validate=\"many_to_one\")",
+        "print(len(df), len(merged), merged[\"unit_cost\"].isna().sum())",
+        "",
+        "merged[\"profit\"] = (merged[\"unit_price\"] * (1 - merged[\"discount\"]) - merged[\"unit_cost\"]) * merged[\"quantity\"]",
+        "by_cat = merged.groupby(\"category\").agg(revenue=(\"revenue\", \"sum\"), profit=(\"profit\", \"sum\"))",
+        "by_cat[\"margin_%\"] = (by_cat[\"profit\"] / by_cat[\"revenue\"] * 100).round(1)",
+        "print(by_cat.round({\"revenue\": 0, \"profit\": 0}).sort_values(\"margin_%\", ascending=False))"
+      ],
+      "explanation": [
+        {
+          "code": "products[\"product\"].is_unique",
+          "text": "قبل الدمج: نتأكد أن المفتاح فريد في الجدول المرجعي."
+        },
+        {
+          "code": "how=\"left\"",
+          "text": "كل الطلبات تبقى، ونضيف لها التكلفة والمورد."
+        },
+        {
+          "code": "validate=\"many_to_one\"",
+          "text": "نطلب من Pandas التحقق: عدة طلبات لكل منتج، ومنتج واحد لكل اسم. لو تكرر منتج في `products` لظهر خطأ بدل نتيجة خاطئة."
+        },
+        {
+          "code": "len(df), len(merged)",
+          "text": "الدمج الأيسر السليم لا يغير عدد الصفوف، و 0 تكلفة مفقودة يعني أن كل المنتجات وجدت مطابقة."
+        },
+        {
+          "code": "margin_%",
+          "text": "هامش الربح: الإلكترونيات الأعلى إيراداً لكنها الأقل هامشاً. الإيراد وحده لا يكفي لتقييم الفئة."
+        }
+      ],
+      "expected_output": [
+        "(15, 5) True",
+        "1700 1700 0",
+        "             revenue   profit  margin_%",
+        "category                               ",
+        "ملابس       105294.0  50884.0      48.3",
+        "المنزل       79384.0  38129.0      48.0",
+        "كتب          25077.0  10212.0      40.7",
+        "أغذية        81064.0  31570.0      38.9",
+        "إلكترونيات  138901.0  50037.0      36.0"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "أنواع الدمج على مثال صغير",
+      "code": [
+        "import pandas as pd",
+        "",
+        "orders = pd.DataFrame({\"order\": [1, 2, 3, 4], \"product\": [\"قلم\", \"دفتر\", \"حقيبة\", \"قلم\"]})",
+        "prices = pd.DataFrame({\"product\": [\"قلم\", \"دفتر\", \"مسطرة\"], \"price\": [3, 12, 5]})",
+        "",
+        "for how in [\"inner\", \"left\", \"right\", \"outer\"]:",
+        "    m = orders.merge(prices, on=\"product\", how=how)",
+        "    print(how, len(m), m[\"product\"].tolist())",
+        "",
+        "check = orders.merge(prices, on=\"product\", how=\"outer\", indicator=True)",
+        "print(check[[\"product\", \"_merge\"]])"
+      ],
+      "explanation": [
+        {
+          "code": "\"حقيبة\"",
+          "text": "موجودة في الطلبات فقط، و `\"مسطرة\"` في الأسعار فقط."
+        },
+        {
+          "code": "inner",
+          "text": "3 صفوف: الطلبات التي وُجد سعرها (القلم مرتين والدفتر)."
+        },
+        {
+          "code": "left",
+          "text": "4 صفوف: كل الطلبات، والحقيبة بسعر `NaN`."
+        },
+        {
+          "code": "indicator=True",
+          "text": "عمود `_merge` يقول لكل صف: `both` أو `left_only` أو `right_only`. أفضل أداة لتشخيص المطابقة."
+        }
+      ],
+      "expected_output": [
+        "inner 3 ['قلم', 'دفتر', 'قلم']",
+        "left 4 ['قلم', 'دفتر', 'حقيبة', 'قلم']",
+        "right 4 ['قلم', 'قلم', 'دفتر', 'مسطرة']",
+        "outer 5 ['حقيبة', 'دفتر', 'قلم', 'قلم', 'مسطرة']",
+        "  product      _merge",
+        "0   حقيبة   left_only",
+        "1    دفتر        both",
+        "2     قلم        both",
+        "3     قلم        both",
+        "4   مسطرة  right_only"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "concat ومفاتيح بأسماء مختلفة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "jan = df[df[\"order_date\"].str.startswith(\"2025-01\")]",
+        "feb = df[df[\"order_date\"].str.startswith(\"2025-02\")]",
+        "both = pd.concat([jan, feb], ignore_index=True)",
+        "print(len(jan), len(feb), len(both), both.index[-1])",
+        "",
+        "costs = pd.read_csv(\"products.csv\").rename(columns={\"product\": \"item_name\"})",
+        "m = df.merge(costs[[\"item_name\", \"unit_cost\"]], left_on=\"product\", right_on=\"item_name\", how=\"left\")",
+        "print(m[[\"product\", \"item_name\", \"unit_cost\"]].head(3))"
+      ],
+      "explanation": [
+        {
+          "code": "pd.concat([jan, feb], ignore_index=True)",
+          "text": "تكديس شهرين. `ignore_index` تعطي فهرساً جديداً متصلاً بدل تكرار الفهارس القديمة."
+        },
+        {
+          "code": "rename(columns={\"product\": \"item_name\"})",
+          "text": "نحاكي جدولاً سمّى المفتاح باسم مختلف."
+        },
+        {
+          "code": "left_on=\"product\", right_on=\"item_name\"",
+          "text": "عندما يختلف اسم المفتاح بين الجدولين نحدد كل طرف."
+        }
+      ],
+      "expected_output": [
+        "129 113 242 241",
+        "       product    item_name  unit_cost",
+        "0    قميص قطني    قميص قطني         34",
+        "1  لوحة مفاتيح  لوحة مفاتيح         70",
+        "2    شاحن سريع    شاحن سريع         31"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "قبل أي دمج اسأل: هل المفتاح فريد في الجدول المرجعي؟ (`is_unique` أو `duplicated().sum()`)، وبعده: هل تغير عدد الصفوف؟ وكم قيمة `NaN` ظهرت؟",
+        "خيارات `validate`: `\"one_to_one\"` و `\"one_to_many\"` و `\"many_to_one\"`. تكلفتها صغيرة وتمنع أخطر أخطاء الدمج.",
+        "إذا وُجد عمود بنفس الاسم في الجدولين (غير المفتاح) تضيف Pandas لاحقتين `_x` و `_y`. غيّرهما بـ `suffixes=(\"_order\", \"_ref\")` أو اختر الأعمدة قبل الدمج.",
+        "`df.join(other)` اختصار للدمج على **الفهرس**. في التحليل اليومي `merge` أوضح.",
+        "المفاتيح النصية يجب أن تتطابق حرفياً: مسافة زائدة أو اختلاف \"ة/ه\" يمنع المطابقة. تتعلم علاج ذلك في كورس تنظيف البيانات."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "مفتاح مكرر يضاعف الصفوف",
+          "wrong": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "products = pd.read_csv(\"products.csv\")",
+            "bad = pd.concat([products, products.head(1)])",
+            "m = df.merge(bad, on=\"product\", how=\"left\")",
+            "print(len(df), len(m))"
+          ],
+          "why": "إذا ظهر المنتج مرتين في الجدول المرجعي (خطأ إدخال)، يطابق كل طلب لذلك المنتج صفين، فيزيد عدد الطلبات ويتضخم الإيراد بصمت. `validate` تكشف ذلك فوراً.",
+          "fix": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "products = pd.read_csv(\"products.csv\")",
+            "bad = pd.concat([products, products.head(1)])",
+            "print(bad[\"product\"].duplicated().sum())",
+            "m = df.merge(bad.drop_duplicates(\"product\"), on=\"product\", how=\"left\", validate=\"many_to_one\")",
+            "print(len(df), len(m))"
+          ]
+        },
+        {
+          "title": "دمج inner يحذف صفوفاً دون أن تنتبه",
+          "wrong": [
+            "import pandas as pd",
+            "orders = pd.DataFrame({\"product\": [\"قلم\", \"حقيبة\"], \"qty\": [2, 1]})",
+            "prices = pd.DataFrame({\"product\": [\"قلم\"], \"price\": [3]})",
+            "print(len(orders.merge(prices, on=\"product\")))"
+          ],
+          "why": "`merge` الافتراضي `inner`، فأي طلب لا يجد مطابقة يختفي من التحليل. اكتب `how` صراحة، وقارن عدد الصفوف قبل وبعد.",
+          "fix": [
+            "import pandas as pd",
+            "orders = pd.DataFrame({\"product\": [\"قلم\", \"حقيبة\"], \"qty\": [2, 1]})",
+            "prices = pd.DataFrame({\"product\": [\"قلم\"], \"price\": [3]})",
+            "m = orders.merge(prices, on=\"product\", how=\"left\")",
+            "print(len(m), m[\"price\"].isna().sum())"
+          ]
+        },
+        {
+          "title": "اختلاف نوع المفتاح",
+          "wrong": [
+            "import pandas as pd",
+            "a = pd.DataFrame({\"id\": [1, 2]})",
+            "b = pd.DataFrame({\"id\": [\"1\", \"2\"], \"v\": [10, 20]})",
+            "print(a.merge(b, on=\"id\"))"
+          ],
+          "error": "ValueError: You are trying to merge on int64 and object columns for key 'id'. If you wish to proceed you should use pd.concat",
+          "error_type": "ValueError",
+          "why": "المفتاح رقم في جدول ونص في الآخر، فلا يمكن المطابقة. وحّد النوع قبل الدمج.",
+          "fix": [
+            "import pandas as pd",
+            "a = pd.DataFrame({\"id\": [1, 2]})",
+            "b = pd.DataFrame({\"id\": [\"1\", \"2\"], \"v\": [10, 20]})",
+            "b[\"id\"] = b[\"id\"].astype(\"int64\")",
+            "print(a.merge(b, on=\"id\"))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "ربحية المورّدين",
+    "prompt": [
+      "ادمج المبيعات مع `products.csv` ثم أجب:"
+    ],
+    "requirements": [
+      "`merged`: دمج أيسر لـ `df` مع `products` على `product` مع `validate=\"many_to_one\"`، وعدد صفوفه = عدد صفوف `df`.",
+      "أضف `profit` = (سعر الوحدة × (1 − الخصم) − تكلفة الوحدة) × الكمية.",
+      "`supplier_profit`: مجموع الربح لكل مورد، مرتباً تنازلياً ومقرباً لمنزلتين.",
+      "`best_margin_product`: المنتج صاحب أعلى هامش ربح (مجموع الربح ÷ مجموع الإيراد)."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "",
+      "products = pd.read_csv(\"products.csv\")",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "assert len(merged) == len(df), \"عدد صفوف merged يجب أن يساوي عدد صفوف df\"",
+      "assert \"profit\" in merged.columns and \"supplier\" in merged.columns, \"merged يجب أن يحتوي supplier و profit\"",
+      "_m = df.merge(products, on=\"product\", how=\"left\")",
+      "_m[\"profit\"] = (_m[\"unit_price\"] * (1 - _m[\"discount\"]) - _m[\"unit_cost\"]) * _m[\"quantity\"]",
+      "_sp = _m.groupby(\"supplier\")[\"profit\"].sum().round(2).sort_values(ascending=False)",
+      "assert supplier_profit.index.tolist() == _sp.index.tolist(), \"ترتيب supplier_profit غير صحيح\"",
+      "assert supplier_profit.tolist() == _sp.tolist(), \"قيم supplier_profit غير صحيحة\"",
+      "_g = _m.groupby(\"product\")[[\"profit\", \"revenue\"]].sum()",
+      "assert best_margin_product == (_g[\"profit\"] / _g[\"revenue\"]).idxmax(), \"best_margin_product غير صحيح\""
+    ],
+    "hints": [
+      "`df.merge(products, on=\"product\", how=\"left\", validate=\"many_to_one\")`.",
+      "الربح يحسب لكل صف، ثم `groupby(\"supplier\")[\"profit\"].sum()`.",
+      "للهامش: اجمع الربح والإيراد لكل منتج أولاً، ثم اقسم. لا تحسب متوسط الهوامش."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "",
+      "products = pd.read_csv(\"products.csv\")",
+      "",
+      "merged = df.merge(products, on=\"product\", how=\"left\", validate=\"many_to_one\")",
+      "merged[\"profit\"] = (merged[\"unit_price\"] * (1 - merged[\"discount\"]) - merged[\"unit_cost\"]) * merged[\"quantity\"]",
+      "",
+      "supplier_profit = merged.groupby(\"supplier\")[\"profit\"].sum().round(2).sort_values(ascending=False)",
+      "",
+      "g = merged.groupby(\"product\")[[\"profit\", \"revenue\"]].sum()",
+      "best_margin_product = (g[\"profit\"] / g[\"revenue\"]).idxmax()",
+      "",
+      "print(len(df), len(merged))",
+      "print(supplier_profit)",
+      "print(best_margin_product)"
+    ],
+    "solution_explanation": [
+      "لاحظ أن `products.csv` فيه أيضاً عمود `category`، فيظهر في الدمج `category_x` و `category_y`. هذا لا يؤثر على هذا التمرين، لكن في العمل الحقيقي اختر الأعمدة التي تحتاجها قبل الدمج."
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "دمجت 1000 طلب مع جدول عملاء بـ `how=\"left\"` فأصبح الناتج 1040 صفاً. ما السبب الأرجح؟",
+    "options": [
+      "بعض الطلبات لم تجد عميلاً",
+      "بعض العملاء مكررون في جدول العملاء بنفس المفتاح",
+      "الدمج الأيسر يضيف صفوف الجدول الأيمن دائماً",
+      "نوع المفتاح مختلف"
+    ],
+    "answer": 1,
+    "explanation": "الدمج الأيسر لا ينقص الصفوف، ويزيدها فقط إذا طابق المفتاح أكثر من صف في الجدول الأيمن. `validate=\"many_to_one\"` تكشف ذلك."
+  },
+  "summary": [
+    "`df.merge(ref, on=key, how=\"left\")` لإضافة معلومات من جدول مرجعي دون فقدان صفوف.",
+    "تحقق دائماً: المفتاح فريد؟ عدد الصفوف لم يتغير؟ كم `NaN` ظهرت؟ واستخدم `validate` و `indicator`.",
+    "`concat` لتكديس جداول متشابهة، مع `ignore_index=True`."
+  ],
+  "files": [
+    "datasets/store_sales.csv",
+    "datasets/products.csv"
+  ]
+}

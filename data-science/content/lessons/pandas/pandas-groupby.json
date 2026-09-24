@@ -1,0 +1,385 @@
+{
+  "slug": "pandas-groupby",
+  "course": "pandas",
+  "module": "pandas-transform",
+  "order": 10,
+  "title": "groupby",
+  "title_en": "GroupBy",
+  "minutes": 30,
+  "level": "متوسط",
+  "objectives": [
+    "تفهم نمط **قسّم ← طبّق ← اجمع** Split-Apply-Combine الذي تقوم عليه `groupby`.",
+    "تجمّع حسب عمود واحد أو عدة أعمدة وتحسب مقياساً لكل مجموعة.",
+    "تفرق بين `size` و `count` وتحسب النسب داخل المجموعات.",
+    "تعيد المجموعة إلى جدول عادي بـ `reset_index` أو `as_index=False`."
+  ],
+  "sections": [
+    {
+      "type": "concept",
+      "title": "قسّم ← طبّق ← اجمع",
+      "body": [
+        "في آخر اختبار حسبت متوسط الإيراد لكل مدينة بحلقة: صفّ طلبات مدينة، احسب المتوسط، كرر. هذا النمط شائع جداً لدرجة أن Pandas تعطيه أداة واحدة: `groupby`.",
+        {
+          "list": [
+            "**قسّم Split**: تُقسم الصفوف إلى مجموعات حسب قيمة عمود (كل مدينة مجموعة).",
+            "**طبّق Apply**: تُطبق دالة على كل مجموعة (`sum` أو `mean` أو `count`...).",
+            "**اجمع Combine**: تُجمع النتائج في Series أو DataFrame فهرسها أسماء المجموعات."
+          ]
+        },
+        "الصيغة: `df.groupby(\"عمود التقسيم\")[\"عمود القياس\"].الدالة()`. تُقرأ: \"لكل مدينة، خذ الإيراد، واحسب المجموع\".",
+        {
+          "table": {
+            "head": [
+              "الدالة",
+              "ماذا تحسب لكل مجموعة"
+            ],
+            "rows": [
+              [
+                "`sum` / `mean` / `median`",
+                "المجموع / المتوسط / الوسيط"
+              ],
+              [
+                "`min` / `max`",
+                "أصغر / أكبر قيمة"
+              ],
+              [
+                "`size()`",
+                "عدد **الصفوف** في المجموعة (مع المفقود)"
+              ],
+              [
+                "`count()`",
+                "عدد القيم **غير المفقودة** في العمود"
+              ],
+              [
+                "`nunique()`",
+                "عدد القيم المختلفة"
+              ],
+              [
+                "`first` / `last`",
+                "أول / آخر قيمة حسب ترتيب الصفوف"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "why",
+      "body": [
+        "أغلب أسئلة العمل مقارنات بين مجموعات: أي مدينة أعلى مبيعاً؟ أي فئة يقل تقييمها؟ هل العميل العائد يشتري أكثر؟ `groupby` تجيب عن كل هذا بسطر واحد، وهي الأساس لجداول الملخصات والرسوم المقارنة وخصائص نماذج تعلم الآلة لاحقاً."
+      ]
+    },
+    {
+      "type": "when",
+      "body": [
+        {
+          "list": [
+            "عندما يبدأ السؤال بـ \"لكل ...\": لكل مدينة، لكل شهر، لكل عميل.",
+            "لمقارنة مقياس واحد بين الفئات، أو لحساب عدد العناصر في كل فئة.",
+            "لحساب نسبة داخل كل مجموعة: متوسط عمود منطقي = نسبة الـ `True`."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "example",
+      "title": "مقياس واحد لكل مجموعة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "by_city = df.groupby(\"city\")[\"revenue\"].sum().round(0)",
+        "print(by_city.sort_values(ascending=False))",
+        "print(type(by_city).__name__, by_city.index.name)"
+      ],
+      "explanation": [
+        {
+          "code": "df.groupby(\"city\")",
+          "text": "قسّم الطلبات حسب المدينة: ست مجموعات."
+        },
+        {
+          "code": "[\"revenue\"].sum()",
+          "text": "لكل مجموعة: اجمع الإيراد."
+        },
+        {
+          "code": "sort_values(ascending=False)",
+          "text": "النتيجة Series عادية، فنرتبها كأي Series."
+        },
+        {
+          "code": "by_city.index.name",
+          "text": "فهرس النتيجة هو أسماء المدن، واسمه `city`."
+        }
+      ],
+      "expected_output": [
+        "city",
+        "الرياض     137118.0",
+        "جدة        100333.0",
+        "الدمام      61883.0",
+        "مكة         47789.0",
+        "المدينة     42505.0",
+        "أبها        40092.0",
+        "Name: revenue, dtype: float64",
+        "Series city"
+      ]
+    },
+    {
+      "type": "example",
+      "title": "size و count و nunique",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "g = df.groupby(\"category\")",
+        "print(g.size())",
+        "print(g[\"rating\"].count())",
+        "print(g[\"product\"].nunique())"
+      ],
+      "explanation": [
+        {
+          "code": "g.size()",
+          "text": "عدد الطلبات في كل فئة."
+        },
+        {
+          "code": "g[\"rating\"].count()",
+          "text": "عدد الطلبات التي فيها تقييم فعلاً. أقل من `size` لأن بعض التقييمات مفقودة."
+        },
+        {
+          "code": "g[\"product\"].nunique()",
+          "text": "عدد المنتجات المختلفة في كل فئة: من منتجين في الكتب إلى أربعة في الإلكترونيات."
+        }
+      ],
+      "expected_output": [
+        "category",
+        "أغذية         392",
+        "إلكترونيات    448",
+        "المنزل        314",
+        "كتب           185",
+        "ملابس         361",
+        "dtype: int64",
+        "category",
+        "أغذية         346",
+        "إلكترونيات    407",
+        "المنزل        276",
+        "كتب           156",
+        "ملابس         310",
+        "Name: rating, dtype: int64",
+        "category",
+        "أغذية         3",
+        "إلكترونيات    4",
+        "المنزل        3",
+        "كتب           2",
+        "ملابس         3",
+        "Name: product, dtype: int64"
+      ],
+      "after": [
+        "الفرق بين `size` و `count` هو عدد القيم المفقودة في كل مجموعة. هذه طريقة سريعة لمعرفة أين يتركز المفقود."
+      ]
+    },
+    {
+      "type": "example",
+      "title": "التجميع بعمودين، ونسبة داخل كل مجموعة",
+      "code": [
+        "import pandas as pd",
+        "",
+        "df = pd.read_csv(\"store_sales.csv\")",
+        "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+        "",
+        "two = df.groupby([\"city\", \"customer_type\"])[\"revenue\"].mean().round(1)",
+        "print(two.head(6))",
+        "",
+        "df[\"discounted\"] = df[\"discount\"] > 0",
+        "share = df.groupby(\"category\")[\"discounted\"].mean().mul(100).round(1)",
+        "print(share)",
+        "",
+        "table = df.groupby(\"city\", as_index=False)[\"revenue\"].sum()",
+        "print(table.head(3))"
+      ],
+      "explanation": [
+        {
+          "code": "groupby([\"city\", \"customer_type\"])",
+          "text": "مجموعة لكل تركيبة (مدينة، نوع عميل). الفهرس الناتج من مستويين MultiIndex."
+        },
+        {
+          "code": "[\"discounted\"].mean()",
+          "text": "متوسط عمود منطقي = نسبة الطلبات التي فيها خصم في كل فئة."
+        },
+        {
+          "code": "as_index=False",
+          "text": "يبقي المدينة عموداً عادياً بدل أن تصبح فهرساً، فتحصل على DataFrame جاهز للعرض أو الدمج."
+        }
+      ],
+      "expected_output": [
+        "city    customer_type",
+        "أبها    جديد             248.0",
+        "        عائد             244.5",
+        "الدمام  جديد             252.9",
+        "        عائد             248.7",
+        "الرياض  جديد             240.0",
+        "        عائد             253.1",
+        "Name: revenue, dtype: float64",
+        "category",
+        "أغذية         34.9",
+        "إلكترونيات    40.4",
+        "المنزل        31.2",
+        "كتب           31.4",
+        "ملابس         32.7",
+        "Name: discounted, dtype: float64",
+        "     city    revenue",
+        "0    أبها   40091.95",
+        "1  الدمام   61882.95",
+        "2  الرياض  137117.50"
+      ]
+    },
+    {
+      "type": "notes",
+      "items": [
+        "النتيجة مرتبة حسب أسماء المجموعات (ترتيب أبجدي)، وليست حسب القيمة. رتّب بنفسك بـ `sort_values`.",
+        "`groupby` تستبعد المجموعات التي مفتاحها مفقود `NaN` افتراضياً. إذا أردت رؤيتها فاكتب `groupby(col, dropna=False)`.",
+        "بعد التجميع بعمودين استخدم `reset_index()` لتحويل الفهرس المتعدد إلى أعمدة عادية، أو `unstack()` لتحويل المستوى الثاني إلى أعمدة (تراها في درس إعادة التشكيل).",
+        "حجم كل مجموعة مهم: متوسط مجموعة فيها 5 طلبات أقل ثقة من متوسط مجموعة فيها 500. اعرض `size` بجانب المتوسط دائماً."
+      ]
+    },
+    {
+      "type": "mistakes",
+      "items": [
+        {
+          "title": "اختيار العمود قبل groupby",
+          "wrong": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "print(df[\"revenue\"].groupby(\"city\").sum())"
+          ],
+          "error": "KeyError: 'city'",
+          "error_type": "KeyError",
+          "why": "بعد `df[\"revenue\"]` لم يعد عمود المدينة موجوداً في الـ Series، فلا يمكن التجميع حسبه بالاسم.",
+          "fix": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "print(df.groupby(\"city\")[\"revenue\"].sum().round(0))"
+          ]
+        },
+        {
+          "title": "استخدام count لعد الصفوف",
+          "wrong": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "print(df.groupby(\"city\")[\"rating\"].count().sum(), len(df))"
+          ],
+          "why": "`count` تتجاهل المفقود، فعدد \"الطلبات\" يخرج أقل من الحقيقي في عمود فيه قيم فارغة. لعد الصفوف استخدم `size()`.",
+          "fix": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "print(df.groupby(\"city\").size().sum(), len(df))"
+          ]
+        },
+        {
+          "title": "mean على أعمدة نصية",
+          "wrong": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "print(df.groupby(\"city\").mean())"
+          ],
+          "error": "TypeError: agg function failed [how->mean,dtype->object]",
+          "error_type": "TypeError",
+          "why": "`df.groupby(\"city\").mean()` بدون اختيار أعمدة تحاول حساب متوسط أعمدة نصية مثل `product`. اختر الأعمدة الرقمية أو اكتب `numeric_only=True`.",
+          "fix": [
+            "import pandas as pd",
+            "",
+            "df = pd.read_csv(\"store_sales.csv\")",
+            "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+            "print(df.groupby(\"city\")[[\"quantity\", \"revenue\"]].mean().round(2))"
+          ]
+        }
+      ]
+    }
+  ],
+  "exercise": {
+    "title": "ملخص الفئات",
+    "prompt": [
+      "باستخدام `groupby` احسب:"
+    ],
+    "requirements": [
+      "`orders_by_payment`: عدد الطلبات لكل طريقة دفع (Series).",
+      "`avg_rating_by_cat`: متوسط التقييم لكل فئة مقرباً لمنزلتين.",
+      "`top_product`: اسم المنتج صاحب أعلى إيراد إجمالي (نص).",
+      "`returning_share`: نسبة الطلبات من العملاء العائدين في كل مدينة (0 إلى 1)، مقربة لثلاث منازل."
+    ],
+    "starter_code": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "",
+      "# اكتب الحل هنا"
+    ],
+    "tests": [
+      "_g = df.groupby",
+      "assert orders_by_payment.to_dict() == df.groupby(\"payment_method\").size().to_dict(), \"orders_by_payment غير صحيحة\"",
+      "assert avg_rating_by_cat.to_dict() == df.groupby(\"category\")[\"rating\"].mean().round(2).to_dict(), \"avg_rating_by_cat غير صحيحة\"",
+      "assert top_product == df.groupby(\"product\")[\"revenue\"].sum().idxmax(), \"top_product غير صحيح\"",
+      "_exp = (df[\"customer_type\"] == \"عائد\").groupby(df[\"city\"]).mean().round(3)",
+      "assert returning_share.to_dict() == _exp.to_dict(), \"returning_share غير صحيحة\""
+    ],
+    "hints": [
+      "عدد الطلبات: `size()` وليس `count()`.",
+      "`idxmax()` على نتيجة التجميع تعطي اسم المجموعة الأكبر.",
+      "أنشئ عموداً منطقياً للعميل العائد، ثم متوسطه لكل مدينة."
+    ],
+    "solution": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv(\"store_sales.csv\")",
+      "df[\"revenue\"] = df[\"unit_price\"] * df[\"quantity\"] * (1 - df[\"discount\"])",
+      "",
+      "orders_by_payment = df.groupby(\"payment_method\").size()",
+      "avg_rating_by_cat = df.groupby(\"category\")[\"rating\"].mean().round(2)",
+      "top_product = df.groupby(\"product\")[\"revenue\"].sum().idxmax()",
+      "",
+      "df[\"is_returning\"] = df[\"customer_type\"] == \"عائد\"",
+      "returning_share = df.groupby(\"city\")[\"is_returning\"].mean().round(3)",
+      "",
+      "print(orders_by_payment)",
+      "print(avg_rating_by_cat)",
+      "print(top_product)",
+      "print(returning_share)"
+    ],
+    "solution_explanation": [
+      "النسبة = متوسط عمود منطقي، وهي نفس الفكرة التي استخدمتها في NumPy مع الأقنعة."
+    ]
+  },
+  "check": {
+    "type": "mcq",
+    "prompt": "ما الفرق بين `df.groupby(\"city\").size()` و `df.groupby(\"city\")[\"rating\"].count()`؟",
+    "options": [
+      "لا فرق",
+      "`size` تعد كل الصفوف، و `count` تعد القيم غير المفقودة في `rating` فقط",
+      "`count` تعد الصفوف، و `size` تعد القيم المختلفة",
+      "`size` تعمل على الأعمدة الرقمية فقط"
+    ],
+    "answer": 1,
+    "explanation": "لهذا يكون `count` أقل عندما يوجد تقييمات مفقودة."
+  },
+  "summary": [
+    "`groupby` = قسّم ← طبّق ← اجمع: `df.groupby(\"key\")[\"col\"].func()`.",
+    "`size` تعد الصفوف، و `count` تعد غير المفقود، و `nunique` تعد القيم المختلفة.",
+    "متوسط عمود منطقي داخل المجموعات = نسبة.",
+    "`as_index=False` أو `reset_index()` لإرجاع النتيجة جدولاً عادياً."
+  ],
+  "files": [
+    "datasets/store_sales.csv"
+  ]
+}

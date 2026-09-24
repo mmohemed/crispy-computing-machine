@@ -9,6 +9,10 @@
   - هدوء نسبي في أشهر الصيف.
   - تقييمات مفقودة لنحو 12% من الطلبات (عميل لم يقيّم).
 
+ملف employees.csv فيه مشاكل جودة مقصودة للتدرب على التنظيف: أسماء أقسام بصيغ مختلفة،
+رواتب كنصوص بفواصل وعملة، تواريخ بصيغتين، قيم مستحيلة، ومكررات. وملف students.csv
+نظيف تقريباً ومناسب للتحليل الاستكشافي.
+
     python3 tools/generate_datasets.py
 """
 import csv
@@ -79,6 +83,139 @@ def store_sales(rng):
     return rows
 
 
+# ---------------------------------------------------------------- products.csv
+def products():
+    costs = {'سماعة لاسلكية': 88, 'شاحن سريع': 31, 'ساعة ذكية': 262, 'لوحة مفاتيح': 70, 'قميص قطني': 34,
+             'حذاء رياضي': 132, 'جاكيت': 96, 'مصباح مكتب': 41, 'طقم أواني': 165, 'وسادة طبية': 52,
+             'قهوة مختصة': 38, 'تمر فاخر': 49, 'عسل سدر': 118, 'رواية': 24, 'كتاب برمجة': 71}
+    suppliers = {'إلكترونيات': 'مؤسسة التقنية الحديثة', 'ملابس': 'مصنع الأناقة', 'المنزل': 'بيت الخبرة',
+                 'أغذية': 'مزارع الواحة', 'كتب': 'دار المعرفة'}
+    rows = []
+    for i, (category, items) in enumerate(PRODUCTS.items()):
+        for j, (name, price) in enumerate(items):
+            rows.append({'product': name, 'category': category, 'unit_cost': costs[name],
+                         'supplier': suppliers[category], 'launch_year': 2019 + (i + j) % 6})
+    return rows
+
+
+# ---------------------------------------------------------------- employees.csv (بيانات فيها مشاكل مقصودة)
+FIRST = ['محمد', 'أحمد', 'عبدالله', 'خالد', 'فهد', 'سعد', 'عمر', 'يوسف', 'ماجد', 'سلطان', 'نورة', 'سارة',
+         'ريم', 'هند', 'لمى', 'منى', 'دانة', 'عبير', 'غادة', 'رهف']
+LAST = ['العتيبي', 'القحطاني', 'الغامدي', 'الزهراني', 'الشمري', 'الدوسري', 'الحربي', 'المطيري', 'السبيعي', 'العمري']
+DEPTS = {'المبيعات': (7000, 1500), 'التقنية': (12000, 2500), 'المالية': (10000, 2000),
+         'الموارد البشرية': (8500, 1500), 'خدمة العملاء': (6500, 1000)}
+DEPT_VARIANTS = {'المبيعات': [' المبيعات', 'مبيعات', 'Sales'], 'التقنية': ['تقنية المعلومات', 'IT', 'التقنية '],
+                 'المالية': ['مالية', 'Finance'], 'الموارد البشرية': ['HR', 'موارد بشرية'],
+                 'خدمة العملاء': ['خدمه العملاء', 'Customer Service']}
+
+
+def employees(rng):
+    rows = []
+    for i in range(1, 401):
+        dept = rng.choices(list(DEPTS), weights=[0.3, 0.22, 0.15, 0.1, 0.23])[0]
+        female = rng.random() < 0.42
+        first = rng.choice(FIRST[10:] if female else FIRST[:10])
+        years = max(0, min(20, round(rng.expovariate(1 / 4.5))))
+        hire = date(2025, 6, 30) - timedelta(days=years * 365 + rng.randint(0, 364))
+        base, spread = DEPTS[dept]
+        salary = round((base + years * 350 + rng.gauss(0, spread)) / 50) * 50
+        perf = rng.choices([1, 2, 3, 4, 5], weights=[0.05, 0.12, 0.38, 0.3, 0.15])[0]
+        satisfaction = min(10, max(0, round(rng.gauss(5 + (perf - 3) * 0.8 + (salary - base) / 2500, 1.8))))
+        overtime = max(0, round(rng.gauss(10 if dept in ('المبيعات', 'خدمة العملاء') else 6, 5)))
+        p_leave = 0.08 + (0.18 if satisfaction <= 3 else 0) + (0.08 if overtime > 15 else 0) + (0.06 if years < 2 else 0)
+        left = rng.random() < p_leave
+        row = {
+            'emp_id': f'E{i:04d}',
+            'name': f'{first} {rng.choice(LAST)}',
+            'gender': 'أنثى' if female else 'ذكر',
+            'department': dept,
+            'city': rng.choices(['الرياض', 'جدة', 'الدمام'], weights=[0.55, 0.3, 0.15])[0],
+            'hire_date': hire.isoformat(),
+            'birth_year': str(2025 - (22 + years + max(0, round(rng.gauss(6, 5))))),
+            'salary': str(salary),
+            'performance': str(perf),
+            'satisfaction': str(satisfaction),
+            'overtime_hours': str(overtime),
+            'left_company': 'نعم' if left else 'لا',
+        }
+        # ---- مشاكل مقصودة تشبه أخطاء الإدخال الحقيقية ----
+        if rng.random() < 0.12:
+            row['department'] = rng.choice(DEPT_VARIANTS[dept])
+        r = rng.random()
+        if r < 0.10:
+            row['salary'] = f'{salary:,}'
+        elif r < 0.15:
+            row['salary'] = f'{salary} SAR'
+        elif r < 0.19:
+            row['salary'] = rng.choice(['', 'غير متوفر'])
+        if rng.random() < 0.12:
+            row['hire_date'] = date.fromisoformat(row['hire_date']).strftime('%d/%m/%Y')
+        if rng.random() < 0.06:
+            row['gender'] = {'أنثى': 'F', 'ذكر': 'M'}[row['gender']]
+        if rng.random() < 0.08:
+            row['left_company'] = {'نعم': 'Yes', 'لا': 'No'}[row['left_company']]
+        if rng.random() < 0.07:
+            row['satisfaction'] = ''
+        if rng.random() < 0.03:
+            row['city'] = row['city'] + ' '
+        if rng.random() < 0.04:
+            row['name'] = '  ' + row['name']
+        rows.append(row)
+    # قيم شاذة مستحيلة (أخطاء كتابة)
+    rows[17]['salary'] = '98000000'
+    rows[88]['salary'] = '120'
+    rows[140]['birth_year'] = '1890'
+    rows[205]['performance'] = '9'
+    rows[260]['performance'] = '0'
+    rows[311]['overtime_hours'] = '-4'
+    rows[333]['hire_date'] = '2031-02-10'
+    # مكررات: صفوف مكررة بالكامل + موظف مسجّل مرتين بقيمة راتب مختلفة
+    for k in (5, 44, 97, 150, 222, 280, 301, 350, 377, 399):
+        rows.append(dict(rows[k]))
+    for k in (12, 190):
+        dup = dict(rows[k])
+        dup['salary'] = str(int(rows[k]['salary'].replace(',', '').replace(' SAR', '')) + 500) \
+            if rows[k]['salary'].replace(',', '').replace(' SAR', '').isdigit() else '9500'
+        rows.append(dup)
+    rng.shuffle(rows)
+    return rows
+
+
+# ---------------------------------------------------------------- students.csv
+def students(rng):
+    rows = []
+    for i in range(1, 601):
+        female = rng.random() < 0.5
+        school = rng.choices(['حكومية', 'أهلية'], weights=[0.72, 0.28])[0]
+        parent = rng.choices(['ابتدائي', 'ثانوي', 'جامعي', 'دراسات عليا'], weights=[0.15, 0.35, 0.38, 0.12])[0]
+        parent_bonus = {'ابتدائي': -3, 'ثانوي': 0, 'جامعي': 2, 'دراسات عليا': 4}[parent]
+        study = max(0, round(rng.gauss(11 + (1.5 if female else 0), 5), 1))
+        attendance = min(100, max(50, round(rng.gauss(88, 8), 1)))
+        sleep = min(10, max(4, round(rng.gauss(7, 1.1), 1)))
+        activities = rng.random() < 0.45
+        internet = rng.random() < (0.93 if school == 'أهلية' else 0.8)
+        ability = rng.gauss(0, 7)
+        base = 48 + study * 1.25 + (attendance - 85) * 0.55 + (sleep - 7) * 1.8 + parent_bonus + (2 if internet else -2) + ability
+
+        def subj(offset, noise):
+            return min(100, max(0, round(base + offset + rng.gauss(0, noise))))
+
+        row = {
+            'student_id': f'S{i:04d}', 'gender': 'أنثى' if female else 'ذكر', 'school_type': school,
+            'city': rng.choices(['الرياض', 'جدة', 'الدمام', 'أبها'], weights=[0.4, 0.3, 0.18, 0.12])[0],
+            'parent_education': parent, 'study_hours': study, 'attendance': attendance, 'sleep_hours': sleep,
+            'activities': 'نعم' if activities else 'لا', 'internet': 'نعم' if internet else 'لا',
+            'math': subj(-3, 6), 'science': subj(0, 6), 'arabic': subj(5, 5),
+            'english': subj(-1 if school == 'حكومية' else 5, 7),
+        }
+        if rng.random() < 0.04:
+            row['study_hours'] = ''
+        if rng.random() < 0.03:
+            row['sleep_hours'] = ''
+        rows.append(row)
+    return rows
+
+
 def write_csv(name, rows):
     os.makedirs(OUT, exist_ok=True)
     path = os.path.join(OUT, name)
@@ -91,3 +228,6 @@ def write_csv(name, rows):
 
 if __name__ == '__main__':
     write_csv('store_sales.csv', store_sales(random.Random(2025)))
+    write_csv('products.csv', products())
+    write_csv('employees.csv', employees(random.Random(7)))
+    write_csv('students.csv', students(random.Random(11)))
