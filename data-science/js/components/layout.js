@@ -165,7 +165,7 @@ export function renderError(target, error) {
     target.innerHTML = `<div class="glass-card load-error">
         <h2><i class="fas fa-triangle-exclamation"></i> تعذّر تحميل المحتوى</h2>
         <p>${escapeHtml(error.message || String(error))}</p>
-        ${isFile ? `<p>افتح المنصة عبر خادم محلي بدلاً من فتح الملف مباشرة: <code>python3 -m http.server 8000</code> ثم <code>http://localhost:8000/data-science/</code></p>` : ''}
+        ${isFile ? `<p>افتح المنصة عبر الخادم المحلي بدلاً من فتح الملف مباشرة: <code>python data-science/serve.py</code> ثم <code>http://localhost:8000/data-science/</code></p>` : ''}
     </div>`;
 }
 

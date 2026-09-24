@@ -26,9 +26,11 @@
 
 ```bash
 # من جذر المستودع
-python3 -m http.server 8000
-# ثم افتح http://localhost:8000/data-science/
+python data-science/serve.py
+# يفتح المتصفح تلقائياً على http://localhost:8000/data-science/
 ```
+
+`serve.py` يحدد أنواع الملفات الصحيحة (على Windows قد يرسل `python -m http.server` ملفات JavaScript بنوع خاطئ فتظهر الصفحة فارغة)، ويمنع المتصفح من الاحتفاظ بنسخ قديمة بعد `git pull`.
 
 تشغيل الكود في الدروس يحتاج اتصالاً بالإنترنت أول مرة لتحميل Pyodide (حوالي 10MB، ثم يُخزّن في المتصفح).
 
