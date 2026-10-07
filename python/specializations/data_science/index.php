@@ -345,10 +345,10 @@
                 <div class="progress-wrapper">
                     <div class="progress-label">
                         <span>الدروس المتاحة الآن</span>
-                        <span>10 / 12</span>
+                        <span>12 / 12</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width:83%;"></div>
+                        <div class="progress-fill" style="width:100%;"></div>
                     </div>
                 </div>
                 <div class="mini-stats">
@@ -460,8 +460,8 @@
                 طبّق كل ما تعلمته في مشروعين متكاملين تضيفهما إلى ملف أعمالك.
             </p>
             <div class="lessons-list">
-                <span class="lesson-link soon">مشروع 1: تحليل استكشافي شامل (EDA)</span>
-                <span class="lesson-link soon">مشروع 2: نموذج تنبؤ بأسعار المنازل</span>
+                <a class="lesson-link" href="lessons/project1.php">مشروع 1: تحليل استكشافي شامل (EDA)</a>
+                <a class="lesson-link" href="lessons/project2.php">مشروع 2: نموذج تنبؤ بأسعار المنازل</a>
             </div>
         </div>
 
