@@ -1031,6 +1031,22 @@
         .lab-console .err { color: #ef9a9a; }
         .lab-console .prompt { color: var(--gold); }
         .output-block pre.err-out { color: #ef9a9a; }
+        .figure-block {
+            margin: 12px 0 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(76, 175, 80, 0.25);
+            overflow: hidden;
+            background: #0d1117;
+        }
+        .figure-block .output-header { border-bottom: 1px solid rgba(76, 175, 80, 0.2); }
+        .figure-block img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 12px auto;
+            background: #fff;
+            border-radius: 6px;
+        }
     </style>
 </head>
 <body>
@@ -1518,9 +1534,9 @@ plt.<span class="fn">show</span>()</pre>
         <div class="alert alert-warn">
             <i class="fas fa-exclamation-triangle"></i>
             <div>
-                <strong>العربية في matplotlib:</strong> لا تعرض matplotlib الحروف العربية متصلة بشكل صحيح تلقائيًا.
-                الحل: استخدام عناوين إنجليزية كما في المثال، أو تثبيت مكتبتي <code>arabic-reshaper</code> و <code>python-bidi</code>
-                لإعادة تشكيل النص العربي قبل رسمه.
+                <strong>العربية في matplotlib:</strong> من الإصدار 3.11 تكتب matplotlib العربية متصلة وبالاتجاه الصحيح تلقائيًا.
+                أما في الإصدارات الأقدم فتظهر الحروف مقطعة، والحل تثبيت مكتبتي <code>arabic-reshaper</code> و <code>python-bidi</code>
+                لإعادة تشكيل النص قبل رسمه (ستجد دالة جاهزة لذلك في تخصص تحليل البيانات)، أو استخدام عناوين إنجليزية كما في المثال.
             </div>
         </div>
         <p>جرّب الرسم التفاعلي في <strong>مختبر البيانات</strong> أسفل الصفحة لترى النتائج كأعمدة بيانية مباشرة.</p>

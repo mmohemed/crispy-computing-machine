@@ -345,10 +345,10 @@
                 <div class="progress-wrapper">
                     <div class="progress-label">
                         <span>الدروس المتاحة الآن</span>
-                        <span>4 / 12</span>
+                        <span>7 / 12</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width:33%;"></div>
+                        <div class="progress-fill" style="width:58%;"></div>
                     </div>
                 </div>
                 <div class="mini-stats">
@@ -424,8 +424,8 @@
                 حوّل الأرقام إلى رسوم واضحة تحكي قصة البيانات، واختر الرسم المناسب لكل سؤال.
             </p>
             <div class="lessons-list">
-                <span class="lesson-link soon">الدرس 5: التصوير البياني بـ Matplotlib</span>
-                <span class="lesson-link soon">الدرس 6: الرسوم الإحصائية بـ Seaborn</span>
+                <a class="lesson-link" href="lessons/lesson5.php">الدرس 5: التصوير البياني بـ Matplotlib</a>
+                <a class="lesson-link" href="lessons/lesson6.php">الدرس 6: الرسوم الإحصائية بـ Seaborn</a>
             </div>
         </div>
         <!-- Module 4 -->
@@ -436,7 +436,7 @@
                 الإحصاء الوصفي والتوزيعات والارتباط واختبار الفرضيات لاتخاذ قرارات مبنية على دليل.
             </p>
             <div class="lessons-list">
-                <span class="lesson-link soon">الدرس 7: الإحصاء الوصفي والاستدلالي</span>
+                <a class="lesson-link" href="lessons/lesson7.php">الدرس 7: الإحصاء الوصفي والاستدلالي</a>
             </div>
         </div>
         <!-- Module 5 -->
