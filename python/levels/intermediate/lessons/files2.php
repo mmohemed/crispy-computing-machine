@@ -2,1185 +2,2217 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <title>الدرس 7: مشاريع صغيرة باستخدام الملفات | CodeWay</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>القراءة والكتابة في الملفات في بايثون - شرح شامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
-            --primary-color: #4a6fa5;
-            --secondary-color: #166088;
-            --accent-color: #4cb5ae;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --danger-color: #dc3545;
-            --read-color: #9c27b0;
-            --write-color: #e91e63;
-            --file-color: #ff9800;
+            --gold: #ffd700;
+            --gold-soft: #d4af37;
+            --bg: #000;
+            --card: #101010;
+            --card-soft: #161616;
+            --text: #fff;
+            --text-light: #d8d8d8;
+            --text-muted: #a0a0a0;
+            --success: #4CAF50;
+            --info: #2196F3;
+            --warning: #FF9800;
+            --danger: #f44336;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: var(--dark-color);
-            line-height: 1.6;
-            min-height: 100vh;
+            font-family: "Cairo", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            overflow-x: hidden;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header Styles */
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            color: var(--secondary-color);
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-        }
-        
-        .header-content {
+
+        /* ===== شريط التنقل ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(5, 5, 5, 0.96);
+            backdrop-filter: blur(12px);
+            padding: 14px 30px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
         }
-        
+
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--gold);
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 1.05em;
         }
-        
-        .logo i {
-            color: var(--file-color);
-        }
-        
-        /* Main Content Styles */
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .content-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-        }
-        
-        .section-title {
-            color: var(--secondary-color);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--accent-color);
+
+        .logo i { font-size: 1.2rem; }
+
+        .breadcrumb {
+            font-size: 0.85em;
+            color: #ccc;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        
-        /* Concept Cards */
-        .concept-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        
-        .concept-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-            border-top: 4px solid;
-        }
-        
-        .concept-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .concept-card.read {
-            border-top-color: var(--read-color);
-        }
-        
-        .concept-card.write {
-            border-top-color: var(--write-color);
-        }
-        
-        .concept-card.file {
-            border-top-color: var(--file-color);
-        }
-        
-        .concept-card.mode {
-            border-top-color: var(--primary-color);
-        }
-        
-        .concept-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .read .concept-icon { color: var(--read-color); }
-        .write .concept-icon { color: var(--write-color); }
-        .file .concept-icon { color: var(--file-color); }
-        .mode .concept-icon { color: var(--primary-color); }
-        
-        /* Code Examples */
-        .code-example {
-            background-color: #2d3748;
-            color: #e2e8f0;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            direction: ltr;
-            text-align: left;
-            overflow-x: auto;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .code-example pre {
-            white-space: pre-wrap;
-            font-family: 'Courier New', Courier, monospace;
-            line-height: 1.5;
-        }
-        
-        .code-comment {
-            color: #a0aec0;
-        }
-        
-        .code-keyword {
-            color: #ff79c6;
-        }
-        
-        .code-function {
-            color: #50fa7b;
-        }
-        
-        .code-string {
-            color: #f1fa8c;
-        }
-        
-        .code-number {
-            color: #bd93f9;
-        }
-        
-        .example-output {
-            background-color: #edf2f7;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            direction: ltr;
-            border-right: 4px solid var(--accent-color);
-        }
-        
-        /* File Modes Table */
-        .modes-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .modes-table th {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 1rem;
-            text-align: right;
-        }
-        
-        .modes-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .modes-table tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-        
-        /* Interactive Editor */
-        .editor-section {
-            background: var(--light-color);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
-            border: 2px dashed var(--accent-color);
-        }
-        
-        .editor-container {
-            margin: 1.5rem 0;
-        }
-        
-        .editor-header {
-            background: linear-gradient(135deg, var(--dark-color), #2d3748);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 8px 8px 0 0;
-        }
-        
-        .editor-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
-            color: white;
-        }
-        
-        .btn-secondary {
-            background: var(--light-color);
-            color: var(--dark-color);
-            border: 2px solid var(--accent-color);
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .editor-body {
-            height: 400px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        #python-editor {
-            width: 100%;
-            height: 100%;
-            border: none;
-            padding: 1.5rem;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1rem;
-            resize: none;
-            direction: ltr;
-            background-color: #f7fafc;
-            line-height: 1.5;
-        }
-        
-        .output-container {
-            margin-top: 1.5rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0 0 8px 8px;
-            overflow: hidden;
-        }
-        
-        .output-header {
-            background-color: #edf2f7;
-            padding: 0.75rem 1.5rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        #editor-output {
-            padding: 1.5rem;
-            min-height: 200px;
-            background-color: #f7fafc;
-            direction: ltr;
-            text-align: left;
-            white-space: pre-wrap;
-            font-family: 'Courier New', Courier, monospace;
-            line-height: 1.5;
-        }
-        
-        /* Benefits List */
-        .benefits-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .benefits-list li {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            background: var(--light-color);
-            border-radius: 5px;
-            border-right: 3px solid var(--success-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .benefits-list li i {
-            color: var(--success-color);
-        }
-        
-        /* Footer Styles */
-        footer {
-            background: rgba(255, 255, 255, 0.95);
-            color: var(--dark-color);
-            padding: 2rem 0;
-            margin-top: 3rem;
-            backdrop-filter: blur(10px);
-        }
-        
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
             flex-wrap: wrap;
         }
-        
-        .footer-section {
-            flex: 1;
-            min-width: 250px;
-            margin-bottom: 1.5rem;
+
+        .breadcrumb a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: color 0.3s;
         }
-        
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: var(--accent-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+
+        .breadcrumb a:hover { color: #fff; }
+        .breadcrumb span.sep { margin: 0 6px; color: #666; }
+
+        /* ===== هيدر الدرس ===== */
+        .page-hero {
+            padding: 130px 30px 55px;
+            background: radial-gradient(circle at top, #1f1f1f 0%, #000 70%);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
-        
-        .footer-bottom {
+
+        .page-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,215,0,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,215,0,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.4;
+        }
+
+        .page-hero-inner {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
             text-align: center;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #ddd;
         }
-        
-        /* Note Boxes */
-        .note {
-            background-color: #e7f3ff;
-            border-right: 4px solid var(--primary-color);
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 0 6px 6px 0;
+
+        .lesson-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            font-size: 0.8em;
+            color: var(--gold);
+            margin-bottom: 14px;
         }
-        
-        .warning {
-            background-color: #fff3cd;
-            border-right: 4px solid var(--warning-color);
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 0 6px 6px 0;
+
+        .lesson-title {
+            margin: 0 0 14px;
+            font-size: 2.3em;
+            color: var(--gold);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.25);
+            line-height: 1.4;
         }
-        
-        .tip {
-            background-color: #d1ecf1;
-            border-right: 4px solid var(--accent-color);
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 0 6px 6px 0;
+
+        .lesson-intro {
+            font-size: 1.02em;
+            color: var(--text-light);
+            max-width: 780px;
+            margin: 0 auto 22px;
         }
-        
-        .file-types {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
+
+        .lesson-meta {
+            font-size: 0.9em;
+            color: #ccc;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
         }
-        
-        .file-type {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+        .lesson-meta-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 999px;
+            padding: 6px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        
-        .file-type h4 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
+
+        /* ===== الحاوية ===== */
+        .container {
+            width: 100%;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 35px 30px 70px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* ===== فهرس ===== */
+        .toc-bar {
+            background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            border-radius: 14px;
+            padding: 20px 24px;
+        }
+
+        .toc-bar h3 {
+            color: var(--gold);
+            font-size: 1.02em;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toc-links { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .toc-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.86em;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.25s;
+        }
+
+        .toc-links a:hover {
+            color: var(--gold);
+            background: rgba(255,215,0,0.08);
+            border-color: rgba(255,215,0,0.5);
+            transform: translateY(-2px);
+        }
+
+        /* ===== بطاقات الأقسام ===== */
+        .section-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 32px 40px 34px;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gold-soft), var(--gold));
+            opacity: 0.7;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5em;
+            color: var(--gold);
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px dashed rgba(255, 215, 0, 0.2);
+        }
+
+        .section-title .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--gold);
+            font-size: 0.85em;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .section-title i { font-size: 1.1rem; color: var(--gold); }
+
+        .section-card p {
+            font-size: 1em;
+            color: var(--text-light);
+            margin: 10px 0;
+        }
+
+        .section-card strong { color: var(--gold); }
+
+        .sub-title {
+            color: var(--gold-soft);
+            font-size: 1.15em;
+            margin: 22px 0 12px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        
-        .file-structure {
-            background: var(--light-color);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            font-family: 'Courier New', Courier, monospace;
-            direction: ltr;
+
+        .sub-title i { color: var(--gold); font-size: 0.95em; }
+
+        /* ===== قوائم ===== */
+        .list { list-style: none; padding: 0; margin: 14px 0; }
+
+        .list li {
+            position: relative;
+            padding: 10px 34px 10px 16px;
+            margin-bottom: 8px;
+            background: var(--card-soft);
+            border-radius: 9px;
+            border: 1px solid rgba(255,255,255,0.06);
+            font-size: 0.96em;
+            color: var(--text-light);
         }
+
+        .list li::before {
+            content: "\f0da";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold);
+            font-size: 0.75em;
+        }
+
+        /* ===== كتل الكود ===== */
+        .code-block {
+            margin: 16px 0;
+            background: #050505;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            background: #0d0d0d;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.8em;
+            color: #aaa;
+        }
+
+        .code-header .lang {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--gold);
+        }
+
+        pre {
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.94em;
+            direction: ltr;
+            text-align: left;
+            color: #f5f5f5;
+            line-height: 1.7;
+        }
+
+        pre .kw { color: #ff79c6; }
+        pre .fn { color: #8be9fd; }
+        pre .str { color: #f1fa8c; }
+        pre .cm { color: #6272a4; font-style: italic; }
+        pre .num { color: #bd93f9; }
+
+        /* ===== مخرجات ===== */
+        .output-block {
+            margin: 12px 0 16px;
+            background: #0d1117;
+            border-radius: 10px;
+            border: 1px solid rgba(76, 175, 80, 0.25);
+            overflow: hidden;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(76, 175, 80, 0.08);
+            border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+            font-size: 0.8em;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .output-block pre {
+            padding: 16px 20px;
+            color: #c8e6c9;
+            font-size: 0.92em;
+        }
+
+        /* ===== تنبيهات ===== */
+        .alert {
+            margin: 16px 0;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 0.94em;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            line-height: 1.85;
+        }
+
+        .alert i { margin-top: 6px; font-size: 1.1em; flex-shrink: 0; }
+
+        .alert-info {
+            background: rgba(33, 150, 243, 0.08);
+            border-right: 4px solid var(--info);
+            color: #bbdefb;
+        }
+        .alert-info i { color: var(--info); }
+
+        .alert-tip {
+            background: rgba(76, 175, 80, 0.08);
+            border-right: 4px solid var(--success);
+            color: #c8e6c9;
+        }
+        .alert-tip i { color: var(--success); }
+
+        .alert-warn {
+            background: rgba(255, 152, 0, 0.08);
+            border-right: 4px solid var(--warning);
+            color: #ffe0b2;
+        }
+        .alert-warn i { color: var(--warning); }
+
+        /* ===== جدول ===== */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.94em;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: right;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        th {
+            background: #141414;
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.97em;
+        }
+
+        td { color: var(--text-light); }
+
+        tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: rgba(255,215,0,0.03); }
+
+        code {
+            background: rgba(255,215,0,0.08);
+            color: var(--gold);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-family: Consolas, monospace;
+            font-size: 0.92em;
+            direction: ltr;
+            display: inline-block;
+        }
+
+        /* ===== بطاقات أنواع الدوال ===== */
+        .function-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .function-card {
+            background: var(--card-soft);
+            border-radius: 12px;
+            padding: 20px 22px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-top: 4px solid var(--gold);
+            transition: all 0.3s;
+        }
+
+        .function-card:hover {
+            transform: translateY(-4px);
+            border-top-color: var(--gold-soft);
+            box-shadow: 0 10px 25px rgba(255,215,0,0.1);
+        }
+
+        .function-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .function-card h4 i { font-size: 1.15em; }
+
+        .function-card p {
+            font-size: 0.93em;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* ===== صناديق ملاحظة ===== */
+        .note-box {
+            background: var(--card-soft);
+            border-radius: 12px;
+            padding: 18px 22px;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            margin: 16px 0;
+        }
+
+        .note-box strong {
+            color: var(--gold);
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.02em;
+        }
+
+        .note-box ul { list-style: none; padding: 0; margin: 0; }
+
+        .note-box li {
+            padding: 8px 0;
+            font-size: 0.95em;
+            color: var(--text-light);
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .note-box li:last-child { border-bottom: none; }
+
+        .note-box li i { color: var(--gold); margin-top: 7px; flex-shrink: 0; }
+
+        /* ===== التمارين ===== */
+        .exercise-block {
+            margin-top: 18px;
+            background: linear-gradient(135deg, #141414 0%, #0a0a0a 100%);
+            border-radius: 14px;
+            padding: 24px 26px;
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            position: relative;
+        }
+
+        .exercise-block::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            right: 24px;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold-soft), var(--gold));
+            border-radius: 0 0 4px 4px;
+        }
+
+        .exercise-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .exercise-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 0.9em;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .exercise-head h4 {
+            color: var(--gold);
+            font-size: 1.1em;
+            margin: 0;
+            flex: 1;
+        }
+
+        .exercise-tag {
+            font-size: 0.72em;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(255,215,0,0.1);
+            border: 1px solid rgba(255,215,0,0.4);
+            color: var(--gold);
+        }
+
+        .exercise-question {
+            color: var(--text-light);
+            font-size: 0.98em;
+            margin-bottom: 14px;
+            line-height: 1.85;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 15px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-size: 0.95em;
+        }
+
+        .option:hover {
+            background: rgba(255, 215, 0, 0.05);
+            border-color: rgba(255, 215, 0, 0.35);
+        }
+
+        .option input {
+            accent-color: var(--gold);
+            transform: scale(1.2);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .option.correct {
+            background: rgba(76, 175, 80, 0.12);
+            border-color: var(--success);
+        }
+
+        .option.wrong {
+            background: rgba(244, 67, 54, 0.1);
+            border-color: var(--danger);
+        }
+
+        /* صح/خطأ */
+        .tf-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .tf-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 9px;
+            flex-wrap: wrap;
+        }
+
+        .tf-statement {
+            font-size: 0.95em;
+            color: var(--text-light);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .tf-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+        .tf-btn {
+            padding: 6px 14px;
+            border-radius: 7px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.04);
+            color: var(--text);
+            font-family: "Cairo", sans-serif;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .tf-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+        .tf-btn.selected {
+            background: rgba(255,215,0,0.15);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .tf-item.correct {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: var(--success);
+        }
+
+        .tf-item.wrong {
+            background: rgba(244, 67, 54, 0.1);
+            border-color: var(--danger);
+        }
+
+        /* أكمل الكود */
+        .code-fill {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 18px 20px;
+            background: #050505;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            font-family: Consolas, monospace;
+            direction: ltr;
+            font-size: 0.95em;
+            margin-bottom: 14px;
+            color: #f5f5f5;
+            line-height: 2.3;
+        }
+
+        .code-fill .line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-fill .cm { color: #6272a4; font-style: italic; }
+        .code-fill .str { color: #f1fa8c; }
+        .code-fill .fn { color: #8be9fd; }
+        .code-fill .kw { color: #ff79c6; }
+
+        .blank-input {
+            background: rgba(255,215,0,0.08);
+            border: 2px dashed var(--gold);
+            border-radius: 6px;
+            padding: 4px 10px;
+            color: var(--gold);
+            font-family: Consolas, monospace;
+            font-size: 0.95em;
+            min-width: 100px;
+            width: auto;
+            text-align: center;
+            outline: none;
+            transition: all 0.25s;
+        }
+
+        .blank-input:focus {
+            background: rgba(255,215,0,0.15);
+            border-style: solid;
+        }
+
+        .blank-input.correct {
+            background: rgba(76, 175, 80, 0.15);
+            border-color: var(--success);
+            color: #a5d6a7;
+        }
+
+        .blank-input.wrong {
+            background: rgba(244, 67, 54, 0.12);
+            border-color: var(--danger);
+            color: #ef9a9a;
+        }
+
+        /* ترتيب الكود */
+        .sortable-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .sortable-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 9px;
+            font-family: Consolas, monospace;
+            font-size: 0.92em;
+            direction: ltr;
+            text-align: left;
+            cursor: default;
+        }
+
+        .sortable-item .order-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(255,215,0,0.12);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: "Cairo", sans-serif;
+            font-size: 0.8em;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .sortable-item.correct {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: var(--success);
+        }
+
+        .sortable-item.wrong {
+            background: rgba(244, 67, 54, 0.1);
+            border-color: var(--danger);
+        }
+
+        .sort-arrows { display: flex; gap: 6px; }
+
+        .sort-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.04);
+            color: var(--text-light);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s;
+        }
+
+        .sort-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* أزرار التمرين */
+        .exercise-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .btn {
+            padding: 10px 22px;
+            border-radius: 8px;
+            border: none;
+            font-family: "Cairo", sans-serif;
+            font-weight: 600;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--gold-soft), var(--gold));
+            color: #000;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
+
+        .result-msg {
+            margin-top: 14px;
+            padding: 12px 16px;
+            border-radius: 9px;
+            font-size: 0.93em;
+            display: none;
+        }
+
+        .result-msg.show { display: block; }
+        .result-msg.ok {
+            background: rgba(76, 175, 80, 0.15);
+            border-right: 4px solid var(--success);
+            color: #c8e6c9;
+        }
+        .result-msg.mid {
+            background: rgba(255, 152, 0, 0.15);
+            border-right: 4px solid var(--warning);
+            color: #ffe0b2;
+        }
+        .result-msg.bad {
+            background: rgba(244, 67, 54, 0.12);
+            border-right: 4px solid var(--danger);
+            color: #ef9a9a;
+        }
+
+        /* ===== التنقل ===== */
+        .nav-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gold);
+            text-decoration: none;
+            padding: 18px 22px;
+            border-radius: 12px;
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            transition: all 0.3s;
+            font-size: 0.94em;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 215, 0, 0.12);
+            border-color: var(--gold);
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        .nav-link.next { justify-content: flex-end; text-align: left; }
+
+        /* ===== شريط التقدم ===== */
+        .progress-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed rgba(255,215,0,0.2);
+        }
+
+        .progress-section h4 {
+            color: var(--gold);
+            font-size: 1.02em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-bar {
+            height: 9px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-soft), var(--gold));
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .progress-text {
+            font-size: 0.87em;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* ===== الفوتر ===== */
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #050505;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.87em;
+            color: var(--text-muted);
+        }
+
+        /* ===== تجاوب ===== */
+        @media (max-width: 800px) {
+            .navbar {
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px 15px;
+            }
+            .page-hero { padding: 150px 20px 40px; }
+            .lesson-title { font-size: 1.7em; }
+            .container { padding: 25px 18px 55px; }
+            .section-card { padding: 24px 20px; }
+            .section-title { font-size: 1.2em; }
+            .nav-links { grid-template-columns: 1fr; }
+            .tf-item { flex-direction: column; align-items: stretch; }
+            .tf-actions { justify-content: flex-end; }
+            .function-types { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 500px) {
+            .lesson-title { font-size: 1.4em; }
+        }
+
+        /* ===== المختبر التفاعلي ===== */
+        .lab {
+            margin-top: 18px;
+            background: linear-gradient(135deg, #101820 0%, #0a0a0a 100%);
+            border-radius: 14px;
+            padding: 22px 24px;
+            border: 1px solid rgba(33, 150, 243, 0.35);
+        }
+        .lab-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #90caf9;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .lab-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .lab-row label { color: var(--text-light); font-size: 0.92em; }
+        .lab-input, .lab-select {
+            background: #050505;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: var(--text);
+            font-family: Consolas, "Cairo", monospace;
+            font-size: 0.95em;
+            min-width: 120px;
+            outline: none;
+        }
+        .lab-input:focus, .lab-select:focus { border-color: var(--gold); }
+        .lab-console {
+            margin-top: 12px;
+            background: #0d1117;
+            border-radius: 10px;
+            border: 1px solid rgba(76, 175, 80, 0.25);
+            min-height: 60px;
+            padding: 14px 18px;
+            font-family: Consolas, monospace;
+            direction: ltr;
+            text-align: left;
+            color: #c8e6c9;
+            white-space: pre-wrap;
+            font-size: 0.92em;
+            line-height: 1.8;
+        }
+        .lab-console .err { color: #ef9a9a; }
+        .lab-console .prompt { color: var(--gold); }
+        .output-block pre.err-out { color: #ef9a9a; }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-file"></i>
-                    <span>القراءة والكتابة في الملفات في بايثون</span>
-                </div>
-            </div>
-        </div>
-    </header>
-    
-    <div class="container">
-        <div class="main-content">
-            <!-- قسم المفاهيم الأساسية -->
-            <section class="content-section">
-                <h2 class="section-title"><i class="fas fa-brain"></i> التعامل مع الملفات في بايثون</h2>
-                
-                <p>بايثون توفر طرقاً سهلة وقوية للتعامل مع الملفات بأنواعها المختلفة. يمكنك القراءة من الملفات والكتابة إليها بسهولة باستخدام الدوال المدمجة في اللغة.</p>
-                
-                <div class="concept-cards">
-                    <div class="concept-card read">
-                        <div class="concept-icon">
-                            <i class="fas fa-book-open"></i>
-                        </div>
-                        <h4>قراءة الملفات</h4>
-                        <p>فتح الملفات وقراءة محتواها بمختلف الطرق</p>
-                        <p><strong>أمثلة:</strong> <code>read()</code>, <code>readline()</code>, <code>readlines()</code></p>
-                    </div>
-                    
-                    <div class="concept-card write">
-                        <div class="concept-icon">
-                            <i class="fas fa-pen"></i>
-                        </div>
-                        <h4>كتابة الملفات</h4>
-                        <p>إنشاء ملفات جديدة أو الكتابة إلى ملفات موجودة</p>
-                        <p><strong>أمثلة:</strong> <code>write()</code>, <code>writelines()</code></p>
-                    </div>
-                    
-                    <div class="concept-card file">
-                        <div class="concept-icon">
-                            <i class="fas fa-cog"></i>
-                        </div>
-                        <h4>إدارة الملفات</h4>
-                        <p>فتح، إغلاق، وحذف الملفات والتعامل مع الأخطاء</p>
-                        <p><strong>أمثلة:</strong> <code>open()</code>, <code>close()</code>, <code>with</code></p>
-                    </div>
-                    
-                    <div class="concept-card mode">
-                        <div class="concept-icon">
-                            <i class="fas fa-key"></i>
-                        </div>
-                        <h4>أنماط الفتح</h4>
-                        <p>تحديد كيفية التعامل مع الملف (قراءة، كتابة، إلخ)</p>
-                        <p><strong>أمثلة:</strong> <code>'r'</code>, <code>'w'</code>, <code>'a'</code></p>
-                    </div>
-                </div>
-                
-                <h3 class="section-title"><i class="fas fa-key"></i> أنماط فتح الملفات</h3>
-                
-                <table class="modes-table">
-                    <tr>
-                        <th>النمط</th>
-                        <th>الوصف</th>
-                        <th>مثال</th>
-                    </tr>
-                    <tr>
-                        <td><code>'r'</code></td>
-                        <td>قراءة فقط (الافتراضي)</td>
-                        <td><code>open('file.txt', 'r')</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>'w'</code></td>
-                        <td>كتابة (ينشئ ملف جديد أو يمحو الملف الحالي)</td>
-                        <td><code>open('file.txt', 'w')</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>'a'</code></td>
-                        <td>إضافة (يكتب في نهاية الملف)</td>
-                        <td><code>open('file.txt', 'a')</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>'x'</code></td>
-                        <td>إنشاء ملف جديد (يعطي خطأ إذا الملف موجود)</td>
-                        <td><code>open('file.txt', 'x')</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>'r+'</code></td>
-                        <td>قراءة وكتابة</td>
-                        <td><code>open('file.txt', 'r+')</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>'b'</code></td>
-                        <td>النمط الثنائي (للملفات غير النصية)</td>
-                        <td><code>open('image.jpg', 'rb')</code></td>
-                    </tr>
-                </table>
-            </section>
-            
-            <!-- قسم الأمثلة العملية -->
-            <section class="content-section">
-                <h2 class="section-title"><i class="fas fa-code"></i> أمثلة عملية</h2>
-                
-                <h3>المثال 1: القراءة الأساسية من ملف</h3>
-                <div class="code-example">
-                    <pre>
-<span class="code-comment"># الطريقة الأساسية لقراءة ملف</span>
-<span class="code-keyword">try</span>:
-    <span class="code-comment"># فتح الملف للقراءة</span>
-    file = <span class="code-keyword">open</span>(<span class="code-string">'example.txt'</span>, <span class="code-string">'r'</span>, encoding=<span class="code-string">'utf-8'</span>)
-    
-    <span class="code-comment"># قراءة المحتوى كاملاً</span>
-    content = file.read()
-    <span class="code-keyword">print</span>(<span class="code-string">"المحتوى الكامل:"</span>)
-    <span class="code-keyword">print</span>(content)
-    
-    <span class="code-comment"># العودة لبداية الملف للقراءة مرة أخرى</span>
-    file.seek(<span class="code-number">0</span>)
-    
-    <span class="code-comment"># قراءة سطر بسطر</span>
-    <span class="code-keyword">print</span>(<span class="code-string">"\nقراءة سطر بسطر:"</span>)
-    line = file.readline()
-    <span class="code-keyword">while</span> line:
-        <span class="code-keyword">print</span>(line.strip())  <span class="code-comment"># strip() يزيل المسافات والأسطر الجديدة</span>
-        line = file.readline()
-    
-    <span class="code-comment"># إغلاق الملف</span>
-    file.close()
 
-<span class="code-keyword">except</span> FileNotFoundError:
-    <span class="code-keyword">print</span>(<span class="code-string">"الملف غير موجود!"</span>)
-<span class="code-keyword">except</span> Exception <span class="code-keyword">as</span> e:
-    <span class="code-keyword">print</span>(<span class="code-string">f"حدث خطأ: {e}"</span>)
-
-<span class="code-comment"># الطريقة الأفضل باستخدام with (تغلق الملف تلقائياً)</span>
-<span class="code-keyword">print</span>(<span class="code-string">"\nباستخدام with:"</span>)
-<span class="code-keyword">try</span>:
-    <span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-string">'example.txt'</span>, <span class="code-string">'r'</span>, encoding=<span class="code-string">'utf-8'</span>) <span class="code-keyword">as</span> file:
-        lines = file.readlines()  <span class="code-comment"># قراءة جميع الأسطر في قائمة</span>
-        <span class="code-keyword">for</span> i, line <span class="code-keyword">in</span> <span class="code-keyword">enumerate</span>(lines, <span class="code-number">1</span>):
-            <span class="code-keyword">print</span>(<span class="code-string">f"السطر {i}: {line.strip()}"</span>)
-
-<span class="code-keyword">except</span> FileNotFoundError:
-    <span class="code-keyword">print</span>(<span class="code-string">"الملف غير موجود!"</span>)
-                    </pre>
-                </div>
-                
-                <div class="example-output">
-                    <h4>المخرجات (افتراضية):</h4>
-                    <pre>المحتوى الكامل:
-هذا هو السطر الأول
-هذا هو السطر الثاني
-هذا هو السطر الثالث
-
-قراءة سطر بسطر:
-هذا هو السطر الأول
-هذا هو السطر الثاني
-هذا هو السطر الثالث
-
-باستخدام with:
-السطر 1: هذا هو السطر الأول
-السطر 2: هذا هو السطر الثاني
-السطر 3: هذا هو السطر الثالث</pre>
-                </div>
-
-                <h3>المثال 2: الكتابة إلى الملفات</h3>
-                <div class="code-example">
-                    <pre>
-<span class="code-comment"># الكتابة إلى ملف (ينشئ ملف جديد أو يمحو الموجود)</span>
-<span class="code-keyword">try</span>:
-    <span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-string">'output.txt'</span>, <span class="code-string">'w'</span>, encoding=<span class="code-string">'utf-8'</span>) <span class="code-keyword">as</span> file:
-        <span class="code-comment"># كتابة سطر واحد</span>
-        file.write(<span class="code-string">"هذا هو السطر الأول\\n"</span>)
-        
-        <span class="code-comment"># كتابة عدة أسطر</span>
-        lines = [
-            <span class="code-string">"هذا هو السطر الثاني\\n"</span>,
-            <span class="code-string">"هذا هو السطر الثالث\\n"</span>,
-            <span class="code-string">"هذا هو السطر الرابع\\n"</span>
-        ]
-        file.writelines(lines)
-        
-    <span class="code-keyword">print</span>(<span class="code-string">"تم الكتابة إلى الملف بنجاح!"</span>)
-
-<span class="code-keyword">except</span> Exception <span class="code-keyword">as</span> e:
-    <span class="code-keyword">print</span>(<span class="code-string">f"حدث خطأ أثناء الكتابة: {e}"</span>)
-
-<span class="code-comment"># الإضافة إلى ملف موجود</span>
-<span class="code-keyword">try</span>:
-    <span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-string">'output.txt'</span>, <span class="code-string">'a'</span>, encoding=<span class="code-string">'utf-8'</span>) <span class="code-keyword">as</span> file:
-        file.write(<span class="code-string">"--- تمت الإضافة في: 2023 ---\\n"</span>)
-        file.write(<span class="code-string">"هذا سطر مضاف إلى نهاية الملف\\n"</span>)
-    
-    <span class="code-keyword">print</span>(<span class="code-string">"تمت الإضافة إلى الملف بنجاح!"</span>)
-
-<span class="code-keyword">except</span> Exception <span class="code-keyword">as</span> e:
-    <span class="code-keyword">print</span>(<span class="code-string">f"حدث خطأ أثناء الإضافة: {e}"</span>)
-
-<span class="code-comment"># قراءة الملف بعد الكتابة</span>
-<span class="code-keyword">try</span>:
-    <span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-string">'output.txt'</span>, <span class="code-string">'r'</span>, encoding=<span class="code-string">'utf-8'</span>) <span class="code-keyword">as</span> file:
-        content = file.read()
-        <span class="code-keyword">print</span>(<span class="code-string">"\\nالمحتوى النهائي للملف:"</span>)
-        <span class="code-keyword">print</span>(content)
-
-<span class="code-keyword">except</span> FileNotFoundError:
-    <span class="code-keyword">print</span>(<span class="code-string">"الملف غير موجود!"</span>)
-                    </pre>
-                </div>
-                
-                <div class="example-output">
-                    <h4>المخرجات:</h4>
-                    <pre>تم الكتابة إلى الملف بنجاح!
-تمت الإضافة إلى الملف بنجاح!
-
-المحتوى النهائي للملف:
-هذا هو السطر الأول
-هذا هو السطر الثاني
-هذا هو السطر الثالث
-هذا هو السطر الرابع
---- تمت الإضافة في: 2023 ---
-هذا سطر مضاف إلى نهاية الملف</pre>
-                </div>
-            </section>
-        </div>
-
-        <!-- قسم أنواع الملفات -->
-        <section class="content-section">
-            <h2 class="section-title"><i class="fas fa-file-alt"></i> أنواع الملفات والتعامل معها</h2>
-            
-            <div class="file-types">
-                <div class="file-type">
-                    <h4><i class="fas fa-file-text"></i> الملفات النصية</h4>
-                    <p>الملفات التي تحتوي على نص عادي</p>
-                    <div class="code-example">
-                        <pre>
-<span class="code-comment"># قراءة ملف نصي</span>
-<span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-string">'data.txt'</span>, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> file:
-    content = file.read()
-
-<span class="code-comment"># معالجة البيانات النصية</span>
-lines = content.split(<span class="code-string">'\\n'</span>)
-<span class="code-keyword">for</span> line <span class="code-keyword">in</span> lines:
-    <span class="code-keyword">if</span> line.strip():  <span class="code-comment"># تجاهل الأسطر الفارغة</span>
-        <span class="code-keyword">print</span>(line)
-                        </pre>
-                    </div>
-                </div>
-                
-                <div class="file-type">
-                    <h4><i class="fas fa-file-csv"></i> ملفات CSV</h4>
-                    <p>ملفات البيانات المفصولة بفواصل</p>
-                    <div class="code-example">
-                        <pre>
-<span class="code-comment"># قراءة CSV يدوياً</span>
-<span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-string">'data.csv'</span>, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> file:
-    <span class="code-keyword">for</span> line <span class="code-keyword">in</span> file:
-        row = line.strip().split(<span class="code-string">','</span>)
-        <span class="code-keyword">print</span>(row)
-
-<span class="code-comment"># أو استخدام مكتبة csv</span>
-<span class="code-keyword">import</span> csv
-<span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-string">'data.csv'</span>, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> file:
-    reader = csv.reader(file)
-    <span class="code-keyword">for</span> row <span class="code-keyword">in</span> reader:
-        <span class="code-keyword">print</span>(row)
-                        </pre>
-                    </div>
-                </div>
-                
-                <div class="file-type">
-                    <h4><i class="fas fa-file-code"></i> ملفات JSON</h4>
-                    <p>ملفات البيانات المنظمة بتنسيق JSON</p>
-                    <div class="code-example">
-                        <pre>
-<span class="code-keyword">import</span> json
-
-<span class="code-comment"># قراءة ملف JSON</span>
-<span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-string">'data.json'</span>, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> file:
-    data = json.load(file)
-    <span class="code-keyword">print</span>(data)
-
-<span class="code-comment"># كتابة إلى ملف JSON</span>
-data = {
-    <span class="code-string">"name"</span>: <span class="code-string">"أحمد"</span>,
-    <span class="code-string">"age"</span>: <span class="code-number">30</span>,
-    <span class="code-string">"city"</span>: <span class="code-string">"الرياض"</span>
-}
-<span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-string">'output.json'</span>, <span class="code-string">'w'</span>) <span class="code-keyword">as</span> file:
-    json.dump(data, file, indent=<span class="code-number">4</span>, ensure_ascii=<span class="code-keyword">False</span>)
-                        </pre>
-                    </div>
-                </div>
-            </div>
-            
-            <h3>مثال متقدم: نظام إدارة المهام</h3>
-            <div class="code-example">
-                <pre>
-<span class="code-keyword">import</span> json
-<span class="code-keyword">import</span> os
-
-<span class="code-keyword">class</span> <span class="code-class">TaskManager</span>:
-    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-keyword">self</span>, filename=<span class="code-string">'tasks.json'</span>):
-        <span class="code-keyword">self</span>.filename = filename
-        <span class="code-keyword">self</span>.tasks = <span class="code-keyword">self</span>.load_tasks()
-    
-    <span class="code-keyword">def</span> <span class="code-function">load_tasks</span>(<span class="code-keyword">self</span>):
-        <span class="code-comment"># تحميل المهام من ملف JSON</span>
-        <span class="code-keyword">if</span> os.path.exists(<span class="code-keyword">self</span>.filename):
-            <span class="code-keyword">try</span>:
-                <span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-keyword">self</span>.filename, <span class="code-string">'r'</span>, encoding=<span class="code-string">'utf-8'</span>) <span class="code-keyword">as</span> file:
-                    <span class="code-keyword">return</span> json.load(file)
-            <span class="code-keyword">except</span> Exception <span class="code-keyword">as</span> e:
-                <span class="code-keyword">print</span>(<span class="code-string">f"خطأ في تحميل المهام: {e}"</span>)
-        <span class="code-keyword">return</span> []
-    
-    <span class="code-keyword">def</span> <span class="code-function">save_tasks</span>(<span class="code-keyword">self</span>):
-        <span class="code-comment"># حفظ المهام إلى ملف JSON</span>
-        <span class="code-keyword">try</span>:
-            <span class="code-keyword">with</span> <span class="code-keyword">open</span>(<span class="code-keyword">self</span>.filename, <span class="code-string">'w'</span>, encoding=<span class="code-string">'utf-8'</span>) <span class="code-keyword">as</span> file:
-                json.dump(<span class="code-keyword">self</span>.tasks, file, indent=<span class="code-number">4</span>, ensure_ascii=<span class="code-keyword">False</span>)
-            <span class="code-keyword">return</span> <span class="code-keyword">True</span>
-        <span class="code-keyword">except</span> Exception <span class="code-keyword">as</span> e:
-            <span class="code-keyword">print</span>(<span class="code-string">f"خطأ في حفظ المهام: {e}"</span>)
-            <span class="code-keyword">return</span> <span class="code-keyword">False</span>
-    
-    <span class="code-keyword">def</span> <span class="code-function">add_task</span>(<span class="code-keyword">self</span>, title, description):
-        task = {
-            <span class="code-string">"id"</span>: <span class="code-keyword">len</span>(<span class="code-keyword">self</span>.tasks) + <span class="code-number">1</span>,
-            <span class="code-string">"title"</span>: title,
-            <span class="code-string">"description"</span>: description,
-            <span class="code-string">"completed"</span>: <span class="code-keyword">False</span>,
-            <span class="code-string">"created_at"</span>: <span class="code-string">"2023-12-07"</span>
-        }
-        <span class="code-keyword">self</span>.tasks.append(task)
-        <span class="code-keyword">return</span> <span class="code-keyword">self</span>.save_tasks()
-    
-    <span class="code-keyword">def</span> <span class="code-function">list_tasks</span>(<span class="code-keyword">self</span>):
-        <span class="code-keyword">for</span> task <span class="code-keyword">in</span> <span class="code-keyword">self</span>.tasks:
-            status = <span class="code-string">"مكتملة"</span> <span class="code-keyword">if</span> task[<span class="code-string">"completed"</span>] <span class="code-keyword">else</span> <span class="code-string">"قيد التنفيذ"</span>
-            <span class="code-keyword">print</span>(<span class="code-string">f"{task['id']}. {task['title']} - {status}"</span>)
-
-<span class="code-comment"># استخدام النظام</span>
-manager = TaskManager()
-
-<span class="code-comment"># إضافة مهام جديدة</span>
-manager.add_task(<span class="code-string">"تعلم بايثون"</span>, <span class="code-string">"دراسة التعامل مع الملفات"</span>)
-manager.add_task(<span class="code-string">"تسوق"</span>, <span class="code-string">"شراء مستلزمات المنزل"</span>)
-
-<span class="code-comment"># عرض المهام</span>
-<span class="code-keyword">print</span>(<span class="code-string">"قائمة المهام:"</span>)
-manager.list_tasks()
-                </pre>
-            </div>
-            
-            <div class="example-output">
-                <h4>المخرجات:</h4>
-                <pre>قائمة المهام:
-1. تعلم بايثون - قيد التنفيذ
-2. تسوق - قيد التنفيذ</pre>
-            </div>
-        </section>
-
-        <!-- قسم المحرر التفاعلي -->
-        <section class="content-section">
-            <h2 class="section-title"><i class="fas fa-edit"></i> محرر الأكواد التفاعلي</h2>
-            
-            <div class="editor-section">
-                <h3><i class="fas fa-play"></i> جرب التعامل مع الملفات بنفسك</h3>
-                <p>يمكنك تعديل الكود التالي وتشغيله لترى نتائج التعامل مع الملفات:</p>
-                
-                <div class="editor-container">
-                    <div class="editor-header">
-                        <span><i class="fas fa-code"></i> محرر بايثون</span>
-                        <div class="editor-actions">
-                            <button class="btn btn-primary" onclick="runCode()">
-                                <i class="fas fa-play"></i> تشغيل
-                            </button>
-                            <button class="btn btn-secondary" onclick="resetCode()">
-                                <i class="fas fa-redo"></i> إعادة تعيين
-                            </button>
-                        </div>
-                    </div>
-                    <div class="editor-body">
-                        <textarea id="python-editor"># جرب تعديل هذا الكود للتعامل مع الملفات
-import os
-import json
-
-class FileHandler:
-    def __init__(self, filename):
-        self.filename = filename
-    
-    def create_sample_file(self):
-        """إنشاء ملف نموذجي للاختبار"""
-        try:
-            with open(self.filename, 'w', encoding='utf-8') as file:
-                file.write("=== قائمة الطلاب ===\\n")
-                file.write("1. أحمد - الصف: العاشر - المعدل: 95\\n")
-                file.write("2. فاطمة - الصف: الحادي عشر - المعدل: 98\\n")
-                file.write("3. محمد - الصف: الثاني عشر - المعدل: 92\\n")
-                file.write("4. سارة - الصف: العاشر - المعدل: 96\\n")
-            print(f"تم إنشاء الملف {self.filename} بنجاح")
-            return True
-        except Exception as e:
-            print(f"خطأ في إنشاء الملف: {e}")
-            return False
-    
-    def read_and_display(self):
-        """قراءة وعرض محتوى الملف"""
-        try:
-            if not os.path.exists(self.filename):
-                print("الملف غير موجود! جاري إنشاء ملف جديد...")
-                self.create_sample_file()
-            
-            print(f"=== محتوى الملف {self.filename} ===")
-            with open(self.filename, 'r', encoding='utf-8') as file:
-                # الطريقة 1: قراءة كاملة
-                content = file.read()
-                print("المحتوى الكامل:")
-                print(content)
-                
-                # العودة لبداية الملف للقراءة مرة أخرى
-                file.seek(0)
-                
-                # الطريقة 2: قراءة سطر بسطر
-                print("\\nقراءة سطر بسطر:")
-                for i, line in enumerate(file, 1):
-                    if line.strip():  # تجاهل الأسطر الفارغة
-                        print(f"السطر {i}: {line.strip()}")
-            
-            return True
-        except Exception as e:
-            print(f"خطأ في قراءة الملف: {e}")
-            return False
-    
-    def add_student(self, name, grade, average):
-        """إضافة طالب جديد إلى الملف"""
-        try:
-            with open(self.filename, 'a', encoding='utf-8') as file:
-                # حساب رقم الطالب التالي
-                if os.path.exists(self.filename):
-                    with open(self.filename, 'r', encoding='utf-8') as f:
-                        lines = f.readlines()
-                        student_count = len([l for l in lines if l.strip() and '---' not in l]) - 1
-                else:
-                    student_count = 0
-                
-                new_student = f"{student_count + 1}. {name} - الصف: {grade} - المعدل: {average}\\n"
-                file.write(new_student)
-            
-            print(f"تم إضافة الطالب {name} بنجاح")
-            return True
-        except Exception as e:
-            print(f"خطأ في إضافة الطالب: {e}")
-            return False
-    
-    def search_student(self, name):
-        """البحث عن طالب بالاسم"""
-        try:
-            with open(self.filename, 'r', encoding='utf-8') as file:
-                for line in file:
-                    if name.lower() in line.lower():
-                        print(f"تم العثور على: {line.strip()}")
-                        return True
-            print(f"لم يتم العثور عن الطالب {name}")
-            return False
-        except Exception as e:
-            print(f"خطأ في البحث: {e}")
-            return False
-
-# اختبار الكلاس
-def main():
-    handler = FileHandler('students.txt')
-    
-    # إنشاء ملف إذا لم يكن موجوداً
-    if not os.path.exists('students.txt'):
-        handler.create_sample_file()
-    
-    # قراءة وعرض المحتوى
-    handler.read_and_display()
-    
-    # إضافة طالب جديد
-    print("\\n" + "="*50)
-    handler.add_student("خالد", "التاسع", 88)
-    
-    # عرض المحتوى بعد الإضافة
-    print("\\n" + "="*50)
-    handler.read_and_display()
-    
-    # البحث عن طالب
-    print("\\n" + "="*50)
-    print("البحث عن طالب:")
-    handler.search_student("أحمد")
-    handler.search_student("خالد")
-    handler.search_student("علي")
-
-if __name__ == "__main__":
-    main()</textarea>
-                    </div>
-                    <div class="output-container">
-                        <div class="output-header">
-                            <i class="fas fa-terminal"></i> المخرجات
-                        </div>
-                        <div id="editor-output">سيظهر نتائج الكود هنا...</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- قسم أفضل الممارسات -->
-        <section class="content-section">
-            <h2 class="section-title"><i class="fas fa-star"></i> أفضل الممارسات</h2>
-            
-            <ul class="benefits-list">
-                <li><i class="fas fa-check"></i> <strong>استخدم with:</strong> يضمن إغلاق الملف تلقائياً حتى في حالة الأخطاء</li>
-                <li><i class="fas fa-check"></i> <strong>حدد الترميز:</strong> استخدم encoding='utf-8' للتعامل مع النصوص العربية</li>
-                <li><i class="fas fa-check"></i> <strong>تعامل مع الاستثناءات:</strong> استخدم try-except للتعامل مع الأخطاء</li>
-                <li><i class="fas fa-check"></i> <strong>تحقق من وجود الملف:</strong> استخدم os.path.exists() قبل التعامل مع الملف</li>
-                <li><i class="fas fa-check"></i> <strong>استخدم الأنماط المناسبة:</strong> اختر نمط الفتح المناسب للعملية</li>
-            </ul>
-            
-            <div class="tip">
-                <p><i class="fas fa-lightbulb"></i> <strong>نصيحة:</strong> دائماً استخدم <code>with open() as file</code> بدلاً من <code>file = open()</code> ثم <code>file.close()</code> لأنها أكثر أماناً وتضمن إغلاق الملف تلقائياً.</p>
-            </div>
-            
-            <h3 class="section-title"><i class="fas fa-exclamation-triangle"></i> تحذيرات مهمة</h3>
-            
-            <div class="warning">
-                <p><i class="fas fa-exclamation-circle"></i> <strong>احذر من:</strong></p>
-                <ul class="benefits-list">
-                    <li><i class="fas fa-times"></i> <strong>نسيان إغلاق الملف:</strong> قد يؤدي إلى فقدان البيانات أو تلف الملف</li>
-                    <li><i class="fas fa-times"></i> <strong>استخدام النمط الخاطئ:</strong> الكتابة ('w') تمسح الملف الحالي</li>
-                    <li><i class="fas fa-times"></i> <strong>مشاكل الترميز:</strong> تجاهل encoding قد يؤدي إلى تشويه النصوص العربية</li>
-                    <li><i class="fas fa-times"></i> <strong>عدم التحقق من الوجود:</strong> قد يؤدي إلى أخطاء FileNotFoundError</li>
-                </ul>
-            </div>
-        </section>
+<!-- ===== شريط التنقل ===== -->
+<nav class="navbar">
+    <div class="logo">
+        <i class="fas fa-code"></i>
+        <span>CodeWay · Python</span>
     </div>
-    
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3><i class="fas fa-info-circle"></i> ملخص التعامل مع الملفات</h3>
-                    <p>بايثون توفر طرقاً سهلة وآمنة للتعامل مع الملفات بأنواعها المختلفة. استخدام with و التعامل الصحيح مع الاستثناءات يجعل الكود أكثر قوة وموثوقية.</p>
-                </div>
-                <div class="footer-section">
-                    <h3><i class="fas fa-code"></i> المفاهيم الأساسية</h3>
-                    <p>open(), with, أنماط الفتح, encoding, التعامل مع الاستثناءات, JSON, CSV</p>
-                </div>
+    <div class="breadcrumb">
+        <a href="../../../index.html">مسار بايثون</a>
+        <span class="sep">/</span>
+        <a href="../index.php">المستوى المتوسط</a>
+        <span class="sep">/</span>
+        <span>مشاريع الملفات</span>
+    </div>
+</nav>
+
+<!-- ===== هيدر الدرس ===== -->
+<section class="page-hero">
+    <div class="page-hero-inner">
+        <div class="lesson-badge">
+            <i class="fas fa-folder-open"></i>
+            الدرس 7 · تطبيقات الملفات
+        </div>
+        <h1 class="lesson-title">مشاريع صغيرة باستخدام الملفات</h1>
+        <p class="lesson-intro">
+            تعلمت في الدرس السابق أساسيات القراءة والكتابة في الملفات. الآن حان وقت <strong>التطبيق الحقيقي</strong>: سنبني معًا <strong>خمسة مشاريع صغيرة</strong> تحفظ بياناتها في ملفات نصية و CSV و JSON، ونتعلم نمط <strong>تحميل ← معالجة ← حفظ</strong> الذي تقوم عليه معظم البرامج الحقيقية.
+        </p>
+        <div class="lesson-meta">
+            <div class="lesson-meta-item"><i class="fas fa-clock"></i> ⏱ 60 دقيقة</div>
+            <div class="lesson-meta-item"><i class="fas fa-bullseye"></i> 🎯 بناء برامج تحفظ بياناتها</div>
+            <div class="lesson-meta-item"><i class="fas fa-layer-group"></i> 🧱 متوسط</div>
+            <div class="lesson-meta-item"><i class="fas fa-check-circle"></i> بعد الدرس 6</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== المحتوى ===== -->
+<main class="container">
+
+    <!-- فهرس -->
+    <div class="toc-bar">
+        <h3><i class="fas fa-list"></i> محتويات الدرس</h3>
+        <div class="toc-links">
+            <a href="#intro">1. مقدمة</a>
+            <a href="#pathlib">2. مكتبة pathlib</a>
+            <a href="#journal">3. دفتر اليوميات</a>
+            <a href="#analyzer">4. محلل النصوص</a>
+            <a href="#contacts">5. جهات الاتصال JSON</a>
+            <a href="#grades">6. تقرير CSV</a>
+            <a href="#organizer">7. منظّم الملفات</a>
+            <a href="#practices">8. أفضل الممارسات</a>
+            <a href="#exercises">9. تمارين تفاعلية</a>
+            <a href="#summary">10. الخلاصة</a>
+        </div>
+    </div>
+
+<section class="section-card" id="intro">
+    <h2 class="section-title">
+        <span class="num">1</span>
+        <i class="fas fa-lightbulb"></i>
+        لماذا نحفظ البيانات في ملفات؟
+    </h2>
+        <p>
+            كل البرامج التي كتبتها حتى الآن <strong>تنسى كل شيء</strong> بمجرد إغلاقها: المتغيرات تعيش في الذاكرة المؤقتة (RAM)
+            وتختفي عند انتهاء البرنامج. لكي يتذكر برنامجك البيانات بين مرة وأخرى، يجب أن يحفظها في <strong>ملف</strong>.
+        </p>
+        <p>معظم البرامج التي تعتمد على الملفات تسير وفق نمط ثابت من ثلاث خطوات:</p>
+
+        <div class="function-types">
+            <div class="function-card">
+                <h4><i class="fas fa-download"></i> 1. التحميل (Load)</h4>
+                <p>عند بدء البرنامج: اقرأ البيانات من الملف إلى متغيرات (قائمة أو قاموس). إن لم يوجد الملف ابدأ ببيانات فارغة.</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 القراءة والكتابة في الملفات في بايثون - شرح شامل. جميع الحقوق محفوظة.</p>
+            <div class="function-card">
+                <h4><i class="fas fa-cogs"></i> 2. المعالجة (Process)</h4>
+                <p>أضف، احذف، عدّل، ابحث، احسب… كل ذلك على المتغيرات في الذاكرة.</p>
+            </div>
+            <div class="function-card">
+                <h4><i class="fas fa-save"></i> 3. الحفظ (Save)</h4>
+                <p>بعد كل تعديل أو قبل الخروج: اكتب البيانات من جديد إلى الملف.</p>
             </div>
         </div>
-    </footer>
 
-    <script>
-        // محاكاة تنفيذ كود بايثون
-        function runCode() {
-            const code = document.getElementById('python-editor').value;
-            const outputElement = document.getElementById('editor-output');
-            
-            outputElement.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> جاري التشغيل...</p>';
-            
-            setTimeout(function() {
-                let simulatedOutput = '';
-                
-                try {
-                    if (code.includes('FileHandler')) {
-                        simulatedOutput = `تم إنشاء الملف students.txt بنجاح
-=== محتوى الملف students.txt ===
-المحتوى الكامل:
-=== قائمة الطلاب ===
-1. أحمد - الصف: العاشر - المعدل: 95
-2. فاطمة - الصف: الحادي عشر - المعدل: 98
-3. محمد - الصف: الثاني عشر - المعدل: 92
-4. سارة - الصف: العاشر - المعدل: 96
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>نوع الملف</th><th>مناسب لـ</th><th>المشروع في هذا الدرس</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>نص عادي <code>.txt</code></td><td>سجلات ونصوص حرة، سطر لكل عنصر</td><td>دفتر اليوميات، محلل النصوص</td></tr>
+                    <tr><td>جدول <code>.csv</code></td><td>بيانات جدولية (صفوف وأعمدة) تُفتح في Excel</td><td>تقرير الدرجات</td></tr>
+                    <tr><td>JSON <code>.json</code></td><td>بيانات منظمة متداخلة (قوائم وقواميس)</td><td>دفتر جهات الاتصال</td></tr>
+                    <tr><td>المجلدات نفسها</td><td>تنظيم الملفات ونقلها</td><td>منظّم الملفات</td></tr>
+                </tbody>
+            </table>
+        </div>
+</section>
 
-قراءة سطر بسطر:
-السطر 1: === قائمة الطلاب ===
-السطر 2: 1. أحمد - الصف: العاشر - المعدل: 95
-السطر 3: 2. فاطمة - الصف: الحادي عشر - المعدل: 98
-السطر 4: 3. محمد - الصف: الثاني عشر - المعدل: 92
-السطر 5: 4. سارة - الصف: العاشر - المعدل: 96
+<section class="section-card" id="pathlib">
+    <h2 class="section-title">
+        <span class="num">2</span>
+        <i class="fas fa-route"></i>
+        أداة مهمة قبل البدء: pathlib
+    </h2>
+        <p>
+            قبل المشاريع، تعرّف على مكتبة <code>pathlib</code>: الطريقة الحديثة والمفضلة للتعامل مع مسارات الملفات في Python،
+            وهي أوضح من <code>os.path</code> وتعمل على Windows و Linux و macOS بنفس الكود.
+        </p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="lang"><i class="fab fa-python"></i> Python</span>
+        <span>pathlib_intro.py</span>
+    </div>
+<pre><span class="kw">from</span> pathlib <span class="kw">import</span> Path
 
-==================================================
-تم إضافة الطالب خالد بنجاح
+data_dir = <span class="fn">Path</span>(<span class="str">"data"</span>)
+data_dir.<span class="fn">mkdir</span>(exist_ok=<span class="kw">True</span>)          <span class="cm"># إنشاء مجلد (بدون خطأ إن كان موجودًا)</span>
 
-==================================================
-=== محتوى الملف students.txt ===
-المحتوى الكامل:
-=== قائمة الطلاب ===
-1. أحمد - الصف: العاشر - المعدل: 95
-2. فاطمة - الصف: الحادي عشر - المعدل: 98
-3. محمد - الصف: الثاني عشر - المعدل: 92
-4. سارة - الصف: العاشر - المعدل: 96
-5. خالد - الصف: التاسع - المعدل: 88
+notes = data_dir / <span class="str">"notes.txt"</span>         <span class="cm"># بناء المسار بالعلامة /</span>
+notes.<span class="fn">write_text</span>(<span class="str">"سطر أول\nسطر ثانٍ\n"</span>, encoding=<span class="str">"utf-8"</span>)
 
-قراءة سطر بسطر:
-السطر 1: === قائمة الطلاب ===
-السطر 2: 1. أحمد - الصف: العاشر - المعدل: 95
-السطر 3: 2. فاطمة - الصف: الحادي عشر - المعدل: 98
-السطر 4: 3. محمد - الصف: الثاني عشر - المعدل: 92
-السطر 5: 4. سارة - الصف: العاشر - المعدل: 96
-السطر 6: 5. خالد - الصف: التاسع - المعدل: 88
+<span class="fn">print</span>(<span class="str">"المسار:"</span>, notes)
+<span class="fn">print</span>(<span class="str">"موجود؟"</span>, notes.<span class="fn">exists</span>())
+<span class="fn">print</span>(<span class="str">"الاسم:"</span>, notes.name, <span class="str">"| الامتداد:"</span>, notes.suffix, <span class="str">"| بدون امتداد:"</span>, notes.stem)
+<span class="fn">print</span>(<span class="str">"المحتوى:"</span>)
+<span class="fn">print</span>(notes.<span class="fn">read_text</span>(encoding=<span class="str">"utf-8"</span>))</pre>
+</div>
+<div class="output-block">
+    <div class="output-header"><i class="fas fa-terminal"></i> المخرجات</div>
+    <pre>المسار: data/notes.txt
+موجود؟ True
+الاسم: notes.txt | الامتداد: .txt | بدون امتداد: notes
+المحتوى:
+سطر أول
+سطر ثانٍ</pre>
+</div>
 
-==================================================
-البحث عن طالب:
-تم العثور على: 1. أحمد - الصف: العاشر - المعدل: 95
-تم العثور على: 5. خالد - الصف: التاسع - المعدل: 88
-لم يتم العثور عن الطالب علي`;
-                    } else {
-                        simulatedOutput = 'لا توجد مخرجات. تأكد من استخدام دالة print() لعرض النتائج.';
-                    }
-                    
-                    outputElement.innerHTML = simulatedOutput;
-                } catch (error) {
-                    outputElement.innerHTML = '<p style="color: red;"><i class="fas fa-exclamation-circle"></i> خطأ: ' + error.message + '</p>';
-                }
-            }, 1000);
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>الأداة</th><th>الوظيفة</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>Path("a") / "b.txt"</code></td><td>بناء مسار بطريقة صحيحة على كل الأنظمة.</td></tr>
+                    <tr><td><code>p.exists()</code></td><td>هل الملف أو المجلد موجود؟</td></tr>
+                    <tr><td><code>p.read_text() / p.write_text()</code></td><td>قراءة أو كتابة الملف كاملًا في سطر واحد.</td></tr>
+                    <tr><td><code>p.name / p.stem / p.suffix</code></td><td>الاسم الكامل / بدون امتداد / الامتداد.</td></tr>
+                    <tr><td><code>p.mkdir(exist_ok=True)</code></td><td>إنشاء مجلد.</td></tr>
+                    <tr><td><code>p.iterdir()</code> / <code>p.glob("*.txt")</code></td><td>المرور على محتويات مجلد / البحث بنمط.</td></tr>
+                    <tr><td><code>p.rename(new)</code> / <code>p.unlink()</code></td><td>نقل أو إعادة تسمية / حذف ملف.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert alert-warn">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <strong>دائمًا حدد الترميز:</strong> عند التعامل مع نصوص عربية اكتب <code>encoding="utf-8"</code>،
+                خاصة على Windows، وإلا قد تظهر رموز غريبة أو خطأ <code>UnicodeDecodeError</code>.
+            </div>
+        </div>
+</section>
+
+<section class="section-card" id="journal">
+    <h2 class="section-title">
+        <span class="num">3</span>
+        <i class="fas fa-book"></i>
+        المشروع 1: دفتر اليوميات
+    </h2>
+        <p>
+            <strong>الفكرة:</strong> برنامج يضيف ملاحظة جديدة مع التاريخ والوقت إلى ملف، دون حذف الملاحظات السابقة،
+            ويستطيع عرضها والبحث فيها.
+        </p>
+        <p><strong>المهارات:</strong> وضع الإلحاق <code>"a"</code>، القراءة سطرًا سطرًا، البحث داخل النص.</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="lang"><i class="fab fa-python"></i> Python</span>
+        <span>journal.py</span>
+    </div>
+<pre><span class="kw">from</span> datetime <span class="kw">import</span> datetime
+
+JOURNAL = <span class="str">"journal.txt"</span>
+
+
+<span class="kw">def</span> <span class="fn">add_entry</span>(text, when=<span class="kw">None</span>):
+    when = when <span class="kw">or</span> datetime.<span class="fn">now</span>()
+    stamp = when.<span class="fn">strftime</span>(<span class="str">"%Y-%m-%d %H:%M"</span>)
+    <span class="kw">with</span> <span class="fn">open</span>(JOURNAL, <span class="str">"a"</span>, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:   <span class="cm"># "a" تضيف في النهاية</span>
+        f.<span class="fn">write</span>(<span class="str">f"[{stamp}] {text}\n"</span>)
+
+
+<span class="kw">def</span> <span class="fn">show_entries</span>():
+    <span class="kw">with</span> <span class="fn">open</span>(JOURNAL, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:
+        <span class="kw">for</span> number, line <span class="kw">in</span> <span class="fn">enumerate</span>(f, start=<span class="num">1</span>):
+            <span class="fn">print</span>(<span class="str">f"{number}. {line.rstrip()}"</span>)
+
+
+<span class="kw">def</span> <span class="fn">search</span>(word):
+    <span class="kw">with</span> <span class="fn">open</span>(JOURNAL, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:
+        <span class="kw">return</span> [line.<span class="fn">rstrip</span>() <span class="kw">for</span> line <span class="kw">in</span> f <span class="kw">if</span> word <span class="kw">in</span> line]
+
+
+<span class="fn">add_entry</span>(<span class="str">"بدأت تعلم التعامل مع الملفات"</span>, <span class="fn">datetime</span>(<span class="num">2025</span>, <span class="num">3</span>, <span class="num">1</span>, <span class="num">9</span>, <span class="num">15</span>))
+<span class="fn">add_entry</span>(<span class="str">"أنهيت مشروع دفتر اليوميات"</span>, <span class="fn">datetime</span>(<span class="num">2025</span>, <span class="num">3</span>, <span class="num">1</span>, <span class="num">11</span>, <span class="num">40</span>))
+<span class="fn">add_entry</span>(<span class="str">"غدًا سأتعلم ملفات JSON"</span>, <span class="fn">datetime</span>(<span class="num">2025</span>, <span class="num">3</span>, <span class="num">1</span>, <span class="num">22</span>, <span class="num">5</span>))
+
+<span class="fn">print</span>(<span class="str">"📖 كل الملاحظات:"</span>)
+<span class="fn">show_entries</span>()
+
+<span class="fn">print</span>(<span class="str">"\n🔍 نتائج البحث عن 'JSON':"</span>)
+<span class="kw">for</span> line <span class="kw">in</span> <span class="fn">search</span>(<span class="str">"JSON"</span>):
+    <span class="fn">print</span>(line)</pre>
+</div>
+<div class="output-block">
+    <div class="output-header"><i class="fas fa-terminal"></i> المخرجات</div>
+    <pre>📖 كل الملاحظات:
+1. [2025-03-01 09:15] بدأت تعلم التعامل مع الملفات
+2. [2025-03-01 11:40] أنهيت مشروع دفتر اليوميات
+3. [2025-03-01 22:05] غدًا سأتعلم ملفات JSON
+
+🔍 نتائج البحث عن 'JSON':
+[2025-03-01 22:05] غدًا سأتعلم ملفات JSON</pre>
+</div>
+
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>لماذا "a" وليس "w"؟</strong> الوضع <code>"w"</code> <strong>يمسح الملف بالكامل</strong> قبل الكتابة،
+                فتضيع كل الملاحظات القديمة. أما <code>"a"</code> (append) فيضيف في النهاية، وينشئ الملف إن لم يكن موجودًا.
+            </div>
+        </div>
+
+        <div class="alert alert-tip">
+            <i class="fas fa-lightbulb"></i>
+            <div>
+                <strong>طوّره بنفسك:</strong> أضف قائمة خيارات بـ <code>input()</code> (1. إضافة 2. عرض 3. بحث 4. خروج)
+                داخل حلقة <code>while True</code> ليصبح برنامجًا تفاعليًا كاملًا.
+            </div>
+        </div>
+</section>
+
+<section class="section-card" id="analyzer">
+    <h2 class="section-title">
+        <span class="num">4</span>
+        <i class="fas fa-chart-bar"></i>
+        المشروع 2: محلل النصوص
+    </h2>
+        <p>
+            <strong>الفكرة:</strong> برنامج يقرأ ملفًا نصيًا ويحسب إحصائيات عنه: عدد الأسطر والكلمات والحروف،
+            وأكثر الكلمات تكرارًا، ثم يحفظ التقرير في ملف جديد.
+        </p>
+        <p><strong>المهارات:</strong> قراءة الملف كاملًا، تنظيف النص، العدّ بالقواميس، <code>Counter</code>، الكتابة بـ <code>"w"</code>.</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="lang"><i class="fab fa-python"></i> Python</span>
+        <span>analyzer.py</span>
+    </div>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> Counter
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="cm"># تجهيز ملف تجريبي</span>
+<span class="fn">Path</span>(<span class="str">"article.txt"</span>).<span class="fn">write_text</span>(
+    <span class="str">"بايثون لغة برمجة سهلة. بايثون لغة قوية.\n"</span>
+    <span class="str">"يستخدم المبرمجون بايثون في الويب والذكاء الاصطناعي.\n"</span>
+    <span class="str">"تعلم بايثون ممتع، والبرمجة مهارة مهمة.\n"</span>,
+    encoding=<span class="str">"utf-8"</span>,
+)
+
+
+<span class="kw">def</span> <span class="fn">analyze</span>(path):
+    text = <span class="fn">Path</span>(path).<span class="fn">read_text</span>(encoding=<span class="str">"utf-8"</span>)
+    line_count = <span class="fn">len</span>(text.<span class="fn">splitlines</span>())
+    <span class="kw">for</span> mark <span class="kw">in</span> <span class="str">".,،!؟?"</span>:              <span class="cm"># إزالة علامات الترقيم</span>
+        text = text.<span class="fn">replace</span>(mark, <span class="str">" "</span>)
+    words = text.<span class="fn">split</span>()
+    <span class="kw">return</span> {
+        <span class="str">"lines"</span>: line_count,
+        <span class="str">"words"</span>: <span class="fn">len</span>(words),
+        <span class="str">"chars"</span>: <span class="fn">len</span>(<span class="str">""</span>.<span class="fn">join</span>(words)),
+        <span class="str">"top"</span>: <span class="fn">Counter</span>(words).<span class="fn">most_common</span>(<span class="num">3</span>),
+    }
+
+
+stats = <span class="fn">analyze</span>(<span class="str">"article.txt"</span>)
+
+report = [
+    <span class="str">"📊 تقرير تحليل الملف article.txt"</span>,
+    <span class="str">f"عدد الأسطر: {stats['lines']}"</span>,
+    <span class="str">f"عدد الكلمات: {stats['words']}"</span>,
+    <span class="str">f"عدد الحروف (بدون مسافات): {stats['chars']}"</span>,
+    <span class="str">"أكثر الكلمات تكرارًا:"</span>,
+]
+<span class="kw">for</span> word, count <span class="kw">in</span> stats[<span class="str">"top"</span>]:
+    report.<span class="fn">append</span>(<span class="str">f"  - {word}: {count} مرات"</span>)
+
+<span class="fn">Path</span>(<span class="str">"report.txt"</span>).<span class="fn">write_text</span>(<span class="str">"\n"</span>.<span class="fn">join</span>(report), encoding=<span class="str">"utf-8"</span>)
+<span class="fn">print</span>(<span class="fn">Path</span>(<span class="str">"report.txt"</span>).<span class="fn">read_text</span>(encoding=<span class="str">"utf-8"</span>))</pre>
+</div>
+<div class="output-block">
+    <div class="output-header"><i class="fas fa-terminal"></i> المخرجات</div>
+    <pre>📊 تقرير تحليل الملف article.txt
+عدد الأسطر: 3
+عدد الكلمات: 20
+عدد الحروف (بدون مسافات): 106
+أكثر الكلمات تكرارًا:
+  - بايثون: 4 مرات
+  - لغة: 2 مرات
+  - برمجة: 1 مرات</pre>
+</div>
+
+        <div class="alert alert-tip">
+            <i class="fas fa-lightbulb"></i>
+            <div>
+                <strong>Counter:</strong> من وحدة <code>collections</code>، يعدّ تكرار العناصر تلقائيًا،
+                و <code>most_common(n)</code> يعطيك أكثر n عناصر تكرارًا. هو نفس نمط العدّ بالقواميس لكن جاهز!
+            </div>
+        </div>
+</section>
+
+<section class="section-card" id="contacts">
+    <h2 class="section-title">
+        <span class="num">5</span>
+        <i class="fas fa-address-book"></i>
+        المشروع 3: دفتر جهات الاتصال (JSON)
+    </h2>
+        <p>
+            <strong>الفكرة:</strong> دفتر جهات اتصال يحفظ البيانات في ملف JSON: إضافة، بحث، حذف، ويتذكر كل شيء بين التشغيلات.
+        </p>
+        <p><strong>المهارات:</strong> <code>json.load</code> و <code>json.dump</code>، التعامل مع ملف غير موجود، تقسيم البرنامج لدوال.</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="lang"><i class="fab fa-python"></i> Python</span>
+        <span>contacts.py</span>
+    </div>
+<pre><span class="kw">import</span> json
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+DB = <span class="fn">Path</span>(<span class="str">"contacts.json"</span>)
+
+
+<span class="kw">def</span> <span class="fn">load</span>():
+    <span class="kw">if</span> <span class="kw">not</span> DB.<span class="fn">exists</span>():                 <span class="cm"># أول تشغيل: لا يوجد ملف بعد</span>
+        <span class="kw">return</span> {}
+    <span class="kw">with</span> <span class="fn">open</span>(DB, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:
+        <span class="kw">return</span> json.<span class="fn">load</span>(f)
+
+
+<span class="kw">def</span> <span class="fn">save</span>(contacts):
+    <span class="kw">with</span> <span class="fn">open</span>(DB, <span class="str">"w"</span>, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:
+        json.<span class="fn">dump</span>(contacts, f, ensure_ascii=<span class="kw">False</span>, indent=<span class="num">2</span>)
+
+
+<span class="kw">def</span> <span class="fn">add</span>(contacts, name, phone, email=<span class="str">""</span>):
+    contacts[name] = {<span class="str">"phone"</span>: phone, <span class="str">"email"</span>: email}
+    <span class="fn">save</span>(contacts)
+    <span class="fn">print</span>(<span class="str">f"✅ أُضيف {name}"</span>)
+
+
+<span class="kw">def</span> <span class="fn">find</span>(contacts, text):
+    <span class="kw">return</span> {n: c <span class="kw">for</span> n, c <span class="kw">in</span> contacts.<span class="fn">items</span>() <span class="kw">if</span> text <span class="kw">in</span> n}
+
+
+<span class="kw">def</span> <span class="fn">remove</span>(contacts, name):
+    <span class="kw">if</span> contacts.<span class="fn">pop</span>(name, <span class="kw">None</span>) <span class="kw">is</span> <span class="kw">None</span>:
+        <span class="fn">print</span>(<span class="str">f"⚠️ {name} غير موجود"</span>)
+    <span class="kw">else</span>:
+        <span class="fn">save</span>(contacts)
+        <span class="fn">print</span>(<span class="str">f"🗑️ حُذف {name}"</span>)
+
+
+<span class="cm"># ---- التشغيل الأول ----</span>
+book = <span class="fn">load</span>()
+<span class="fn">print</span>(<span class="str">"عدد الجهات عند البدء:"</span>, <span class="fn">len</span>(book))
+<span class="fn">add</span>(book, <span class="str">"أحمد علي"</span>, <span class="str">"0501112222"</span>, <span class="str">"ahmed@mail.com"</span>)
+<span class="fn">add</span>(book, <span class="str">"أحمد سالم"</span>, <span class="str">"0553334444"</span>)
+<span class="fn">add</span>(book, <span class="str">"منى خالد"</span>, <span class="str">"0565556666"</span>)
+<span class="fn">remove</span>(book, <span class="str">"سعيد"</span>)
+
+<span class="cm"># ---- محاكاة تشغيل جديد للبرنامج: نحمّل من الملف ----</span>
+book = <span class="fn">load</span>()
+<span class="fn">print</span>(<span class="str">"\nعدد الجهات بعد إعادة التحميل:"</span>, <span class="fn">len</span>(book))
+<span class="kw">for</span> name, info <span class="kw">in</span> <span class="fn">find</span>(book, <span class="str">"أحمد"</span>).<span class="fn">items</span>():
+    <span class="fn">print</span>(<span class="str">f"📞 {name}: {info['phone']}"</span>)
+
+<span class="fn">print</span>(<span class="str">"\nمحتوى الملف contacts.json:"</span>)
+<span class="fn">print</span>(DB.<span class="fn">read_text</span>(encoding=<span class="str">"utf-8"</span>)[:<span class="num">120</span>], <span class="str">"..."</span>)</pre>
+</div>
+<div class="output-block">
+    <div class="output-header"><i class="fas fa-terminal"></i> المخرجات</div>
+    <pre>عدد الجهات عند البدء: 0
+✅ أُضيف أحمد علي
+✅ أُضيف أحمد سالم
+✅ أُضيف منى خالد
+⚠️ سعيد غير موجود
+
+عدد الجهات بعد إعادة التحميل: 3
+📞 أحمد علي: 0501112222
+📞 أحمد سالم: 0553334444
+
+محتوى الملف contacts.json:
+{
+  "أحمد علي": {
+    "phone": "0501112222",
+    "email": "ahmed@mail.com"
+  },
+  "أحمد سالم": {
+    "phone": "055333444 ...</pre>
+</div>
+
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>معاملات json.dump المهمة:</strong> <code>ensure_ascii=False</code> يحفظ الحروف العربية كما هي
+                (بدونها تُحفظ كرموز مثل <code>\u0623</code>)، و <code>indent=2</code> يجعل الملف منسقًا وسهل القراءة.
+            </div>
+        </div>
+        <div class="alert alert-warn">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <strong>JSON يحوّل بعض الأنواع:</strong> مفاتيح القاموس تصبح نصوصًا دائمًا، والصفوف تصبح قوائم.
+                فإذا حفظت <code>{1: (2, 3)}</code> ستقرأه لاحقًا كـ <code>{"1": [2, 3]}</code>.
+            </div>
+        </div>
+</section>
+
+<section class="section-card" id="grades">
+    <h2 class="section-title">
+        <span class="num">6</span>
+        <i class="fas fa-file-csv"></i>
+        المشروع 4: تقرير الدرجات (CSV)
+    </h2>
+        <p>
+            <strong>الفكرة:</strong> لدينا ملف CSV فيه درجات الطلاب (يمكن تصديره من Excel). البرنامج يقرؤه، يحسب
+            المعدل والتقدير لكل طالب، ويكتب النتائج في ملف CSV جديد.
+        </p>
+        <p><strong>المهارات:</strong> <code>csv.DictReader</code> و <code>csv.DictWriter</code>، تحويل النصوص لأرقام، دوال صغيرة واضحة.</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="lang"><i class="fab fa-python"></i> Python</span>
+        <span>grades_csv.py</span>
+    </div>
+<pre><span class="kw">import</span> csv
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="cm"># تجهيز ملف CSV تجريبي (في الواقع يأتي من Excel أو نظام المدرسة)</span>
+<span class="fn">Path</span>(<span class="str">"grades.csv"</span>).<span class="fn">write_text</span>(
+    <span class="str">"name,math,science,english\n"</span>
+    <span class="str">"سارة,95,88,92\n"</span>
+    <span class="str">"يوسف,72,65,80\n"</span>
+    <span class="str">"ليان,58,61,49\n"</span>
+    <span class="str">"عمر,85,90,78\n"</span>,
+    encoding=<span class="str">"utf-8"</span>,
+)
+
+
+<span class="kw">def</span> <span class="fn">letter</span>(avg):
+    <span class="kw">if</span> avg &gt;= <span class="num">90</span>: <span class="kw">return</span> <span class="str">"ممتاز"</span>
+    <span class="kw">if</span> avg &gt;= <span class="num">75</span>: <span class="kw">return</span> <span class="str">"جيد جدًا"</span>
+    <span class="kw">if</span> avg &gt;= <span class="num">60</span>: <span class="kw">return</span> <span class="str">"جيد"</span>
+    <span class="kw">return</span> <span class="str">"يحتاج دعمًا"</span>
+
+
+results = []
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"grades.csv"</span>, encoding=<span class="str">"utf-8"</span>, newline=<span class="str">""</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> row <span class="kw">in</span> csv.<span class="fn">DictReader</span>(f):           <span class="cm"># كل صف قاموس: {"name": ..., "math": "95", ...}</span>
+        marks = [<span class="fn">int</span>(row[s]) <span class="kw">for</span> s <span class="kw">in</span> (<span class="str">"math"</span>, <span class="str">"science"</span>, <span class="str">"english"</span>)]
+        avg = <span class="fn">round</span>(<span class="fn">sum</span>(marks) / <span class="fn">len</span>(marks), <span class="num">1</span>)
+        results.<span class="fn">append</span>({<span class="str">"name"</span>: row[<span class="str">"name"</span>], <span class="str">"average"</span>: avg, <span class="str">"grade"</span>: <span class="fn">letter</span>(avg)})
+
+results.<span class="fn">sort</span>(key=<span class="kw">lambda</span> r: r[<span class="str">"average"</span>], reverse=<span class="kw">True</span>)
+
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"results.csv"</span>, <span class="str">"w"</span>, encoding=<span class="str">"utf-8"</span>, newline=<span class="str">""</span>) <span class="kw">as</span> f:
+    writer = csv.<span class="fn">DictWriter</span>(f, fieldnames=[<span class="str">"rank"</span>, <span class="str">"name"</span>, <span class="str">"average"</span>, <span class="str">"grade"</span>])
+    writer.<span class="fn">writeheader</span>()
+    <span class="kw">for</span> rank, r <span class="kw">in</span> <span class="fn">enumerate</span>(results, start=<span class="num">1</span>):
+        writer.<span class="fn">writerow</span>({<span class="str">"rank"</span>: rank, **r})
+
+<span class="fn">print</span>(<span class="fn">Path</span>(<span class="str">"results.csv"</span>).<span class="fn">read_text</span>(encoding=<span class="str">"utf-8"</span>))
+class_avg = <span class="fn">sum</span>(r[<span class="str">"average"</span>] <span class="kw">for</span> r <span class="kw">in</span> results) / <span class="fn">len</span>(results)
+<span class="fn">print</span>(<span class="str">f"متوسط الصف: {class_avg:.1f}"</span>)</pre>
+</div>
+<div class="output-block">
+    <div class="output-header"><i class="fas fa-terminal"></i> المخرجات</div>
+    <pre>rank,name,average,grade
+1,سارة,91.7,ممتاز
+2,عمر,84.3,جيد جدًا
+3,يوسف,72.3,جيد
+4,ليان,56.0,يحتاج دعمًا
+
+متوسط الصف: 76.1</pre>
+</div>
+
+        <div class="alert alert-warn">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <strong>تذكّر:</strong> كل ما تقرؤه من CSV يأتي <strong>نصًا</strong>، لذلك حوّلنا الدرجات بـ <code>int()</code>.
+                واستخدم دائمًا <code>newline=""</code> عند فتح ملفات CSV لتجنب ظهور أسطر فارغة إضافية على Windows.
+            </div>
+        </div>
+        <div class="alert alert-tip">
+            <i class="fas fa-lightbulb"></i>
+            <div>
+                <strong>لـ Excel:</strong> إذا ظهرت الحروف العربية بشكل غريب عند فتح الملف في Excel،
+                احفظه بترميز <code>encoding="utf-8-sig"</code> بدل <code>utf-8</code>.
+            </div>
+        </div>
+</section>
+
+<section class="section-card" id="organizer">
+    <h2 class="section-title">
+        <span class="num">7</span>
+        <i class="fas fa-folder-tree"></i>
+        المشروع 5: منظّم الملفات
+    </h2>
+        <p>
+            <strong>الفكرة:</strong> مجلد «التنزيلات» عندك فوضوي؟ هذا البرنامج ينقل كل ملف إلى مجلد حسب نوعه
+            (صور، مستندات، أكواد…) تلقائيًا.
+        </p>
+        <p><strong>المهارات:</strong> <code>iterdir()</code>، الامتدادات <code>suffix</code>، إنشاء المجلدات ونقل الملفات، قاموس للتصنيف.</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="lang"><i class="fab fa-python"></i> Python</span>
+        <span>organizer.py</span>
+    </div>
+<pre><span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+CATEGORIES = {
+    <span class="str">"صور"</span>: {<span class="str">".jpg"</span>, <span class="str">".png"</span>, <span class="str">".gif"</span>},
+    <span class="str">"مستندات"</span>: {<span class="str">".pdf"</span>, <span class="str">".docx"</span>, <span class="str">".txt"</span>},
+    <span class="str">"أكواد"</span>: {<span class="str">".py"</span>, <span class="str">".html"</span>, <span class="str">".js"</span>},
+}
+
+<span class="cm"># تجهيز مجلد تجريبي فوضوي</span>
+downloads = <span class="fn">Path</span>(<span class="str">"downloads"</span>)
+downloads.<span class="fn">mkdir</span>(exist_ok=<span class="kw">True</span>)
+<span class="kw">for</span> name <span class="kw">in</span> [<span class="str">"رحلة.jpg"</span>, <span class="str">"cv.pdf"</span>, <span class="str">"app.py"</span>, <span class="str">"شعار.png"</span>, <span class="str">"index.html"</span>, <span class="str">"ملاحظات.txt"</span>, <span class="str">"song.mp3"</span>]:
+    (downloads / name).<span class="fn">write_text</span>(<span class="str">"..."</span>, encoding=<span class="str">"utf-8"</span>)
+
+
+<span class="kw">def</span> <span class="fn">category_of</span>(file):
+    <span class="kw">for</span> category, extensions <span class="kw">in</span> CATEGORIES.<span class="fn">items</span>():
+        <span class="kw">if</span> file.suffix.<span class="fn">lower</span>() <span class="kw">in</span> extensions:
+            <span class="kw">return</span> category
+    <span class="kw">return</span> <span class="str">"أخرى"</span>
+
+
+<span class="kw">def</span> <span class="fn">organize</span>(folder, dry_run=<span class="kw">False</span>):
+    moved = {}
+    <span class="kw">for</span> file <span class="kw">in</span> <span class="fn">sorted</span>(folder.<span class="fn">iterdir</span>()):
+        <span class="kw">if</span> <span class="kw">not</span> file.<span class="fn">is_file</span>():
+            <span class="kw">continue</span>                       <span class="cm"># تجاهل المجلدات</span>
+        target_dir = folder / <span class="fn">category_of</span>(file)
+        <span class="kw">if</span> <span class="kw">not</span> dry_run:
+            target_dir.<span class="fn">mkdir</span>(exist_ok=<span class="kw">True</span>)
+            file.<span class="fn">rename</span>(target_dir / file.name)
+        moved.<span class="fn">setdefault</span>(target_dir.name, []).<span class="fn">append</span>(file.name)
+    <span class="kw">return</span> moved
+
+
+<span class="fn">print</span>(<span class="str">"👀 معاينة بدون نقل:"</span>, <span class="fn">organize</span>(downloads, dry_run=<span class="kw">True</span>), <span class="str">"\n"</span>)
+<span class="fn">organize</span>(downloads)
+
+<span class="kw">for</span> folder <span class="kw">in</span> <span class="fn">sorted</span>(downloads.<span class="fn">iterdir</span>()):
+    files = <span class="fn">sorted</span>(f.name <span class="kw">for</span> f <span class="kw">in</span> folder.<span class="fn">iterdir</span>())
+    <span class="fn">print</span>(<span class="str">f"📁 {folder.name}: {files}"</span>)</pre>
+</div>
+<div class="output-block">
+    <div class="output-header"><i class="fas fa-terminal"></i> المخرجات</div>
+    <pre>👀 معاينة بدون نقل: {'أكواد': ['app.py', 'index.html'], 'مستندات': ['cv.pdf', 'ملاحظات.txt'], 'أخرى': ['song.mp3'], 'صور': ['رحلة.jpg', 'شعار.png']} 
+
+📁 أخرى: ['song.mp3']
+📁 أكواد: ['app.py', 'index.html']
+📁 صور: ['رحلة.jpg', 'شعار.png']
+📁 مستندات: ['cv.pdf', 'ملاحظات.txt']</pre>
+</div>
+
+        <div class="alert alert-warn">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <strong>احذر عند العمل على ملفاتك الحقيقية:</strong> البرامج التي تنقل أو تحذف ملفات خطيرة إن كان فيها خطأ.
+                لهذا أضفنا خيار <code>dry_run</code> (تشغيل تجريبي) يعرض ما <em>سيحدث</em> دون تنفيذه.
+                جرّب دائمًا على مجلد تجريبي أولًا!
+            </div>
+        </div>
+</section>
+
+<section class="section-card" id="practices">
+    <h2 class="section-title">
+        <span class="num">8</span>
+        <i class="fas fa-check-double"></i>
+        أخطاء شائعة وأفضل الممارسات
+    </h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>❌ الخطأ</th><th>✅ الصواب</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>فتح الملف بـ <code>open()</code> ونسيان إغلاقه</td><td>استخدم <code>with open(...) as f:</code> ليُغلق تلقائيًا.</td></tr>
+                    <tr><td>استخدام <code>"w"</code> للإضافة فيُمسح الملف</td><td>استخدم <code>"a"</code> للإضافة، و <code>"w"</code> فقط لإعادة الكتابة الكاملة.</td></tr>
+                    <tr><td>نسيان <code>encoding="utf-8"</code></td><td>حدّد الترميز دائمًا مع النصوص العربية.</td></tr>
+                    <tr><td>افتراض أن الملف موجود</td><td>تحقق بـ <code>Path.exists()</code> أو التقط <code>FileNotFoundError</code>.</td></tr>
+                    <tr><td>كتابة المسارات يدويًا <code>"data\\file.txt"</code></td><td>استخدم <code>Path("data") / "file.txt"</code>.</td></tr>
+                    <tr><td>نسيان أن القراءة تُرجع نصوصًا</td><td>حوّل الأرقام بـ <code>int()</code> أو <code>float()</code>.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p>ماذا يحدث عند فتح ملف غير موجود للقراءة؟</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="lang"><i class="fab fa-python"></i> Python</span>
+        <span>missing_file.py</span>
+    </div>
+<pre><span class="kw">with</span> <span class="fn">open</span>(<span class="str">"not_here.txt"</span>, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:
+    <span class="fn">print</span>(f.<span class="fn">read</span>())</pre>
+</div>
+<div class="output-block">
+    <div class="output-header"><i class="fas fa-bug"></i> المخرجات (رسالة الخطأ)</div>
+    <pre class="err-out">Traceback (most recent call last):
+  File "missing_file.py", line 1, in &lt;module&gt;
+    with open("not_here.txt", encoding="utf-8") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'not_here.txt'</pre>
+</div>
+        <p>
+            في الدرس القادم ستتعلم كيف <strong>تلتقط</strong> هذا الخطأ بـ <code>try / except</code> بدل أن يتوقف برنامجك.
+        </p>
+</section>
+
+<section class="section-card" id="exercises">
+    <h2 class="section-title">
+        <span class="num">9</span>
+        <i class="fas fa-pencil-alt"></i>
+        التمارين التفاعلية
+    </h2>
+    <p>اختبر فهمك للدرس من خلال 5 تمارين متنوعة، ثم جرّب المختبر التفاعلي في الأسفل:</p>
+<div class="exercise-block" id="q1" data-ok="صحيح! الوضع &lt;code&gt;&quot;a&quot;&lt;/code&gt; يضيف في نهاية الملف." data-hint="&lt;code&gt;&quot;w&quot;&lt;/code&gt; يمسح الملف، و &lt;code&gt;&quot;r&quot;&lt;/code&gt; للقراءة فقط، و &lt;code&gt;&quot;x&quot;&lt;/code&gt; يفشل إن كان الملف موجودًا.">
+    <div class="exercise-head">
+        <span class="exercise-num">1</span>
+        <h4>اختيار من متعدد</h4>
+        <span class="exercise-tag">أوضاع الفتح</span>
+    </div>
+    <p class="exercise-question">تريد إضافة سطر جديد إلى نهاية ملف <code>log.txt</code> <strong>دون حذف</strong> محتواه القديم. أي وضع تستخدم؟</p>
+    <div class="options-list">
+        <label class="option" data-correct="0"><input type="radio" name="q1" value="1"> <code>open("log.txt", "w")</code></label>
+        <label class="option" data-correct="1"><input type="radio" name="q1" value="2"> <code>open("log.txt", "a")</code></label>
+        <label class="option" data-correct="0"><input type="radio" name="q1" value="3"> <code>open("log.txt", "r")</code></label>
+        <label class="option" data-correct="0"><input type="radio" name="q1" value="4"> <code>open("log.txt", "x")</code></label>
+    </div>
+    <div class="exercise-actions">
+        <button class="btn btn-primary" onclick="checkMC('q1')"><i class="fas fa-check"></i> تحقق</button>
+        <button class="btn btn-secondary" onclick="resetMC('q1')"><i class="fas fa-redo"></i> إعادة</button>
+    </div>
+    <div class="result-msg" id="q1-result"></div>
+</div>
+<div class="exercise-block" id="q2" data-ok="ممتاز! فهمت تفاصيل التعامل مع الملفات." data-hint="القراءة من CSV تُرجع نصوصًا، والوضع &lt;code&gt;&quot;r&quot;&lt;/code&gt; يسبب &lt;code&gt;FileNotFoundError&lt;/code&gt; إن لم يوجد الملف.">
+    <div class="exercise-head">
+        <span class="exercise-num">2</span>
+        <h4>صح أم خطأ</h4>
+        <span class="exercise-tag">اختر لكل عبارة</span>
+    </div>
+    <p class="exercise-question">اقرأ كل عبارة وحدد إن كانت <strong>صحيحة</strong> أم <strong>خاطئة</strong>:</p>
+    <div class="tf-list">
+        <div class="tf-item" data-answer="true">
+            <span class="tf-statement"><code>with open(...)</code> تُغلق الملف تلقائيًا حتى لو حدث خطأ.</span>
+            <div class="tf-actions">
+                <button class="tf-btn" onclick="pickTF(this, true)">صح</button>
+                <button class="tf-btn" onclick="pickTF(this, false)">خطأ</button>
+            </div>
+        </div>
+        <div class="tf-item" data-answer="false">
+            <span class="tf-statement"><code>csv.DictReader</code> يُرجع الأرقام كأعداد صحيحة تلقائيًا.</span>
+            <div class="tf-actions">
+                <button class="tf-btn" onclick="pickTF(this, true)">صح</button>
+                <button class="tf-btn" onclick="pickTF(this, false)">خطأ</button>
+            </div>
+        </div>
+        <div class="tf-item" data-answer="true">
+            <span class="tf-statement"><code>ensure_ascii=False</code> في <code>json.dump</code> يحفظ الحروف العربية كما هي.</span>
+            <div class="tf-actions">
+                <button class="tf-btn" onclick="pickTF(this, true)">صح</button>
+                <button class="tf-btn" onclick="pickTF(this, false)">خطأ</button>
+            </div>
+        </div>
+        <div class="tf-item" data-answer="true">
+            <span class="tf-statement"><code>Path("report.pdf").suffix</code> تُرجع <code>".pdf"</code>.</span>
+            <div class="tf-actions">
+                <button class="tf-btn" onclick="pickTF(this, true)">صح</button>
+                <button class="tf-btn" onclick="pickTF(this, false)">خطأ</button>
+            </div>
+        </div>
+        <div class="tf-item" data-answer="false">
+            <span class="tf-statement">فتح ملف غير موجود بالوضع <code>"r"</code> يُنشئه تلقائيًا.</span>
+            <div class="tf-actions">
+                <button class="tf-btn" onclick="pickTF(this, true)">صح</button>
+                <button class="tf-btn" onclick="pickTF(this, false)">خطأ</button>
+            </div>
+        </div>
+    </div>
+    <div class="exercise-actions">
+        <button class="btn btn-primary" onclick="checkTF('q2')"><i class="fas fa-check"></i> تحقق</button>
+        <button class="btn btn-secondary" onclick="resetTF('q2')"><i class="fas fa-redo"></i> إعادة</button>
+    </div>
+    <div class="result-msg" id="q2-result"></div>
+</div>
+<div class="exercise-block" id="q3" data-ok="صحيح! الكتابة الأخيرة بالوضع &lt;code&gt;&quot;w&quot;&lt;/code&gt; مسحت كل ما سبق." data-hint="انتبه للوضع المستخدم في آخر عملية كتابة.">
+    <div class="exercise-head">
+        <span class="exercise-num">3</span>
+        <h4>توقّع الناتج</h4>
+        <span class="exercise-tag">ماذا سيطبع؟</span>
+    </div>
+    <p class="exercise-question">ما الذي سيطبعه البرنامج التالي؟</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="lang"><i class="fab fa-python"></i> Python</span>
+        <span>predict.py</span>
+    </div>
+<pre><span class="kw">with</span> <span class="fn">open</span>(<span class="str">"demo.txt"</span>, <span class="str">"w"</span>, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:
+    f.<span class="fn">write</span>(<span class="str">"أ\nب\n"</span>)
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"demo.txt"</span>, <span class="str">"a"</span>, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:
+    f.<span class="fn">write</span>(<span class="str">"ج\n"</span>)
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"demo.txt"</span>, <span class="str">"w"</span>, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:
+    f.<span class="fn">write</span>(<span class="str">"د\n"</span>)
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"demo.txt"</span>, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:
+    lines = f.<span class="fn">readlines</span>()
+<span class="fn">print</span>(<span class="fn">len</span>(lines))
+<span class="fn">print</span>(lines[<span class="num">0</span>].<span class="fn">strip</span>())</pre>
+</div>
+    <div class="code-fill">
+        <div class="line"><span class="cm">السطر الأول:</span><input type="text" class="blank-input" data-answers="1" placeholder="..." style="min-width:80px;" autocomplete="off" spellcheck="false"></div>
+        <div class="line"><span class="cm">السطر الثاني:</span><input type="text" class="blank-input" data-answers="د" placeholder="..." style="min-width:80px;" autocomplete="off" spellcheck="false"></div>
+    </div>
+    <div class="exercise-actions">
+        <button class="btn btn-primary" onclick="checkFill('q3')"><i class="fas fa-check"></i> تحقق</button>
+        <button class="btn btn-secondary" onclick="resetFill('q3')"><i class="fas fa-redo"></i> إعادة</button>
+    </div>
+    <div class="result-msg" id="q3-result"></div>
+</div>
+<div class="exercise-block" id="q4" data-ok="أحسنت! &lt;code&gt;dump&lt;/code&gt; للحفظ في ملف و &lt;code&gt;load&lt;/code&gt; للقراءة منه." data-hint="الحفظ يحتاج وضع الكتابة، والدالتان هما &lt;code&gt;dump&lt;/code&gt; و &lt;code&gt;load&lt;/code&gt;.">
+    <div class="exercise-head">
+        <span class="exercise-num">4</span>
+        <h4>أكمل الكود</h4>
+        <span class="exercise-tag">حفظ وتحميل JSON</span>
+    </div>
+    <p class="exercise-question">أكمل الدالتين لحفظ قائمة المهام في ملف JSON وتحميلها منه:</p>
+    <div class="code-fill">
+        <div class="line"><input type="text" class="blank-input" data-answers="import" placeholder="..." style="min-width:114px;" autocomplete="off" spellcheck="false"><span> json</span></div>
+        <div class="line"><span><span class="kw">def</span> <span class="fn">save</span>(tasks):</span></div>
+        <div class="line"><span>    <span class="kw">with</span> <span class="fn">open</span>(<span class="str">'tasks.json'</span>, </span><input type="text" class="blank-input" data-answers="&#x27;w&#x27;||&quot;w&quot;" placeholder="..." style="min-width:80px;" autocomplete="off" spellcheck="false"><span>, encoding=<span class="str">'utf-8'</span>) <span class="kw">as</span> f:</span></div>
+        <div class="line"><span>        json.</span><input type="text" class="blank-input" data-answers="dump" placeholder="..." style="min-width:86px;" autocomplete="off" spellcheck="false"><span>(tasks, f, ensure_ascii=<span class="kw">False</span>)</span></div>
+        <div class="line"><span><span class="kw">def</span> <span class="fn">load</span>():</span></div>
+        <div class="line"><span>    <span class="kw">with</span> <span class="fn">open</span>(<span class="str">'tasks.json'</span>, encoding=<span class="str">'utf-8'</span>) <span class="kw">as</span> f:</span></div>
+        <div class="line"><span>        <span class="kw">return</span> json.</span><input type="text" class="blank-input" data-answers="load" placeholder="..." style="min-width:86px;" autocomplete="off" spellcheck="false"><span>(f)</span></div>
+    </div>
+    <div class="exercise-actions">
+        <button class="btn btn-primary" onclick="checkFill('q4')"><i class="fas fa-check"></i> تحقق</button>
+        <button class="btn btn-secondary" onclick="resetFill('q4')"><i class="fas fa-redo"></i> إعادة</button>
+    </div>
+    <div class="result-msg" id="q4-result"></div>
+</div>
+<div class="exercise-block" id="q5" data-ok="ترتيب ممتاز! هذا هو نمط تحميل ← معالجة ← حفظ." data-hint="استيراد ← تحديد الملف ← تحميل ← معالجة ← حفظ ← طباعة.">
+    <div class="exercise-head">
+        <span class="exercise-num">5</span>
+        <h4>رتّب الكود</h4>
+        <span class="exercise-tag">استخدم الأسهم</span>
+    </div>
+    <p class="exercise-question">رتّب أسطر برنامج يحمّل عدّاد الزيارات من ملف، يزيده بواحد، ثم يحفظه. <em>(من الأعلى إلى الأسفل)</em></p>
+    <div class="sortable-list">
+        <div class="sortable-item" data-correct="4" data-orig="1">
+            <span class="order-num">1</span>
+            <span style="flex:1; white-space:pre;">visits += 1</span>
+            <div class="sort-arrows">
+                <button class="sort-btn" onclick="moveItem(this, -1)"><i class="fas fa-arrow-up"></i></button>
+                <button class="sort-btn" onclick="moveItem(this, 1)"><i class="fas fa-arrow-down"></i></button>
+            </div>
+        </div>
+        <div class="sortable-item" data-correct="1" data-orig="2">
+            <span class="order-num">2</span>
+            <span style="flex:1; white-space:pre;">from pathlib import Path</span>
+            <div class="sort-arrows">
+                <button class="sort-btn" onclick="moveItem(this, -1)"><i class="fas fa-arrow-up"></i></button>
+                <button class="sort-btn" onclick="moveItem(this, 1)"><i class="fas fa-arrow-down"></i></button>
+            </div>
+        </div>
+        <div class="sortable-item" data-correct="6" data-orig="3">
+            <span class="order-num">3</span>
+            <span style="flex:1; white-space:pre;">print(&#x27;عدد الزيارات:&#x27;, visits)</span>
+            <div class="sort-arrows">
+                <button class="sort-btn" onclick="moveItem(this, -1)"><i class="fas fa-arrow-up"></i></button>
+                <button class="sort-btn" onclick="moveItem(this, 1)"><i class="fas fa-arrow-down"></i></button>
+            </div>
+        </div>
+        <div class="sortable-item" data-correct="3" data-orig="4">
+            <span class="order-num">4</span>
+            <span style="flex:1; white-space:pre;">visits = int(counter.read_text()) if counter.exists() else 0</span>
+            <div class="sort-arrows">
+                <button class="sort-btn" onclick="moveItem(this, -1)"><i class="fas fa-arrow-up"></i></button>
+                <button class="sort-btn" onclick="moveItem(this, 1)"><i class="fas fa-arrow-down"></i></button>
+            </div>
+        </div>
+        <div class="sortable-item" data-correct="5" data-orig="5">
+            <span class="order-num">5</span>
+            <span style="flex:1; white-space:pre;">counter.write_text(str(visits))</span>
+            <div class="sort-arrows">
+                <button class="sort-btn" onclick="moveItem(this, -1)"><i class="fas fa-arrow-up"></i></button>
+                <button class="sort-btn" onclick="moveItem(this, 1)"><i class="fas fa-arrow-down"></i></button>
+            </div>
+        </div>
+        <div class="sortable-item" data-correct="2" data-orig="6">
+            <span class="order-num">6</span>
+            <span style="flex:1; white-space:pre;">counter = Path(&#x27;visits.txt&#x27;)</span>
+            <div class="sort-arrows">
+                <button class="sort-btn" onclick="moveItem(this, -1)"><i class="fas fa-arrow-up"></i></button>
+                <button class="sort-btn" onclick="moveItem(this, 1)"><i class="fas fa-arrow-down"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="exercise-actions">
+        <button class="btn btn-primary" onclick="checkSort('q5')"><i class="fas fa-check"></i> تحقق</button>
+        <button class="btn btn-secondary" onclick="resetSort('q5')"><i class="fas fa-redo"></i> إعادة</button>
+    </div>
+    <div class="result-msg" id="q5-result"></div>
+</div>
+<div class="lab">
+    <div class="lab-head"><i class="fas fa-flask"></i> محاكي الملفات التفاعلي</div>
+    <p style="color:var(--text-light); font-size:0.95em;">جرّب أوضاع فتح الملفات دون أن تخاف على ملفاتك! اكتب نصًا ثم اختر العملية، وشاهد محتوى الملف الافتراضي <code>notes.txt</code> يتغير.</p>
+    <div class="lab-row">
+        <label>النص:</label>
+        <input type="text" class="lab-input" id="fileText" value="ملاحظة جديدة" style="flex:1;">
+    </div>
+    <div class="lab-row">
+        <button class="btn btn-primary" onclick="fileOp('w')">open(..., "w").write()</button>
+        <button class="btn btn-primary" onclick="fileOp('a')">open(..., "a").write()</button>
+        <button class="btn btn-secondary" onclick="fileOp('read')">read()</button>
+        <button class="btn btn-secondary" onclick="fileOp('readlines')">readlines()</button>
+        <button class="btn btn-secondary" onclick="fileOp('delete')">unlink()</button>
+    </div>
+    <div class="lab-row" style="align-items:stretch;">
+        <div style="flex:1; min-width:220px;">
+            <div style="color:var(--gold); font-size:0.85em; margin-bottom:4px;"><i class="fas fa-file-alt"></i> محتوى notes.txt</div>
+            <div class="lab-console" id="fileView" style="margin-top:0; direction:rtl; text-align:right;"></div>
+        </div>
+        <div style="flex:1; min-width:220px;">
+            <div style="color:var(--gold); font-size:0.85em; margin-bottom:4px;"><i class="fas fa-terminal"></i> الطرفية</div>
+            <div class="lab-console" id="fileConsole" style="margin-top:0;"></div>
+        </div>
+    </div>
+</div>
+</section>
+
+<section class="section-card" id="summary">
+        <h2 class="section-title">
+            <span class="num">10</span>
+            <i class="fas fa-flag-checkered"></i>
+            خلاصة الدرس
+        </h2>
+        <p>في هذا الدرس قمت بـ:</p>
+
+        <div class="note-box">
+            <strong>✅ ما تعلمته:</strong>
+            <ul>
+                <li><i class="fas fa-check"></i> نمط <strong>تحميل ← معالجة ← حفظ</strong> الذي تعتمد عليه البرامج التي تتذكر بياناتها.</li>
+                <li><i class="fas fa-check"></i> مكتبة <code>pathlib</code> لبناء المسارات وقراءة الملفات وكتابتها والمرور على المجلدات.</li>
+                <li><i class="fas fa-check"></i> دفتر اليوميات: الإضافة بالوضع <code>"a"</code> والبحث داخل الملف.</li>
+                <li><i class="fas fa-check"></i> محلل النصوص: قراءة الملف كاملًا، العدّ بـ <code>Counter</code>، وكتابة تقرير.</li>
+                <li><i class="fas fa-check"></i> دفتر جهات الاتصال: الحفظ والتحميل بـ <code>json.dump</code> و <code>json.load</code>.</li>
+                <li><i class="fas fa-check"></i> تقرير الدرجات: <code>csv.DictReader</code> و <code>csv.DictWriter</code> وتحويل النصوص لأرقام.</li>
+                <li><i class="fas fa-check"></i> منظّم الملفات: الامتدادات، إنشاء المجلدات، نقل الملفات، والتشغيل التجريبي <code>dry_run</code>.</li>
+                <li><i class="fas fa-check"></i> أفضل الممارسات وأشهر أخطاء التعامل مع الملفات.</li>
+            </ul>
+        </div>
+
+        <div class="note-box">
+            <strong>💡 نصائح للممارسة:</strong>
+            <ul>
+                <li><i class="fas fa-lightbulb"></i> استخدم <code>with</code> دائمًا، وحدد <code>encoding="utf-8"</code> مع العربية.</li>
+                <li><i class="fas fa-lightbulb"></i> اختر نوع الملف المناسب: نص للسجلات، CSV للجداول، JSON للبيانات المنظمة.</li>
+                <li><i class="fas fa-lightbulb"></i> جرّب البرامج التي تنقل أو تحذف الملفات على مجلد تجريبي أولًا.</li>
+                <li><i class="fas fa-lightbulb"></i> حوّل أحد هذه المشاريع لبرنامج تفاعلي كامل بقائمة خيارات <code>input()</code>.</li>
+            </ul>
+        </div>
+
+        <div class="alert alert-tip">
+            <i class="fas fa-graduation-cap"></i>
+            <div>
+                <strong>الخطوة التالية:</strong> في الدرس القادم ستتعلم <strong>الاستثناءات (Exceptions)</strong> — كيف تلتقط أخطاء مثل <code>FileNotFoundError</code> و <code>ValueError</code> وتتعامل معها بذكاء بدل أن يتوقف برنامجك.
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h4><i class="fas fa-chart-line"></i> تقدمك في المسار</h4>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0% مكتمل</div>
+        </div>
+    </section>
+
+    <!-- التنقل -->
+    <div class="nav-links">
+        <a href="files1.php" class="nav-link prev">
+            <i class="fas fa-arrow-right"></i>
+            <span>الرجوع إلى الدرس 6: القراءة والكتابة في الملفات</span>
+        </a>
+        <a href="exceptions1.php" class="nav-link next">
+            <span>الدرس التالي: مقدمة في Exceptions</span>
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    © 2025 CodeWay — مسار Python · مشاريع الملفات
+</footer>
+
+<script>
+    /* ========== شريط التقدم ========== */
+    document.addEventListener('DOMContentLoaded', () => {
+        const fill = document.getElementById('progressFill');
+        const text = document.getElementById('progressText');
+        setTimeout(() => {
+            fill.style.width = '64%';
+            text.textContent = '64% مكتمل';
+        }, 400);
+    });
+
+    /* ========== أدوات مشتركة للتمارين ========== */
+    function showResult(qid, cls, html) {
+        const msg = document.getElementById(qid + '-result');
+        msg.classList.remove('ok', 'mid', 'bad');
+        msg.classList.add('show', cls);
+        msg.innerHTML = html;
+    }
+
+    function clearResult(qid) {
+        document.getElementById(qid + '-result').classList.remove('show', 'ok', 'mid', 'bad');
+    }
+
+    function grade(qid, right, total, extra) {
+        const box = document.getElementById(qid);
+        if (right === total && !extra) {
+            showResult(qid, 'ok', '<i class="fas fa-check-circle"></i> ' + box.dataset.ok + ' 🎉');
+        } else if (right > 0) {
+            showResult(qid, 'mid', `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${total}. ` + box.dataset.hint);
+        } else {
+            showResult(qid, 'bad', '<i class="fas fa-times-circle"></i> ليست صحيحة. ' + box.dataset.hint);
         }
-        
-        function resetCode() {
-            document.getElementById('python-editor').value = `# جرب تعديل هذا الكود للتعامل مع الملفات
-import os
-import json
+    }
 
-class FileHandler:
-    def __init__(self, filename):
-        self.filename = filename
-    
-    def create_sample_file(self):
-        """إنشاء ملف نموذجي للاختبار"""
-        try:
-            with open(self.filename, 'w', encoding='utf-8') as file:
-                file.write("=== قائمة الطلاب ===\\n")
-                file.write("1. أحمد - الصف: العاشر - المعدل: 95\\n")
-                file.write("2. فاطمة - الصف: الحادي عشر - المعدل: 98\\n")
-                file.write("3. محمد - الصف: الثاني عشر - المعدل: 92\\n")
-                file.write("4. سارة - الصف: العاشر - المعدل: 96\\n")
-            print(f"تم إنشاء الملف {self.filename} بنجاح")
-            return True
-        except Exception as e:
-            print(f"خطأ في إنشاء الملف: {e}")
-            return False
-    
-    def read_and_display(self):
-        """قراءة وعرض محتوى الملف"""
-        try:
-            if not os.path.exists(self.filename):
-                print("الملف غير موجود! جاري إنشاء ملف جديد...")
-                self.create_sample_file()
-            
-            print(f"=== محتوى الملف {self.filename} ===")
-            with open(self.filename, 'r', encoding='utf-8') as file:
-                # الطريقة 1: قراءة كاملة
-                content = file.read()
-                print("المحتوى الكامل:")
-                print(content)
-                
-                # العودة لبداية الملف للقراءة مرة أخرى
-                file.seek(0)
-                
-                # الطريقة 2: قراءة سطر بسطر
-                print("\\nقراءة سطر بسطر:")
-                for i, line in enumerate(file, 1):
-                    if line.strip():  # تجاهل الأسطر الفارغة
-                        print(f"السطر {i}: {line.strip()}")
-            
-            return True
-        except Exception as e:
-            print(f"خطأ في قراءة الملف: {e}")
-            return False
-    
-    def add_student(self, name, grade, average):
-        """إضافة طالب جديد إلى الملف"""
-        try:
-            with open(self.filename, 'a', encoding='utf-8') as file:
-                # حساب رقم الطالب التالي
-                if os.path.exists(self.filename):
-                    with open(self.filename, 'r', encoding='utf-8') as f:
-                        lines = f.readlines()
-                        student_count = len([l for l in lines if l.strip() and '---' not in l]) - 1
-                else:
-                    student_count = 0
-                
-                new_student = f"{student_count + 1}. {name} - الصف: {grade} - المعدل: {average}\\n"
-                file.write(new_student)
-            
-            print(f"تم إضافة الطالب {name} بنجاح")
-            return True
-        except Exception as e:
-            print(f"خطأ في إضافة الطالب: {e}")
-            return False
-    
-    def search_student(self, name):
-        """البحث عن طالب بالاسم"""
-        try:
-            with open(self.filename, 'r', encoding='utf-8') as file:
-                for line in file:
-                    if name.lower() in line.lower():
-                        print(f"تم العثور على: {line.strip()}")
-                        return True
-            print(f"لم يتم العثور عن الطالب {name}")
-            return False
-        except Exception as e:
-            print(f"خطأ في البحث: {e}")
-            return False
-
-# اختبار الكلاس
-def main():
-    handler = FileHandler('students.txt')
-    
-    # إنشاء ملف إذا لم يكن موجوداً
-    if not os.path.exists('students.txt'):
-        handler.create_sample_file()
-    
-    # قراءة وعرض المحتوى
-    handler.read_and_display()
-    
-    # إضافة طالب جديد
-    print("\\n" + "="*50)
-    handler.add_student("خالد", "التاسع", 88)
-    
-    # عرض المحتوى بعد الإضافة
-    print("\\n" + "="*50)
-    handler.read_and_display()
-    
-    # البحث عن طالب
-    print("\\n" + "="*50)
-    print("البحث عن طالب:")
-    handler.search_student("أحمد")
-    handler.search_student("خالد")
-    handler.search_student("علي")
-
-if __name__ == "__main__":
-    main()`;
-            document.getElementById('editor-output').innerHTML = 'سيظهر نتائج الكود هنا...';
-        }
-        
-        // تشغيل الكود تلقائياً عند التحميل
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(runCode, 1000);
+    /* ========== اختيار من متعدد ========== */
+    function checkMC(qid) {
+        const options = document.querySelectorAll('#' + qid + ' .option');
+        let right = 0, wrong = 0, total = 0, picked = 0;
+        options.forEach(opt => {
+            const input = opt.querySelector('input');
+            const isCorrect = opt.dataset.correct === '1';
+            if (isCorrect) total++;
+            opt.classList.remove('correct', 'wrong');
+            if (input.checked) {
+                picked++;
+                if (isCorrect) { opt.classList.add('correct'); right++; }
+                else { opt.classList.add('wrong'); wrong++; }
+            }
         });
-    </script>
+        if (picked === 0) {
+            showResult(qid, 'mid', '<i class="fas fa-exclamation-circle"></i> اختر إجابة أولًا.');
+            return;
+        }
+        grade(qid, right, total, wrong > 0);
+    }
+
+    function resetMC(qid) {
+        document.querySelectorAll('#' + qid + ' .option').forEach(opt => {
+            opt.classList.remove('correct', 'wrong');
+            opt.querySelector('input').checked = false;
+        });
+        clearResult(qid);
+    }
+
+    /* ========== صح أم خطأ ========== */
+    function pickTF(btn, value) {
+        const item = btn.closest('.tf-item');
+        item.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        item.dataset.selected = value;
+    }
+
+    function checkTF(qid) {
+        const items = document.querySelectorAll('#' + qid + ' .tf-item');
+        let right = 0, answered = 0;
+        items.forEach(item => {
+            const correct = item.dataset.answer === 'true';
+            const selected = item.dataset.selected;
+            item.classList.remove('correct', 'wrong');
+            if (selected === undefined) return;
+            answered++;
+            if ((selected === 'true') === correct) { item.classList.add('correct'); right++; }
+            else { item.classList.add('wrong'); }
+        });
+        if (answered < items.length) {
+            showResult(qid, 'mid', `<i class="fas fa-exclamation-circle"></i> لم تجب على جميع العبارات (${answered}/${items.length}).`);
+            return;
+        }
+        grade(qid, right, items.length, false);
+    }
+
+    function resetTF(qid) {
+        document.querySelectorAll('#' + qid + ' .tf-item').forEach(item => {
+            item.classList.remove('correct', 'wrong');
+            delete item.dataset.selected;
+            item.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('selected'));
+        });
+        clearResult(qid);
+    }
+
+    /* ========== أكمل الفراغ / توقّع الناتج ========== */
+    function normalize(v) {
+        return v.trim().replace(/\s+/g, '').replace(/[“”"‘’]/g, "'");
+    }
+
+    function checkFill(qid) {
+        const inputs = document.querySelectorAll('#' + qid + ' .blank-input');
+        let right = 0;
+        inputs.forEach(inp => {
+            const answers = inp.dataset.answers.split('||').map(normalize);
+            inp.classList.remove('correct', 'wrong');
+            if (answers.includes(normalize(inp.value))) { inp.classList.add('correct'); right++; }
+            else { inp.classList.add('wrong'); }
+        });
+        grade(qid, right, inputs.length, false);
+    }
+
+    function resetFill(qid) {
+        document.querySelectorAll('#' + qid + ' .blank-input').forEach(inp => {
+            inp.value = '';
+            inp.classList.remove('correct', 'wrong');
+        });
+        clearResult(qid);
+    }
+
+    /* ========== ترتيب الكود ========== */
+    function moveItem(btn, direction) {
+        const item = btn.closest('.sortable-item');
+        const list = item.parentElement;
+        const items = Array.from(list.children);
+        const index = items.indexOf(item);
+        if (direction === -1 && index > 0) list.insertBefore(item, items[index - 1]);
+        else if (direction === 1 && index < items.length - 1) list.insertBefore(items[index + 1], item);
+        renumber(list);
+    }
+
+    function renumber(list) {
+        Array.from(list.children).forEach((item, i) => {
+            item.querySelector('.order-num').textContent = i + 1;
+            item.classList.remove('correct', 'wrong');
+        });
+    }
+
+    function checkSort(qid) {
+        const items = document.querySelectorAll('#' + qid + ' .sortable-item');
+        let right = 0;
+        items.forEach((item, index) => {
+            item.classList.remove('correct', 'wrong');
+            if (parseInt(item.dataset.correct) === index + 1) { item.classList.add('correct'); right++; }
+            else { item.classList.add('wrong'); }
+        });
+        grade(qid, right, items.length, false);
+    }
+
+    function resetSort(qid) {
+        const list = document.querySelector('#' + qid + ' .sortable-list');
+        Array.from(list.children)
+            .sort((a, b) => parseInt(a.dataset.orig) - parseInt(b.dataset.orig))
+            .forEach(item => list.appendChild(item));
+        renumber(list);
+        clearResult(qid);
+    }
+
+    /* ========== أدوات المختبر: تمثيل القيم بأسلوب Python ========== */
+    function pyRepr(v) {
+        if (v === null || v === undefined) return 'None';
+        if (v === true) return 'True';
+        if (v === false) return 'False';
+        if (typeof v === 'string') return "'" + v.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
+        if (typeof v === 'number') return Number.isInteger(v) && v.__float ? v + '.0' : String(v);
+        if (v instanceof PyFloat) return Number.isInteger(v.value) ? v.value + '.0' : String(v.value);
+        if (v instanceof PyTuple) return v.items.length === 1 ? '(' + pyRepr(v.items[0]) + ',)' : '(' + v.items.map(pyRepr).join(', ') + ')';
+        if (v instanceof PySet) return v.items.length ? '{' + v.items.map(pyRepr).join(', ') + '}' : 'set()';
+        if (Array.isArray(v)) return '[' + v.map(pyRepr).join(', ') + ']';
+        if (v instanceof Map) return '{' + Array.from(v.entries()).map(([k, val]) => pyRepr(k) + ': ' + pyRepr(val)).join(', ') + '}';
+        return String(v);
+    }
+    function PyTuple(items) { this.items = items; }
+    function PySet(items) { this.items = items; }
+    function PyFloat(value) { this.value = value; }
+
+    /* يحوّل نصًا كتبه المستخدم إلى قيمة: رقم أو نص أو True/False/None */
+    function parseLiteral(raw) {
+        const s = raw.trim();
+        if (/^-?\d+$/.test(s)) return parseInt(s, 10);
+        if (/^-?\d*\.\d+$/.test(s)) return new PyFloat(parseFloat(s));
+        if (s === 'True') return true;
+        if (s === 'False') return false;
+        if (s === 'None') return null;
+        const q = s.match(/^(['"])(.*)\1$/);
+        return q ? q[2] : s;
+    }
+
+    function keyOf(v) { return v instanceof PyFloat ? 'f' + v.value : typeof v + ':' + String(v); }
+
+    function consoleLine(el, code, result, isErr) {
+        const line = document.createElement('div');
+        line.innerHTML = '<span class="prompt">&gt;&gt;&gt; </span>' + escapeHtml(code) +
+            (result === undefined ? '' : '\n' + (isErr ? '<span class="err">' + escapeHtml(result) + '</span>' : escapeHtml(result)));
+        el.appendChild(line);
+        el.scrollTop = el.scrollHeight;
+    }
+
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    }
+
+    /* ========== محاكي الملفات ========== */
+    let LAB_FILE = 'سطر قديم 1\nسطر قديم 2\n';
+
+    function renderFile() {
+        const view = document.getElementById('fileView');
+        view.innerHTML = LAB_FILE === null
+            ? '<span class="err">الملف غير موجود</span>'
+            : (LAB_FILE === '' ? '<span style="color:#777">(ملف فارغ)</span>' : escapeHtml(LAB_FILE));
+    }
+
+    function fileOp(op) {
+        const out = document.getElementById('fileConsole');
+        const text = document.getElementById('fileText').value;
+        if (op === 'w' || op === 'a') {
+            const code = `with open("notes.txt", "${op}", encoding="utf-8") as f:\n    f.write(${pyRepr(text + '\n').replace('\n', '\\n')})`;
+            LAB_FILE = (op === 'a' && LAB_FILE !== null ? LAB_FILE : '') + text + '\n';
+            consoleLine(out, code, op === 'w' ? '# مُسح المحتوى القديم ثم كُتب النص' : '# أُضيف النص في نهاية الملف');
+        } else if (op === 'delete') {
+            if (LAB_FILE === null) consoleLine(out, 'Path("notes.txt").unlink()', "FileNotFoundError: [Errno 2] No such file or directory: 'notes.txt'", true);
+            else { LAB_FILE = null; consoleLine(out, 'Path("notes.txt").unlink()'); }
+        } else {
+            const code = `open("notes.txt", encoding="utf-8").${op}()`;
+            if (LAB_FILE === null) {
+                consoleLine(out, code, "FileNotFoundError: [Errno 2] No such file or directory: 'notes.txt'", true);
+            } else if (op === 'read') {
+                consoleLine(out, code, pyRepr(LAB_FILE).replace(/\n/g, '\\n'));
+            } else {
+                const lines = LAB_FILE.split(/(?<=\n)/).filter(l => l !== '');
+                consoleLine(out, code, '[' + lines.map(l => pyRepr(l).replace(/\n/g, '\\n')).join(', ') + ']');
+            }
+        }
+        renderFile();
+    }
+
+    document.addEventListener('DOMContentLoaded', renderFile);
+
+    /* ========== ظهور ناعم ========== */
+    document.addEventListener('DOMContentLoaded', () => {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.style.opacity = '1';
+                    e.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.section-card, .toc-bar').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            obs.observe(el);
+        });
+    });
+</script>
+
 </body>
 </html>

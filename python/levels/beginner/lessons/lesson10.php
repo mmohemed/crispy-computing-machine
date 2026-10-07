@@ -1252,8 +1252,8 @@ print(evens)     # [2, 4, 6, 8, 10]
                     <i class="fas fa-arrow-right"></i>
                     الدرس السابق: الدوال (Functions)
                 </a>
-                <a href="project1.php" class="nav-link next">
-                    المشروع 1: لعبة تخمين الرقم
+                <a href="lesson11.php" class="nav-link next">
+                    الدرس التالي: الصفوف (Tuples)
                     <i class="fas fa-arrow-left"></i>
                 </a>
             </div>
