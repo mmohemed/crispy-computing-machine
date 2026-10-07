@@ -294,12 +294,12 @@
             <h1>ابدأ من الصفر… واصنع أول برامجك بلغة بايثون</h1>
             <p class="hero-sub">
                 في هذا المستوى ستتعلم الأساسيات التي تحتاجها لبناء برامج حقيقية:
-                المتغيرات، الأنواع، الشروط، الحلقات، الدوال، والقوائم، مع أمثلة وتمارين عملية.
+                المتغيرات، الأنواع، الشروط، الحلقات، الدوال، القوائم، القواميس والمجموعات، والوحدات، مع أمثلة وتمارين عملية.
             </p>
 
             <div class="hero-meta">
                 <div class="hero-meta-item">⏱ تقريبًا 15–20 ساعة دراسة</div>
-                <div class="hero-meta-item">📘 أكثر من 10 دروس</div>
+                <div class="hero-meta-item">📘 15 درسًا</div>
                 <div class="hero-meta-item">🧪 تطبيقات وتمارين</div>
             </div>
 
@@ -326,11 +326,11 @@
                 </div>
                 <div class="mini-stats">
                     <div class="mini-stat">
-                        <strong>6</strong>
+                        <strong>8</strong>
                         وحدات أساسية
                     </div>
                     <div class="mini-stat">
-                        <strong>10+</strong>
+                        <strong>15</strong>
                         دروس
                     </div>
                     <div class="mini-stat">
@@ -422,6 +422,33 @@
         <!-- Module 6 -->
         <div class="module-card">
             <div class="module-step"><span>6</span>الوحدة السادسة</div>
+            <div class="module-title">هياكل بيانات إضافية</div>
+            <p class="module-desc">
+                تتعرف على الصفوف الثابتة، والقواميس التي تخزّن البيانات بالمفاتيح، والمجموعات التي تمنع التكرار.
+            </p>
+            <div class="lessons-list">
+                <a class="lesson-link" href="lessons/lesson11.php">الدرس 11: الصفوف (Tuples)</a>
+                <a class="lesson-link" href="lessons/lesson12.php">الدرس 12: القواميس (Dictionaries)</a>
+                <a class="lesson-link" href="lessons/lesson13.php">الدرس 13: المجموعات (Sets)</a>
+            </div>
+        </div>
+
+        <!-- Module 7 -->
+        <div class="module-card">
+            <div class="module-step"><span>7</span>الوحدة السابعة</div>
+            <div class="module-title">الوحدات وتصحيح الأخطاء</div>
+            <p class="module-desc">
+                تستخدم المكتبة القياسية مثل <code>math</code> و <code>random</code> و <code>datetime</code>، وتتعلم قراءة رسائل الأخطاء وإصلاحها.
+            </p>
+            <div class="lessons-list">
+                <a class="lesson-link" href="lessons/lesson14.php">الدرس 14: الوحدات والمكتبات (Modules)</a>
+                <a class="lesson-link" href="lessons/lesson15.php">الدرس 15: قراءة الأخطاء وتصحيحها</a>
+            </div>
+        </div>
+
+        <!-- Module 8 -->
+        <div class="module-card">
+            <div class="module-step"><span>8</span>الوحدة الثامنة</div>
             <div class="module-title">مشاريع صغيرة للمبتدئين</div>
             <p class="module-desc">
                 طبّق ما تعلمته في مشاريع بسيطة مثل لعبة تخمين الرقم أو برنامج إدارة قائمة مهام.
