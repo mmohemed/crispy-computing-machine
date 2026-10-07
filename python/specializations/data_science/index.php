@@ -345,10 +345,10 @@
                 <div class="progress-wrapper">
                     <div class="progress-label">
                         <span>الدروس المتاحة الآن</span>
-                        <span>7 / 12</span>
+                        <span>10 / 12</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width:58%;"></div>
+                        <div class="progress-fill" style="width:83%;"></div>
                     </div>
                 </div>
                 <div class="mini-stats">
@@ -447,9 +447,9 @@
                 ابنِ نماذج تتنبأ وتصنّف وتجمّع باستخدام scikit-learn، وقيّمها بالطريقة الصحيحة.
             </p>
             <div class="lessons-list">
-                <span class="lesson-link soon">الدرس 8: مقدمة في تعلم الآلة والانحدار</span>
-                <span class="lesson-link soon">الدرس 9: نماذج التصنيف</span>
-                <span class="lesson-link soon">الدرس 10: التجميع وتقييم النماذج</span>
+                <a class="lesson-link" href="lessons/lesson8.php">الدرس 8: مقدمة في تعلم الآلة والانحدار</a>
+                <a class="lesson-link" href="lessons/lesson9.php">الدرس 9: نماذج التصنيف</a>
+                <a class="lesson-link" href="lessons/lesson10.php">الدرس 10: التجميع وتقييم النماذج</a>
             </div>
         </div>
         <!-- Module 6 -->
