@@ -345,10 +345,10 @@
                 <div class="progress-wrapper">
                     <div class="progress-label">
                         <span>الدروس المتاحة الآن</span>
-                        <span>8 / 10</span>
+                        <span>10 / 10</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width:80%;"></div>
+                        <div class="progress-fill" style="width:100%;"></div>
                     </div>
                 </div>
                 <div class="mini-stats">
@@ -449,8 +449,8 @@
                 طبّق كل ما تعلمته في مشروعين متكاملين يوفران ساعات من العمل الحقيقي.
             </p>
             <div class="lessons-list">
-                <span class="lesson-link soon">مشروع 1: مساعد المكتب اليومي</span>
-                <span class="lesson-link soon">مشروع 2: مراقب الأسعار والتنبيهات</span>
+                <a class="lesson-link" href="lessons/project1.php">مشروع 1: مساعد المكتب اليومي</a>
+                <a class="lesson-link" href="lessons/project2.php">مشروع 2: مراقب الأسعار والتنبيهات</a>
             </div>
         </div>
 
