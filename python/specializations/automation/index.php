@@ -345,10 +345,10 @@
                 <div class="progress-wrapper">
                     <div class="progress-label">
                         <span>الدروس المتاحة الآن</span>
-                        <span>4 / 10</span>
+                        <span>6 / 10</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width:40%;"></div>
+                        <div class="progress-fill" style="width:60%;"></div>
                     </div>
                 </div>
                 <div class="mini-stats">
@@ -425,8 +425,8 @@
                 أرسل البريد والتنبيهات تلقائيًا، واجلب البيانات من الواجهات البرمجية والمواقع.
             </p>
             <div class="lessons-list">
-                <span class="lesson-link soon">الدرس 5: البريد الإلكتروني والتنبيهات</span>
-                <span class="lesson-link soon">الدرس 6: أتمتة الويب واستخراج البيانات</span>
+                <a class="lesson-link" href="lessons/lesson5.php">الدرس 5: البريد الإلكتروني والتنبيهات</a>
+                <a class="lesson-link" href="lessons/lesson6.php">الدرس 6: أتمتة الويب واستخراج البيانات</a>
             </div>
         </div>
         <!-- Module 4 -->
