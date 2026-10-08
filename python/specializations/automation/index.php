@@ -345,10 +345,10 @@
                 <div class="progress-wrapper">
                     <div class="progress-label">
                         <span>الدروس المتاحة الآن</span>
-                        <span>6 / 10</span>
+                        <span>8 / 10</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width:60%;"></div>
+                        <div class="progress-fill" style="width:80%;"></div>
                     </div>
                 </div>
                 <div class="mini-stats">
@@ -437,8 +437,8 @@
                 اجعل سكربتاتك تعمل وحدها في مواعيدها، وتتعامل مع النظام والأوامر بأمان.
             </p>
             <div class="lessons-list">
-                <span class="lesson-link soon">الدرس 7: الجدولة والسكربتات الموثوقة</span>
-                <span class="lesson-link soon">الدرس 8: نظام التشغيل والعمليات</span>
+                <a class="lesson-link" href="lessons/lesson7.php">الدرس 7: الجدولة والسكربتات الموثوقة</a>
+                <a class="lesson-link" href="lessons/lesson8.php">الدرس 8: نظام التشغيل والعمليات</a>
             </div>
         </div>
         <!-- Module 5 -->
