@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>الجمل الشرطية في Python | CodeWay</title>
+    <title>الدرس 7: الجمل الشرطية في Python | CodeWay</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -973,7 +973,7 @@
     <div class="page-hero-inner">
         <div class="lesson-badge">
             <i class="fas fa-code-branch"></i>
-            الدرس · الجمل الشرطية
+            الدرس 7 · الجمل الشرطية
         </div>
         <h1 class="lesson-title">الجمل الشرطية في Python</h1>
         <p class="lesson-intro">
@@ -1078,7 +1078,7 @@
             <i class="fas fa-exclamation-triangle"></i>
             <div>
                 <strong>مهم جدًا:</strong> يجب وضع <strong>نقطتين <code>:</code></strong>
-                بعد الشرط، و<strong>إزاحة (Indentation) 4 مسافات</strong> للكود الذي ينتمي للجملة الشرطية.
+                بعد الشرط، و<strong>إزاحة (Indentation)</strong> متسقة للكود الذي ينتمي للجملة الشرطية (المتعارف عليه 4 مسافات).
                 بدون الإزاحة سيُظهر Python خطأ <code>IndentationError</code>.
             </div>
         </div>
@@ -1220,7 +1220,7 @@ has_license = <span class="kw">True</span>
     <span class="kw">if</span> has_license:
         <span class="fn">print</span>(<span class="str">"يمكنك قيادة السيارة"</span>)
     <span class="kw">else</span>:
-        <span class="fn">print</span>(<span class="str">"يمكنك قيادة السيارة ولكن تحتاج إلى رخصة"</span>)
+        <span class="fn">print</span>(<span class="str">"لا يمكنك القيادة قبل الحصول على رخصة"</span>)
 <span class="kw">else</span>:
     <span class="fn">print</span>(<span class="str">"لا يمكنك قيادة السيارة"</span>)</pre>
         </div>
@@ -1620,8 +1620,8 @@ status = <span class="str">"بالغ"</span> <span class="kw">if</span> age >= <
         const fill = document.getElementById('progressFill');
         const text = document.getElementById('progressText');
         setTimeout(() => {
-            fill.style.width = '70%';
-            text.textContent = '70% مكتمل';
+            fill.style.width = '47%';
+            text.textContent = '47% مكتمل';
         }, 400);
     });
 
@@ -1629,7 +1629,7 @@ status = <span class="str">"بالغ"</span> <span class="kw">if</span> age >= <
     function checkQ1() {
         const correct = ['1', '4']; // if age >= 18:  و  if (age >= 18):
         const boxes = document.querySelectorAll('input[name="q1"]');
-        let right = 0, wrong = 0;
+        let right = 0, wrong = 0, pickedWrong = 0;
 
         boxes.forEach(b => {
             const label = b.closest('.option');
@@ -1641,6 +1641,7 @@ status = <span class="str">"بالغ"</span> <span class="kw">if</span> age >= <
                 } else {
                     label.classList.add('wrong');
                     wrong++;
+                    pickedWrong++;
                 }
             } else if (correct.includes(b.value)) {
                 wrong++;
@@ -1651,15 +1652,21 @@ status = <span class="str">"بالغ"</span> <span class="kw">if</span> age >= <
         msg.classList.remove('ok', 'mid', 'bad');
         msg.classList.add('show');
 
+        if (![...boxes].some(b => b.checked)) {
+            msg.classList.add('mid');
+            msg.innerHTML = '<i class="fas fa-info-circle"></i> اختر إجابة واحدة على الأقل ثم اضغط «تحقق».';
+            return;
+        }
+
         if (right === correct.length && wrong === 0) {
             msg.classList.add('ok');
             msg.innerHTML = '<i class="fas fa-check-circle"></i> ممتاز! الإجابتان الصحيحتان هما: <code>if age &gt;= 18:</code> و <code>if (age &gt;= 18):</code> — كلاهما مقبول 🎉';
         } else if (right > 0) {
             msg.classList.add('mid');
-            msg.innerHTML = `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${correct.length}. تذكّر: يجب أن تكون <code>if</code> بحروف صغيرة، ونقطتان في النهاية.`;
+            msg.innerHTML = `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${correct.length}${pickedWrong ? `، لكنك اخترت ${pickedWrong === 1 ? 'خيارًا خاطئًا' : pickedWrong === 2 ? 'خيارين خاطئين' : pickedWrong + ' خيارات خاطئة'} (باللون الأحمر)` : ''}. تذكّر: يجب أن تكون <code>if</code> بحروف صغيرة، ونقطتان في النهاية.`;
         } else {
             msg.classList.add('bad');
-            msg.innerHTML = '<i class="fas fa-times-circle"></i> لا توجد إجابة صحيحة. الصيغة الصحيحة: <code>if age &gt;= 18:</code>.';
+            msg.innerHTML = '<i class="fas fa-times-circle"></i> لم تختر أي إجابة صحيحة. الصيغة الصحيحة: <code>if age &gt;= 18:</code>.';
         }
     }
 
@@ -1820,12 +1827,12 @@ status = <span class="str">"بالغ"</span> <span class="kw">if</span> age >= <
         }
     }
 
+    // نحفظ الترتيب المخلوط الأصلي عند تحميل الصفحة، لنستعيده عند «إعادة» دون كشف الحل
+    const q4Initial = Array.from(document.getElementById('q4-list').children);
+
     function resetQ4() {
         const list = document.getElementById('q4-list');
-        const items = Array.from(list.children);
-        // إعادة الترتيب الأصلي حسب data-correct
-        items.sort((a, b) => parseInt(a.dataset.correct) - parseInt(b.dataset.correct));
-        items.forEach(item => {
+        q4Initial.forEach(item => {
             item.classList.remove('correct', 'wrong');
             list.appendChild(item);
         });

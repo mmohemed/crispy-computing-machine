@@ -712,7 +712,7 @@
             <div class="lesson-meta-item"><i class="fas fa-clock"></i> المدة: 30 دقيقة</div>
             <div class="lesson-meta-item"><i class="fas fa-bullseye"></i> الهدف: إتقان التعامل مع القوائم</div>
             <div class="lesson-meta-item"><i class="fas fa-layer-group"></i> المستوى: مبتدئ</div>
-            <div class="lesson-meta-item"><i class="fas fa-list-ol"></i> الدرس 10 من 10</div>
+            <div class="lesson-meta-item"><i class="fas fa-list-ol"></i> الدرس 10 من 15</div>
         </div>
     </div>
 </section>
@@ -811,7 +811,7 @@ print(fruits)       # ['تفاح', 'فراولة', 'برتقال', 'عنب']
             <!-- ===== دوال القوائم ===== -->
             <h2><i class="fas fa-cog"></i> دوال القوائم (List Methods)</h2>
             <p>
-                بايثون توفّر مجموعة غنية من الدوال المدمجة للتعامل مع القوائم. إليك أشهرها:
+                بايثون توفّر مجموعة غنية من التوابع (Methods) الخاصة بالقوائم. نستدعيها على قائمة، مثل <code class="inline">my_list.append(5)</code>. إليك أشهرها:
             </p>
 
             <div class="table-wrap">
@@ -827,52 +827,52 @@ print(fruits)       # ['تفاح', 'فراولة', 'برتقال', 'عنب']
                         <tr>
                             <td><code class="inline">append(x)</code></td>
                             <td>إضافة عنصر في نهاية القائمة</td>
-                            <td><code class="inline">list.append(5)</code></td>
+                            <td><code class="inline">my_list.append(5)</code></td>
                         </tr>
                         <tr>
                             <td><code class="inline">insert(i, x)</code></td>
                             <td>إضافة عنصر في موضع محدد</td>
-                            <td><code class="inline">list.insert(2, 7)</code></td>
+                            <td><code class="inline">my_list.insert(2, 7)</code></td>
                         </tr>
                         <tr>
                             <td><code class="inline">remove(x)</code></td>
                             <td>حذف أول ظهور للعنصر</td>
-                            <td><code class="inline">list.remove(8)</code></td>
+                            <td><code class="inline">my_list.remove(8)</code></td>
                         </tr>
                         <tr>
                             <td><code class="inline">pop(i)</code></td>
                             <td>حذف عنصر من موضع محدد وإرجاعه</td>
-                            <td><code class="inline">list.pop(0)</code></td>
+                            <td><code class="inline">my_list.pop(0)</code></td>
                         </tr>
                         <tr>
                             <td><code class="inline">clear()</code></td>
                             <td>حذف جميع العناصر</td>
-                            <td><code class="inline">list.clear()</code></td>
+                            <td><code class="inline">my_list.clear()</code></td>
                         </tr>
                         <tr>
                             <td><code class="inline">index(x)</code></td>
                             <td>إرجاع موقع أول ظهور للعنصر</td>
-                            <td><code class="inline">list.index(5)</code></td>
+                            <td><code class="inline">my_list.index(5)</code></td>
                         </tr>
                         <tr>
                             <td><code class="inline">count(x)</code></td>
                             <td>عدد مرات تكرار العنصر</td>
-                            <td><code class="inline">list.count(3)</code></td>
+                            <td><code class="inline">my_list.count(3)</code></td>
                         </tr>
                         <tr>
                             <td><code class="inline">sort()</code></td>
                             <td>ترتيب القائمة تصاعديًا</td>
-                            <td><code class="inline">list.sort()</code></td>
+                            <td><code class="inline">my_list.sort()</code></td>
                         </tr>
                         <tr>
                             <td><code class="inline">reverse()</code></td>
                             <td>عكس ترتيب القائمة</td>
-                            <td><code class="inline">list.reverse()</code></td>
+                            <td><code class="inline">my_list.reverse()</code></td>
                         </tr>
                         <tr>
                             <td><code class="inline">copy()</code></td>
                             <td>إنشاء نسخة من القائمة</td>
-                            <td><code class="inline">list.copy()</code></td>
+                            <td><code class="inline">my_list.copy()</code></td>
                         </tr>
                     </tbody>
                 </table>
@@ -940,7 +940,8 @@ print(list1 * 3)        # [1, 2, 3, 1, 2, 3, 1, 2, 3]
 
 # فحص الوجود والطول
 print(3 in list1)       # True
-print(7 in list1)       # Falseprint(len(numbers))     # 10
+print(7 in list1)       # False
+print(len(numbers))     # 10
 </pre>
             </div>
 
@@ -1055,10 +1056,10 @@ print(evens)     # [2, 4, 6, 8, 10]
                     <strong>السؤال:</strong> ما هي الطريقة الصحيحة لإنشاء قائمة في بايثون؟
                 </p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="ex1" value="a"> list = (1, 2, 3)</label>
-                    <label class="option-item"><input type="radio" name="ex1" value="b"> list = [1, 2, 3]</label>
-                    <label class="option-item"><input type="radio" name="ex1" value="c"> list = {1, 2, 3}</label>
-                    <label class="option-item"><input type="radio" name="ex1" value="d"> list = "1, 2, 3"</label>
+                    <label class="option-item"><input type="radio" name="ex1" value="a"> my_list = (1, 2, 3)</label>
+                    <label class="option-item"><input type="radio" name="ex1" value="b"> my_list = [1, 2, 3]</label>
+                    <label class="option-item"><input type="radio" name="ex1" value="c"> my_list = {1, 2, 3}</label>
+                    <label class="option-item"><input type="radio" name="ex1" value="d"> my_list = "1, 2, 3"</label>
                 </div>
                 <div class="exercise-actions">
                     <button class="btn btn-primary" onclick="checkExercise1()">
@@ -1272,8 +1273,8 @@ print(evens)     # [2, 4, 6, 8, 10]
         const fill = document.getElementById('progressFill');
         const text = document.getElementById('progressText');
         setTimeout(() => {
-            fill.style.width = '100%';
-            text.textContent = '100% مكتمل';
+            fill.style.width = '67%';
+            text.textContent = '67% مكتمل';
         }, 400);
     });
 
@@ -1290,7 +1291,7 @@ print(evens)     # [2, 4, 6, 8, 10]
             result.innerHTML = '<i class="fas fa-check-circle"></i> <strong>إجابة صحيحة!</strong> القوائم تُعرَّف بالأقواس المربعة <code class="inline">[ ]</code>. الأقواس <code class="inline">( )</code> للـ tuple، و <code class="inline">{ }</code> للـ set والـ dict.';
         } else {
             result.classList.add('error');
-            result.innerHTML = '<i class="fas fa-times-circle"></i> <strong>إجابة خاطئة.</strong> الإجابة الصحيحة هي <code class="inline">list = [1, 2, 3]</code>.';
+            result.innerHTML = '<i class="fas fa-times-circle"></i> <strong>إجابة خاطئة.</strong> الإجابة الصحيحة هي <code class="inline">my_list = [1, 2, 3]</code>.';
         }
     }
 

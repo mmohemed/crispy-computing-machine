@@ -934,8 +934,8 @@
         <div class="alert alert-info">
             <i class="fas fa-info-circle"></i>
             <div>
-                <strong>معلومة:</strong> كلمة "Python" لا تعني الأفعى كما يعتقد البعض،
-                بل هي مستوحاة من فرقة كوميدية بريطانية اسمها
+                <strong>معلومة:</strong> اسم لغة Python لم يُستوحَ من الأفعى كما يعتقد البعض،
+                بل من فرقة كوميدية بريطانية اسمها
                 <em>Monty Python</em> كان يحبها مؤسس اللغة.
             </div>
         </div>
@@ -979,7 +979,7 @@
             <div class="use-item"><i class="fas fa-shield-alt"></i><span>الأمن السيبراني واختبار الاختراق</span></div>
             <div class="use-item"><i class="fas fa-gamepad"></i><span>برمجة الألعاب البسيطة</span></div>
             <div class="use-item"><i class="fas fa-flask"></i><span>البحث العلمي والحسابات</span></div>
-            <div class="use-item"><i class="fas fa-mobile-alt"></i><span>تطوير تطبيقات سطح المكتب</span></div>
+            <div class="use-item"><i class="fas fa-desktop"></i><span>تطوير تطبيقات سطح المكتب</span></div>
         </div>
 
         <div class="alert alert-tip">
@@ -1238,8 +1238,8 @@ name = <span class="fn">input</span>(<span class="str">"ما هو اسمك؟ "</
         const fill = document.getElementById('progressFill');
         const text = document.getElementById('progressText');
         setTimeout(() => {
-            fill.style.width = '10%';
-            text.textContent = '10% مكتمل';
+            fill.style.width = '7%';
+            text.textContent = '7% مكتمل';
         }, 400);
     });
 
@@ -1247,7 +1247,7 @@ name = <span class="fn">input</span>(<span class="str">"ما هو اسمك؟ "</
     function checkQ1() {
         const correct = ['1', '2', '3', '5', '6']; // كل ما عدا تصميم الأزياء
         const boxes = document.querySelectorAll('input[name="q1"]');
-        let right = 0, wrong = 0;
+        let right = 0, wrong = 0, pickedWrong = 0;
 
         boxes.forEach(b => {
             const label = b.closest('.option');
@@ -1259,6 +1259,7 @@ name = <span class="fn">input</span>(<span class="str">"ما هو اسمك؟ "</
                 } else {
                     label.classList.add('wrong');
                     wrong++;
+                    pickedWrong++;
                 }
             } else if (correct.includes(b.value)) {
                 // فاته إجابة صحيحة
@@ -1270,12 +1271,18 @@ name = <span class="fn">input</span>(<span class="str">"ما هو اسمك؟ "</
         msg.classList.remove('ok', 'mid', 'bad');
         msg.classList.add('show');
 
+        if (![...boxes].some(b => b.checked)) {
+            msg.classList.add('mid');
+            msg.innerHTML = '<i class="fas fa-info-circle"></i> اختر إجابة واحدة على الأقل ثم اضغط «تحقق».';
+            return;
+        }
+
         if (right === correct.length && wrong === 0) {
             msg.classList.add('ok');
             msg.innerHTML = '<i class="fas fa-check-circle"></i> ممتاز! جميع الإجابات صحيحة 🎉';
         } else if (right > 0) {
             msg.classList.add('mid');
-            msg.innerHTML = `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${correct.length}. راجع الإجابات المميزة بالأخضر.`;
+            msg.innerHTML = `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${correct.length}${pickedWrong ? `، لكنك اخترت ${pickedWrong === 1 ? 'خيارًا خاطئًا' : pickedWrong === 2 ? 'خيارين خاطئين' : pickedWrong + ' خيارات خاطئة'} (باللون الأحمر)` : ''}. اختياراتك الصحيحة مميزة بالأخضر.`;
         } else {
             msg.classList.add('bad');
             msg.innerHTML = '<i class="fas fa-times-circle"></i> لم تصب أي إجابة. الإجابات الصحيحة: الذكاء الاصطناعي، تحليل البيانات، الويب، الأمن السيبراني، الألعاب.';
@@ -1352,8 +1359,9 @@ name = <span class="fn">input</span>(<span class="str">"ما هو اسمك؟ "</
     function checkQ3() {
         const b1 = document.getElementById('b1');
         const b2 = document.getElementById('b2');
-        const v1 = b1.value.trim().toLowerCase();
-        const v2 = b2.value.trim().toLowerCase();
+        // بدون toLowerCase: بايثون يميّز الحروف الكبيرة من الصغيرة (Print خطأ)
+        const v1 = b1.value.trim();
+        const v2 = b2.value.trim();
 
         b1.classList.remove('correct', 'wrong');
         b2.classList.remove('correct', 'wrong');

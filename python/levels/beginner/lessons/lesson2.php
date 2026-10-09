@@ -704,7 +704,7 @@
             <div class="lesson-meta-item"><i class="fas fa-clock"></i> المدة: 15 دقيقة تطبيق</div>
             <div class="lesson-meta-item"><i class="fas fa-bullseye"></i> الهدف: تجهيز بيئة العمل</div>
             <div class="lesson-meta-item"><i class="fas fa-layer-group"></i> المستوى: لا يتطلب معرفة سابقة</div>
-            <div class="lesson-meta-item"><i class="fas fa-list-ol"></i> الدرس 2 من 10</div>
+            <div class="lesson-meta-item"><i class="fas fa-list-ol"></i> الدرس 2 من 15</div>
         </div>
     </div>
 </section>
@@ -720,7 +720,7 @@
                 قبل أن نكتب أول برنامج حقيقي بلغة بايثون، نحتاج لشيئين رئيسيين على جهازك:
             </p>
             <ol class="plain">
-                <li><strong style="color:var(--gold)">مترجم Python (Interpreter):</strong> وهو البرنامج الذي ينفّذ شيفرة بايثون على جهازك ويحوّلها إلى أوامر يفهمها الحاسوب.</li>
+                <li><strong style="color:var(--gold)">مفسّر Python (Interpreter):</strong> وهو البرنامج الذي ينفّذ شيفرة بايثون على جهازك ويحوّلها إلى أوامر يفهمها الحاسوب.</li>
                 <li><strong style="color:var(--gold)">محرر أكواد (Code Editor):</strong> وهو البرنامج الذي تكتب فيه كودك بشكل مريح ومنظّم، مع تلوين للكود واكتشاف الأخطاء.</li>
             </ol>
             <p>
@@ -745,11 +745,11 @@
             <ol class="steps-list">
                 <li>افتح المتصفح واذهب إلى الموقع الرسمي: <strong>python.org</strong></li>
                 <li>من القائمة العلوية اختر: <strong>Downloads</strong>.</li>
-                <li>سيقترح عليك الموقع تلقائيًا النسخة المناسبة لنظامك (Windows / macOS / Linux). اضغط عليها لتنزيل ملف التثبيت (Installer).</li>
-                <li>بعد انتهاء التنزيل، شغّل ملف التثبيت.</li>
+                <li>سيقترح عليك الموقع تلقائيًا النسخة المناسبة لنظامك. اضغط عليها لتنزيل ملف التثبيت.</li>
+                <li>بعد انتهاء التنزيل، شغّل ملف التثبيت. <strong>الخطوات التالية لنظام Windows</strong> (لـ macOS و Linux انظر الملاحظة بعد الخطوات).</li>
                 <li>
                     <strong style="color:var(--gold)">مهم جدًا:</strong> قبل الضغط على زر Install، تأكد من تفعيل الخيار
-                    <br><strong>"Add Python to PATH"</strong> في أسفل نافذة التثبيت.
+                    <br><strong>"Add python.exe to PATH"</strong> (أو <strong>"Add Python to PATH"</strong> في الإصدارات الأقدم) أسفل نافذة التثبيت.
                 </li>
                 <li>اضغط <strong>Install Now</strong> وانتظر حتى تكتمل عملية التثبيت.</li>
                 <li>عند الانتهاء اضغط <strong>Close</strong>.</li>
@@ -761,6 +761,14 @@
                     <strong>ملاحظة مهمّة جدًا:</strong> تفعيل خيار <strong>Add Python to PATH</strong> ضروري
                     ليعمل الأمر <code class="inline">python</code> من أي مكان في جهازك. إذا نسيت تفعيله، يمكن إصلاح ذلك لاحقًا،
                     لكن يفضل الانتباه من البداية.
+                </div>
+            </div>
+
+            <div class="note">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>على macOS:</strong> شغّل ملف التثبيت (<code class="inline">.pkg</code>) واتبع الخطوات بالضغط على Continue ثم Install؛ لا يوجد خيار PATH لأن المثبّت يضيف الأمر <code class="inline">python3</code> تلقائيًا.
+                    <br><strong>على Linux:</strong> غالبًا Python مثبّت مسبقًا. تحقق بالأمر <code class="inline">python3 --version</code>، وإن لم يكن مثبتًا فثبّته من مدير الحزم، مثل <code class="inline">sudo apt install python3</code> في Ubuntu.
                 </div>
             </div>
 
@@ -781,8 +789,8 @@ python --version
 </pre>
             </div>
 
-            <p class="note" style="font-size:0.95em;color:#ddd;">
-                إذا ظهرت لك نسخة مثل: <code class="inline">Python 3.12.1</code> فهذا يعني أن التثبيت تم بنجاح.
+            <p style="font-size:0.95em;color:#ddd;">
+                إذا ظهرت لك نسخة مثل: <code class="inline">Python 3.13.1</code> (أي رقم يبدأ بـ 3) فهذا يعني أن التثبيت تم بنجاح.
                 أما إذا ظهرت رسالة خطأ، فراجع الخطوة السابقة وتأكد من تفعيل خيار <strong>Add Python to PATH</strong>.
             </p>
 
@@ -821,13 +829,13 @@ python --version
 
             <ol class="steps-list">
                 <li>افتح VS Code.</li>
-                <li>من الشريط الجانبي الأيسر اضغط على أيقونة <strong>Extensions</strong> (أو اضغط <code class="inline">Ctrl+Shift+X</code>).</li>
+                <li>من الشريط الجانبي الأيسر اضغط على أيقونة <strong>Extensions</strong> (أو اضغط <code class="inline">Ctrl+Shift+X</code>، أو <code class="inline">Cmd+Shift+X</code> في macOS).</li>
                 <li>في مربع البحث اكتب: <strong>Python</strong>.</li>
                 <li>اختر إضافة <strong>Python</strong> الرسمية من <strong>Microsoft</strong> (ستجد عدد التنزيلات بالملايين).</li>
                 <li>اضغط <strong>Install</strong> وانتظر حتى تكتمل.</li>
             </ol>
 
-            <p>يمكنك أيضًا تثبيت إضافة إضافية مفيدة:</p>
+            <p>هذه أهم الإضافات المفيدة لبايثون في VS Code:</p>
 
             <div class="table-wrap">
                 <table>
@@ -899,7 +907,7 @@ print("بايثون تعمل بنجاح من VS Code!")
             <div class="tip">
                 <i class="fas fa-check-circle"></i>
                 <div>
-                    إذا ظهرت لك الجملة <strong>«بايثون تعمل بنجاح من VS Code!»</strong> في نافذة Terminal،
+                    إذا ظهرت لك الجملة <strong>«بايثون تعمل بنجاح من VS Code!»</strong> في نافذة Terminal أو Output،
                     فقد نجحت في تجهيز بيئة العمل بالكامل! 🎉
                 </div>
             </div>
@@ -1051,7 +1059,7 @@ print("بايثون تعمل بنجاح من VS Code!")
                 </div>
                 <p class="exercise-question">
                     <strong>السؤال:</strong> ما هو الامتداد (Extension) الذي يجب أن ينتهي به ملف Python؟
-                    (اكتبه بدون نقطة، مثل: py)
+                    (اكتبه بدون نقطة، كما نكتب امتداد ملفات النصوص: txt)
                 </p>
                 <div class="text-input-wrap">
                     <input type="text" class="text-input" id="ex5-input" placeholder="اكتب الامتداد هنا..." autocomplete="off">
@@ -1112,8 +1120,8 @@ print("بايثون تعمل بنجاح من VS Code!")
         const fill = document.getElementById('progressFill');
         const text = document.getElementById('progressText');
         setTimeout(() => {
-            fill.style.width = '20%';
-            text.textContent = '20% مكتمل';
+            fill.style.width = '13%';
+            text.textContent = '13% مكتمل';
         }, 400);
     });
 
@@ -1140,7 +1148,8 @@ print("بايثون تعمل بنجاح من VS Code!")
 
     /* ===== تمرين 2 ===== */
     function checkExercise2() {
-        const input = document.getElementById('ex2-input').value.trim().toLowerCase().replace(/\s+/g, ' ');
+        // بدون toLowerCase: الخيار -V (حرف كبير) يعرض الإصدار، أما -v (صغير) فيفعل شيئًا آخر
+        const input = document.getElementById('ex2-input').value.trim().replace(/\s+/g, ' ');
         const result = document.getElementById('result2');
         result.className = 'exercise-result';
 
@@ -1150,8 +1159,11 @@ print("بايثون تعمل بنجاح من VS Code!")
             return;
         }
 
-        const validAnswers = ['python --version', 'python -v', 'python3 --version'];
-        if (validAnswers.includes(input)) {
+        const validAnswers = ['python --version', 'python -V', 'python3 --version', 'python3 -V', 'py --version', 'py -V'];
+        if (/^(python3?|py) -v$/.test(input)) {
+            result.classList.add('error');
+            result.innerHTML = '<i class="fas fa-times-circle"></i> <strong>قريب!</strong> الخيار المختصر هو <code class="inline">-V</code> بحرف كبير؛ أما <code class="inline">-v</code> الصغير فيشغّل بايثون في وضع يطبع تفاصيل داخلية كثيرة.';
+        } else if (validAnswers.includes(input)) {
             result.classList.add('success');
             result.innerHTML = '<i class="fas fa-check-circle"></i> <strong>إجابة صحيحة!</strong> الأمر <code class="inline">python --version</code> هو الطريقة الصحيحة للتحقق من نسخة Python.';
         } else {

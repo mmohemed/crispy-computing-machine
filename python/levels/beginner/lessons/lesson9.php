@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>الدوال في Python | CodeWay</title>
+    <title>الدرس 9: الدوال في Python | CodeWay</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1000,7 +1000,7 @@
     <div class="page-hero-inner">
         <div class="lesson-badge">
             <i class="fas fa-cube"></i>
-            الدرس · الدوال
+            الدرس 9 · الدوال
         </div>
         <h1 class="lesson-title">الدوال في Python</h1>
         <p class="lesson-intro">
@@ -1012,7 +1012,7 @@
             <div class="lesson-meta-item"><i class="fas fa-clock"></i> ⏱ 35 دقيقة</div>
             <div class="lesson-meta-item"><i class="fas fa-bullseye"></i> 🎯 إنشاء واستخدام الدوال</div>
             <div class="lesson-meta-item"><i class="fas fa-layer-group"></i> 🧱 مبتدئ</div>
-            <div class="lesson-meta-item"><i class="fas fa-check-circle"></i> بعد الدرس 9</div>
+            <div class="lesson-meta-item"><i class="fas fa-check-circle"></i> بعد الدرس 8</div>
         </div>
     </div>
 </section>
@@ -1095,7 +1095,7 @@
             <div class="function-card">
                 <h4><i class="fas fa-bolt"></i> الدوال المجهولة (Lambda)</h4>
                 <p>
-                    دوال صغيرة تُعرّف في سطر واحد باستخدام <code>lambda</code>،
+                    دوال صغيرة جسمها تعبير واحد فقط، تُعرّف باستخدام <code>lambda</code>،
                     مفيدة للعمليات البسيطة.
                 </p>
             </div>
@@ -1143,7 +1143,7 @@
             <i class="fas fa-exclamation-triangle"></i>
             <div>
                 <strong>مهم:</strong> كود الدالة يجب أن يكون <strong>مُزاحًا (Indented)</strong>
-                بـ 4 مسافات، تمامًا كما في الجمل الشرطية.
+                بشكل متسق (المتعارف عليه 4 مسافات)، تمامًا كما في الجمل الشرطية.
             </div>
         </div>
     </section>
@@ -1319,7 +1319,7 @@ greet(<span class="str">"فاطمة"</span>, <span class="str">"أهلاً وس�
 أهلاً وسهلاً فاطمة</pre>
         </div>
 
-        <p class="sub-title"><i class="fas fa-circle" style="font-size:0.5em;"></i> 2. المعاملات المسمّية (Keyword Arguments)</p>
+        <p class="sub-title"><i class="fas fa-circle" style="font-size:0.5em;"></i> 2. المعاملات المسمّاة (Keyword Arguments)</p>
         <p>يمكنك تمرير القيم بأسماء المعاملات بغض النظر عن ترتيبها.</p>
         <div class="code-block">
             <div class="code-header">
@@ -1366,7 +1366,7 @@ person_info(age=<span class="num">25</span>, city=<span class="str">"الريا�
             الدوال المجهولة (Lambda)
         </h2>
         <p>
-            الدوال المجهولة هي <strong>دوال صغيرة تُكتب في سطر واحد</strong>
+            الدوال المجهولة هي <strong>دوال صغيرة جسمها تعبير واحد فقط</strong> (single expression)
             دون استخدام <code>def</code>. مفيدة للعمليات البسيطة.
         </p>
 
@@ -1540,7 +1540,7 @@ increment()
             </p>
             <div class="tf-list" id="q2-list">
                 <div class="tf-item" data-answer="true">
-                    <span class="tf-statement">يُعرّف الدالة في Python بالكلمة المفتاحية <code>def</code>.</span>
+                    <span class="tf-statement">تُعرَّف الدالة في Python بالكلمة المفتاحية <code>def</code>.</span>
                     <div class="tf-actions">
                         <button class="tf-btn" onclick="pickTF(this, true)">صح</button>
                         <button class="tf-btn" onclick="pickTF(this, false)">خطأ</button>
@@ -1708,7 +1708,7 @@ increment()
                 <li><i class="fas fa-check"></i> تركيب الدالة باستخدام <code>def</code>.</li>
                 <li><i class="fas fa-check"></i> تمرير المعاملات واستقبال القيم.</li>
                 <li><i class="fas fa-check"></i> الفرق بين <code>print()</code> و <code>return</code>.</li>
-                <li><i class="fas fa-check"></i> المعاملات الافتراضية والمسمّية و <code>*args</code>.</li>
+                <li><i class="fas fa-check"></i> المعاملات الافتراضية والمسمّاة و <code>*args</code>.</li>
                 <li><i class="fas fa-check"></i> الدوال المجهولة <code>lambda</code> واستخداماتها.</li>
                 <li><i class="fas fa-check"></i> نطاق المتغيرات المحلي والعام.</li>
             </ul>
@@ -1765,8 +1765,8 @@ increment()
         const fill = document.getElementById('progressFill');
         const text = document.getElementById('progressText');
         setTimeout(() => {
-            fill.style.width = '90%';
-            text.textContent = '90% مكتمل';
+            fill.style.width = '60%';
+            text.textContent = '60% مكتمل';
         }, 400);
     });
 
@@ -1774,7 +1774,7 @@ increment()
     function checkQ1() {
         const correct = ['1', '3', '5'];
         const boxes = document.querySelectorAll('input[name="q1"]');
-        let right = 0, wrong = 0;
+        let right = 0, wrong = 0, pickedWrong = 0;
 
         boxes.forEach(b => {
             const label = b.closest('.option');
@@ -1786,6 +1786,7 @@ increment()
                 } else {
                     label.classList.add('wrong');
                     wrong++;
+                    pickedWrong++;
                 }
             } else if (correct.includes(b.value)) {
                 wrong++;
@@ -1796,15 +1797,21 @@ increment()
         msg.classList.remove('ok', 'mid', 'bad');
         msg.classList.add('show');
 
+        if (![...boxes].some(b => b.checked)) {
+            msg.classList.add('mid');
+            msg.innerHTML = '<i class="fas fa-info-circle"></i> اختر إجابة واحدة على الأقل ثم اضغط «تحقق».';
+            return;
+        }
+
         if (right === correct.length && wrong === 0) {
             msg.classList.add('ok');
             msg.innerHTML = '<i class="fas fa-check-circle"></i> ممتاز! الصيغة الصحيحة: <code>def</code> بحروف صغيرة، مع أو بدون معاملات 🎉';
         } else if (right > 0) {
             msg.classList.add('mid');
-            msg.innerHTML = `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${correct.length}. تذكّر: <code>def</code> بحروف صغيرة، الباقي غير صحيح.`;
+            msg.innerHTML = `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${correct.length}${pickedWrong ? `، لكنك اخترت ${pickedWrong === 1 ? 'خيارًا خاطئًا' : pickedWrong === 2 ? 'خيارين خاطئين' : pickedWrong + ' خيارات خاطئة'} (باللون الأحمر)` : ''}. تذكّر: <code>def</code> بحروف صغيرة، الباقي غير صحيح.`;
         } else {
             msg.classList.add('bad');
-            msg.innerHTML = '<i class="fas fa-times-circle"></i> لا توجد إجابة صحيحة. الصيغة: <code>def greet():</code>.';
+            msg.innerHTML = '<i class="fas fa-times-circle"></i> لم تختر أي إجابة صحيحة. الصيغة: <code>def greet():</code>.';
         }
     }
 
@@ -1971,11 +1978,12 @@ increment()
         }
     }
 
+    // نحفظ الترتيب المخلوط الأصلي عند تحميل الصفحة، لنستعيده عند «إعادة» دون كشف الحل
+    const q4Initial = Array.from(document.getElementById('q4-list').children);
+
     function resetQ4() {
         const list = document.getElementById('q4-list');
-        const items = Array.from(list.children);
-        items.sort((a, b) => parseInt(a.dataset.correct) - parseInt(b.dataset.correct));
-        items.forEach(item => {
+        q4Initial.forEach(item => {
             item.classList.remove('correct', 'wrong');
             list.appendChild(item);
         });

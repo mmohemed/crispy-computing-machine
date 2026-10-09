@@ -933,7 +933,7 @@
         </h2>
         <p>
             المتغير هو <strong>صندوق</strong> نخزن فيه قيمة معينة (رقم، نص، قيمة منطقية، ...)،
-            ويمكن تغيير هذه القيمة أثناء تشغيل البرنامج. اخترنا اسمًا للمتغير حتى نستطيع
+            ويمكن تغيير هذه القيمة أثناء تشغيل البرنامج. نختار اسمًا للمتغير حتى نستطيع
             الوصول إلى القيمة التي بداخله لاحقًا.
         </p>
 
@@ -981,7 +981,7 @@ is_student = <span class="kw">True</span>
         <p>حتى تعمل المتغيرات بشكل صحيح، يجب أن تتبع هذه القواعد:</p>
 
         <ul class="list">
-            <li>يجب أن يبدأ الاسم بحرف (a-z أو A-Z) أو <code>_</code>، ولا يبدأ برقم.</li>
+            <li>يجب أن يبدأ الاسم بحرف أو <code>_</code>، ولا يبدأ برقم. (تقبل بايثون الحروف العربية أيضًا، لكن المتعارف عليه استخدام الحروف الإنجليزية a-z و A-Z.)</li>
             <li>يمكن أن يحتوي على حروف وأرقام و <code>_</code> فقط.</li>
             <li>لا يُسمح بالمسافات في اسم المتغير.</li>
             <li>الأسماء <strong>حساسة لحالة الأحرف</strong>: <code>name</code> يختلف عن <code>Name</code>.</li>
@@ -1429,8 +1429,8 @@ age_int = <span class="fn">int</span>(age)
         const fill = document.getElementById('progressFill');
         const text = document.getElementById('progressText');
         setTimeout(() => {
-            fill.style.width = '50%';
-            text.textContent = '50% مكتمل';
+            fill.style.width = '33%';
+            text.textContent = '33% مكتمل';
         }, 400);
     });
 
@@ -1438,7 +1438,7 @@ age_int = <span class="fn">int</span>(age)
     function checkQ1() {
         const correct = ['1', '3', '5']; // user_name, _total, age2
         const boxes = document.querySelectorAll('input[name="q1"]');
-        let right = 0, wrong = 0;
+        let right = 0, wrong = 0, pickedWrong = 0;
 
         boxes.forEach(b => {
             const label = b.closest('.option');
@@ -1450,6 +1450,7 @@ age_int = <span class="fn">int</span>(age)
                 } else {
                     label.classList.add('wrong');
                     wrong++;
+                    pickedWrong++;
                 }
             } else if (correct.includes(b.value)) {
                 wrong++;
@@ -1460,12 +1461,18 @@ age_int = <span class="fn">int</span>(age)
         msg.classList.remove('ok', 'mid', 'bad');
         msg.classList.add('show');
 
+        if (![...boxes].some(b => b.checked)) {
+            msg.classList.add('mid');
+            msg.innerHTML = '<i class="fas fa-info-circle"></i> اختر إجابة واحدة على الأقل ثم اضغط «تحقق».';
+            return;
+        }
+
         if (right === correct.length && wrong === 0) {
             msg.classList.add('ok');
             msg.innerHTML = '<i class="fas fa-check-circle"></i> ممتاز! الأسماء الصحيحة: <code>user_name</code>، <code>_total</code>، <code>age2</code> 🎉';
         } else if (right > 0) {
             msg.classList.add('mid');
-            msg.innerHTML = `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${correct.length}. تذكّر: لا يبدأ برقم ولا يحتوي مسافة ولا يكون كلمة محجوزة.`;
+            msg.innerHTML = `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${correct.length}${pickedWrong ? `، لكنك اخترت ${pickedWrong === 1 ? 'خيارًا خاطئًا' : pickedWrong === 2 ? 'خيارين خاطئين' : pickedWrong + ' خيارات خاطئة'} (باللون الأحمر)` : ''}. تذكّر: لا يبدأ برقم ولا يحتوي مسافة ولا يكون كلمة محجوزة.`;
         } else {
             msg.classList.add('bad');
             msg.innerHTML = '<i class="fas fa-times-circle"></i> لم تصب أي إجابة. الصحيح: <code>user_name</code>، <code>_total</code>، <code>age2</code>.';

@@ -973,8 +973,8 @@
         <div class="alert alert-tip">
             <i class="fas fa-lightbulb"></i>
             <div>
-                <strong>لماذا الامتداد .py؟</strong> لأن Python يتعرّف على ملفاته من خلال هذا الامتداد.
-                أي ملف بدون <code>.py</code> لن يُشغَّل كبرنامج بايثون.
+                <strong>لماذا الامتداد .py؟</strong> لأنه الامتداد المتعارف عليه لملفات بايثون: به يعرف المحرر أن يلوّن الكود
+                ويشغّله، ولا يعمل الاستيراد (<code>import</code>) إلا مع ملفات <code>.py</code>. لذلك احرص دائمًا على حفظ برامجك به.
             </div>
         </div>
     </section>
@@ -1231,7 +1231,7 @@
             </p>
             <div class="tf-list" id="q2-list">
                 <div class="tf-item" data-answer="true">
-                    <span class="tf-statement">ملفات Python يجب أن تنتهي بامتداد <code>.py</code>.</span>
+                    <span class="tf-statement">ملفات Python تُحفظ عادةً بامتداد <code>.py</code>.</span>
                     <div class="tf-actions">
                         <button class="tf-btn" onclick="pickTF(this, true)">صح</button>
                         <button class="tf-btn" onclick="pickTF(this, false)">خطأ</button>
@@ -1375,8 +1375,8 @@
         const fill = document.getElementById('progressFill');
         const text = document.getElementById('progressText');
         setTimeout(() => {
-            fill.style.width = '30%';
-            text.textContent = '30% مكتمل';
+            fill.style.width = '20%';
+            text.textContent = '20% مكتمل';
         }, 400);
     });
 
@@ -1384,7 +1384,7 @@
     function checkQ1() {
         const correct = ['1', '2']; // print(" ") و print(' ')
         const boxes = document.querySelectorAll('input[name="q1"]');
-        let right = 0, wrong = 0;
+        let right = 0, wrong = 0, pickedWrong = 0;
 
         boxes.forEach(b => {
             const label = b.closest('.option');
@@ -1396,6 +1396,7 @@
                 } else {
                     label.classList.add('wrong');
                     wrong++;
+                    pickedWrong++;
                 }
             } else if (correct.includes(b.value)) {
                 wrong++;
@@ -1406,15 +1407,21 @@
         msg.classList.remove('ok', 'mid', 'bad');
         msg.classList.add('show');
 
+        if (![...boxes].some(b => b.checked)) {
+            msg.classList.add('mid');
+            msg.innerHTML = '<i class="fas fa-info-circle"></i> اختر إجابة واحدة على الأقل ثم اضغط «تحقق».';
+            return;
+        }
+
         if (right === correct.length && wrong === 0) {
             msg.classList.add('ok');
             msg.innerHTML = '<i class="fas fa-check-circle"></i> ممتاز! الإجابتان الصحيحتان هما استخدام <code>print()</code> مع تنصيص مزدوج أو فردي 🎉';
         } else if (right > 0) {
             msg.classList.add('mid');
-            msg.innerHTML = `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${correct.length}. تذكّر: Python حساس لحالة الأحرف، ويحتاج تنصيصًا حول النص.`;
+            msg.innerHTML = `<i class="fas fa-info-circle"></i> أصبت في ${right} من ${correct.length}${pickedWrong ? `، لكنك اخترت ${pickedWrong === 1 ? 'خيارًا خاطئًا' : pickedWrong === 2 ? 'خيارين خاطئين' : pickedWrong + ' خيارات خاطئة'} (باللون الأحمر)` : ''}. تذكّر: Python حساس لحالة الأحرف، ويحتاج تنصيصًا حول النص.`;
         } else {
             msg.classList.add('bad');
-            msg.innerHTML = '<i class="fas fa-times-circle"></i> لا توجد إجابة صحيحة. الصحيح هو <code>print("أهلًا بك")</code> أو <code>print(\'أهلًا بك\')</code>.';
+            msg.innerHTML = '<i class="fas fa-times-circle"></i> لم تختر أي إجابة صحيحة. الصحيح هو <code>print("أهلًا بك")</code> أو <code>print(\'أهلًا بك\')</code>.';
         }
     }
 
@@ -1486,7 +1493,8 @@
     function checkQ3() {
         const b1 = document.getElementById('b1');
         const b2 = document.getElementById('b2');
-        const v1 = b1.value.trim().toLowerCase();
+        // بدون toLowerCase: Print بحرف كبير خطأ في بايثون
+        const v1 = b1.value.trim();
         const v2 = b2.value.trim();
 
         b1.classList.remove('correct', 'wrong');
@@ -1500,7 +1508,8 @@
 
         // الفراغ الثاني: نص بين تنصيص
         // نقبل "..." أو '...' مع أي محتوى غير فارغ
-        const isValidText = /^["'].+["']$/.test(v2);
+        // علامة الإغلاق يجب أن تطابق علامة الفتح، ولا تتكرر داخل النص
+        const isValidText = /^(["'])(?:(?!\1).)+\1$/.test(v2);
         if (isValidText) { b2.classList.add('correct'); right++; }
         else { b2.classList.add('wrong'); }
 

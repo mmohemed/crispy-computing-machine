@@ -652,7 +652,7 @@
             <div class="lesson-meta-item"><i class="fas fa-clock"></i> المدة: 25 دقيقة</div>
             <div class="lesson-meta-item"><i class="fas fa-bullseye"></i> الهدف: إتقان جميع أنواع العمليات</div>
             <div class="lesson-meta-item"><i class="fas fa-layer-group"></i> المستوى: مبتدئ</div>
-            <div class="lesson-meta-item"><i class="fas fa-list-ol"></i> الدرس 6 من 10</div>
+            <div class="lesson-meta-item"><i class="fas fa-list-ol"></i> الدرس 6 من 15</div>
         </div>
     </div>
 </section>
@@ -666,7 +666,7 @@
             <h2><i class="fas fa-info-circle"></i> مقدمة إلى العمليات في بايثون</h2>
             <p>
                 في لغة بايثون، تُعدّ <strong>العمليات (Operators)</strong> حجر الأساس لمعالجة البيانات
-                واتخاذ القرارات داخل البرامج. تُقسَم هذه العمليات إلى <strong>ثلاثة أنواع رئيسية</strong>:
+                واتخاذ القرارات داخل البرامج. وسنركّز في هذا الدرس على <strong>ثلاثة أنواع رئيسية</strong> منها:
             </p>
             <ol class="plain">
                 <li><strong style="color:var(--gold)">العمليات الحسابية (Arithmetic):</strong> للعمليات الرياضية مثل الجمع والطرح.</li>
@@ -846,8 +846,8 @@ print(x <= y)  # True
             <!-- ===== 3. العوامل المنطقية ===== -->
             <h2><i class="fas fa-brain"></i> 3. العوامل المنطقية (Logical Operators)</h2>
             <p>
-                تُستخدم للجمع بين عدة تعبيرات منطقية، وتُرجع قيمة <code class="inline">True</code> أو
-                <code class="inline">False</code>. بايثون توفر ثلاث عوامل منطقية:
+                تُستخدم للجمع بين عدة تعبيرات منطقية، وعندما يكون طرفاها قيمًا منطقية تُرجع <code class="inline">True</code> أو
+                <code class="inline">False</code>. بايثون توفر ثلاثة عوامل منطقية:
             </p>
 
             <div class="table-wrap">
@@ -863,7 +863,7 @@ print(x <= y)  # True
                         <tr>
                             <td><code class="inline">and</code></td>
                             <td>و (الاثنان معًا)</td>
-                            <td>كل الشرطين <strong>صحيحان</strong></td>
+                            <td>كلا الشرطين <strong>صحيحان</strong></td>
                         </tr>
                         <tr>
                             <td><code class="inline">or</code></td>
@@ -983,8 +983,18 @@ print(not q)    # True
                         </tr>
                         <tr>
                             <td>6</td>
-                            <td>العوامل المنطقية</td>
-                            <td><code class="inline">not and or</code></td>
+                            <td>النفي</td>
+                            <td><code class="inline">not</code></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>«و» المنطقية</td>
+                            <td><code class="inline">and</code></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>«أو» المنطقية</td>
+                            <td><code class="inline">or</code></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1156,7 +1166,7 @@ print(f"هل نجح الطالب؟ {is_passed}")
                 </div>
                 <p class="exercise-question">
                     <strong>السؤال:</strong> ما نتيجة التعبير <code class="inline">True or False</code>؟
-                    (اكتب: true أو false)
+                    (اكتب: True أو False)
                 </p>
                 <div class="text-input-wrap">
                     <input type="text" class="text-input" id="ex5-input" placeholder="اكتب الإجابة..." autocomplete="off">
@@ -1234,7 +1244,7 @@ print(f"هل نجح الطالب؟ {is_passed}")
                 <li>✔️ عمليات المقارنة: <code class="inline">== != &lt; &gt; &lt;= &gt;=</code> وتُرجع True/False.</li>
                 <li>✔️ العوامل المنطقية: <code class="inline">and</code>، <code class="inline">or</code>، <code class="inline">not</code>.</li>
                 <li>✔️ <code class="inline">=</code> للإسناد، و <code class="inline">==</code> للمقارنة — لا تخلط بينهما.</li>
-                <li>✔️ الأسبقية: الأقواس ← الأس ← الضرب/القسمة ← الجمع/الطرح ← المقارنة ← المنطقية.</li>
+                <li>✔️ الأسبقية: الأقواس ← الأس ← الضرب/القسمة ← الجمع/الطرح ← المقارنة ← not ← and ← or.</li>
                 <li>✔️ هذه العمليات أساس كل برنامج بايثون، وسنستخدمها في الشروط والحلقات.</li>
             </ul>
 
@@ -1273,8 +1283,8 @@ print(f"هل نجح الطالب؟ {is_passed}")
         const fill = document.getElementById('progressFill');
         const text = document.getElementById('progressText');
         setTimeout(() => {
-            fill.style.width = '60%';
-            text.textContent = '60% مكتمل';
+            fill.style.width = '40%';
+            text.textContent = '40% مكتمل';
         }, 400);
     });
 
@@ -1348,18 +1358,22 @@ print(f"هل نجح الطالب؟ {is_passed}")
 
     /* ===== تمرين 5 ===== */
     function checkExercise5() {
-        const input = document.getElementById('ex5-input').value.trim().toLowerCase();
+        const raw = document.getElementById('ex5-input').value.trim();
+        const input = raw.toLowerCase();
         const result = document.getElementById('result5');
         result.className = 'exercise-result';
 
         if (!input) { result.classList.add('error'); result.innerHTML = '<i class="fas fa-times-circle"></i> لم تكتب أي إجابة.'; return; }
 
-        if (input === 'true') {
+        if (raw === 'True') {
             result.classList.add('success');
             result.innerHTML = '<i class="fas fa-check-circle"></i> <strong>إجابة صحيحة!</strong> <code class="inline">or</code> يُرجع True إذا كان أحد الطرفين صحيحًا على الأقل.';
+        } else if (input === 'true') {
+            result.classList.add('error');
+            result.innerHTML = '<i class="fas fa-times-circle"></i> <strong>قريب جدًا!</strong> في بايثون تُكتب <strong>True</strong> بحرف T كبير؛ أما <code class="inline">true</code> فخطأ (NameError).';
         } else {
             result.classList.add('error');
-            result.innerHTML = '<i class="fas fa-times-circle"></i> <strong>إجابة غير صحيحة.</strong> الإجابة الصحيحة هي <strong>true</strong>.';
+            result.innerHTML = '<i class="fas fa-times-circle"></i> <strong>إجابة غير صحيحة.</strong> الإجابة الصحيحة هي <strong>True</strong>.';
         }
     }
 

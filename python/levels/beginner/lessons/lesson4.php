@@ -652,7 +652,7 @@
             <div class="lesson-meta-item"><i class="fas fa-clock"></i> المدة: 20 دقيقة</div>
             <div class="lesson-meta-item"><i class="fas fa-bullseye"></i> الهدف: فهم النصوص وطرق التعامل معها</div>
             <div class="lesson-meta-item"><i class="fas fa-layer-group"></i> المستوى: مبتدئ</div>
-            <div class="lesson-meta-item"><i class="fas fa-list-ol"></i> الدرس 4 من 10</div>
+            <div class="lesson-meta-item"><i class="fas fa-list-ol"></i> الدرس 4 من 15</div>
         </div>
     </div>
 </section>
@@ -675,6 +675,11 @@
                 <li><code class="inline">"مرحبًا بك في عالم بايثون"</code> — جملة كاملة.</li>
                 <li><code class="inline">"123"</code> — أرقام بين علامات الاقتباس تُعتبر نصًا وليست عددًا!</li>
             </ul>
+
+            <p>
+                في الأمثلة سنكتب مثل <code class="inline">name = "Mohammed"</code>: هذا يعني أننا نحفظ النص باسم
+                <code class="inline">name</code> لنستخدمه لاحقًا، ويسمى ذلك <strong>متغيرًا</strong>. سنشرح المتغيرات بالتفصيل في الدرس 5.
+            </p>
 
             <div class="code-block">
                 <div class="code-label">أمثلة بسيطة على النصوص</div>
@@ -777,7 +782,7 @@ print("الاسم الكامل هو:", first_name, last_name)
                         </tr>
                         <tr>
                             <td><code class="inline">len(text)</code></td>
-                            <td>معرفة عدد حروف النص</td>
+                            <td>عدد أحرف النص بما فيها المسافات (دالة عامة في بايثون، وليست Method خاصة بالنصوص)</td>
                             <td><code class="inline">len("Python")</code> → <code class="inline">6</code></td>
                         </tr>
                     </tbody>
@@ -791,7 +796,7 @@ text = "CodeWay منصة قوية"
 
 print(text.upper())      # تحويل إلى حروف كبيرة
 print(text.lower())      # تحويل إلى حروف صغيرة
-print(len(text))         # طول النص (عدد الحروف)
+print(len(text))         # طول النص (عدد الأحرف مع المسافات)
 print(text.replace("قوية", "عالمية"))  # استبدال كلمة بأخرى
 </pre>
             </div>
@@ -804,7 +809,7 @@ print(text.replace("قوية", "عالمية"))  # استبدال كلمة بأ�
             </p>
 
             <div class="table-wrap">
-                <table>
+                <table dir="ltr">
                     <thead>
                         <tr>
                             <th>P</th>
@@ -1130,8 +1135,8 @@ print(f"بعد 5 سنوات، سيكون عمرك {age + 5} سنة.")
         const fill = document.getElementById('progressFill');
         const text = document.getElementById('progressText');
         setTimeout(() => {
-            fill.style.width = '40%';
-            text.textContent = '40% مكتمل';
+            fill.style.width = '27%';
+            text.textContent = '27% مكتمل';
         }, 400);
     });
 
@@ -1168,7 +1173,7 @@ print(f"بعد 5 سنوات، سيكون عمرك {age + 5} سنة.")
             return;
         }
 
-        if (input === '7') {
+        if (input === '7' || input === '٧') {
             result.classList.add('success');
             result.innerHTML = '<i class="fas fa-check-circle"></i> <strong>إجابة صحيحة!</strong> كلمة <code class="inline">CodeWay</code> تحتوي على 7 حروف: C-o-d-e-W-a-y.';
         } else {
@@ -1242,7 +1247,8 @@ print(f"بعد 5 سنوات، سيكون عمرك {age + 5} سنة.")
 
     /* ===== تمرين 6 ===== */
     function checkExercise6() {
-        const input = document.getElementById('ex6-input').value.trim().toLowerCase().replace(/[.()]/g, '');
+        // بدون toLowerCase: UPPER بحروف كبيرة خطأ في بايثون
+        const input = document.getElementById('ex6-input').value.trim().replace(/[.()]/g, '');
         const result = document.getElementById('result6');
         result.className = 'exercise-result';
 

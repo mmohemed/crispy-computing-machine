@@ -699,7 +699,7 @@
             <div class="lesson-meta-item"><i class="fas fa-clock"></i> المدة: 30 دقيقة</div>
             <div class="lesson-meta-item"><i class="fas fa-bullseye"></i> الهدف: إتقان for و while</div>
             <div class="lesson-meta-item"><i class="fas fa-layer-group"></i> المستوى: مبتدئ</div>
-            <div class="lesson-meta-item"><i class="fas fa-list-ol"></i> الدرس 8 من 10</div>
+            <div class="lesson-meta-item"><i class="fas fa-list-ol"></i> الدرس 8 من 15</div>
         </div>
     </div>
 </section>
@@ -757,8 +757,8 @@
                 <div class="code-label">الصيغة العامة + أمثلة</div>
 <pre>
 # الصيغة العامة
-for element in iterable:
-    # الكود الذي سيتم تنفيذه لكل عنصر
+# for element in iterable:
+#     الكود الذي سيتم تنفيذه لكل عنصر
 
 # مثال 1: التكرار عبر قائمة
 fruits = ["تفاح", "موز", "برتقال"]
@@ -833,8 +833,8 @@ for i in range(5):
                 <div class="code-label">الصيغة العامة + أمثلة</div>
 <pre>
 # الصيغة العامة
-while condition:
-    # الكود الذي سيتم تنفيذه طالما الشرط صحيح
+# while condition:
+#     الكود الذي سيتم تنفيذه طالما الشرط صحيح
 
 # مثال 1: العد التنازلي
 count = 5
@@ -1113,7 +1113,7 @@ for i in range(10):
                 </div>
                 <p class="exercise-question">
                     <strong>السؤال:</strong> اكتب الكلمة المفتاحية التي تستخدم للتكرار عبر عناصر قائمة
-                    (اكتبها بالإنجليزية فقط، بحرفين أو ثلاثة):
+                    (اكتبها بالإنجليزية، وهي من ثلاثة أحرف):
                 </p>
                 <div class="text-input-wrap">
                     <input type="text" class="text-input" id="ex5-input" placeholder="اكتب الكلمة..." autocomplete="off">
@@ -1203,8 +1203,8 @@ for i in range(10):
         const fill = document.getElementById('progressFill');
         const text = document.getElementById('progressText');
         setTimeout(() => {
-            fill.style.width = '80%';
-            text.textContent = '80% مكتمل';
+            fill.style.width = '53%';
+            text.textContent = '53% مكتمل';
         }, 400);
     });
 
