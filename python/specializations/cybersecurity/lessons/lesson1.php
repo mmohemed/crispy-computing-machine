@@ -1711,8 +1711,8 @@ c = hashlib.<span class="fn">sha256</span>(<span class="str">b"Hello"</span>).<s
             <i class="fas fa-arrow-right"></i>
             <span>الرجوع إلى صفحة تخصص الأمن السيبراني</span>
         </a>
-        <a href="lesson2.php" class="nav-link next">
-            <span>الدرس التالي: التجزئة والتشفير</span>
+        <a href="../index.php" class="nav-link next">
+            <span>صفحة التخصص (بقية الدروس قريبًا)</span>
             <i class="fas fa-arrow-left"></i>
         </a>
     </div>
