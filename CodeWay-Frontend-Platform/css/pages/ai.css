@@ -13,13 +13,14 @@
 
 /* خريطة العلاقات */
 .ai-map { position: relative; display: grid; justify-items: center; gap: 26px; padding: 10px; }
-.ai-node { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: var(--r-md); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); color: #E2E8F0; font-weight: 700; font-size: .92rem; transition: background-color var(--t-fast), border-color var(--t-fast); position: relative; z-index: 1; }
-.ai-node:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.3); }
+.ai-node { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: var(--r-md); background: #1E293B; border: 1px solid rgba(255,255,255,.14); color: #E2E8F0; white-space: nowrap; font-weight: 700; font-size: .92rem; transition: background-color var(--t-fast), border-color var(--t-fast); position: relative; z-index: 1; }
+.ai-node:hover { background: #273449; border-color: rgba(255,255,255,.3); }
 .ai-node .ic { color: #67E8F9; }
 .ai-node.root { background: var(--c-primary); border-color: var(--c-primary); color: #fff; }
 .ai-node.root .ic { color: #fff; }
-.ai-leaves { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-.ai-node.side { border-style: dashed; }
+.ai-leaves { display: flex; gap: 10px; flex-wrap: nowrap; justify-content: center; }
+@media (max-width: 560px) { .ai-leaves { flex-wrap: wrap; } }
+.ai-node.side { border-style: dashed; background: #172033; }
 .ai-link { display: none; }
 .ai-map::before { content: ""; position: absolute; top: 30px; bottom: 30px; left: 50%; width: 2px; background: linear-gradient(180deg, rgba(37,99,235,.7), rgba(103,232,249,.3)); transform: translateX(-50%); }
 
