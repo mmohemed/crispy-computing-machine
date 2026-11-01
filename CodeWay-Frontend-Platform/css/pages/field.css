@@ -1,0 +1,62 @@
+/* ==========================================================
+   صفحة المجال — تصميم استكشافي بصري (مدار المهارات، إحصاءات، شرائط)
+   ========================================================== */
+.field-hero { position: relative; overflow: hidden; isolation: isolate; padding-block: var(--sp-8) 0; background: var(--c-surface); border-bottom: 1px solid var(--c-border); }
+.field-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(50% 80% at 15% 30%, color-mix(in srgb, var(--fc) 14%, transparent), transparent 70%), radial-gradient(30% 50% at 90% 0%, color-mix(in srgb, var(--fc) 8%, transparent), transparent 70%); }
+.field-hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--sp-10); align-items: center; margin-top: var(--sp-6); }
+.field-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 99px; background: color-mix(in srgb, var(--fc) 12%, #fff); color: var(--fc); font-weight: 700; font-size: .85rem; }
+.field-hero h1 { margin-top: var(--sp-4); font-size: var(--fs-3xl); }
+.field-hero .lead { margin-top: var(--sp-3); font-size: 1.1rem; color: var(--c-text-2); max-width: 560px; }
+
+.skill-orbit { position: relative; height: 320px; border-radius: 50%; }
+.skill-orbit::before, .skill-orbit::after { content: ""; position: absolute; inset: 50% auto auto 50%; border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--fc) 35%, transparent); transform: translate(-50%, -50%); }
+.skill-orbit::before { width: 300px; height: 300px; }
+.skill-orbit::after { width: 180px; height: 180px; }
+.skill-orbit .core { position: absolute; inset: 50% auto auto 50%; transform: translate(-50%, -50%); width: 84px; height: 84px; border-radius: 26px; display: grid; place-items: center; background: var(--fc); color: #fff; box-shadow: 0 20px 40px -16px var(--fc); }
+.skill-orbit .sk { position: absolute; padding: 7px 13px; border-radius: 99px; background: var(--c-surface); border: 1px solid var(--c-border); box-shadow: var(--sh-md); font-size: .84rem; font-weight: 700; white-space: nowrap; transform: translate(-50%, -50%); }
+.sk0 { top: 8%; left: 50%; } .sk1 { top: 28%; left: 88%; } .sk2 { top: 72%; left: 88%; }
+.sk3 { top: 92%; left: 50%; } .sk4 { top: 72%; left: 12%; } .sk5 { top: 28%; left: 12%; }
+
+.field-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: var(--sp-8); border-top: 1px solid var(--c-border); }
+.field-stats > div { display: flex; align-items: center; gap: 12px; padding: 18px 8px; }
+.field-stats > div + div { border-inline-start: 1px solid var(--c-border); padding-inline-start: 20px; }
+.field-stats b { display: block; font-size: 1.3rem; line-height: 1.2; }
+.field-stats span { font-size: .85rem; color: var(--c-muted); }
+.field-stats .icon-tile { background: color-mix(in srgb, var(--fc) 11%, #fff); color: var(--fc); }
+
+.field-body { padding-block: var(--sp-10) var(--sp-16); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); margin-bottom: var(--sp-10); }
+.field-block { margin-bottom: var(--sp-10); }
+.block-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: var(--sp-4); flex-wrap: wrap; }
+.block-head .block-title { margin: 0; }
+
+.skill-list { display: grid; gap: 12px; }
+.skill-list li { position: relative; padding: 10px 14px; border-radius: var(--r-sm); background: var(--c-bg); overflow: hidden; font-weight: 700; font-size: .92rem; }
+.skill-list .lvl { position: absolute; inset-block: 0; inset-inline-start: 0; width: var(--w); background: linear-gradient(90deg, transparent, var(--c-primary-50)); }
+.skill-list li span:last-child { position: relative; }
+
+.topic-timeline { display: grid; }
+.topic-timeline li { display: flex; gap: 14px; position: relative; padding-bottom: 14px; }
+.topic-timeline li:not(:last-child)::before { content: ""; position: absolute; top: 30px; bottom: 0; right: 13px; width: 2px; background: var(--c-border); }
+.topic-timeline .n { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--c-primary-50); color: var(--c-primary); font-weight: 800; font-size: .8rem; position: relative; z-index: 1; }
+.topic-timeline strong { display: block; font-size: .95rem; }
+.topic-timeline small { color: var(--c-muted); font-size: .8rem; }
+
+.lang-strip { display: flex; flex-wrap: wrap; gap: 12px; }
+.lang-pill { display: flex; align-items: center; gap: 12px; padding: 10px 16px 10px 10px; border-radius: var(--r-lg); background: var(--c-surface); border: 1px solid var(--c-border); transition: border-color var(--t-fast), transform var(--t-fast); }
+.lang-pill:hover { border-color: var(--brand); transform: translateY(-2px); }
+.lang-pill strong { display: block; font-size: .95rem; }
+.lang-pill small { color: var(--c-muted); font-size: .78rem; }
+
+@media (max-width: 1024px) {
+  .field-hero-grid, .field-row { grid-template-columns: 1fr; }
+  .skill-orbit { max-width: 420px; width: 100%; margin-inline: auto; }
+}
+@media (max-width: 768px) {
+  .field-stats { grid-template-columns: 1fr 1fr; }
+  .field-stats > div:nth-child(3) { border-inline-start: 0; padding-inline-start: 8px; }
+  .skill-orbit { height: 280px; }
+  .skill-orbit::before { width: 250px; height: 250px; }
+  .skill-orbit .sk { font-size: .74rem; padding: 5px 10px; }
+  .sk1, .sk2 { left: 80%; } .sk4, .sk5 { left: 20%; }
+}

@@ -1,0 +1,51 @@
+/* ==========================================================
+   صفحة الأداة — تصميم تقني عملي (طرفية، متطلبات، موضوعات متسلسلة)
+   ========================================================== */
+.tool-hero { position: relative; overflow: hidden; isolation: isolate; background: var(--c-dark); color: #fff; padding-block: var(--sp-8) var(--sp-12); }
+.tool-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(40% 70% at 85% 0%, color-mix(in srgb, var(--brand) 35%, transparent), transparent 70%); }
+.tool-hero .breadcrumb, .tool-hero .breadcrumb a { color: #94A3B8; }
+.tool-hero .breadcrumb [aria-current] { color: #fff; }
+.tool-hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--sp-10); align-items: center; margin-top: var(--sp-8); }
+.tool-hero h1 { color: #fff; font-size: var(--fs-2xl); margin-top: 6px; }
+.tool-hero .lead { color: #CBD5E1; margin-top: var(--sp-4); font-size: 1.08rem; max-width: 560px; }
+.tool-hero .badge-dark { background: rgba(255,255,255,.08); color: #E2E8F0; }
+.tool-terminal { border-radius: var(--r-lg); background: var(--code-bg); border: 1px solid rgba(255,255,255,.1); overflow: hidden; box-shadow: 0 30px 60px -30px rgba(0,0,0,.9); }
+.tool-terminal dl { margin: 0; padding: 14px 18px; display: grid; gap: 8px; font-size: .9rem; }
+.tool-terminal dl > div { display: grid; grid-template-columns: 110px 1fr; gap: 10px; }
+.tool-terminal dt { font-family: var(--font-mono); color: #67E8F9; direction: ltr; text-align: left; font-size: .82rem; }
+.tool-terminal dd { margin: 0; color: #E2E8F0; }
+.tool-terminal dd.warn { color: #FCD34D; }
+
+.tool-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: var(--sp-8); padding-block: var(--sp-10) var(--sp-16); align-items: start; }
+.tool-section { margin-bottom: var(--sp-10); }
+.use-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.use-item { padding: 16px; border-radius: var(--r-md); background: var(--c-surface); border: 1px solid var(--c-border); border-top: 3px solid var(--c-primary); }
+.use-item .idx { display: block; font-family: var(--font-mono); font-size: .78rem; color: var(--c-muted); margin-bottom: 6px; }
+.use-item strong { font-size: .96rem; }
+
+/* شريط الموضوعات المتسلسل */
+.topic-stepper { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: var(--sp-4); scrollbar-width: thin; }
+.topic-stepper li { flex: 1 0 150px; }
+.topic-stepper a { display: flex; align-items: center; gap: 10px; height: 100%; padding: 10px 12px; border-radius: var(--r-md); border: 1px solid var(--c-border); background: var(--c-surface); font-size: .86rem; font-weight: 700; color: var(--c-text-2); transition: border-color var(--t-fast); }
+.topic-stepper a:hover { border-color: var(--c-primary); }
+.topic-stepper .n { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; flex: none; background: var(--c-surface-2); font-size: .78rem; }
+.topic-stepper li.active a { border-color: var(--c-primary); background: var(--c-primary-50); color: var(--c-primary-700); }
+.topic-stepper li.active .n { background: var(--c-primary); color: #fff; }
+.topic-panel { overflow: hidden; }
+.topic-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 18px; border-bottom: 1px solid var(--c-border); }
+.topic-head h3 { font-size: 1.1rem; }
+.topic-nav { display: flex; justify-content: space-between; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--c-border); background: var(--c-bg); }
+
+.side-card { padding: var(--sp-5); margin-bottom: var(--sp-4); }
+.side-card h2 { font-size: 1rem; margin-bottom: var(--sp-3); display: flex; align-items: center; gap: 8px; }
+.side-card h2 .ic { color: var(--c-primary); }
+.doc-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--r-sm); border: 1px solid var(--c-border); font-size: .88rem; font-weight: 700; transition: border-color var(--t-fast), color var(--t-fast); }
+.doc-link:hover { border-color: var(--c-primary); color: var(--c-primary); }
+
+@media (max-width: 1024px) {
+  .tool-hero-grid, .tool-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .use-grid { grid-template-columns: 1fr; }
+  .tool-terminal dl > div { grid-template-columns: 90px 1fr; }
+}

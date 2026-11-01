@@ -1,0 +1,70 @@
+/* ==========================================================
+   صفحات القوائم والاستكشاف (اللغات، الأدوات، المجالات، المسارات، المشاريع، المراجع، الاستكشاف)
+   ========================================================== */
+.catalog-head { position: relative; overflow: hidden; }
+.catalog-head::after {
+  content: ""; position: absolute; inset-inline-start: -80px; top: -120px; width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, .08), transparent 70%); pointer-events: none;
+}
+.catalog-head .head-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+.catalog-body { padding-block: var(--sp-8) var(--sp-16); }
+
+/* شريط تصنيفات علوي */
+.cat-strip { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: var(--sp-5); }
+
+/* مجموعات مصنفة */
+.group-block { margin-bottom: var(--sp-10); }
+.group-title { display: flex; align-items: center; gap: 12px; margin-bottom: var(--sp-4); }
+.group-title h2 { font-size: 1.2rem; }
+.group-title .count { color: var(--c-muted); font-size: .9rem; font-weight: 500; }
+
+/* بطاقة صغيرة عامة */
+.mini-card { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+.mini-card h3 { font-size: .98rem; }
+.mini-card p { font-size: .82rem; color: var(--c-muted); }
+.mini-card > .ic:last-child { color: var(--c-border-2); }
+
+/* قائمة نتائج الاستكشاف */
+.result-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.explore-card { display: flex; gap: 14px; padding: 16px; align-items: flex-start; }
+.explore-card .type { font-size: .75rem; font-weight: 700; color: var(--c-primary); }
+.explore-card h3 { font-size: 1rem; margin-top: 2px; }
+.explore-card p { font-size: .85rem; color: var(--c-muted); margin-top: 4px; line-height: 1.7; }
+
+/* فلاتر جانبية قابلة للطي على الهاتف */
+.filters-toggle { display: none; }
+.active-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--sp-4); }
+.active-filters .chip { min-height: 30px; font-size: .8rem; }
+
+/* تصنيفات المشاريع */
+.taxonomy { display: grid; gap: var(--sp-8); }
+.tax-block .chip-list .chip .n { font-size: .72rem; padding: 0 6px; border-radius: 99px; background: var(--c-surface-2); color: var(--c-muted); }
+.level-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.level-tile { padding: 20px; border-radius: var(--r-lg); border: 1px solid var(--c-border); background: var(--c-surface); transition: border-color var(--t), box-shadow var(--t); }
+.level-tile:hover { border-color: var(--c-primary); box-shadow: var(--sh-md); }
+.level-tile .big { font-size: 1.6rem; font-weight: 800; margin-top: 10px; }
+.level-tile p { font-size: .85rem; color: var(--c-muted); }
+
+/* المراجع */
+.ref-card { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.ref-card .top { display: flex; align-items: center; gap: 12px; }
+.ref-card h3 { font-size: 1rem; }
+.ref-card .links { display: grid; gap: 6px; margin-top: auto; }
+.ref-link { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: var(--r-sm); background: var(--c-bg); border: 1px solid var(--c-border); font-size: .86rem; font-weight: 700; color: var(--c-text-2); transition: border-color var(--t-fast), color var(--t-fast); }
+.ref-link:hover { border-color: var(--c-primary); color: var(--c-primary); }
+.ref-link .ic:last-child { margin-inline-start: auto; color: var(--c-muted); }
+.ref-link .url { font-family: var(--font-mono); font-weight: 400; font-size: .75rem; color: var(--c-muted); direction: ltr; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* مسارات مهنية مجمّعة */
+.career-groups .group-title .icon-tile { background: color-mix(in srgb, var(--cat) 12%, #fff); color: var(--cat); }
+
+@media (max-width: 1024px) {
+  .filters-toggle { display: inline-flex; }
+  .filter-panel.collapsible { display: none; }
+  .filter-panel.collapsible.open { display: block; }
+  .level-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 768px) {
+  .result-grid { grid-template-columns: 1fr; }
+  .level-tiles { grid-template-columns: 1fr 1fr; }
+}

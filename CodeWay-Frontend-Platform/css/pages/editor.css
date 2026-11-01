@@ -1,0 +1,42 @@
+/* ==========================================================
+   محرر الأكواد — مساحة عمل بملء الشاشة
+   ========================================================== */
+.editor-page { background: var(--c-bg); }
+.container-fluid { padding-inline: 24px; }
+.editor-top { background: var(--c-surface); border-bottom: 1px solid var(--c-border); padding-block: 14px 16px; }
+.et-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-block: 10px 12px; }
+.et-row h1 { font-size: 1.35rem; display: flex; align-items: center; gap: 10px; }
+.et-row h1 .ic { color: var(--c-primary); }
+.et-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.et-actions .select { width: auto; min-width: 230px; }
+
+.editor-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr); gap: 16px; padding: 16px 24px 32px; }
+.editor-pane { border-radius: var(--r-lg); overflow: hidden; background: var(--code-bg); border: 1px solid #1E293B; display: flex; flex-direction: column; min-height: 520px; }
+.pane-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--code-bg-2); border-bottom: 1px solid #1E293B; color: #94A3B8; font-family: var(--font-mono); font-size: .82rem; direction: ltr; }
+.pane-head .dots { display: flex; gap: 6px; }
+.pane-head .dots i { width: 10px; height: 10px; border-radius: 50%; background: #334155; }
+.pane-head .dots i:nth-child(1) { background: #F87171; } .pane-head .dots i:nth-child(2) { background: #FBBF24; } .pane-head .dots i:nth-child(3) { background: #34D399; }
+.pane-hint { margin-left: auto; font-family: var(--font); font-size: .75rem; color: #64748B; }
+.code-input { display: flex; flex: 1; direction: ltr; min-height: 0; }
+.gutter { margin: 0; padding: 16px 10px; width: 52px; flex: none; text-align: right; color: #475569; font-family: var(--font-mono); font-size: .9rem; line-height: 1.7; overflow: hidden; user-select: none; border-right: 1px solid #1E293B; }
+.code-input textarea { flex: 1; resize: none; border: 0; outline: 0; padding: 16px; background: transparent; color: var(--code-text); font-family: var(--font-mono); font-size: .9rem; line-height: 1.7; tab-size: 2; white-space: pre; overflow: auto; min-height: 480px; caret-color: #67E8F9; }
+.code-input textarea:focus-visible { box-shadow: inset 0 0 0 2px rgba(37, 99, 235, .5); }
+
+.io-pane { display: flex; flex-direction: column; gap: 16px; }
+.io-pane .output-body { min-height: 160px; max-height: 320px; overflow: auto; }
+.err-panel .output-body { min-height: 90px; }
+.warn-line { color: var(--c-warning-700); }
+
+@media (max-width: 1024px) {
+  .editor-grid { grid-template-columns: 1fr; }
+  .editor-pane { min-height: 380px; }
+  .code-input textarea { min-height: 340px; }
+}
+@media (max-width: 768px) {
+  .container-fluid { padding-inline: 16px; }
+  .editor-grid { padding: 12px 12px 24px; }
+  .et-actions { width: 100%; }
+  .et-actions .select { width: 100%; min-width: 0; }
+  .et-actions .btn { flex: 1; }
+  .pane-hint { display: none; }
+}

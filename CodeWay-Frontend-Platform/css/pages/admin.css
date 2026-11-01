@@ -1,0 +1,27 @@
+/* ==========================================================
+   لوحة الإدارة — واجهة عملية (جداول، فلاتر، أزرار إجراءات)
+   ========================================================== */
+body[data-section="admin"] { background: #F1F5F9; }
+.admin-brand { display: flex; align-items: center; gap: 10px; padding: 8px 10px 16px; margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,.08); color: #fff; }
+.admin-brand > .ic { width: 36px; height: 36px; padding: 8px; border-radius: 10px; background: var(--c-primary); }
+.admin-brand strong { display: block; font-size: .95rem; }
+.admin-brand small { color: #94A3B8; font-size: .76rem; }
+.app-side.dark h2 { color: #64748B; }
+.admin-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--sp-5); }
+.dash-h { display: flex; align-items: center; gap: 8px; font-size: 1rem; }
+.dash-h .ic { color: var(--c-primary); }
+.row-list li { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-top: 1px solid var(--c-border); }
+.row-list li:first-child { border-top: 0; }
+.row-list strong { display: block; font-size: .92rem; }
+.row-list small { color: var(--c-muted); font-size: .8rem; }
+.table input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--c-primary); }
+.table td .empty-state { border: 0; }
+.app-main-head .breadcrumb { font-size: .82rem; }
+
+@media (max-width: 768px) {
+  .app-main .grid-4 { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .app-main .stat-card { flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px; }
+}
+@media (max-width: 1024px) {
+  .admin-grid { grid-template-columns: 1fr; }
+}

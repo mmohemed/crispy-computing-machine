@@ -1,0 +1,68 @@
+/* ==========================================================
+   CodeWay — التجاوب العام (يُحمَّل بعد ملفات الصفحات)
+   نقاط التوقف: 1180 / 1024 / 768 / 480
+   ========================================================== */
+@media (max-width: 1360px) {
+  .user-btn .user-name { display: none; }
+  .search-trigger { min-width: 0; }
+  .search-trigger .st-label { display: none; }
+}
+
+@media (max-width: 1180px) {
+  .nav-link { padding: 8px 8px; font-size: .9rem; }
+  .search-trigger { min-width: 0; }
+  .search-trigger .st-label, .search-trigger .kbd { display: none; }
+  .grid-4 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .footer-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .footer-about { grid-column: 1 / -1; }
+}
+
+@media (max-width: 1024px) {
+  .main-nav, .header-actions .hide-md { display: none; }
+  .menu-toggle { display: grid; }
+  .search-trigger .st-label { display: none; }
+  .with-sidebar { grid-template-columns: 1fr; }
+  .sticky-side { position: static; }
+  .grid-3, .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* واجهة التطبيق: القائمة الجانبية تصبح درجاً */
+  .app-shell { grid-template-columns: 1fr; }
+  .app-side {
+    position: fixed; top: var(--header-h); inset-inline-start: 0; z-index: 95; width: 280px; height: calc(100vh - var(--header-h));
+    transform: translateX(100%); transition: transform var(--t) var(--ease); box-shadow: var(--sh-lg);
+  }
+  .app-side.open { transform: none; }
+  .btn.side-toggle { display: inline-flex; }
+  .app-main { padding: var(--sp-6); }
+  .side-scrim { position: fixed; inset: var(--header-h) 0 0 0; z-index: 94; background: rgba(15, 23, 42, .4); }
+}
+
+@media (max-width: 768px) {
+  :root { --header-h: 62px; }
+  .container { padding-inline: var(--sp-4); }
+  .section { padding-block: var(--sp-16); }
+  .section-sm { padding-block: var(--sp-10); }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .grid-auto { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-8) var(--sp-5); }
+  .page-head { padding-block: var(--sp-8) var(--sp-6); }
+  .cta-band { padding: var(--sp-8) var(--sp-5); border-radius: var(--r-xl); }
+  .cta-band .actions, .cta-band .actions .btn { width: 100%; }
+  .pager-nav { grid-template-columns: 1fr; }
+  .pager-link.next { grid-column: auto; }
+  .modal { padding-top: 6vh; }
+  .brand-name { font-size: 1.15rem; }
+  .brand img { width: 32px; height: 32px; }
+  .app-main { padding: var(--sp-5) var(--sp-4); }
+  .user-btn .user-name { display: none; }
+  .mega { grid-template-columns: 1fr; min-width: 0; }
+  .toolbar .search-bar { min-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .btn-lg { min-height: 50px; padding: 0 18px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .tool-card { padding: 12px; }
+  .to-top { left: 14px; bottom: 14px; }
+}

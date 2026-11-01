@@ -1,0 +1,81 @@
+/* ==========================================================
+   صفحات اللغة — تصميم تعليمي يعرض المعلومات والوحدات والمشاريع والموارد
+   لون اللغة يُمرَّر عبر المتغير --brand
+   ========================================================== */
+.lang-hero {
+  position: relative; overflow: hidden; isolation: isolate;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 9%, #fff), var(--c-surface) 85%);
+  border-bottom: 1px solid var(--c-border); padding-block: var(--sp-8) 0;
+}
+.lang-hero::before {
+  content: attr(data-mono); position: absolute; z-index: -1; inset-inline-start: -10px; top: -40px;
+  font-family: var(--font-mono); font-weight: 700; font-size: 220px; line-height: 1; color: var(--brand); opacity: .06; direction: ltr;
+}
+.lang-hero .hero-main { display: flex; align-items: center; gap: 22px; margin-top: var(--sp-6); }
+.lang-hero h1 { font-size: var(--fs-2xl); }
+.lang-hero .lead { color: var(--c-text-2); margin-top: 4px; font-size: 1.05rem; max-width: 640px; }
+.lang-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: var(--sp-5); }
+.lang-meta .badge { padding: 6px 12px; font-size: .8rem; background: var(--c-surface); border: 1px solid var(--c-border); }
+.lang-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: var(--sp-6); }
+.lang-hero .tabs-line { margin-top: var(--sp-8); border-bottom: 0; }
+.lang-hero .tabs-line .tab.active { border-bottom-color: var(--brand); color: var(--c-text); }
+
+.lang-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--sp-8); padding-block: var(--sp-10) var(--sp-16); align-items: start; }
+.lang-section { margin-bottom: var(--sp-10); }
+.lang-section:last-child { margin-bottom: 0; }
+
+.find-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.find-item { display: flex; gap: 12px; padding: 16px; border-radius: var(--r-md); background: var(--c-surface); border: 1px solid var(--c-border); }
+.find-item .icon-tile { background: color-mix(in srgb, var(--brand) 10%, #fff); color: var(--brand-ink, var(--brand)); }
+.find-item strong { display: block; font-size: .95rem; }
+.find-item span { font-size: .85rem; color: var(--c-muted); }
+
+/* قائمة الوحدات */
+.module-list { display: grid; gap: 10px; }
+.module-list .acc-btn .m-n { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; background: color-mix(in srgb, var(--brand) 12%, #fff); color: var(--brand-ink, var(--brand)); font-weight: 800; font-size: .9rem; }
+.module-list .acc-btn .m-sub { display: block; font-size: .8rem; color: var(--c-muted); font-weight: 500; }
+.module-list .lesson-list { border-top: 1px solid var(--c-border); }
+.module-list .acc-body { padding: 0; }
+.module-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--c-border); background: var(--c-bg); border-radius: 0 0 var(--r-lg) var(--r-lg); flex-wrap: wrap; }
+
+/* بطاقات الوحدات (صفحة الوحدات) */
+.module-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.module-card { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.module-card .head { display: flex; align-items: center; gap: 12px; }
+.module-card .m-n { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: color-mix(in srgb, var(--brand) 12%, #fff); color: var(--brand-ink, var(--brand)); font-weight: 800; }
+.module-card h3 { font-size: 1.02rem; }
+.module-card .lesson-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.module-card .foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; gap: 10px; }
+
+/* صفحة الدروس: قائمة الوحدات الجانبية */
+.module-nav { padding: 8px; }
+.module-nav a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--r-sm); font-size: .9rem; color: var(--c-text-2); }
+.module-nav a:hover { background: var(--c-bg); }
+.module-nav a.active { background: color-mix(in srgb, var(--brand) 10%, #fff); color: var(--c-text); font-weight: 700; }
+.module-nav a .n { width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; font-size: .75rem; font-weight: 800; background: var(--c-surface-2); flex: none; }
+.module-nav a.active .n { background: var(--brand); color: var(--brand-fg, #fff); }
+
+/* الشريط الجانبي */
+.side-card { padding: var(--sp-5); margin-bottom: var(--sp-4); }
+.side-card h2 { font-size: 1rem; margin-bottom: var(--sp-3); display: flex; align-items: center; gap: 8px; }
+.side-card h2 .ic { color: var(--c-primary); }
+.side-card .meta-list li { justify-content: space-between; }
+.side-card .meta-list li span:first-child { display: flex; align-items: center; gap: 8px; color: var(--c-muted); }
+.doc-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--r-sm); border: 1px solid var(--c-border); font-size: .88rem; font-weight: 700; margin-top: 8px; transition: border-color var(--t-fast), color var(--t-fast); }
+.doc-link:hover { border-color: var(--c-primary); color: var(--c-primary); }
+.doc-link .ic:last-child { margin-inline-start: auto; color: var(--c-muted); }
+
+.practice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.practice-card { padding: 18px; display: flex; gap: 14px; align-items: flex-start; }
+.practice-card h3 { font-size: 1rem; }
+.practice-card p { font-size: .85rem; color: var(--c-muted); margin-top: 4px; }
+
+@media (max-width: 1024px) {
+  .lang-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .lang-hero .hero-main { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .lang-hero::before { font-size: 140px; }
+  .find-grid, .module-cards, .practice-grid { grid-template-columns: 1fr; }
+  .lang-actions .btn { flex: 1; }
+}
