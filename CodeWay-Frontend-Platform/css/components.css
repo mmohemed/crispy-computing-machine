@@ -369,7 +369,7 @@ a.tag:hover { border-color: var(--c-primary); color: var(--c-primary); }
 .page-btn:disabled { opacity: .45; cursor: not-allowed; }
 
 /* ---------- الجداول ---------- */
-.table-wrap { overflow-x: auto; border: 1px solid var(--c-border); border-radius: var(--r-lg); background: var(--c-surface); }
+.table-wrap { position: relative; overflow-x: auto; border: 1px solid var(--c-border); border-radius: var(--r-lg); background: var(--c-surface); }
 .table { width: 100%; font-size: .92rem; min-width: 640px; }
 .table th { text-align: start; font-size: .8rem; color: var(--c-muted); font-weight: 700; padding: 12px 16px; background: var(--c-bg); border-bottom: 1px solid var(--c-border); white-space: nowrap; }
 .table td { padding: 12px 16px; border-bottom: 1px solid var(--c-border); vertical-align: middle; }

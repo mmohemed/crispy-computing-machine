@@ -66,3 +66,14 @@
   .tool-card { padding: 12px; }
   .to-top { left: 14px; bottom: 14px; }
 }
+
+/* ---------- حماية عامة من التمرير الأفقي ----------
+   عناصر الشبكات لا تتجاوز أعمدتها (الكود والروابط الطويلة)،
+   والقوائم الجانبية المخفية خارج الشاشة لا تُنشئ تمريراً أفقياً */
+html, body { overflow-x: clip; }
+.grid > *, .result-grid > *, .with-sidebar > *, .app-shell > *,
+[class$="-layout"] > *, [class*="-layout "] > *, .ex-grid > *, .editor-grid > *, .dash-grid > *, .admin-grid > * { min-width: 0; }
+@media (max-width: 1024px) {
+  .app-side:not(.open), .lesson-side:not(.open) { visibility: hidden; }
+  .app-side, .lesson-side { transition: transform var(--t) var(--ease), visibility var(--t); }
+}
