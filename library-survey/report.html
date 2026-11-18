@@ -1,0 +1,398 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<title>تقرير تحليل استبيان المكتبات والمصادر المفتوحة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+* { box-sizing: border-box; }
+body { font-family: 'Noto Naskh Arabic', serif; color: #222; font-size: 11.5pt; line-height: 1.75; margin: 0; background: #fff; }
+h1, h2, h3, .tv, .fn, th { font-family: 'Cairo', sans-serif; }
+h2 { color: #1f6f8b; font-size: 16pt; border-bottom: 2px solid #1f6f8b; padding-bottom: 4px; margin: 22px 0 10px; break-after: avoid; }
+h3 { font-size: 12pt; margin: 0 0 8px; color: #1d2b33; }
+.fn { background: #1f6f8b; color: #fff; border-radius: 4px; padding: 0 8px; font-size: 10pt; margin-left: 6px; }
+p { margin: 6px 0; text-align: justify; }
+.cover { height: 262mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; break-after: page; padding: 10mm 0; }
+.cover .top div { font-family: 'Cairo'; font-size: 13pt; line-height: 2; }
+.cover h1 { font-size: 24pt; color: #1f6f8b; margin: 0 0 10px; line-height: 1.5; }
+.cover .subt { font-family: 'Cairo'; font-size: 14pt; color: #555; }
+.cover .band { border-top: 3px solid #e0a43a; border-bottom: 3px solid #e0a43a; padding: 26px 10px; }
+.cover table { margin: 0 auto; font-size: 13pt; border-collapse: collapse; }
+.cover td { padding: 6px 14px; text-align: right; }
+.cover td:first-child { font-family: 'Cairo'; font-weight: 700; color: #1f6f8b; }
+.fig { border: 1px solid #dfe6ea; border-radius: 8px; padding: 12px 14px; margin: 12px 0; break-inside: avoid; }
+.chart { margin: 6px 0 4px; }
+.comment { background: #f4f8fa; border-right: 4px solid #1f6f8b; padding: 8px 12px; border-radius: 4px; text-align: justify; font-size: 11pt; }
+.note { font-size: 9.5pt; color: #666; margin: 2px 0 6px; }
+.hbars { display: flex; flex-direction: column; gap: 5px; }
+.hrow { display: grid; grid-template-columns: 38% 1fr 78px; align-items: center; gap: 8px; font-size: 10.5pt; }
+.hl { line-height: 1.35; }
+.track { background: #eef2f4; height: 18px; border-radius: 3px; overflow: hidden; }
+.bar { background: #9bb7c4; height: 100%; border-radius: 3px; }
+.bar.top { background: #1f6f8b; }
+.hv { font-family: 'Cairo'; font-weight: 700; font-size: 10pt; }
+.hv small { font-weight: 400; color: #666; }
+.vbars { display: flex; align-items: flex-end; justify-content: space-around; gap: 6px; border-bottom: 1px solid #bbb; padding: 0 6px; margin-bottom: 40px; }
+.vcol { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; max-width: 90px; }
+.vb { width: 70%; background: #9bb7c4; border-radius: 3px 3px 0 0; }
+.vb.top { background: #1f6f8b; }
+.vval { font-family: 'Cairo'; font-weight: 700; font-size: 10pt; text-align: center; line-height: 1.2; margin-bottom: 3px; }
+.vval small { font-weight: 400; color: #666; font-size: 8.5pt; }
+.vlab { position: absolute; bottom: -38px; font-size: 9.5pt; text-align: center; line-height: 1.25; width: 100%; }
+.donutwrap { display: flex; align-items: center; gap: 28px; padding: 4px 10px; }
+.donut { width: 130px; height: 130px; border-radius: 50%; position: relative; flex: none; }
+.hole { position: absolute; inset: 30px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cairo'; font-weight: 700; color: #444; }
+.legend .lg { margin: 3px 0; font-size: 10.5pt; }
+.sw { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin: 0 4px 0 6px; vertical-align: middle; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.two .hrow { grid-template-columns: 42% 1fr 70px; }
+.sub { font-family: 'Cairo'; font-weight: 600; font-size: 10.5pt; color: #555; margin-bottom: 4px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin: 4px 0 10px; }
+.tile { background: #f4f8fa; border-radius: 6px; padding: 6px 8px; text-align: center; }
+.tv { font-size: 15pt; font-weight: 700; color: #1f6f8b; line-height: 1.4; }
+.tl { font-size: 9.5pt; color: #555; line-height: 1.35; }
+.glegend { font-size: 10pt; margin: 4px 0 8px; }
+.gbars { display: flex; align-items: flex-end; justify-content: space-around; height: 175px; border-bottom: 1px solid #bbb; margin-bottom: 40px; padding: 0 6px; }
+.gcol { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+.gpair { display: flex; align-items: flex-end; gap: 3px; }
+.gb { width: 24px; border-radius: 3px 3px 0 0; position: relative; min-height: 1px; }
+.gb span { position: absolute; top: -18px; width: 100%; text-align: center; font-family: 'Cairo'; font-size: 9pt; font-weight: 700; }
+.gb.lib { background: #1f6f8b; } .gb.dig { background: #e0a43a; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 10pt; margin: 8px 0; }
+.tbl th { background: #1f6f8b; color: #fff; font-weight: 600; padding: 5px 6px; }
+.tbl td { border: 1px solid #dfe6ea; padding: 4px 6px; text-align: center; }
+.tbl td.tx { text-align: right; }
+.tbl tr:nth-child(even) td { background: #f7fafb; }
+.tbl tr.tot td { background: #fdf3e1; font-weight: 700; }
+.likert { display: flex; flex-direction: column; gap: 6px; }
+.lrow { display: grid; grid-template-columns: 44% 1fr 40px; gap: 8px; align-items: center; font-size: 10pt; }
+.ll { line-height: 1.35; }
+.lbar { display: flex; height: 20px; border-radius: 3px; overflow: hidden; }
+.seg { display: flex; align-items: center; justify-content: center; font-family: 'Cairo'; font-size: 8.5pt; font-weight: 700; color: #222; }
+.lm { font-family: 'Cairo'; font-weight: 700; color: #1f6f8b; }
+ul, ol { margin: 4px 0; padding-right: 22px; }
+li { margin: 3px 0; text-align: justify; }
+.box { border: 1px solid #e0a43a; background: #fffaf0; border-radius: 8px; padding: 10px 14px; margin: 10px 0; break-inside: avoid; }
+.ltr { direction: ltr; unicode-bidi: embed; font-family: monospace; font-size: 9pt; word-break: break-all; }
+</style></head><body>
+
+<div class="cover">
+  <div class="top">
+    <div>الجامعة: ....................................................</div>
+    <div>الكلية / القسم: ....................................................</div>
+  </div>
+  <div class="band">
+    <div class="subt">مشروع تطبيقي في مقرر تحليل وعرض البيانات</div>
+    <h1>مدى الاستفادة من المكتبات<br>والمصادر المفتوحة</h1>
+    <div class="subt">دراسة استطلاعية على عينة من طلاب الجامعة</div>
+  </div>
+  <table>
+    <tr><td>إعداد الطالب:</td><td>محمد عبدالإله عبدالله قريع</td></tr>
+    <tr><td>إشراف:</td><td>.............................................</td></tr>
+    <tr><td>أداة الدراسة:</td><td>استبيان إلكتروني (Google Forms)</td></tr>
+    <tr><td>حجم العينة:</td><td>17 طالباً وطالبة</td></tr>
+    <tr><td>التاريخ:</td><td>نوفمبر 2026م</td></tr>
+  </table>
+</div>
+
+<h2>أولاً: مقدمة</h2>
+<p>تُعدّ المكتبة الجامعية من الركائز الأساسية للعملية التعليمية والبحثية، غير أن الانتشار الواسع للإنترنت وقواعد البيانات الرقمية والمكتبات المفتوحة،
+ثم ظهور أدوات الذكاء الاصطناعي، غيّر طريقة وصول الطلاب إلى المعلومة. ومن هنا جاءت هذه الدراسة لقياس مدى استفادة طلاب الجامعة من المكتبة الجامعية
+مقارنةً بالمصادر الرقمية المفتوحة، والتعرّف على العوائق التي تحدّ من هذه الاستفادة.</p>
+
+<h2>ثانياً: أهداف الدراسة</h2>
+<ol>
+<li>معرفة معدل زيارة طلاب الجامعة للمكتبة الجامعية والأغراض الرئيسية للزيارة.</li>
+<li>قياس مدى اعتماد الطلاب على المصادر الرقمية وقواعد البيانات والأبحاث المفتوحة مقارنةً بالمكتبة الورقية.</li>
+<li>تقييم رضا الطلاب عن خدمات المكتبة الجامعية (المراجع، والأوقات، والبيئة، والموظفين).</li>
+<li>الكشف عن العوائق التي تحدّ من الاستفادة من المكتبة ومن المصادر الرقمية.</li>
+<li>الخروج بتوصيات عملية لتحسين الاستفادة من المكتبات والمصادر المفتوحة.</li>
+</ol>
+
+<h2>ثالثاً: منهجية الدراسة</h2>
+<ul>
+<li><b>المنهج:</b> المنهج الوصفي التحليلي.</li>
+<li><b>أداة الدراسة:</b> استبيان إلكتروني صُمّم باستخدام <b>Google Forms</b>، ويتكون من 25 سؤالاً موزعة على خمسة أقسام: البيانات الديموغرافية،
+والمكتبة الجامعية، والمصادر الرقمية، ومقياس ليكرت الخماسي (9 عبارات)، والتقييم العام والمقترحات.</li>
+<li><b>رابط الاستبيان:</b> <span class="ltr">https://docs.google.com/forms/d/1LvG_woTdzcE-y2oRDjR6O0mFDQVEGVKYChtvaxVbPVs/viewform</span></li>
+<li><b>أنواع المتغيرات:</b> متغيرات اسمية (الجنس، والتخصص، والأغراض، والأسباب)، وترتيبية (المستوى، والمعدل، ومعدل الزيارة، وعبارات ليكرت)، وكمية (عدد الساعات، والتقييم من 10).</li>
+<li><b>العينة وفترة جمع البيانات:</b> 17 استجابة جُمعت إلكترونياً خلال الفترة من 9 إلى 12 نوفمبر 2026م.</li>
+<li><b>المعالجة الإحصائية:</b> صُدّرت الاستجابات من Google Sheets، وحُسبت التكرارات والنسب المئوية، والمتوسط الحسابي، والوسيط، والانحراف المعياري،
+واستُخدمت المخططات المناسبة لكل نوع من المتغيرات: الدائرية للمتغيرات الاسمية قليلة الفئات، والأعمدة للمتغيرات الترتيبية والكمية، والأعمدة الأفقية المرتبة
+للأسئلة متعددة الخيارات، والأعمدة المكدسة لمقياس ليكرت.</li>
+</ul>
+
+<h2>رابعاً: خصائص عينة الدراسة</h2>
+
+<section class="fig">
+  <h3><span class="fn">شكل 1</span> توزيع أفراد العينة حسب الجنس</h3>
+  <div class="chart"><div class="donutwrap"><div class="donut" style="background:conic-gradient(#1f6f8b 0.00deg 338.82deg,#e0a43a 338.82deg 360.00deg)">
+<div class="hole">ن = 17</div></div><div class="legend"><div class="lg"><span class="sw" style="background:#1f6f8b"></span>ذكر: <b>16</b> (94.1%)</div><div class="lg"><span class="sw" style="background:#e0a43a"></span>أنثى: <b>1</b> (5.9%)</div></div></div></div>
+  
+  <div class="comment"><b>التحليل:</b> يغلب الذكور على العينة بنسبة 94.1% (16 طالباً) مقابل طالبة واحدة (5.9%)، لذلك لا يمكن إجراء مقارنة ذات دلالة بين الجنسين، وتعبّر النتائج أساساً عن آراء الطلاب الذكور.</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 2</span> توزيع أفراد العينة حسب المستوى الدراسي والتخصص</h3>
+  <div class="chart"><div class="two"><div><div class="sub">المستوى الدراسي</div><div class="hbars"><div class="hrow"><div class="hl">المستوى الأول</div>
+<div class="track"><div class="bar" style="width:0.0%"></div></div>
+<div class="hv">0 <small>(0.0%)</small></div></div><div class="hrow"><div class="hl">المستوى الثاني</div>
+<div class="track"><div class="bar" style="width:0.0%"></div></div>
+<div class="hv">0 <small>(0.0%)</small></div></div><div class="hrow"><div class="hl">المستوى الثالث</div>
+<div class="track"><div class="bar" style="width:0.0%"></div></div>
+<div class="hv">0 <small>(0.0%)</small></div></div><div class="hrow"><div class="hl">المستوى الرابع</div>
+<div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">16 <small>(94.1%)</small></div></div><div class="hrow"><div class="hl">المستوى الخامس فأعلى</div>
+<div class="track"><div class="bar" style="width:6.2%"></div></div>
+<div class="hv">1 <small>(5.9%)</small></div></div></div></div><div><div class="sub">الكلية / مجال التخصص</div><div class="hbars"><div class="hrow"><div class="hl">الهندسة وتقنية المعلومات</div>
+<div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">16 <small>(94.1%)</small></div></div><div class="hrow"><div class="hl">أخرى</div>
+<div class="track"><div class="bar" style="width:6.2%"></div></div>
+<div class="hv">1 <small>(5.9%)</small></div></div></div></div></div></div>
+  
+  <div class="comment"><b>التحليل:</b> تتركز العينة في المستوى الرابع (94.1%) وفي كلية الهندسة وتقنية المعلومات (94.1%). هذا التجانس يجعل العينة ممثلة جيداً لطلاب المستوى الرابع في الهندسة وتقنية المعلومات، لكنه لا يسمح بمقارنة المستويات أو التخصصات المختلفة، ولا بتعميم النتائج على جميع طلاب الجامعة.</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 3</span> توزيع أفراد العينة حسب المعدل التراكمي</h3>
+  <div class="chart"><div class="vbars" style="height:240px"><div class="vcol"><div class="vval">0<br><small>0.0%</small></div>
+<div class="vb" style="height:0px"></div><div class="vlab">مقبول</div></div><div class="vcol"><div class="vval">4<br><small>23.5%</small></div>
+<div class="vb" style="height:86px"></div><div class="vlab">جيد</div></div><div class="vcol"><div class="vval">6<br><small>35.3%</small></div>
+<div class="vb" style="height:129px"></div><div class="vlab">جيد جداً</div></div><div class="vcol"><div class="vval">7<br><small>41.2%</small></div>
+<div class="vb top" style="height:150px"></div><div class="vlab">ممتاز</div></div></div></div>
+  
+  <div class="comment"><b>التحليل:</b> يتمتع أفراد العينة بمستوى أكاديمي مرتفع؛ إذ إن 41.2% معدلهم «ممتاز» و35.3% «جيد جداً»، أي أن 76.5% من العينة معدلهم جيد جداً فأعلى، ولا يوجد أي طالب بتقدير «مقبول».</div>
+</section>
+<h2>خامساً: نتائج محور المكتبة الجامعية</h2>
+
+<section class="fig">
+  <h3><span class="fn">شكل 4</span> معدل زيارة المكتبة الجامعية</h3>
+  <div class="chart"><div class="vbars" style="height:240px"><div class="vcol"><div class="vval">1<br><small>5.9%</small></div>
+<div class="vb" style="height:30px"></div><div class="vlab">يومياً</div></div><div class="vcol"><div class="vval">5<br><small>29.4%</small></div>
+<div class="vb top" style="height:150px"></div><div class="vlab">عدة مرات في الأسبوع</div></div><div class="vcol"><div class="vval">2<br><small>11.8%</small></div>
+<div class="vb" style="height:60px"></div><div class="vlab">مرة في الأسبوع</div></div><div class="vcol"><div class="vval">4<br><small>23.5%</small></div>
+<div class="vb" style="height:120px"></div><div class="vlab">مرة في الشهر</div></div><div class="vcol"><div class="vval">4<br><small>23.5%</small></div>
+<div class="vb" style="height:120px"></div><div class="vlab">نادراً</div></div><div class="vcol"><div class="vval">1<br><small>5.9%</small></div>
+<div class="vb" style="height:30px"></div><div class="vlab">لا أزورها أبداً</div></div></div></div>
+  
+  <div class="comment"><b>التحليل:</b> الإجابة الأكثر تكراراً هي «عدة مرات في الأسبوع» (29.4%). وعند تجميع الفئات يتبيّن أن 47.1% من الطلاب يزورون المكتبة أسبوعياً على الأقل، مقابل 23.5% يزورونها مرة في الشهر، و29.4% نادراً ما يزورونها أو لا يزورونها أبداً. أي أن العينة منقسمة تقريباً إلى نصفين: نصف منتظم في الزيارة ونصف قليل الارتباط بالمكتبة.</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 5</span> المقارنة الأساسية: ساعات المكتبة الجامعية مقابل ساعات المصادر الرقمية أسبوعياً</h3>
+  <div class="chart"><div class="tiles"><div class="tile"><div class="tv">1 ساعة</div><div class="tl">وسيط ساعات المكتبة أسبوعياً</div></div><div class="tile"><div class="tv">3 ساعات</div><div class="tl">وسيط ساعات المصادر الرقمية أسبوعياً</div></div><div class="tile"><div class="tv">13 من 17</div><div class="tl">طالباً يقضون وقتاً أطول مع المصادر الرقمية</div></div><div class="tile"><div class="tv">14 من 17</div><div class="tl">طالباً يقضون ساعتين أو أقل في المكتبة</div></div></div><div class="glegend"><span class="sw" style="background:#1f6f8b"></span>المكتبة الجامعية (س6)<span class="sw" style="background:#e0a43a"></span>المصادر الرقمية (س9)</div><div class="gbars"><div class="gcol"><div class="gpair">
+<div class="gb lib" style="height:52px"><span>3</span></div>
+<div class="gb dig" style="height:18px"><span>1</span></div></div>
+<div class="vlab">صفر</div></div><div class="gcol"><div class="gpair">
+<div class="gb lib" style="height:52px"><span>3</span></div>
+<div class="gb dig" style="height:0px"><span>0</span></div></div>
+<div class="vlab">أقل من ساعة</div></div><div class="gcol"><div class="gpair">
+<div class="gb lib" style="height:140px"><span>8</span></div>
+<div class="gb dig" style="height:122px"><span>7</span></div></div>
+<div class="vlab">1–2 ساعة</div></div><div class="gcol"><div class="gpair">
+<div class="gb lib" style="height:18px"><span>1</span></div>
+<div class="gb dig" style="height:88px"><span>5</span></div></div>
+<div class="vlab">3–5 ساعات</div></div><div class="gcol"><div class="gpair">
+<div class="gb lib" style="height:0px"><span>0</span></div>
+<div class="gb dig" style="height:35px"><span>2</span></div></div>
+<div class="vlab">6–10 ساعات</div></div><div class="gcol"><div class="gpair">
+<div class="gb lib" style="height:35px"><span>2</span></div>
+<div class="gb dig" style="height:35px"><span>2</span></div></div>
+<div class="vlab">أكثر من 10</div></div></div><table class="tbl"><tr><th>المقياس</th><th>المتوسط</th><th>الوسيط</th><th>الانحراف المعياري</th><th>أقل قيمة</th><th>أعلى قيمة</th></tr>
+<tr><td>ساعات المكتبة أسبوعياً (س6)</td><td>4.46</td><td>1</td><td>9.69</td><td>0</td><td>30</td></tr>
+<tr><td>ساعات المصادر الرقمية أسبوعياً (س9)</td><td>4.88</td><td>3</td><td>5.46</td><td>0</td><td>20</td></tr></table></div>
+  <div class="note">ملاحظة: القيم في الأعمدة هي عدد الطلاب في كل فئة زمنية.</div>
+  <div class="comment"><b>التحليل:</b> هذه هي المقارنة الجوهرية في الدراسة. يبلغ وسيط الوقت في المكتبة ساعة واحدة فقط أسبوعياً، مقابل 3 ساعات للمصادر الرقمية، و13 طالباً من 17 (76.5%) يقضون وقتاً مع المصادر الرقمية أطول من وقتهم في المكتبة. أما متوسط ساعات المكتبة (4.46) فهو مضلل؛ لأن طالبين فقط ذكرا 30 ساعة أسبوعياً (قيم متطرفة)، وبدونهما ينخفض المتوسط إلى 1.05 ساعة تقريباً، ولهذا اعتمدنا الوسيط مقياساً أدق. والخلاصة أن المصادر الرقمية أصبحت المصدر الرئيسي لوقت الدراسة، وأن المكتبة تحتل موقعاً ثانوياً لدى أغلب الطلاب.</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 6</span> الأغراض الرئيسية لزيارة المكتبة (سؤال متعدد الإجابات)</h3>
+  <div class="chart"><div class="hbars"><div class="hrow"><div class="hl">استعارة الكتب والمراجع</div>
+<div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">8 <small>(47.1%)</small></div></div><div class="hrow"><div class="hl">المذاكرة في مكان هادئ</div>
+<div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">8 <small>(47.1%)</small></div></div><div class="hrow"><div class="hl">البحث عن مراجع للتكليفات والأبحاث</div>
+<div class="track"><div class="bar" style="width:75.0%"></div></div>
+<div class="hv">6 <small>(35.3%)</small></div></div><div class="hrow"><div class="hl">العمل الجماعي مع الزملاء</div>
+<div class="track"><div class="bar" style="width:75.0%"></div></div>
+<div class="hv">6 <small>(35.3%)</small></div></div><div class="hrow"><div class="hl">استخدام الحواسيب أو الإنترنت</div>
+<div class="track"><div class="bar" style="width:37.5%"></div></div>
+<div class="hv">3 <small>(17.6%)</small></div></div><div class="hrow"><div class="hl">لا أزور المكتبة</div>
+<div class="track"><div class="bar" style="width:12.5%"></div></div>
+<div class="hv">1 <small>(5.9%)</small></div></div></div></div>
+  <div class="note">النسب محسوبة من إجمالي عدد الطلاب (17)، ومجموعها يتجاوز 100% لأن الطالب يمكنه اختيار أكثر من غرض.</div>
+  <div class="comment"><b>التحليل:</b> يتساوى غرضا «استعارة الكتب والمراجع» و«المذاكرة في مكان هادئ» في المرتبة الأولى بنسبة 47.1% لكل منهما، يليهما «البحث عن مراجع للتكليفات» و«العمل الجماعي مع الزملاء» بنسبة 35.3% لكل منهما. ويدل ذلك على أن المكتبة لم تعد مكاناً للكتب فقط، بل صارت تُستخدم بالقدر نفسه مكاناً للمذاكرة والعمل الجماعي. في المقابل، استخدام حواسيب المكتبة وإنترنتها هو الأقل (17.6%).</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 7</span> السبب الرئيسي الذي يحدّ من زيارة المكتبة</h3>
+  <div class="chart"><div class="hbars"><div class="hrow"><div class="hl">توفّر البديل الرقمي على الإنترنت</div>
+<div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">6 <small>(35.3%)</small></div></div><div class="hrow"><div class="hl">قلة المراجع الحديثة في تخصصي</div>
+<div class="track"><div class="bar" style="width:66.7%"></div></div>
+<div class="hv">4 <small>(23.5%)</small></div></div><div class="hrow"><div class="hl">لا يوجد ما يحدّ من زيارتي</div>
+<div class="track"><div class="bar" style="width:33.3%"></div></div>
+<div class="hv">2 <small>(11.8%)</small></div></div><div class="hrow"><div class="hl">عدم ملاءمة أوقات الدوام</div>
+<div class="track"><div class="bar" style="width:33.3%"></div></div>
+<div class="hv">2 <small>(11.8%)</small></div></div><div class="hrow"><div class="hl">ازدحام المكتبة أو عدم راحة المكان</div>
+<div class="track"><div class="bar" style="width:16.7%"></div></div>
+<div class="hv">1 <small>(5.9%)</small></div></div><div class="hrow"><div class="hl">عدم معرفة طريقة البحث داخل المكتبة</div>
+<div class="track"><div class="bar" style="width:16.7%"></div></div>
+<div class="hv">1 <small>(5.9%)</small></div></div><div class="hrow"><div class="hl">ضيق الوقت بسبب المحاضرات</div>
+<div class="track"><div class="bar" style="width:16.7%"></div></div>
+<div class="hv">1 <small>(5.9%)</small></div></div></div></div>
+  
+  <div class="comment"><b>التحليل:</b> يأتي «توفّر البديل الرقمي على الإنترنت» في المقدمة بنسبة 35.3%، يليه «قلة المراجع الحديثة في التخصص» بنسبة 23.5%. هذان السببان معاً يفسّران 58.8% من الإجابات، ويرتبطان ببعضهما: فعندما لا تجد المراجع الحديثة في المكتبة يتجه الطالب إلى الإنترنت. أما الأسباب التنظيمية (أوقات الدوام، والازدحام، وضيق الوقت) فتأثيرها محدود، وطالبان فقط (11.8%) أفادا بعدم وجود ما يحدّ من زيارتهما.</div>
+</section>
+<h2>سادساً: نتائج محور المصادر الرقمية وقواعد البيانات المفتوحة</h2>
+
+<section class="fig">
+  <h3><span class="fn">شكل 8</span> المصادر الرقمية المستخدمة (سؤال متعدد الإجابات)</h3>
+  <div class="chart"><div class="hbars"><div class="hrow"><div class="hl">أدوات الذكاء الاصطناعي (مثل ChatGPT)</div>
+<div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">10 <small>(58.8%)</small></div></div><div class="hrow"><div class="hl">المكتبات الرقمية المفتوحة وكتب PDF المجانية</div>
+<div class="track"><div class="bar" style="width:90.0%"></div></div>
+<div class="hv">9 <small>(52.9%)</small></div></div><div class="hrow"><div class="hl">قنوات يوتيوب التعليمية</div>
+<div class="track"><div class="bar" style="width:70.0%"></div></div>
+<div class="hv">7 <small>(41.2%)</small></div></div><div class="hrow"><div class="hl">Google Scholar (الباحث العلمي)</div>
+<div class="track"><div class="bar" style="width:60.0%"></div></div>
+<div class="hv">6 <small>(35.3%)</small></div></div><div class="hrow"><div class="hl">المكتبة الرقمية أو قواعد البيانات الخاصة بالجامعة</div>
+<div class="track"><div class="bar" style="width:50.0%"></div></div>
+<div class="hv">5 <small>(29.4%)</small></div></div><div class="hrow"><div class="hl">ويكيبيديا</div>
+<div class="track"><div class="bar" style="width:30.0%"></div></div>
+<div class="hv">3 <small>(17.6%)</small></div></div><div class="hrow"><div class="hl">قواعد البيانات العربية (مثل المنهل ودار المنظومة)</div>
+<div class="track"><div class="bar" style="width:20.0%"></div></div>
+<div class="hv">2 <small>(11.8%)</small></div></div><div class="hrow"><div class="hl">ResearchGate</div>
+<div class="track"><div class="bar" style="width:10.0%"></div></div>
+<div class="hv">1 <small>(5.9%)</small></div></div></div></div>
+  <div class="note">النسب محسوبة من إجمالي عدد الطلاب (17)، ومجموعها يتجاوز 100% لأن الطالب يمكنه اختيار أكثر من مصدر.</div>
+  <div class="comment"><b>التحليل:</b> تتصدر <b>أدوات الذكاء الاصطناعي</b> قائمة المصادر بنسبة 58.8%، تليها المكتبات الرقمية المفتوحة وكتب PDF المجانية (52.9%)، ثم قنوات يوتيوب التعليمية (41.2%). في المقابل، تبقى المصادر العلمية المحكّمة أقل استخداماً: Google Scholar (35.3%)، والمكتبة الرقمية للجامعة (29.4%)، وقواعد البيانات العربية (11.8%)، وResearchGate (5.9%). أي أن الطلاب يفضّلون المصادر السريعة والعامة على قواعد البيانات الأكاديمية المتخصصة.</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 9</span> المصدر الذي يعتمد عليه الطالب أكثر في دراسته</h3>
+  <div class="chart"><div class="donutwrap"><div class="donut" style="background:conic-gradient(#1f6f8b 0.00deg 211.76deg,#e0a43a 211.76deg 296.47deg,#9bb7c4 296.47deg 360.00deg)">
+<div class="hole">ن = 17</div></div><div class="legend"><div class="lg"><span class="sw" style="background:#1f6f8b"></span>المصادر الرقمية بشكل أساسي: <b>10</b> (58.8%)</div><div class="lg"><span class="sw" style="background:#e0a43a"></span>كلاهما بالتساوي: <b>4</b> (23.5%)</div><div class="lg"><span class="sw" style="background:#9bb7c4"></span>المكتبة الجامعية (الكتب الورقية) بشكل أساسي: <b>3</b> (17.6%)</div></div></div></div>
+  
+  <div class="comment"><b>التحليل:</b> يعتمد 58.8% من الطلاب على المصادر الرقمية بشكل أساسي، مقابل 17.6% فقط يعتمدون على المكتبة الورقية بشكل أساسي، و23.5% يوازنون بينهما. هذه النتيجة تؤكد ما ظهر في مقارنة الساعات (شكل 5): المصادر الرقمية هي المرجع الأول للطلاب، والاعتماد على المكتبة الورقية وحدها أصبح محدوداً.</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 10</span> السبب الرئيسي لتفضيل المصدر</h3>
+  <div class="chart"><div class="hbars"><div class="hrow"><div class="hl">سهولة الوصول إليه في أي وقت</div>
+<div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">11 <small>(64.7%)</small></div></div><div class="hrow"><div class="hl">السرعة في الحصول على المعلومة</div>
+<div class="track"><div class="bar" style="width:27.3%"></div></div>
+<div class="hv">3 <small>(17.6%)</small></div></div><div class="hrow"><div class="hl">المجانية وعدم وجود تكلفة</div>
+<div class="track"><div class="bar" style="width:9.1%"></div></div>
+<div class="hv">1 <small>(5.9%)</small></div></div><div class="hrow"><div class="hl">حداثة المعلومات</div>
+<div class="track"><div class="bar" style="width:9.1%"></div></div>
+<div class="hv">1 <small>(5.9%)</small></div></div><div class="hrow"><div class="hl">توجيه أعضاء هيئة التدريس</div>
+<div class="track"><div class="bar" style="width:9.1%"></div></div>
+<div class="hv">1 <small>(5.9%)</small></div></div></div></div>
+  
+  <div class="comment"><b>التحليل:</b> تتفوق «سهولة الوصول في أي وقت» بفارق كبير (64.7%)، تليها «السرعة في الحصول على المعلومة» (17.6%). أما «الموثوقية والدقة العلمية» فلم يخترها أي طالب، كما لم يختر «توجيه أعضاء هيئة التدريس» إلا طالب واحد. يدل ذلك على أن اختيار المصدر مبني على الراحة والسرعة أكثر من الجودة العلمية، وهي نقطة تستحق الانتباه.</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 11</span> تلقّي تدريب على البحث في قواعد البيانات والمصادر العلمية</h3>
+  <div class="chart"><div class="donutwrap"><div class="donut" style="background:conic-gradient(#1f6f8b 0.00deg 254.12deg,#e0a43a 254.12deg 360.00deg)">
+<div class="hole">ن = 17</div></div><div class="legend"><div class="lg"><span class="sw" style="background:#1f6f8b"></span>نعم: <b>12</b> (70.6%)</div><div class="lg"><span class="sw" style="background:#e0a43a"></span>لا: <b>5</b> (29.4%)</div></div></div><table class="tbl"><tr><th>المؤشر</th><th>تلقّوا تدريباً (ن=12)</th><th>لم يتلقوا تدريباً (ن=5)</th></tr>
+<tr><td>متوسط ساعات المصادر الرقمية أسبوعياً</td><td>5.75</td><td>2.80</td></tr>
+<tr><td>متوسط التقييم العام للاستفادة من المكتبة (من 10)</td><td>5.25</td><td>4.20</td></tr>
+<tr><td>متوسط القدرة على تمييز المصدر الموثوق (من 5)</td><td>3.67</td><td>3.40</td></tr></table></div>
+  
+  <div class="comment"><b>التحليل:</b> أفاد 70.6% من الطلاب بأنهم تلقّوا تدريباً على البحث في قواعد البيانات، وهي نسبة جيدة تتناسب مع وجودهم في المستوى الرابع. وعند مقارنة المجموعتين يظهر أن المتدربين يستخدمون المصادر الرقمية ضعف الوقت تقريباً (5.75 ساعة مقابل 2.80)، ويقيّمون استفادتهم من المكتبة أعلى (5.25 مقابل 4.20). ومع ذلك فإن هذه الفروق مؤشرات أولية فقط، لأن مجموعة غير المتدربين صغيرة (5 طلاب).</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 12</span> أكبر عائق عند استخدام المصادر الرقمية</h3>
+  <div class="chart"><div class="hbars"><div class="hrow"><div class="hl">ضعف الإنترنت أو انقطاع الكهرباء</div>
+<div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">5 <small>(29.4%)</small></div></div><div class="hrow"><div class="hl">تكلفة باقات الإنترنت</div>
+<div class="track"><div class="bar" style="width:80.0%"></div></div>
+<div class="hv">4 <small>(23.5%)</small></div></div><div class="hrow"><div class="hl">كون كثير من الأبحاث باشتراكات مدفوعة</div>
+<div class="track"><div class="bar" style="width:80.0%"></div></div>
+<div class="hv">4 <small>(23.5%)</small></div></div><div class="hrow"><div class="hl">صعوبة اللغة الإنجليزية في المصادر</div>
+<div class="track"><div class="bar" style="width:40.0%"></div></div>
+<div class="hv">2 <small>(11.8%)</small></div></div><div class="hrow"><div class="hl">صعوبة التمييز بين المصدر الموثوق وغير الموثوق</div>
+<div class="track"><div class="bar" style="width:40.0%"></div></div>
+<div class="hv">2 <small>(11.8%)</small></div></div></div></div>
+  
+  <div class="comment"><b>التحليل:</b> يأتي «ضعف الإنترنت أو انقطاع الكهرباء» في المقدمة (29.4%)، يليه «تكلفة باقات الإنترنت» و«الاشتراكات المدفوعة للأبحاث» (23.5% لكل منهما). وعند جمع العوائق المرتبطة بالبنية التحتية والتكلفة يتبيّن أنها تمثّل 76.5% من الإجابات، مقابل 23.5% فقط لعوائق المهارات (اللغة الإنجليزية، والتمييز بين المصادر). ولم يختر أي طالب «لا توجد عوائق»، أي أن جميع أفراد العينة يواجهون عائقاً من نوع ما.</div>
+</section>
+<h2>سابعاً: نتائج مقياس ليكرت (تقييم الاستفادة)</h2>
+
+<section class="fig">
+  <h3><span class="fn">شكل 13</span> توزيع إجابات عبارات مقياس ليكرت</h3>
+  <div class="chart"><div class="glegend"><span class="sw" style="background:#1f6f8b"></span>أوافق بشدة<span class="sw" style="background:#8fb8cc"></span>أوافق<span class="sw" style="background:#d9d9d9"></span>محايد<span class="sw" style="background:#e3a08c"></span>لا أوافق<span class="sw" style="background:#b5523b"></span>لا أوافق بشدة</div><div class="likert"><div class="lrow"><div class="ll">15. توفّر المكتبة الجامعية مراجع حديثة وكافية في تخصصي.</div><div class="lbar"><div class="seg" style="width:5.88%;background:#1f6f8b">1</div><div class="seg" style="width:35.29%;background:#8fb8cc">6</div><div class="seg" style="width:41.18%;background:#d9d9d9">7</div><div class="seg" style="width:17.65%;background:#e3a08c">3</div><div class="seg" style="width:0.00%;background:#b5523b"></div></div><div class="lm">3.29</div></div><div class="lrow"><div class="ll">16. أوقات دوام المكتبة مناسبة لجدولي الدراسي.</div><div class="lbar"><div class="seg" style="width:17.65%;background:#1f6f8b">3</div><div class="seg" style="width:35.29%;background:#8fb8cc">6</div><div class="seg" style="width:35.29%;background:#d9d9d9">6</div><div class="seg" style="width:11.76%;background:#e3a08c">2</div><div class="seg" style="width:0.00%;background:#b5523b"></div></div><div class="lm">3.59</div></div><div class="lrow"><div class="ll">17. بيئة المكتبة (الهدوء، الإضاءة، المقاعد) مريحة للمذاكرة.</div><div class="lbar"><div class="seg" style="width:29.41%;background:#1f6f8b">5</div><div class="seg" style="width:47.06%;background:#8fb8cc">8</div><div class="seg" style="width:17.65%;background:#d9d9d9">3</div><div class="seg" style="width:5.88%;background:#e3a08c">1</div><div class="seg" style="width:0.00%;background:#b5523b"></div></div><div class="lm">4.00</div></div><div class="lrow"><div class="ll">18. يساعدني موظفو المكتبة في الوصول إلى المراجع التي أحتاجها.</div><div class="lbar"><div class="seg" style="width:17.65%;background:#1f6f8b">3</div><div class="seg" style="width:35.29%;background:#8fb8cc">6</div><div class="seg" style="width:29.41%;background:#d9d9d9">5</div><div class="seg" style="width:11.76%;background:#e3a08c">2</div><div class="seg" style="width:5.88%;background:#b5523b">1</div></div><div class="lm">3.47</div></div><div class="lrow"><div class="ll">19. أجد ما أحتاجه بسهولة في المصادر الرقمية المفتوحة.</div><div class="lbar"><div class="seg" style="width:23.53%;background:#1f6f8b">4</div><div class="seg" style="width:58.82%;background:#8fb8cc">10</div><div class="seg" style="width:11.76%;background:#d9d9d9">2</div><div class="seg" style="width:5.88%;background:#e3a08c">1</div><div class="seg" style="width:0.00%;background:#b5523b"></div></div><div class="lm">4.00</div></div><div class="lrow"><div class="ll">20. أثق في دقة المعلومات التي أحصل عليها من المصادر الرقمية.</div><div class="lbar"><div class="seg" style="width:11.76%;background:#1f6f8b">2</div><div class="seg" style="width:23.53%;background:#8fb8cc">4</div><div class="seg" style="width:52.94%;background:#d9d9d9">9</div><div class="seg" style="width:11.76%;background:#e3a08c">2</div><div class="seg" style="width:0.00%;background:#b5523b"></div></div><div class="lm">3.35</div></div><div class="lrow"><div class="ll">21. أغنتني المصادر الرقمية عن زيارة المكتبة الجامعية.</div><div class="lbar"><div class="seg" style="width:23.53%;background:#1f6f8b">4</div><div class="seg" style="width:35.29%;background:#8fb8cc">6</div><div class="seg" style="width:35.29%;background:#d9d9d9">6</div><div class="seg" style="width:5.88%;background:#e3a08c">1</div><div class="seg" style="width:0.00%;background:#b5523b"></div></div><div class="lm">3.76</div></div><div class="lrow"><div class="ll">22. أستطيع التمييز بين المصدر العلمي الموثوق وغير الموثوق.</div><div class="lbar"><div class="seg" style="width:23.53%;background:#1f6f8b">4</div><div class="seg" style="width:29.41%;background:#8fb8cc">5</div><div class="seg" style="width:29.41%;background:#d9d9d9">5</div><div class="seg" style="width:17.65%;background:#e3a08c">3</div><div class="seg" style="width:0.00%;background:#b5523b"></div></div><div class="lm">3.59</div></div><div class="lrow"><div class="ll">23. يساعدني استخدام المكتبة والمصادر المفتوحة على رفع مستواي الأكاديمي.</div><div class="lbar"><div class="seg" style="width:5.88%;background:#1f6f8b">1</div><div class="seg" style="width:35.29%;background:#8fb8cc">6</div><div class="seg" style="width:41.18%;background:#d9d9d9">7</div><div class="seg" style="width:11.76%;background:#e3a08c">2</div><div class="seg" style="width:5.88%;background:#b5523b">1</div></div><div class="lm">3.24</div></div></div></div>
+  
+  <div class="comment"><b>التحليل:</b> يمثّل كل شريط عبارة من العبارات، والأرقام داخله هي عدد الطلاب، والرقم على اليسار هو المتوسط الحسابي (من 5). يغلب اللون الأزرق (الموافقة) على أغلب العبارات، لكن اللون الرمادي (محايد) واسع في العبارات 15 و20 و23، مما يعني أن كثيراً من الطلاب غير متأكدين من كفاية المراجع، ومن دقة المعلومات الرقمية، ومن أثر هذه المصادر على مستواهم الأكاديمي.</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 14</span> ترتيب عبارات ليكرت حسب المتوسط الحسابي</h3>
+  <div class="chart"><table class="tbl lik"><tr><th>الترتيب</th><th>رقم</th><th>العبارة</th><th>المتوسط</th><th>الانحراف المعياري</th><th>الدرجة</th></tr><tr><td>1</td><td>19</td><td class="tx">أجد ما أحتاجه بسهولة في المصادر الرقمية المفتوحة.</td><td>4.00</td><td>0.79</td><td>مرتفعة</td></tr><tr><td>2</td><td>17</td><td class="tx">بيئة المكتبة (الهدوء، الإضاءة، المقاعد) مريحة للمذاكرة.</td><td>4.00</td><td>0.87</td><td>مرتفعة</td></tr><tr><td>3</td><td>21</td><td class="tx">أغنتني المصادر الرقمية عن زيارة المكتبة الجامعية.</td><td>3.76</td><td>0.90</td><td>مرتفعة</td></tr><tr><td>4</td><td>16</td><td class="tx">أوقات دوام المكتبة مناسبة لجدولي الدراسي.</td><td>3.59</td><td>0.94</td><td>مرتفعة</td></tr><tr><td>5</td><td>22</td><td class="tx">أستطيع التمييز بين المصدر العلمي الموثوق وغير الموثوق.</td><td>3.59</td><td>1.06</td><td>مرتفعة</td></tr><tr><td>6</td><td>18</td><td class="tx">يساعدني موظفو المكتبة في الوصول إلى المراجع التي أحتاجها.</td><td>3.47</td><td>1.12</td><td>مرتفعة</td></tr><tr><td>7</td><td>20</td><td class="tx">أثق في دقة المعلومات التي أحصل عليها من المصادر الرقمية.</td><td>3.35</td><td>0.86</td><td>متوسطة</td></tr><tr><td>8</td><td>15</td><td class="tx">توفّر المكتبة الجامعية مراجع حديثة وكافية في تخصصي.</td><td>3.29</td><td>0.85</td><td>متوسطة</td></tr><tr><td>9</td><td>23</td><td class="tx">يساعدني استخدام المكتبة والمصادر المفتوحة على رفع مستواي الأكاديمي.</td><td>3.24</td><td>0.97</td><td>متوسطة</td></tr>
+<tr class="tot"><td colspan="3">محور المكتبة الجامعية (العبارات 15–18)</td><td>3.59</td><td></td><td>مرتفعة</td></tr>
+<tr class="tot"><td colspan="3">محور المصادر الرقمية (العبارات 19–22)</td><td>3.68</td><td></td><td>مرتفعة</td></tr>
+<tr class="tot"><td colspan="3">المتوسط العام لجميع العبارات</td><td>3.59</td><td></td><td>مرتفعة</td></tr></table></div>
+  <div class="note">مفتاح التفسير (طول الفئة 0.8): 1.00–1.80 منخفضة جداً، 1.81–2.60 منخفضة، 2.61–3.40 متوسطة، 3.41–4.20 مرتفعة، 4.21–5.00 مرتفعة جداً.</div>
+  <div class="comment"><b>التحليل:</b> بلغ المتوسط العام 3.59 بدرجة «مرتفعة» لكنه قريب من الحد الأدنى لها. وجاءت في المرتبة الأولى عبارة «أجد ما أحتاجه بسهولة في المصادر الرقمية» (4.00)، ثم «بيئة المكتبة مريحة للمذاكرة» (4.00)، أي أن الطلاب راضون عن سهولة المصادر الرقمية وعن المكتبة كمكان. في المقابل جاءت بدرجة «متوسطة» عبارات: الثقة في دقة المعلومات الرقمية (3.35)، وكفاية المراجع الحديثة (3.29)، وأثر هذه المصادر على المستوى الأكاديمي (3.24). واللافت هو الفجوة بين سهولة الوصول (4.00) والثقة في الدقة (3.35): الطلاب يجدون المعلومة بسهولة، لكنهم غير واثقين من صحتها، وهذا ينسجم مع اعتمادهم الكبير على أدوات الذكاء الاصطناعي. كما جاء محور المصادر الرقمية (3.68) أعلى قليلاً من محور المكتبة (3.59).</div>
+</section>
+<h2>ثامناً: التقييم العام والمقترحات</h2>
+
+<section class="fig">
+  <h3><span class="fn">شكل 15</span> التقييم العام لمدى الاستفادة من المكتبة الجامعية (من 1 إلى 10)</h3>
+  <div class="chart"><div class="tiles"><div class="tile"><div class="tv">4.94</div><div class="tl">المتوسط من 10</div></div><div class="tile"><div class="tv">5</div><div class="tl">الوسيط</div></div><div class="tile"><div class="tv">1.98</div><div class="tl">الانحراف المعياري</div></div></div><div class="vbars" style="height:210px"><div class="vcol"><div class="vval">0<br><small>0.0%</small></div>
+<div class="vb" style="height:0px"></div><div class="vlab">1</div></div><div class="vcol"><div class="vval">1<br><small>5.9%</small></div>
+<div class="vb" style="height:30px"></div><div class="vlab">2</div></div><div class="vcol"><div class="vval">4<br><small>23.5%</small></div>
+<div class="vb top" style="height:120px"></div><div class="vlab">3</div></div><div class="vcol"><div class="vval">3<br><small>17.6%</small></div>
+<div class="vb" style="height:90px"></div><div class="vlab">4</div></div><div class="vcol"><div class="vval">3<br><small>17.6%</small></div>
+<div class="vb" style="height:90px"></div><div class="vlab">5</div></div><div class="vcol"><div class="vval">2<br><small>11.8%</small></div>
+<div class="vb" style="height:60px"></div><div class="vlab">6</div></div><div class="vcol"><div class="vval">2<br><small>11.8%</small></div>
+<div class="vb" style="height:60px"></div><div class="vlab">7</div></div><div class="vcol"><div class="vval">1<br><small>5.9%</small></div>
+<div class="vb" style="height:30px"></div><div class="vlab">8</div></div><div class="vcol"><div class="vval">1<br><small>5.9%</small></div>
+<div class="vb" style="height:30px"></div><div class="vlab">9</div></div><div class="vcol"><div class="vval">0<br><small>0.0%</small></div>
+<div class="vb" style="height:0px"></div><div class="vlab">10</div></div></div></div>
+  
+  <div class="comment"><b>التحليل:</b> بلغ متوسط التقييم 4.94 من 10 والوسيط 5، أي أن الاستفادة من المكتبة متوسطة تقريباً. وقيّم 8 طلاب (47.1%) استفادتهم بـ 4 أو أقل، مقابل 4 طلاب فقط (23.5%) قيّموها بـ 7 فأكثر، ولم يمنحها أحد 10. هذا التقييم المتواضع يتّسق مع نتائج المحاور السابقة: الطلاب راضون عن المكتبة كمكان، لكنهم لا يعتمدون عليها مصدراً رئيسياً للمعرفة.</div>
+</section>
+
+<section class="fig">
+  <h3><span class="fn">شكل 16</span> مقترحات الطلاب (سؤال مفتوح)</h3>
+  <div class="chart"><table class="tbl"><tr><th>التصنيف</th><th>العدد</th></tr>
+<tr><td>لم يُجب على السؤال (السؤال اختياري)</td><td>13</td></tr>
+<tr><td>إجابات بلا مقترح فعلي («لايوجد»، «شكرا»، تعليق غير متعلق بالموضوع)</td><td>3</td></tr>
+<tr><td>مقترح فعلي: «التخطيط للقراءة»</td><td>1</td></tr></table></div>
+  
+  <div class="comment"><b>التحليل:</b> أجاب 4 طلاب فقط عن هذا السؤال الاختياري، ولم يتضمن منها مقترحاً فعلياً سوى إجابة واحدة تدعو إلى التخطيط للقراءة وتخصيص أيام لها. ضعف المشاركة في الأسئلة المفتوحة أمر شائع في الاستبيانات الإلكترونية، ولذلك بُنيت التوصيات أساساً على نتائج الأسئلة المغلقة.</div>
+</section>
+
+<h2>تاسعاً: أهم النتائج</h2>
+<ol>
+<li><b>المصادر الرقمية هي المصدر الأول للطلاب:</b> يعتمد عليها 58.8% بشكل أساسي، و76.5% يقضون معها وقتاً أطول من المكتبة (الوسيط 3 ساعات أسبوعياً مقابل ساعة واحدة للمكتبة).</li>
+<li><b>المكتبة تحوّلت إلى مكان للمذاكرة أكثر منها مصدراً للمعرفة:</b> أعلى عبارات الرضا هي راحة بيئة المكتبة (4.00 من 5)، و«المذاكرة في مكان هادئ» من أول أغراض الزيارة (47.1%)، بينما التقييم العام للاستفادة متوسط (4.94 من 10).</li>
+<li><b>أدوات الذكاء الاصطناعي تتصدر المصادر الرقمية</b> (58.8%)، في حين أن قواعد البيانات الأكاديمية أقل استخداماً: مكتبة الجامعة الرقمية 29.4%، والقواعد العربية 11.8%، وResearchGate 5.9%.</li>
+<li><b>فجوة بين سهولة الوصول والثقة:</b> يجد الطلاب المعلومة الرقمية بسهولة (4.00) لكن ثقتهم في دقتها متوسطة (3.35)، ولم يختر أي طالب «الموثوقية» سبباً لتفضيل مصدره.</li>
+<li><b>أهم أسباب العزوف عن المكتبة</b> هي توفّر البديل الرقمي (35.3%) وقلة المراجع الحديثة (23.5%)، وتقييم كفاية المراجع الحديثة متوسط (3.29).</li>
+<li><b>العوائق الرقمية بنيوية واقتصادية بالدرجة الأولى:</b> ضعف الإنترنت وانقطاع الكهرباء، وتكلفة الباقات، والاشتراكات المدفوعة تمثل معاً 76.5% من العوائق.</li>
+</ol>
+
+<h2>عاشراً: التوصيات</h2>
+<ol>
+<li><b>تحديث مقتنيات المكتبة</b> بمراجع حديثة في تخصصات الهندسة وتقنية المعلومات، وإتاحة نسخها الإلكترونية، لمعالجة أبرز أسباب العزوف عن المكتبة.</li>
+<li><b>تفعيل المكتبة الرقمية للجامعة والتعريف بها</b>، والاشتراك في قواعد بيانات علمية وإتاحتها للطلاب مجاناً، لتقليل أثر الاشتراكات المدفوعة.</li>
+<li><b>تنظيم ورش في «الثقافة المعلوماتية»</b> تشمل البحث في Google Scholar وقواعد البيانات العربية، وتقييم موثوقية المصادر، والاستخدام المسؤول لأدوات الذكاء الاصطناعي والتحقق من مخرجاتها.</li>
+<li><b>توفير إنترنت مجاني ومستقر</b> ومصادر طاقة بديلة داخل المكتبة والحرم الجامعي، بما أن البنية التحتية هي العائق الأكبر.</li>
+<li><b>تطوير المكتبة كمساحة تعلّم</b> بتخصيص قاعات للمذاكرة الجماعية وأخرى هادئة، ومرونة أكبر في أوقات الدوام خاصةً في فترات الامتحانات.</li>
+<li><b>تشجيع أعضاء هيئة التدريس</b> على توجيه الطلاب إلى مصادر محكّمة بعينها في التكليفات، إذ إن توجيههم لم يكن سبباً للاختيار إلا لدى طالب واحد.</li>
+</ol>
+
+<h2>حادي عشر: حدود الدراسة والملاحظات الختامية</h2>
+<div class="box">
+<ul>
+<li>بلغ حجم العينة 17 استجابة، وهو عدد محدود؛ لذلك تُعدّ النتائج مؤشرات أولية، وتُقرأ الفروق بين المجموعات الفرعية بحذر.</li>
+<li>العينة متجانسة جداً (94.1% ذكور، و94.1% من المستوى الرابع ومن كلية الهندسة وتقنية المعلومات)، فلا يمكن تعميم النتائج على جميع طلاب الجامعة، ولم تُتح مقارنة المستويات أو التخصصات.</li>
+<li>بيانات الساعات تقديرية من الطلاب، وفيها قيمتان متطرفتان (30 ساعة في المكتبة)، ولذلك اعتمدنا الوسيط إلى جانب المتوسط.</li>
+<li>يُقترح في دراسات لاحقة توسيع العينة لتشمل مستويات وتخصصات مختلفة، وتمثيلاً أفضل للطالبات.</li>
+</ul>
+</div>
+</body></html>
