@@ -1,0 +1,282 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<title>تقرير تحليل استبيان العادات الغذائية والتحصيل الأكاديمي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+* { box-sizing: border-box; }
+body { font-family: 'Noto Naskh Arabic', serif; color: #222; font-size: 11.5pt; line-height: 1.75; margin: 0; background: #fff; }
+h1, h2, h3, .tv, .fn, th { font-family: 'Cairo', sans-serif; }
+h2 { color: #1f6f8b; font-size: 16pt; border-bottom: 2px solid #1f6f8b; padding-bottom: 4px; margin: 22px 0 10px; break-after: avoid; }
+h3 { font-size: 12pt; margin: 0 0 8px; color: #1d2b33; }
+.fn { background: #1f6f8b; color: #fff; border-radius: 4px; padding: 0 8px; font-size: 10pt; margin-left: 6px; }
+p { margin: 6px 0; text-align: justify; }
+.cover { height: 262mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; break-after: page; padding: 10mm 0; }
+.cover .top div { font-family: 'Cairo'; font-weight: 700; color: #1d2b33; font-size: 16pt; line-height: 2; }
+.cover h1 { font-size: 24pt; color: #1f6f8b; margin: 0 0 10px; line-height: 1.5; }
+.cover .subt { font-family: 'Cairo'; font-size: 14pt; color: #555; }
+.cover .band { border-top: 3px solid #e0a43a; border-bottom: 3px solid #e0a43a; padding: 26px 10px; }
+.cover table { margin: 0 auto; font-size: 13pt; border-collapse: collapse; }
+.cover td { padding: 6px 14px; text-align: right; }
+.cover td:first-child { font-family: 'Cairo'; font-weight: 700; color: #1f6f8b; }
+.fig { border: 1px solid #dfe6ea; border-radius: 8px; padding: 12px 14px; margin: 12px 0; break-inside: avoid; }
+.chart { margin: 6px 0 4px; }
+.comment { background: #f4f8fa; border-right: 4px solid #1f6f8b; padding: 8px 12px; border-radius: 4px; text-align: justify; font-size: 11pt; }
+.note { font-size: 9.5pt; color: #666; margin: 2px 0 6px; }
+.hbars { display: flex; flex-direction: column; gap: 5px; }
+.hrow { display: grid; grid-template-columns: 38% 1fr 78px; align-items: center; gap: 8px; font-size: 10.5pt; }
+.hl { line-height: 1.35; }
+.track { background: #eef2f4; height: 18px; border-radius: 3px; overflow: hidden; }
+.bar { background: #9bb7c4; height: 100%; border-radius: 3px; }
+.bar.top { background: #1f6f8b; }
+.hv { font-family: 'Cairo'; font-weight: 700; font-size: 10pt; }
+.hv small { font-weight: 400; color: #666; }
+.vbars { display: flex; align-items: flex-end; justify-content: space-around; gap: 6px; border-bottom: 1px solid #bbb; padding: 0 6px; margin-bottom: 40px; }
+.vcol { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; max-width: 90px; }
+.vb { width: 70%; background: #9bb7c4; border-radius: 3px 3px 0 0; }
+.vb.top { background: #1f6f8b; }
+.vval { font-family: 'Cairo'; font-weight: 700; font-size: 10pt; text-align: center; line-height: 1.2; margin-bottom: 3px; }
+.vval small { font-weight: 400; color: #666; font-size: 8.5pt; }
+.vlab { position: absolute; bottom: -38px; font-size: 9.5pt; text-align: center; line-height: 1.25; width: 100%; }
+.donutwrap { display: flex; align-items: center; gap: 28px; padding: 4px 10px; }
+.donut { width: 130px; height: 130px; border-radius: 50%; position: relative; flex: none; }
+.hole { position: absolute; inset: 30px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cairo'; font-weight: 700; color: #444; }
+.legend .lg { margin: 3px 0; font-size: 10.5pt; }
+.sw { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin: 0 4px 0 6px; vertical-align: middle; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.two .hrow { grid-template-columns: 42% 1fr 70px; }
+.sub { font-family: 'Cairo'; font-weight: 600; font-size: 10.5pt; color: #555; margin-bottom: 4px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin: 4px 0 10px; }
+.tile { background: #f4f8fa; border-radius: 6px; padding: 6px 8px; text-align: center; }
+.tv { font-size: 15pt; font-weight: 700; color: #1f6f8b; line-height: 1.4; }
+.tl { font-size: 9.5pt; color: #555; line-height: 1.35; }
+.glegend { font-size: 10pt; margin: 4px 0 8px; }
+.gbars { display: flex; align-items: flex-end; justify-content: space-around; height: 175px; border-bottom: 1px solid #bbb; margin-bottom: 40px; padding: 0 6px; }
+.gcol { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+.gpair { display: flex; align-items: flex-end; gap: 3px; }
+.gb { width: 24px; border-radius: 3px 3px 0 0; position: relative; min-height: 1px; }
+.gb span { position: absolute; top: -18px; width: 100%; text-align: center; font-family: 'Cairo'; font-size: 9pt; font-weight: 700; }
+.gb.lib { background: #1f6f8b; } .gb.dig { background: #e0a43a; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 10pt; margin: 8px 0; }
+.tbl th { background: #1f6f8b; color: #fff; font-weight: 600; padding: 5px 6px; }
+.tbl td { border: 1px solid #dfe6ea; padding: 4px 6px; text-align: center; }
+.tbl td.tx { text-align: right; }
+.tbl tr:nth-child(even) td { background: #f7fafb; }
+.tbl tr.tot td { background: #fdf3e1; font-weight: 700; }
+.likert { display: flex; flex-direction: column; gap: 6px; }
+.lrow { display: grid; grid-template-columns: 44% 1fr 40px; gap: 8px; align-items: center; font-size: 10pt; }
+.ll { line-height: 1.35; }
+.lbar { display: flex; height: 20px; border-radius: 3px; overflow: hidden; }
+.seg { display: flex; align-items: center; justify-content: center; font-family: 'Cairo'; font-size: 8.5pt; font-weight: 700; color: #222; }
+.lm { font-family: 'Cairo'; font-weight: 700; color: #1f6f8b; }
+ul, ol { margin: 4px 0; padding-right: 22px; }
+li { margin: 3px 0; text-align: justify; }
+.box { border: 1px solid #e0a43a; background: #fffaf0; border-radius: 8px; padding: 10px 14px; margin: 10px 0; break-inside: avoid; }
+.ltr { direction: ltr; unicode-bidi: embed; font-family: monospace; font-size: 9pt; word-break: break-all; }
+</style></head><body>
+<div class="cover">
+  <div class="top"><div>جامعة العلوم والتكنولوجيا – إب</div><div>كلية الحاسبات</div></div>
+  <div class="band">
+    <div class="subt">مشروع تطبيقي في مقرر تحليل وعرض البيانات</div>
+    <h1>العادات الغذائية وأثرها<br>على التحصيل الأكاديمي</h1>
+    <div class="subt">دراسة استطلاعية على عينة من طلبة الجامعة</div>
+  </div>
+  <table>
+    <tr><td>إعداد الطالب:</td><td>مازن عبدالمعز قائد عبده</td></tr>
+    <tr><td>إشراف:</td><td>د. رضوان شداد</td></tr>
+    <tr><td>أداة الدراسة:</td><td>استبيان إلكتروني (Google Forms)</td></tr>
+    <tr><td>حجم العينة:</td><td>38 طالباً وطالبة</td></tr>
+    <tr><td>التاريخ:</td><td>نوفمبر 2026م</td></tr>
+  </table>
+</div>
+
+<h2>أولاً: مقدمة</h2>
+<p>تؤثر التغذية السليمة تأثيراً مباشراً في صحة الإنسان وقدرته على التركيز والتعلّم، ويواجه طلبة الجامعة تحديات تجعلهم أكثر عرضة لعادات غذائية غير صحية،
+مثل طول اليوم الدراسي، وإهمال وجبة الإفطار، والاعتماد على الوجبات السريعة والمشروبات المنبهة. ومن هنا جاءت هذه الدراسة للتعرّف على العادات الغذائية لدى طلبة الجامعة،
+وعلاقتها بمستوى نشاطهم وتركيزهم أثناء المحاضرات وبتحصيلهم الأكاديمي.</p>
+
+<h2>ثانياً: أهداف الدراسة</h2>
+<ol>
+<li>التعرّف على نوعية الوجبات التي يتناولها الطلبة وعددها ومدى انتظامها خلال اليوم الجامعي.</li>
+<li>قياس مدى اعتماد الطلبة على المشروبات المنبهة (الشاي، والقهوة، ومشروبات الطاقة) وأسباب تناولها.</li>
+<li>تقييم مستوى النشاط والتركيز والشعور بالنعاس لدى الطلبة أثناء المحاضرات.</li>
+<li>الكشف عن العلاقة بين العادات الغذائية من جهة، والنشاط والتحصيل الأكاديمي من جهة أخرى.</li>
+<li>تقديم توصيات عملية لتحسين العادات الغذائية لدى طلبة الجامعة.</li>
+</ol>
+
+<h2>ثالثاً: منهجية الدراسة</h2>
+<ul>
+<li><b>المنهج:</b> المنهج الوصفي التحليلي.</li>
+<li><b>أداة الدراسة:</b> استبيان إلكتروني صُمّم باستخدام <b>Google Forms</b>، ويتكون من 21 سؤالاً: بيانات ديموغرافية (3)، وأسئلة العادات الغذائية (5)،
+وأسئلة المشروبات المنبهة (3)، وأسئلة النشاط والتركيز والتحصيل (4)، ومقياس ليكرت الخماسي (5 عبارات)، وسؤال مفتوح للمقترحات.</li>
+<li><b>رابط الاستبيان:</b> <span class="ltr">https://docs.google.com/forms/d/e/1FAIpQLSe8R21V7Rd5ABHu3SadSHkqSlL0pilloKQzM4HceuPToza_Fw/viewform</span></li>
+<li><b>أنواع المتغيرات:</b> متغيرات اسمية (الجنس، والتخصص، ونوع الطعام، ونوع المشروب، والسبب)، ومتغيرات ترتيبية (المستوى، وعدد الوجبات، وتكرار الإفطار والفواكه والمنبهات،
+والنشاط، والنعاس، والتحصيل، وعبارات ليكرت)، ومتغير نصي (المقترحات).</li>
+<li><b>العينة:</b> 38 استجابة من طلبة الجامعة من مستويات وتخصصات مختلفة.</li>
+<li><b>المعالجة الإحصائية:</b> صُدّرت الاستجابات إلى Excel، وحُسبت التكرارات والنسب المئوية (من الإجابات الصحيحة لكل سؤال)، والمتوسط الحسابي، والانحراف المعياري،
+والجداول التقاطعية، ومعامل ارتباط الرتب لسبيرمان. واستُخدمت المخططات الدائرية للمتغيرات الاسمية قليلة الفئات، والأعمدة للمتغيرات الترتيبية،
+والأعمدة الأفقية المرتبة للفئات الاسمية المتعددة، والأعمدة المكدسة لمقياس ليكرت.</li>
+</ul>
+
+<h2>رابعاً: خصائص عينة الدراسة</h2>
+<section class="fig"><h3><span class="fn">شكل 1</span> توزيع أفراد العينة حسب الجنس</h3>
+<div class="chart"><div class="donutwrap"><div class="donut" style="background:conic-gradient(#1f6f8b 0.00deg 223.78deg,#e0a43a 223.78deg 360.00deg)"><div class="hole">ن = 37</div></div>
+<div class="legend"><div class="lg"><span class="sw" style="background:#1f6f8b"></span>ذكر: <b>23</b> (62.2%)</div><div class="lg"><span class="sw" style="background:#e0a43a"></span>أنثى: <b>14</b> (37.8%)</div></div></div></div><div class="comment"><b>التحليل:</b> تتكون العينة من 23 طالباً (62.2%) و14 طالبة (37.8%)، مع إجابة واحدة لم يُحدَّد فيها الجنس. ويُعدّ تمثيل الطالبات مقبولاً، مما يعطي النتائج صورة أشمل عن طلبة الجامعة من الجنسين.</div></section>
+<section class="fig"><h3><span class="fn">شكل 2</span> توزيع أفراد العينة حسب المستوى الأكاديمي</h3>
+<div class="chart"><div class="vbars" style="height:230px"><div class="vcol"><div class="vval">5<br><small>13.5%</small></div>
+<div class="vb" style="height:41px"></div><div class="vlab">المستوى الأول</div></div><div class="vcol"><div class="vval">5<br><small>13.5%</small></div>
+<div class="vb" style="height:41px"></div><div class="vlab">المستوى الثاني</div></div><div class="vcol"><div class="vval">5<br><small>13.5%</small></div>
+<div class="vb" style="height:41px"></div><div class="vlab">المستوى الثالث</div></div><div class="vcol"><div class="vval">17<br><small>45.9%</small></div>
+<div class="vb top" style="height:140px"></div><div class="vlab">المستوى الرابع</div></div><div class="vcol"><div class="vval">1<br><small>2.7%</small></div>
+<div class="vb" style="height:8px"></div><div class="vlab">المستوى الخامس</div></div><div class="vcol"><div class="vval">4<br><small>10.8%</small></div>
+<div class="vb" style="height:33px"></div><div class="vlab">مستوى آخر</div></div></div></div><div class="comment"><b>التحليل:</b> يشكّل طلبة المستوى الرابع النسبة الأكبر (45.9%)، بينما تتوزع بقية العينة بالتساوي تقريباً بين المستويات الأول والثاني والثالث (13.5% لكل منها)، إضافة إلى 10.8% من مستويات أخرى. هذا التنوع يعني أن العينة تغطي مختلف المراحل الدراسية، مع ثقل واضح للمستوى الرابع.</div></section>
+<section class="fig"><h3><span class="fn">شكل 3</span> توزيع أفراد العينة حسب التخصص الدراسي</h3>
+<div class="chart"><div class="hbars"><div class="hrow"><div class="hl">تقنية المعلومات</div><div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">19 <small>(51.4%)</small></div></div><div class="hrow"><div class="hl">تخصص آخر</div><div class="track"><div class="bar" style="width:57.9%"></div></div>
+<div class="hv">11 <small>(29.7%)</small></div></div><div class="hrow"><div class="hl">المحاسبة</div><div class="track"><div class="bar" style="width:10.5%"></div></div>
+<div class="hv">2 <small>(5.4%)</small></div></div><div class="hrow"><div class="hl">نظم المعلومات</div><div class="track"><div class="bar" style="width:10.5%"></div></div>
+<div class="hv">2 <small>(5.4%)</small></div></div><div class="hrow"><div class="hl">إدارة الأعمال</div><div class="track"><div class="bar" style="width:10.5%"></div></div>
+<div class="hv">2 <small>(5.4%)</small></div></div><div class="hrow"><div class="hl">علوم الحاسوب</div><div class="track"><div class="bar" style="width:5.3%"></div></div>
+<div class="hv">1 <small>(2.7%)</small></div></div></div></div><div class="comment"><b>التحليل:</b> يمثّل طلبة تقنية المعلومات أكثر من نصف العينة (51.4%)، يليهم «تخصص آخر» (29.7%)، ثم المحاسبة ونظم المعلومات وإدارة الأعمال (5.4% لكل منها). أي أن العينة متنوعة التخصصات، لكن الغلبة فيها لتخصصات الحاسوب وتقنية المعلومات.</div></section>
+<h2>خامساً: نتائج محور العادات الغذائية</h2>
+<section class="fig"><h3><span class="fn">شكل 4</span> عدد الوجبات اليومية</h3>
+<div class="chart"><div class="vbars" style="height:230px"><div class="vcol"><div class="vval">7<br><small>18.4%</small></div>
+<div class="vb" style="height:47px"></div><div class="vlab">وجبة واحدة</div></div><div class="vcol"><div class="vval">21<br><small>55.3%</small></div>
+<div class="vb top" style="height:140px"></div><div class="vlab">وجبتان</div></div><div class="vcol"><div class="vval">10<br><small>26.3%</small></div>
+<div class="vb" style="height:67px"></div><div class="vlab">ثلاث وجبات</div></div></div></div><div class="comment"><b>التحليل:</b> يتناول أغلب الطلاب وجبتين فقط يومياً (55.3%)، بينما لا يلتزم بالوجبات الثلاث سوى 26.3%، ويكتفي 18.4% بوجبة واحدة. أي أن قرابة ثلاثة أرباع العينة (73.7%) يتناولون أقل من ثلاث وجبات يومياً، وهو مؤشر على عدم انتظام النظام الغذائي.</div></section>
+<section class="fig"><h3><span class="fn">شكل 5</span> الوجبة التي يحرص الطالب على تناولها يومياً</h3>
+<div class="chart"><div class="hbars"><div class="hrow"><div class="hl">وجبة الغداء</div><div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">18 <small>(47.4%)</small></div></div><div class="hrow"><div class="hl">وجبة العشاء</div><div class="track"><div class="bar" style="width:55.6%"></div></div>
+<div class="hv">10 <small>(26.3%)</small></div></div><div class="hrow"><div class="hl">لا ألتزم بوجبة محددة</div><div class="track"><div class="bar" style="width:27.8%"></div></div>
+<div class="hv">5 <small>(13.2%)</small></div></div><div class="hrow"><div class="hl">وجبة الإفطار</div><div class="track"><div class="bar" style="width:22.2%"></div></div>
+<div class="hv">4 <small>(10.5%)</small></div></div><div class="hrow"><div class="hl">جميع الوجبات</div><div class="track"><div class="bar" style="width:5.6%"></div></div>
+<div class="hv">1 <small>(2.6%)</small></div></div></div></div><div class="comment"><b>التحليل:</b> وجبة الغداء هي الأكثر التزاماً (47.4%)، تليها وجبة العشاء (26.3%)، بينما لا يحرص على وجبة <b>الإفطار</b> سوى 10.5%. كما أن 13.2% لا يلتزمون بأي وجبة محددة. وهذا يدل على أن الإفطار هو الوجبة الأكثر إهمالاً، رغم أنها تسبق اليوم الدراسي مباشرة.</div></section>
+<section class="fig"><h3><span class="fn">شكل 6</span> نوع الطعام الأكثر تناولاً أثناء اليوم الجامعي</h3>
+<div class="chart"><div class="hbars"><div class="hrow"><div class="hl">أطعمة خفيفة وسندويشات</div><div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">16 <small>(43.2%)</small></div></div><div class="hrow"><div class="hl">وجبات سريعة</div><div class="track"><div class="bar" style="width:56.2%"></div></div>
+<div class="hv">9 <small>(24.3%)</small></div></div><div class="hrow"><div class="hl">وجبات منزلية</div><div class="track"><div class="bar" style="width:37.5%"></div></div>
+<div class="hv">6 <small>(16.2%)</small></div></div><div class="hrow"><div class="hl">وجبات من مطاعم الجامعة</div><div class="track"><div class="bar" style="width:25.0%"></div></div>
+<div class="hv">4 <small>(10.8%)</small></div></div><div class="hrow"><div class="hl">لا أتناول الطعام أثناء اليوم الجامعي</div><div class="track"><div class="bar" style="width:12.5%"></div></div>
+<div class="hv">2 <small>(5.4%)</small></div></div></div></div><div class="comment"><b>التحليل:</b> تغلب الأطعمة الخفيفة والسندويشات (43.2%) والوجبات السريعة (24.3%) على غذاء الطلاب خلال اليوم الجامعي، أي أن 67.6% يعتمدون على طعام سريع غير متكامل غذائياً. في المقابل، لا تتجاوز نسبة من يتناولون وجبات منزلية 16.2%، ومن يعتمدون على مطاعم الجامعة 10.8%.</div></section>
+<section class="fig"><h3><span class="fn">شكل 7</span> معدل تناول الفواكه والخضروات</h3>
+<div class="chart"><div class="vbars" style="height:230px"><div class="vcol"><div class="vval">4<br><small>10.5%</small></div>
+<div class="vb" style="height:37px"></div><div class="vlab">لا أتناولها</div></div><div class="vcol"><div class="vval">15<br><small>39.5%</small></div>
+<div class="vb top" style="height:140px"></div><div class="vlab">نادرًا</div></div><div class="vcol"><div class="vval">8<br><small>21.1%</small></div>
+<div class="vb" style="height:75px"></div><div class="vlab">مرة أو مرتين أسبوعيًا</div></div><div class="vcol"><div class="vval">9<br><small>23.7%</small></div>
+<div class="vb" style="height:84px"></div><div class="vlab">من ثلاث إلى خمس مرات أسبوعيًا</div></div><div class="vcol"><div class="vval">2<br><small>5.3%</small></div>
+<div class="vb" style="height:19px"></div><div class="vlab">يوميًا</div></div></div></div><div class="comment"><b>التحليل:</b> تكشف النتائج ضعفاً واضحاً في تناول الفواكه والخضروات: 39.5% يتناولونها نادراً، و10.5% لا يتناولونها إطلاقاً، أي أن النصف تقريباً (50%) شبه منقطع عنها. ولا يتناولها يومياً سوى 5.3% فقط، رغم أن التوصيات الصحية تنص على تناولها يومياً.</div></section>
+<section class="fig"><h3><span class="fn">شكل 8</span> تناول وجبة الإفطار قبل الذهاب إلى الجامعة</h3>
+<div class="chart"><div class="vbars" style="height:230px"><div class="vcol"><div class="vval">11<br><small>28.9%</small></div>
+<div class="vb top" style="height:140px"></div><div class="vlab">أبدًا</div></div><div class="vcol"><div class="vval">10<br><small>26.3%</small></div>
+<div class="vb" style="height:127px"></div><div class="vlab">نادرًا</div></div><div class="vcol"><div class="vval">6<br><small>15.8%</small></div>
+<div class="vb" style="height:76px"></div><div class="vlab">أحيانًا</div></div><div class="vcol"><div class="vval">7<br><small>18.4%</small></div>
+<div class="vb" style="height:89px"></div><div class="vlab">غالبًا</div></div><div class="vcol"><div class="vval">4<br><small>10.5%</small></div>
+<div class="vb" style="height:51px"></div><div class="vlab">دائمًا</div></div></div></div><div class="comment"><b>التحليل:</b> يذهب 55.3% من الطلاب إلى الجامعة دون إفطار في الغالب (28.9% «أبداً» و26.3% «نادراً»)، بينما لا يتجاوز من يفطرون بانتظام (غالباً أو دائماً) 28.9%. وتتّسق هذه النتيجة مع الشكل 5 الذي أظهر أن الإفطار هو أقل الوجبات التزاماً.</div></section>
+<h2>سادساً: نتائج محور المشروبات المنبهة</h2>
+<section class="fig"><h3><span class="fn">شكل 9</span> نوع المشروبات المنبهة الأكثر تناولاً</h3>
+<div class="chart"><div class="hbars"><div class="hrow"><div class="hl">الشاي</div><div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">10 <small>(26.3%)</small></div></div><div class="hrow"><div class="hl">القهوة</div><div class="track"><div class="bar" style="width:90.0%"></div></div>
+<div class="hv">9 <small>(23.7%)</small></div></div><div class="hrow"><div class="hl">مشروبات الطاقة</div><div class="track"><div class="bar" style="width:80.0%"></div></div>
+<div class="hv">8 <small>(21.1%)</small></div></div><div class="hrow"><div class="hl">لا أتناول المشروبات المنبهة</div><div class="track"><div class="bar" style="width:60.0%"></div></div>
+<div class="hv">6 <small>(15.8%)</small></div></div><div class="hrow"><div class="hl">أكثر من نوع</div><div class="track"><div class="bar" style="width:50.0%"></div></div>
+<div class="hv">5 <small>(13.2%)</small></div></div></div></div><div class="comment"><b>التحليل:</b> يتصدر الشاي (26.3%) ثم القهوة (23.7%)، واللافت أن <b>مشروبات الطاقة</b> تأتي في المرتبة الثالثة بنسبة 21.1%، وهي نسبة مرتفعة نظراً لأضرارها الصحية. ولا يتناول أي مشروب منبه سوى 15.8% من الطلاب.</div></section>
+<section class="fig"><h3><span class="fn">شكل 10</span> عدد مرات تناول المشروبات المنبهة يومياً</h3>
+<div class="chart"><div class="vbars" style="height:230px"><div class="vcol"><div class="vval">10<br><small>26.3%</small></div>
+<div class="vb top" style="height:140px"></div><div class="vlab">لا أتناولها</div></div><div class="vcol"><div class="vval">9<br><small>23.7%</small></div>
+<div class="vb" style="height:126px"></div><div class="vlab">مرة واحدة</div></div><div class="vcol"><div class="vval">9<br><small>23.7%</small></div>
+<div class="vb" style="height:126px"></div><div class="vlab">مرتين</div></div><div class="vcol"><div class="vval">4<br><small>10.5%</small></div>
+<div class="vb" style="height:56px"></div><div class="vlab">ثلاث مرات</div></div><div class="vcol"><div class="vval">6<br><small>15.8%</small></div>
+<div class="vb" style="height:84px"></div><div class="vlab">أربع مرات أو أكثر</div></div></div></div><div class="comment"><b>التحليل:</b> يتناول 73.7% من الطلاب المشروبات المنبهة يومياً بدرجات متفاوتة، وأغلبهم بين مرة ومرتين (47.4%). لكن 26.3% يتناولونها ثلاث مرات فأكثر، و15.8% أربع مرات أو أكثر، وهؤلاء يمثّلون فئة الاستهلاك المرتفع.</div></section>
+<section class="fig"><h3><span class="fn">شكل 11</span> السبب الرئيسي لتناول المشروبات المنبهة</h3>
+<div class="chart"><div class="hbars"><div class="hrow"><div class="hl">زيادة التركيز والانتباه</div><div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">10 <small>(26.3%)</small></div></div><div class="hrow"><div class="hl">الاستمتاع بطعمها</div><div class="track"><div class="bar" style="width:90.0%"></div></div>
+<div class="hv">9 <small>(23.7%)</small></div></div><div class="hrow"><div class="hl">التغلب على النعاس</div><div class="track"><div class="bar" style="width:70.0%"></div></div>
+<div class="hv">7 <small>(18.4%)</small></div></div><div class="hrow"><div class="hl">الاعتياد على تناولها</div><div class="track"><div class="bar" style="width:60.0%"></div></div>
+<div class="hv">6 <small>(15.8%)</small></div></div><div class="hrow"><div class="hl">لا أتناولها</div><div class="track"><div class="bar" style="width:60.0%"></div></div>
+<div class="hv">6 <small>(15.8%)</small></div></div></div></div><div class="comment"><b>التحليل:</b> يأتي «زيادة التركيز والانتباه» أولاً (26.3%)، ثم «الاستمتاع بطعمها» (23.7%)، ثم «التغلب على النعاس» (18.4%). ويعني ذلك أن 44.7% يتناولونها لأسباب دراسية (التركيز ومقاومة النعاس)، أي أنهم يستخدمونها لتعويض نقص النشاط بدلاً من معالجة سببه، كالنوم والتغذية.</div></section>
+<h2>سابعاً: النشاط والتركيز والتحصيل الأكاديمي</h2>
+<section class="fig"><h3><span class="fn">شكل 12</span> مستوى النشاط خلال المحاضرات</h3>
+<div class="chart"><div class="vbars" style="height:230px"><div class="vcol"><div class="vval">3<br><small>7.9%</small></div>
+<div class="vb" style="height:18px"></div><div class="vlab">منخفض جدا</div></div><div class="vcol"><div class="vval">2<br><small>5.3%</small></div>
+<div class="vb" style="height:12px"></div><div class="vlab">منخفض</div></div><div class="vcol"><div class="vval">23<br><small>60.5%</small></div>
+<div class="vb top" style="height:140px"></div><div class="vlab">متوسط</div></div><div class="vcol"><div class="vval">7<br><small>18.4%</small></div>
+<div class="vb" style="height:43px"></div><div class="vlab">مرتفع</div></div><div class="vcol"><div class="vval">3<br><small>7.9%</small></div>
+<div class="vb" style="height:18px"></div><div class="vlab">مرتفع جدًا</div></div></div></div><div class="comment"><b>التحليل:</b> يصف 60.5% من الطلاب نشاطهم بأنه «متوسط»، مقابل 26.3% نشاطهم مرتفع أو مرتفع جداً، و13.2% منخفض أو منخفض جداً. فأغلب الطلاب لا يصلون إلى مستوى نشاط مرتفع خلال المحاضرات.</div></section>
+<section class="fig"><h3><span class="fn">شكل 13</span> الشعور بالنعاس أو التعب أثناء المحاضرات</h3>
+<div class="chart"><div class="vbars" style="height:230px"><div class="vcol"><div class="vval">4<br><small>10.8%</small></div>
+<div class="vb" style="height:37px"></div><div class="vlab">نادرًا</div></div><div class="vcol"><div class="vval">15<br><small>40.5%</small></div>
+<div class="vb top" style="height:140px"></div><div class="vlab">أحيانًا</div></div><div class="vcol"><div class="vval">13<br><small>35.1%</small></div>
+<div class="vb" style="height:121px"></div><div class="vlab">غالبًا</div></div><div class="vcol"><div class="vval">5<br><small>13.5%</small></div>
+<div class="vb" style="height:47px"></div><div class="vlab">دائمًا</div></div></div></div><div class="comment"><b>التحليل:</b> يشعر 48.6% من الطلاب بالنعاس أو التعب «غالباً» أو «دائماً» أثناء المحاضرات، و40.5% «أحياناً»، بينما لا يتجاوز من نادراً ما يشعرون به 10.8%. أي أن النعاس ظاهرة عامة تقريباً لدى أفراد العينة، وتمس نصفهم بصورة متكررة.</div></section>
+<section class="fig"><h3><span class="fn">شكل 14</span> تأثير العادات الغذائية على التركيز (من وجهة نظر الطالب)</h3>
+<div class="chart"><div class="vbars" style="height:230px"><div class="vcol"><div class="vval">4<br><small>10.5%</small></div>
+<div class="vb" style="height:43px"></div><div class="vlab">لا تؤثر إطلاقًا</div></div><div class="vcol"><div class="vval">5<br><small>13.2%</small></div>
+<div class="vb" style="height:54px"></div><div class="vlab">تؤثر بدرجة قليلة</div></div><div class="vcol"><div class="vval">13<br><small>34.2%</small></div>
+<div class="vb top" style="height:140px"></div><div class="vlab">تؤثر بدرجة متوسطة</div></div><div class="vcol"><div class="vval">11<br><small>28.9%</small></div>
+<div class="vb" style="height:118px"></div><div class="vlab">تؤثر بدرجة كبيرة</div></div><div class="vcol"><div class="vval">5<br><small>13.2%</small></div>
+<div class="vb" style="height:54px"></div><div class="vlab">تؤثر بدرجة كبيرة جدًا</div></div></div></div><div class="comment"><b>التحليل:</b> يرى 42.1% أن عاداتهم الغذائية تؤثر على تركيزهم بدرجة كبيرة أو كبيرة جداً، و34.2% بدرجة متوسطة، أي أن 76.3% يقرّون بوجود تأثير متوسط فأكبر. ولا ينفي التأثير تماماً سوى 10.5%. وهذا يعني أن الطلاب يدركون العلاقة بين الغذاء والتركيز، رغم أن عاداتهم الفعلية لا تعكس هذا الإدراك.</div></section>
+<section class="fig"><h3><span class="fn">شكل 15</span> تقييم الطالب لتحصيله الأكاديمي في الفصل الحالي</h3>
+<div class="chart"><div class="vbars" style="height:230px"><div class="vcol"><div class="vval">1<br><small>2.6%</small></div>
+<div class="vb" style="height:7px"></div><div class="vlab">مقبول</div></div><div class="vcol"><div class="vval">9<br><small>23.7%</small></div>
+<div class="vb" style="height:63px"></div><div class="vlab">جيد</div></div><div class="vcol"><div class="vval">20<br><small>52.6%</small></div>
+<div class="vb top" style="height:140px"></div><div class="vlab">جيد جدًا</div></div><div class="vcol"><div class="vval">8<br><small>21.1%</small></div>
+<div class="vb" style="height:56px"></div><div class="vlab">ممتاز</div></div></div></div><div class="comment"><b>التحليل:</b> يقيّم 52.6% من الطلاب تحصيلهم بـ«جيد جداً»، و21.1% بـ«ممتاز»، أي أن 73.7% يرون تحصيلهم جيداً جداً فأعلى، ولا يوجد إلا طالب واحد بتقدير «مقبول». وهو تقييم ذاتي قد يميل إلى الإيجابية، مما يقلل التباين ويُضعف ظهور الفروق بين المجموعات.</div></section>
+<h2>ثامناً: العلاقة بين العادات الغذائية والنشاط والتحصيل</h2>
+<p>للإجابة عن السؤال الجوهري للدراسة، رُبطت إجابات العادات الغذائية بإجابات النشاط والنعاس والتحصيل عبر جداول تقاطعية، وحُسب <b>معامل ارتباط الرتب (سبيرمان)</b> لأن المتغيرات ترتيبية.</p>
+<section class="fig"><h3><span class="fn">شكل 16</span> نسبة من يشعرون بالنعاس غالباً أو دائماً حسب انتظام الإفطار</h3>
+<div class="chart"><div class="hbars"><div class="hrow" style="grid-template-columns:32% 1fr 130px"><div class="hl">يفطرون بانتظام (غالباً/دائماً)</div><div class="track"><div class="bar top" style="width:27.3%"></div></div>
+<div class="hv">27.3% <small>(3 من 11)</small></div></div><div class="hrow" style="grid-template-columns:32% 1fr 130px"><div class="hl">يفطرون أحياناً</div><div class="track"><div class="bar top" style="width:20.0%"></div></div>
+<div class="hv">20.0% <small>(1 من 5)</small></div></div><div class="hrow" style="grid-template-columns:32% 1fr 130px"><div class="hl">لا يفطرون (نادراً/أبداً)</div><div class="track"><div class="bar top" style="width:66.7%"></div></div>
+<div class="hv">66.7% <small>(14 من 21)</small></div></div></div></div><div class="comment"><b>التحليل:</b> هذه أوضح نتيجة في الدراسة: <b>66.7%</b> ممن لا يفطرون يشعرون بالنعاس غالباً أو دائماً أثناء المحاضرات، مقابل <b>27.3%</b> فقط ممن يفطرون بانتظام، أي أن النسبة تتضاعف تقريباً مرتين ونصف. ويؤكد ذلك معامل الارتباط بين انتظام الإفطار والنعاس (−0.58)، وهو ارتباط عكسي متوسط: كلما زاد انتظام الإفطار قلّ الشعور بالنعاس.</div></section>
+<section class="fig"><h3><span class="fn">شكل 17</span> مستوى النشاط حسب كمية المشروبات المنبهة</h3>
+<div class="chart"><table class="tbl"><tr><th>فئة الاستهلاك</th><th>العدد</th><th>نشاط مرتفع</th><th>نشاط منخفض</th><th>متوسط النشاط (من 5)</th></tr><tr><td>لا يتناولها</td><td>10</td><td>30.0%</td><td>10.0%</td><td>3.20</td></tr><tr><td>مرة إلى مرتين يومياً</td><td>18</td><td>33.3%</td><td>5.6%</td><td>3.39</td></tr><tr><td>ثلاث مرات فأكثر يومياً</td><td>10</td><td>10.0%</td><td>30.0%</td><td>2.60</td></tr></table></div><div class="comment"><b>التحليل:</b> المفارقة أن من يتناولون المنبهات <b>ثلاث مرات فأكثر</b> يومياً هم الأقل نشاطاً: 30% منهم نشاطهم منخفض، ومتوسط نشاطهم 2.60 من 5، مقابل 3.39 لمن يتناولونها مرة إلى مرتين، و3.20 لمن لا يتناولونها. ومعامل الارتباط بين كمية المنبهات والنشاط (−0.30) عكسي ضعيف. وقد يعني ذلك أن الإفراط في المنبهات لا يرفع النشاط، بل قد يكون علامة على إرهاق يحاول الطالب تعويضه.</div></section>
+<section class="fig"><h3><span class="fn">شكل 18</span> نسبة الحاصلين على تقدير «جيد جداً» فأعلى حسب مستوى النشاط في المحاضرات</h3>
+<div class="chart"><div class="hbars"><div class="hrow" style="grid-template-columns:32% 1fr 130px"><div class="hl">نشاط مرتفع جداً</div><div class="track"><div class="bar top" style="width:100.0%"></div></div>
+<div class="hv">100.0% <small>(3 من 3)</small></div></div><div class="hrow" style="grid-template-columns:32% 1fr 130px"><div class="hl">نشاط مرتفع</div><div class="track"><div class="bar top" style="width:85.7%"></div></div>
+<div class="hv">85.7% <small>(6 من 7)</small></div></div><div class="hrow" style="grid-template-columns:32% 1fr 130px"><div class="hl">نشاط متوسط</div><div class="track"><div class="bar top" style="width:73.9%"></div></div>
+<div class="hv">73.9% <small>(17 من 23)</small></div></div><div class="hrow" style="grid-template-columns:32% 1fr 130px"><div class="hl">نشاط منخفض</div><div class="track"><div class="bar top" style="width:50.0%"></div></div>
+<div class="hv">50.0% <small>(1 من 2)</small></div></div><div class="hrow" style="grid-template-columns:32% 1fr 130px"><div class="hl">نشاط منخفض جداً</div><div class="track"><div class="bar top" style="width:33.3%"></div></div>
+<div class="hv">33.3% <small>(1 من 3)</small></div></div></div></div><div class="note">فئتا النشاط المنخفض والمرتفع جداً صغيرتان (2–3 طلاب)، فتُقرأ نسبهما بحذر.</div><div class="comment"><b>التحليل:</b> تظهر علاقة واضحة بين النشاط والتحصيل: جميع من نشاطهم مرتفع جداً (3 من 3) و85.7% ممن نشاطهم مرتفع تحصيلهم جيد جداً فأعلى، مقابل 73.9% لأصحاب النشاط المتوسط، ونحو 40% لأصحاب النشاط المنخفض. ومعامل الارتباط (0.50) طردي متوسط، وهو أقوى ارتباط بالتحصيل في الدراسة. بمعنى أن الطريق الذي قد تؤثر به التغذية على التحصيل هو النشاط والتركيز داخل المحاضرة.</div></section>
+<section class="fig"><h3><span class="fn">شكل 19</span> التحصيل والنشاط والنعاس حسب عدد الوجبات اليومية</h3>
+<div class="chart"><table class="tbl"><tr><th>عدد الوجبات</th><th>العدد</th><th>جيد جداً فأعلى</th><th>متوسط التحصيل (من 4)</th><th>متوسط النشاط (من 5)</th><th>متوسط النعاس (من 4)</th></tr><tr><td>وجبة واحدة</td><td>7</td><td>71.4%</td><td>2.71</td><td>3.00</td><td>3.00</td></tr><tr><td>وجبتان</td><td>21</td><td>71.4%</td><td>2.90</td><td>3.05</td><td>2.33</td></tr><tr><td>ثلاث وجبات</td><td>10</td><td>80.0%</td><td>3.10</td><td>3.40</td><td>2.56</td></tr></table></div><div class="comment"><b>التحليل:</b> يظهر تدرّج بسيط لصالح من يتناولون ثلاث وجبات: نسبة «جيد جداً فأعلى» بينهم 80% مقابل 71.4% لدى أصحاب الوجبة والوجبتين، ومتوسط نشاطهم الأعلى (3.40)، بينما أصحاب الوجبة الواحدة هم الأكثر شعوراً بالنعاس (3.00 من 4). لكن الفروق صغيرة، ومعاملات الارتباط ضعيفة جداً (0.14 مع التحصيل و0.16 مع النشاط)، فهي مؤشر على الاتجاه وليست دليلاً قاطعاً.</div></section>
+<section class="fig"><h3><span class="fn">شكل 20</span> ملخص معاملات الارتباط (سبيرمان) بين متغيرات الدراسة</h3>
+<div class="chart"><table class="tbl"><tr><th>العلاقة</th><th>معامل الارتباط</th><th>ن</th><th>قوة العلاقة واتجاهها</th></tr><tr><td><span style="display:block;text-align:right">انتظام الإفطار × الشعور بالنعاس</span></td><td>-0.58</td><td>37</td><td>متوسطة عكسية</td></tr><tr><td><span style="display:block;text-align:right">مستوى النشاط × التحصيل الأكاديمي</span></td><td>0.50</td><td>38</td><td>متوسطة طردية</td></tr><tr><td><span style="display:block;text-align:right">كمية المنبهات × مستوى النشاط</span></td><td>-0.30</td><td>38</td><td>ضعيفة عكسية</td></tr><tr><td><span style="display:block;text-align:right">تناول الفواكه والخضروات × التحصيل</span></td><td>0.18</td><td>38</td><td>ضعيفة جداً طردية</td></tr><tr><td><span style="display:block;text-align:right">عدد الوجبات × مستوى النشاط</span></td><td>0.16</td><td>38</td><td>ضعيفة جداً طردية</td></tr><tr><td><span style="display:block;text-align:right">عدد الوجبات × التحصيل</span></td><td>0.14</td><td>38</td><td>ضعيفة جداً طردية</td></tr><tr><td><span style="display:block;text-align:right">كمية المنبهات × الشعور بالنعاس</span></td><td>0.10</td><td>37</td><td>ضعيفة جداً طردية</td></tr><tr><td><span style="display:block;text-align:right">انتظام الإفطار × التحصيل</span></td><td>0.04</td><td>38</td><td>لا توجد علاقة تُذكر</td></tr></table></div><div class="note">تفسير قوة الارتباط: أقل من 0.10 لا توجد علاقة تُذكر، 0.10–0.19 ضعيفة جداً، 0.20–0.39 ضعيفة، 0.40–0.59 متوسطة، 0.60 فأكثر قوية. الإشارة السالبة تعني علاقة عكسية.</div><div class="comment"><b>التحليل:</b> يلخص الجدول العلاقات مرتبة حسب قوتها. أقوى علاقتين هما: انتظام الإفطار مع النعاس (عكسية متوسطة)، والنشاط مع التحصيل (طردية متوسطة). أما العلاقة <b>المباشرة</b> بين العادات الغذائية والتحصيل (الإفطار، والوجبات، والفواكه) فضعيفة جداً. وتفسير ذلك أن أثر التغذية يظهر أولاً على النشاط والنعاس، ثم يمتد بصورة غير مباشرة إلى التحصيل، إضافة إلى أن التحصيل يتأثر بعوامل كثيرة أخرى (المذاكرة، والنوم، والقدرات)، وأن التقييم الذاتي للتحصيل مرتفع عند أغلب الطلاب.</div></section>
+<h2>تاسعاً: نتائج مقياس ليكرت (اتجاهات الطلاب)</h2>
+<section class="fig"><h3><span class="fn">شكل 21</span> توزيع إجابات عبارات مقياس ليكرت</h3>
+<div class="chart"><div class="glegend"><span class="sw" style="background:#1f6f8b"></span>موافق بشدة<span class="sw" style="background:#8fb8cc"></span>موافق<span class="sw" style="background:#d9d9d9"></span>محايد<span class="sw" style="background:#e3a08c"></span>غير موافق<span class="sw" style="background:#b5523b"></span>غير موافق بشدة</div><div class="likert"><div class="lrow"><div class="ll">1. تناول وجبة الإفطار يساعدني على التركيز أثناء المحاضرات</div><div class="lbar"><div class="seg" style="width:18.42%;background:#1f6f8b">7</div><div class="seg" style="width:39.47%;background:#8fb8cc">15</div><div class="seg" style="width:26.32%;background:#d9d9d9">10</div><div class="seg" style="width:10.53%;background:#e3a08c">4</div><div class="seg" style="width:5.26%;background:#b5523b">2</div></div><div class="lm">3.55</div></div><div class="lrow"><div class="ll">2. تناول الوجبات الصحية يساعدني على الشعور بالنشاط خلال اليوم الجامعي</div><div class="lbar"><div class="seg" style="width:34.21%;background:#1f6f8b">13</div><div class="seg" style="width:21.05%;background:#8fb8cc">8</div><div class="seg" style="width:21.05%;background:#d9d9d9">8</div><div class="seg" style="width:13.16%;background:#e3a08c">5</div><div class="seg" style="width:10.53%;background:#b5523b">4</div></div><div class="lm">3.55</div></div><div class="lrow"><div class="ll">3. عدم انتظام مواعيد الوجبات يؤثر سلبًا على نشاطي الدراسي</div><div class="lbar"><div class="seg" style="width:23.68%;background:#1f6f8b">9</div><div class="seg" style="width:31.58%;background:#8fb8cc">12</div><div class="seg" style="width:26.32%;background:#d9d9d9">10</div><div class="seg" style="width:10.53%;background:#e3a08c">4</div><div class="seg" style="width:7.89%;background:#b5523b">3</div></div><div class="lm">3.53</div></div><div class="lrow"><div class="ll">4. الإفراط في تناول المشروبات المنبهة يؤثر على جودة نومي</div><div class="lbar"><div class="seg" style="width:28.95%;background:#1f6f8b">11</div><div class="seg" style="width:13.16%;background:#8fb8cc">5</div><div class="seg" style="width:26.32%;background:#d9d9d9">10</div><div class="seg" style="width:21.05%;background:#e3a08c">8</div><div class="seg" style="width:10.53%;background:#b5523b">4</div></div><div class="lm">3.29</div></div><div class="lrow"><div class="ll">5. أعتقد أن اتباع نظام غذائي متوازن يساعد على تحسين التحصيل الأكاديمي</div><div class="lbar"><div class="seg" style="width:18.42%;background:#1f6f8b">7</div><div class="seg" style="width:26.32%;background:#8fb8cc">10</div><div class="seg" style="width:31.58%;background:#d9d9d9">12</div><div class="seg" style="width:18.42%;background:#e3a08c">7</div><div class="seg" style="width:5.26%;background:#b5523b">2</div></div><div class="lm">3.34</div></div></div></div><div class="comment"><b>التحليل:</b> تميل الإجابات إلى الموافقة في جميع العبارات (اللون الأزرق هو الغالب)، وأعلاها عبارتا الإفطار والوجبات الصحية (3.55). لكن عبارة «الإفراط في المنبهات يؤثر على جودة نومي» فيها أكبر نسبة رفض (31.6% غير موافق أو غير موافق بشدة)، أي أن ثلث الطلاب تقريباً لا يربطون بين المنبهات واضطراب النوم.</div></section>
+<section class="fig"><h3><span class="fn">شكل 22</span> ترتيب عبارات ليكرت حسب المتوسط الحسابي</h3>
+<div class="chart"><table class="tbl lik"><tr><th>الترتيب</th><th>رقم</th><th>العبارة</th><th>المتوسط</th><th>الانحراف المعياري</th><th>الدرجة</th></tr><tr><td>1</td><td>1</td><td class="tx">تناول وجبة الإفطار يساعدني على التركيز أثناء المحاضرات</td><td>3.55</td><td>1.08</td><td>مرتفعة</td></tr><tr><td>2</td><td>2</td><td class="tx">تناول الوجبات الصحية يساعدني على الشعور بالنشاط خلال اليوم الجامعي</td><td>3.55</td><td>1.37</td><td>مرتفعة</td></tr><tr><td>3</td><td>3</td><td class="tx">عدم انتظام مواعيد الوجبات يؤثر سلبًا على نشاطي الدراسي</td><td>3.53</td><td>1.20</td><td>مرتفعة</td></tr><tr><td>4</td><td>5</td><td class="tx">أعتقد أن اتباع نظام غذائي متوازن يساعد على تحسين التحصيل الأكاديمي</td><td>3.34</td><td>1.15</td><td>متوسطة</td></tr><tr><td>5</td><td>4</td><td class="tx">الإفراط في تناول المشروبات المنبهة يؤثر على جودة نومي</td><td>3.29</td><td>1.37</td><td>متوسطة</td></tr>
+<tr class="tot"><td colspan="3">المتوسط العام لجميع العبارات</td><td>3.45</td><td></td><td>مرتفعة</td></tr></table></div><div class="note">أُعيد ترميز المقياس بحيث 5 = موافق بشدة و1 = غير موافق بشدة (كان الترميز الأصلي في ملف البيانات معكوساً). مفتاح التفسير (طول الفئة 0.8): 1.00–1.80 منخفضة جداً، 1.81–2.60 منخفضة، 2.61–3.40 متوسطة، 3.41–4.20 مرتفعة، 4.21–5.00 مرتفعة جداً.</div><div class="comment"><b>التحليل:</b> بلغ المتوسط العام 3.45 بدرجة «مرتفعة». وجاءت بدرجة مرتفعة عبارات: الإفطار يساعد على التركيز (3.55)، والوجبات الصحية تمنح النشاط (3.55)، وعدم انتظام الوجبات يؤثر سلباً (3.53). بينما جاءت بدرجة «متوسطة» عبارتا النظام الغذائي المتوازن والتحصيل (3.34)، والمنبهات وجودة النوم (3.29). واللافت هو التناقض بين الاتجاه والسلوك: يوافق الطلاب على أن الإفطار يساعد على التركيز، لكن 55.3% منهم لا يفطرون في الغالب (شكل 8). فالمشكلة ليست في نقص الوعي، بل في تحويل هذا الوعي إلى عادات يومية.</div></section>
+<h2>عاشراً: مقترحات الطلاب</h2>
+<section class="fig"><h3><span class="fn">شكل 23</span> تصنيف مقترحات الطلاب (سؤال مفتوح)</h3>
+<div class="chart"><table class="tbl"><tr><th>التصنيف</th><th>العدد</th></tr><tr><td>الالتزام بنظام غذائي صحي وتنظيم مواعيد الوجبات</td><td>4</td></tr><tr><td>تناول وجبة الإفطار</td><td>1</td></tr><tr><td>تحسين وجبات مطاعم الجامعة وتحديد وجبات صحية فيها</td><td>1</td></tr><tr><td>تقليل مشروبات الطاقة</td><td>1</td></tr><tr><td>تنظيم النوم مع الأكل</td><td>1</td></tr><tr><td>العامل المادي (زيادة مصروف الطالب)</td><td>2</td></tr><tr><td>إجابات بلا مقترح فعلي (رموز، أو «لا يوجد»، أو تعليقات غير جادة أو غير متعلقة)</td><td>8</td></tr><tr><td>لم يُجب (السؤال اختياري)</td><td>21</td></tr></table></div><div class="note">إحدى الإجابات تضمنت مقترحين (انتظام الوجبات وتقليل مشروبات الطاقة) فاحتُسبت في التصنيفين. صُنّفت بعض الإجابات غير الجادة أو غير اللائقة ضمن «إجابات بلا مقترح فعلي»، ولم تُنقل نصوصها.</div><div class="comment"><b>التحليل:</b> أجاب 17 طالباً عن هذا السؤال، وجاءت المقترحات الجادة في اتجاه واحد تقريباً: الالتزام بنظام غذائي صحي، وتنظيم مواعيد الوجبات، وتناول الإفطار، وتقليل مشروبات الطاقة، وتحسين وجبات مطاعم الجامعة. كما أشار طالبان إلى <b>العامل المادي</b>، وهو ما ينسجم مع اعتماد الطلاب على الأطعمة الخفيفة والسريعة الأرخص ثمناً.</div></section>
+
+<h2>حادي عشر: أهم النتائج</h2>
+<ol>
+<li><b>إهمال وجبة الإفطار ظاهرة سائدة:</b> 55.3% لا يفطرون في الغالب قبل الجامعة، ولا يحرص على الإفطار يومياً سوى 10.5%.</li>
+<li><b>نظام غذائي غير متكامل:</b> 73.7% يتناولون أقل من ثلاث وجبات يومياً، و67.6% يعتمدون على الأطعمة الخفيفة والسريعة خلال اليوم الجامعي، ونصف العينة شبه منقطع عن الفواكه والخضروات.</li>
+<li><b>انتشار المشروبات المنبهة:</b> 73.7% يتناولونها يومياً، و26.3% ثلاث مرات فأكثر، ومشروبات الطاقة يتناولها 21.1%. وأكثر أسباب تناولها دراسية (التركيز ومقاومة النعاس).</li>
+<li><b>الإفطار مرتبط بالنعاس بوضوح:</b> 66.7% ممن لا يفطرون يشعرون بالنعاس غالباً أو دائماً، مقابل 27.3% ممن يفطرون بانتظام (ارتباط عكسي متوسط −0.58).</li>
+<li><b>النشاط هو الأقرب إلى التحصيل:</b> العلاقة بين النشاط في المحاضرات والتحصيل طردية متوسطة (0.50)، بينما العلاقة المباشرة بين الغذاء والتحصيل ضعيفة جداً، أي أن أثر التغذية على التحصيل غير مباشر.</li>
+<li><b>الإفراط في المنبهات لا يعني نشاطاً أكبر:</b> أصحاب الاستهلاك المرتفع (3 مرات فأكثر) هم الأقل نشاطاً، بمتوسط 2.60 من 5.</li>
+<li><b>وعي جيد وسلوك ضعيف:</b> اتجاهات الطلاب إيجابية نحو التغذية السليمة (المتوسط العام 3.45، درجة مرتفعة)، لكن عاداتهم الفعلية لا تعكس ذلك.</li>
+</ol>
+
+<h2>ثاني عشر: التوصيات</h2>
+<ol>
+<li><b>حملات توعية</b> داخل الجامعة عن أهمية وجبة الإفطار وأثرها في التركيز ومقاومة النعاس، مع عرض نتائج مثل هذه الدراسة على الطلبة.</li>
+<li><b>توفير وجبات إفطار صحية وبأسعار مناسبة</b> في مطاعم الجامعة ومقاصفها، خاصةً قبل المحاضرات الصباحية، بما أن العامل المادي ظهر في مقترحات الطلبة.</li>
+<li><b>تحسين جودة ما تقدمه مطاعم الجامعة</b> وإدراج الفواكه والخضروات والعصائر الطبيعية بدائلَ للوجبات السريعة.</li>
+<li><b>الحد من مشروبات الطاقة</b> بالتوعية بأضرارها، وتقليل الاعتماد على المنبهات وسيلةً للتركيز، والتركيز بدلاً من ذلك على النوم الكافي والتغذية المنتظمة.</li>
+<li><b>تنظيم الجداول الدراسية</b> بحيث تتضمن فترات راحة كافية لتناول الوجبات خلال اليوم الجامعي.</li>
+<li><b>تشجيع الطلبة على تنظيم مواعيد وجباتهم ونومهم</b>، وهو أكثر ما تكرر في مقترحاتهم الجادة.</li>
+</ol>
+
+<h2>ثالث عشر: حدود الدراسة والملاحظات الختامية</h2>
+<div class="box"><ul>
+<li>بلغ حجم العينة 38 استجابة، وهو يتجاوز الحد الأدنى المطلوب (20)، لكنه يبقى محدوداً لتعميم النتائج على جميع طلبة الجامعة، كما أن بعض الفئات الفرعية صغيرة الحجم.</li>
+<li>التحصيل الأكاديمي والنشاط مقيسان بالتقييم الذاتي للطالب لا بالمعدل الفعلي، وأغلب الطلاب قيّموا تحصيلهم بدرجة مرتفعة، مما يُضعف ظهور الفروق.</li>
+<li>الارتباط لا يعني السببية؛ فالعلاقة بين الإفطار والنعاس مثلاً قد تتأثر بعوامل أخرى كساعات النوم.</li>
+<li>ظهر تعارض بسيط في بعض الإجابات (مثل اختيار «لا أتناول المشروبات المنبهة» ثم ذكر عدد مرات تناولها)، وتوجد إجابات ناقصة في بعض الأسئلة، فحُسبت النسب من الإجابات الصحيحة لكل سؤال.</li>
+<li>يُقترح في دراسات لاحقة استخدام المعدل التراكمي الفعلي، وإضافة متغير ساعات النوم، وتوسيع العينة.</li>
+</ul></div>
+</body></html>
